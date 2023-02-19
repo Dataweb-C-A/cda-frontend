@@ -5,7 +5,7 @@ import '../../assets/scss/navbar.scss'
 import Sidebar from '../sidebar'
 import AvatarCard from '../avatarCard'
 
-function Navbar() {
+function Navbar() { 
 
   const [isOpen, setIsOpen] = useState(false)
 
