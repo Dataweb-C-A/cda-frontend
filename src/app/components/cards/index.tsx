@@ -21,7 +21,7 @@ function Cards({color, number, label}: CardProps) {
             <Text fw={450}>
               {number}
             </Text>
-            <Text fz="sm" fw={400}>
+            <Text fz="sm" fw={400} c="rgb(108, 117, 125)">
               {label}
             </Text>
           </div>
