@@ -2,6 +2,7 @@ import React from 'react'
 import { SimpleGrid, Text } from '@mantine/core'
 import AvatarCard from './app/components/avatarCard'
 import Navbar from './app/components/navbar'
+import Cards from './app/components/cards'
 import './app/assets/scss/styles.scss'
 import Toolkit from './app/components/toolkit'
 import { BsWallet2 as Wallet, BsGearWide as Config } from 'react-icons/bs'
@@ -64,6 +65,11 @@ const App: React.FC = () => {
   return (
     <div className="app">
       <Navbar />
+      <Cards 
+        color= "blue"
+        number="1,234"
+        label="Total de Rifas"
+      />
       <SimpleGrid cols={7} m={20} spacing={0}>
       <AvatarCard
         image="https://avatars.githubusercontent.com/u/25126241?v=4"
