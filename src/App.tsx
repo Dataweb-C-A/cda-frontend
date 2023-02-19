@@ -37,7 +37,7 @@ const ToolkitRender = () => {
         color="blue"
         variant="light"
         size="sm"
-        style={{ marginTop: "10px", borderRadius: "0" }}
+        style={{ marginTop: "10px", borderRadius: "0", marginLeft: "-2px" }}
         onClick={() => alert("click")}
       >
         <Ticket />
@@ -49,7 +49,7 @@ const ToolkitRender = () => {
         style={{
           marginTop: "10px",
           borderRadius: "0 5px 5px 0",
-          marginLeft: "-1px",
+          marginLeft: "-3px",
         }}
         onClick={() => alert("click")}
       >

@@ -7,16 +7,30 @@
   box-shadow: 0 0 3px #0c0c0c96
 }
 
+.button-user {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  left: calc(100% - 16em);
+  width: 200px;
+  top: 12.1px;
+}
 
-.user-icon{
+.user-group {
   display: flex;
   position: absolute;
-  width: 1.8em;
-  height: 1.8em;
-  color: #0f0f0f;
-  left: calc(100% - 7em);
-  top: 10px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  left: calc(100% - 16em);
 }
+
+.user-icon {
+  font-size: 1.8em;
+  color: #3a3a3a;
+  cursor: pointer;
+}
+
 
 .user-icon:hover{
   color: #3a3a3a;
@@ -36,7 +50,7 @@
   left: calc(100% - 4em);
   border: none;
   cursor: pointer;
-  div {
+  .open {
     background-color: black;
     height: 2px;
     width: 100%;
@@ -44,18 +58,46 @@
     transition: all 0.5s;
     transform-origin: left;
   }
-  &:hover div:first-child {
-    transform: rotate(40.8deg);
+  &:hover .open:first-child {
+    transform: rotate(44deg);
     width: 80%;
   }
   
-  &:hover div:nth-child(2) {
+  &:hover .open:nth-child(2) {
     opacity: 0;
-    height: 2px;
+    height: 3.1px;
+    line-height: 0;
   }
   
-  &:hover div:last-child {
-    transform: rotate(-40.8deg);
+  &:hover .open:last-child {
+    transform: rotate(-45deg);
+    width: 80%;
+  }
+
+  .close {
+    background-color: black;
+    height: 2px;
+    width: 100%;
+    border-radius: 10px;
+    transition: all 0.5s;
+    transform-origin: left;
+  }
+
+  .close:first-child {
+    transform: rotate(44deg);
+    width: 80%;
+  }
+  
+  .close:nth-child(2) {
+    opacity: 0;
+    height: 3.1px;
+    line-height: 0;
+  }
+  
+  .close:last-child {
+    transform: rotate(-43deg);
     width: 80%;
   }
 }
+
+
