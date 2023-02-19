@@ -65,11 +65,23 @@ const App: React.FC = () => {
   return (
     <div className="app">
       <Navbar />
-      <Cards 
-        color= "blue"
-        number="1,234"
-        label="Total de Rifas"
-      />
+      <SimpleGrid cols={3} m={0} spacing={30}>
+        <Cards 
+          color= "blue"
+          number="1,234"
+          label="Total de Rifas"
+        />
+        <Cards 
+          color= "green"
+          number="1,234"
+          label="Total de Rifas"
+        />
+        <Cards 
+          color= "red"
+          number="1,234"
+          label="Total de Rifas"
+        />
+      </SimpleGrid>
       <SimpleGrid cols={7} m={20} spacing={0}>
       <AvatarCard
         image="https://avatars.githubusercontent.com/u/25126241?v=4"
