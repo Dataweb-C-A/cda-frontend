@@ -2,12 +2,40 @@ import React, { useState } from 'react'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { Button, Menu, Text } from '@mantine/core'
 import '../../assets/scss/navbar.scss'
-import Sidebar from '../sidebar'
+import { Drawer } from '@mantine/core'
 import AvatarCard from '../avatarCard'
 
 function Navbar() { 
-
+  
   const [isOpen, setIsOpen] = useState(false)
+  
+  type SidebarProps = {
+    profile?: React.ReactNode | undefined
+    links: Array<{name: string, url: string}>
+  }
+  
+  const Sidebar = ({profile, links}: SidebarProps) => {
+    return (
+      <Drawer
+        opened={isOpen || false}
+        onClose={() => setIsOpen(!isOpen)}
+        position="left"
+        padding="xl"
+        size="md"
+      >
+        {profile}
+        {
+          links.map((link, index) => {
+            return (
+              <div key={index}>
+                <Text>{link.name}</Text>
+              </div>
+            )
+          })
+        }
+      </Drawer>
+    )
+  }
 
   return (
     <nav className="navbar">
@@ -28,22 +56,25 @@ function Navbar() {
         </Menu>
       </div>
       <div className='menu' onClick={() => { setIsOpen(!isOpen) }}>
-        <div className={isOpen === true ? 'open' : 'close'}></div>
-        <div className={isOpen === true ? 'open' : 'close'}></div>
-        <div className={isOpen === true ? 'open' : 'close'}></div>
+        <div className={isOpen === true ? 'close' : 'open'}></div>
+        <div className={isOpen === true ? 'close' : 'open'}></div>
+        <div className={isOpen === true ? 'close' : 'open'}></div>
       </div>
-      <Sidebar 
-        opened={true} 
-        isAuth={true}
+      <Sidebar
         profile={
-          <AvatarCard
-            image="https://avatars.githubusercontent.com/u/25126241?v=4"
-            name="Javier Diaz"
-            role="Rifero"
-            style={{ width: "100%" }}
-            padding={20}
+          <AvatarCard 
+            name="Andys Fuenmayor"
+            role='Admin'
+            image="https://admin.rifa-max.com/static/media/ticket.1e676ae5de33fcd376d5.png"
           />
         }
+        links={[{
+          name: "Prueba",
+          url: "https://google.com"
+        }, {
+          name: "Prueba2",
+          url: "https://google.com"
+        }]}
       />
     </nav>
   )

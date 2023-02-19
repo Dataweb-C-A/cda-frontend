@@ -82,7 +82,7 @@ const App: React.FC = () => {
           label="Total de Rifas"
         />
       </SimpleGrid>
-      <SimpleGrid cols={7} m={20} spacing={0}>
+      <SimpleGrid cols={4} m={2} spacing={80}>
       <AvatarCard
         image="https://avatars.githubusercontent.com/u/25126241?v=4"
         name="Andys Fuenmayor"
