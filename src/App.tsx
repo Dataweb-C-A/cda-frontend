@@ -3,7 +3,6 @@ import { SimpleGrid, Text } from '@mantine/core'
 import AvatarCard from './app/components/avatarCard'
 import Navbar from './app/components/navbar'
 import Cards from './app/components/cards'
-import './app/assets/scss/styles.scss'
 import Toolkit from './app/components/toolkit'
 import { BsWallet2 as Wallet, BsGearWide as Config } from 'react-icons/bs'
 import { ImUsers as Users } from 'react-icons/im'
@@ -66,17 +65,17 @@ const App: React.FC = () => {
     <div className="app">
       <Navbar />
       <SimpleGrid cols={3} m={0} spacing={30}>
-        <Cards 
+        <Cards
           color= "blue"
           number="1,234"
           label="Total de Rifas"
         />
-        <Cards 
+        <Cards
           color= "green"
           number="1,234"
           label="Total de Rifas"
         />
-        <Cards 
+        <Cards
           color= "red"
           number="1,234"
           label="Total de Rifas"

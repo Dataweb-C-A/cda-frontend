@@ -8,16 +8,17 @@ type AvatarProps = {
   image: string
   name: string
   role: string
+  border?: boolean | false
   width?: number | undefined
   padding?: number | undefined
   children?: React.ReactNode
   style?: React.CSSProperties
 }
 
-function AvatarCard({name, image, role, width, padding, style, children}: AvatarProps) {
+function AvatarCard({name, image, role, border, width, padding, style, children}: AvatarProps) {
   return (
     <div>
-      <Card shadow="sm" p={padding} w={width} withBorder={false} m={5} style={style}>
+      <Card shadow="sm" p={padding} w={width} withBorder={border} m={5} style={style}>
         <div className="avatar-card">
           <Avatar 
             src={image}

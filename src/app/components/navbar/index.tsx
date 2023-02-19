@@ -27,7 +27,7 @@ function Navbar() {
         {
           links.map((link, index) => {
             return (
-              <div key={index}>
+              <div key={index} className="sidebar-items">
                 <Text>{link.name}</Text>
               </div>
             )
@@ -65,6 +65,7 @@ function Navbar() {
           <AvatarCard 
             name="Andys Fuenmayor"
             role='Admin'
+            border={true}
             image="https://admin.rifa-max.com/static/media/ticket.1e676ae5de33fcd376d5.png"
           />
         }
