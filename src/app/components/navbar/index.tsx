@@ -9,7 +9,7 @@ function Navbar() {
 
   return (
     <nav className="navbar">
-      <img src="https://admin.rifa-max.com/static/media/ticket.1e676ae5de33fcd376d5.png" width='77px' height='50px' alt="logo" />
+      <img src="https://admin.rifa-max.com/static/media/ticket.1e676ae5de33fcd376d5.png" width='89px' height='54px' alt="logo" />
       <div>
         <Popover width="130px" position="bottom" withArrow={false} shadow="md">
           <Popover.Target>
