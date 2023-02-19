@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { Button, Popover, Text } from '@mantine/core'
 import '../../assets/scss/navbar.scss'
+import Sidebar from '../sidebar'
+import AvatarCard from '../avatarCard'
 
 function Navbar() {
 
@@ -28,11 +30,24 @@ function Navbar() {
           </Popover.Dropdown>
         </Popover>
       </div>
-      <div className='menu' onClick={() => setIsOpen(!isOpen)}>
+      <div className='menu' onClick={() => { setIsOpen(!isOpen) }}>
         <div className={isOpen === true ? 'open' : 'close'}></div>
         <div className={isOpen === true ? 'open' : 'close'}></div>
         <div className={isOpen === true ? 'open' : 'close'}></div>
       </div>
+      <Sidebar 
+        opened={true} 
+        isAuth={true}
+        profile={
+          <AvatarCard
+            image="https://avatars.githubusercontent.com/u/25126241?v=4"
+            name="Javier Diaz"
+            role="Rifero"
+            style={{ width: "100%" }}
+            padding={20}
+          />
+        }
+      />
     </nav>
   )
 }

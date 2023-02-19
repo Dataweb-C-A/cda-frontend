@@ -11,12 +11,13 @@ type AvatarProps = {
   width?: number | undefined
   padding?: number | undefined
   children?: React.ReactNode
+  style?: React.CSSProperties
 }
 
-function AvatarCard({name, image, role, width, padding, children}: AvatarProps) {
+function AvatarCard({name, image, role, width, padding, style, children}: AvatarProps) {
   return (
     <div>
-      <Card shadow="sm" p={padding} w={width} withBorder={false} m={5}>
+      <Card shadow="sm" p={padding} w={width} withBorder={false} m={5} style={style}>
         <div className="avatar-card">
           <Avatar 
             src={image}
