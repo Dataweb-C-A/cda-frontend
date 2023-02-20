@@ -24,15 +24,17 @@ function Navbar() {
         size="md"
       >
         {profile}
-        {
-          links.map((link, index) => {
-            return (
-              <div key={index} className="sidebar-items">
-                <Text>{link.name}</Text>
-              </div>
-            )
-          })
-        }
+        <div className="elements">
+          {
+            links.map((link, index) => {
+              return (
+                <div key={index} className="sidebar-items">
+                  <Text>{link.name}</Text>
+                </div>
+              )
+            })
+          }
+        </div>
       </Drawer>
     )
   }

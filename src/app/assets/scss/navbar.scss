@@ -99,3 +99,31 @@
   }
 }
 
+.sidebar-items{
+  text-align: center;
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #313131;
+  cursor: pointer;
+  padding: 12px;
+  background-color: #fcfcfc;
+  border-radius: 4px;
+
+}
+
+.elements{
+  margin-top: 30px;
+}
+
+.sidebar-items:hover{
+  color: #ffffff;
+  font-weight: 400;
+  cursor: pointer;
+  background-color: #35abfa6e;
+  padding: auto;
+  border-radius: 4px;
+  transition: all 0.5s;
+  box-shadow: 0 0 5px 0 #35abfa6e;
+}
+
