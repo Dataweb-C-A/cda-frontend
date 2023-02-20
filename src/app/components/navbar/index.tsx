@@ -68,7 +68,8 @@ function Navbar() {
             name="Andys Fuenmayor"
             role='Admin'
             border={true}
-            image="https://admin.rifa-max.com/static/media/ticket.1e676ae5de33fcd376d5.png"
+            image="https://avatars.githubusercontent.com/u/25126241?v=4"
+            hasHover={true}
           />
         }
         links={[{
