@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { BsFillPersonFill } from 'react-icons/bs'
+import { FaUsers } from 'react-icons/fa'
 import { Button, Menu, Text } from '@mantine/core'
 import '../../assets/scss/navbar.scss'
 import { Drawer } from '@mantine/core'
@@ -43,6 +44,9 @@ function Navbar() {
     <nav className="navbar">
       <img src="https://admin.rifa-max.com/static/media/ticket.1e676ae5de33fcd376d5.png" width='89px' height='54px' alt="logo" />
       <div>
+        <Button className="button-users">
+          <FaUsers className='users-icon' />
+        </Button>
         <Menu shadow="md" width={200}>
           <Menu.Target>
             <button className="button-user"><BsFillPersonFill className='user-icon' /></button>
