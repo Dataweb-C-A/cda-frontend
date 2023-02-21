@@ -118,6 +118,81 @@ const App: React.FC = () => {
                 </Grid.Col>
               </Grid>
               <hr/>
+              <Grid>
+              <Grid.Col span={6}>
+                <Text ta='start' fz='l' fw={400} >
+                  SERIE NUMERO:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                  <Text ta='end' fz='l' fw={400} >
+                  1234
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='start' fz='l' fw={400}  style={{ marginTop: '-15px' }}>
+                  LOTERIA:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                  <Text ta='end' fz='l' fw={400} style={{ marginTop: '-15px' }}>
+                  ZULIA 7A 7:05 PM
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='start' fz='l' fw={400}  style={{ marginTop: '-15px' }}>
+                  FECHA:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='end' fz='l' fw={400} style={{ marginTop: '-15px' }}>
+                  12/12/2023
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='start' fz='l' fw={400}  style={{ marginTop: '-15px' }}>
+                  HORA:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='end' fz='l' fw={400} style={{ marginTop: '-15px' }}>
+                  7:05:23 PM
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='start' fz='l' fw={400}  style={{ marginTop: '-15px' }}>
+                CADUCA:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='end' fz='l' fw={400} style={{ marginTop: '-15px' }}>
+                02/21/2023
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='start' fz='l' fw={400}  style={{ marginTop: '-15px' }}>
+                RIFERO:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='end' fz='l' fw={400} style={{ marginTop: '-15px' }}>
+                Briyisita
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='start' fz='l' fw={400}  style={{ marginTop: '-15px' }}>
+                TELEFONO:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text ta='end' fz='l' fw={400} style={{ marginTop: '-15px' }}>
+                02/21/2023
+                </Text>
+              </Grid.Col>
+              </Grid>
+              <Text ta='center' fz={19} c='#8fa2a2' style={{ margin: '20px' }}>
+                Hola diosmio salvame ayudame señor dios nuestro
+              </Text>
             </Card>
             <Button
               style={{
