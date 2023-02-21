@@ -8,9 +8,14 @@ import { BsWallet2 as Wallet, BsGearWide as Config } from 'react-icons/bs'
 import { ImUsers as Users } from 'react-icons/im'
 import { TiTicket as Ticket } from 'react-icons/ti'
 
-const ToolkitRender = () => {
+type ToolkitProps = {
+  cols?: number
+  spacing?: number
+}
+
+const ToolkitRender = ({ cols, spacing }: ToolkitProps) => {
   return (
-    <SimpleGrid cols={4} spacing={0}>
+    <SimpleGrid cols={cols} spacing={spacing}>
       <Toolkit
         color="blue"
         variant="light"
@@ -116,7 +121,10 @@ const App: React.FC = () => {
         width={250}
         padding={20}
       >
-        <ToolkitRender />
+        <ToolkitRender 
+          cols={4}
+          spacing={0}
+        />
       </AvatarCard>
       </SimpleGrid>
     </div>

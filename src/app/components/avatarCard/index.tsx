@@ -8,6 +8,7 @@ type AvatarProps = {
   image: string
   name: string
   role: string
+  cedula: string
   border?: boolean | false
   width?: number | undefined
   margin?: number | undefined
