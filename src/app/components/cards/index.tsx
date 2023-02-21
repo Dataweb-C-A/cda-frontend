@@ -6,11 +6,13 @@ type CardProps = {
   color: string
   number: string | number
   label: string
+  right: string | number | 0
+  left: string | number | 0
 }
 
-function Cards({color, number, label}: CardProps) {
+function Cards({color, number, label, right, left}: CardProps) {
   return (
-      <div className='card-container'>
+      <div className='card-container' style={{ marginLeft: left, marginRight: right }}>
         <div className='card-body'>
           <div className='dot-color' style={{backgroundColor: color}}>
             <p style={{color: color}}>

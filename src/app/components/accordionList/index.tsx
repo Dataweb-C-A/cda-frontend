@@ -1,15 +1,16 @@
-import { Accordion, ActionIcon, AccordionControlProps, Box } from '@mantine/core';
+import { Accordion, ActionIcon, AccordionControlProps, Box, Chip } from '@mantine/core';
 import { IconDots } from '@tabler/icons';
 import { useStyles } from './accordionList.styles';
 
 type AccordionItem = {
+  id: number;
   value: string;
   label: string;
-  content: string;
 }
 
 type AccordionProps = {
   data: AccordionItem[];
+  children?: React.ReactNode;
 }
 
 export function AccordionControl(props: AccordionControlProps) {
@@ -23,11 +24,11 @@ export function AccordionControl(props: AccordionControlProps) {
   );
 }
 
-export default function AccordionList({ data }: AccordionProps) {
+export default function AccordionList({ data, children }: AccordionProps) {
   const { classes } = useStyles();
   return (
     <Accordion
-      sx={{ maxWidth: 700 }}
+      sx={{ maxWidth: '100%' }}
       mx="auto"
       variant="filled"
       classNames={classes}
@@ -35,8 +36,13 @@ export default function AccordionList({ data }: AccordionProps) {
     >
       {data.map((item) => (
         <Accordion.Item key={item.value} value={item.value}>
-          <AccordionControl>{item.label}</AccordionControl>
-          <Accordion.Panel>{item.content}</Accordion.Panel>
+          <AccordionControl>
+            <Chip color="blue" variant="outline" checked={false} size='xs'>
+              {item.id}
+            </Chip>
+            {item.label}
+          </AccordionControl>
+          <Accordion.Panel>{children}</Accordion.Panel>
         </Accordion.Item>
       ))}
     </Accordion>
