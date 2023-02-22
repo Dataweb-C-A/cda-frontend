@@ -1,4 +1,4 @@
-import { Accordion, ActionIcon, AccordionControlProps, Box, Chip } from '@mantine/core';
+import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text } from '@mantine/core';
 import { IconDots } from '@tabler/icons';
 import { useStyles } from './accordionList.styles';
 
@@ -37,10 +37,18 @@ export default function AccordionList({ data, children }: AccordionProps) {
       {data.map((item) => (
         <Accordion.Item key={item.value} value={item.value}>
           <AccordionControl>
-            <Chip color="blue" variant="outline" checked={false} size='xs'>
-              {item.id}
-            </Chip>
-            {item.label}
+            <div style={{display: 'flex'}}>
+              <div style={{width: '7%'}}>
+                <Chip color="blue" variant="outline" checked={false} size='xs'>
+                  {item.id}
+                </Chip>
+              </div>
+              <div style={{width: 'auto'}}>
+                <Text fw={500}>
+                  {item.label}
+                </Text>
+              </div>
+            </div>
           </AccordionControl>
           <Accordion.Panel>{children}</Accordion.Panel>
         </Accordion.Item>
