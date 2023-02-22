@@ -5,39 +5,32 @@ import { Button, Menu, Text, Input, Card } from "@mantine/core";
 import { Sidebar } from "../sidebar";
 import "../../assets/scss/navbar.scss";
 import AvatarCard from "../avatarCard";
-import { IconUserSearch as IconAt, IconMoodSadDizzy as NotFound } from "@tabler/icons";
+import {
+  IconUserSearch as IconAt,
+  IconMoodSadDizzy as NotFound,
+} from "@tabler/icons";
 
-const profiles = [
-  {
-    name: "Andys Fuenmayor",
-    role: "Rifero",
-    cedula: "V-1229044",
-    image: "",
-  },
-  {
-    name: "Briyith Portillo",
-    role: "Rifero",
-    cedula: "V-30355033",
-    image: "https://avatars.githubusercontent.com/u/105239421?v=4",
-  },
-  {
-    name: "Javier Diaz",
-    role: "Rifero",
-    cedula: "V-29543140",
-    image: "https://avatars.githubusercontent.com/u/70349374?s=400&u=7c776e13c5735d0bd26900b1f8627aefa0fafabf&v=4",
-  },
-  {
-    name: "Oswaldo Garcia",
-    role: "Rifero",
-    cedula: "V-10414470",
-    image: null
-  }
-];
+interface ProfileProps {
+  name: string;
+  role: string;
+  cedula: string;
+  image: string | null;
+};
 
-function Navbar() {
+type Profiles = ProfileProps[];
+
+interface LinksProps {
+  name: string;
+  url: string;
+};
+
+type Links = LinksProps[];
+
+function Navbar(
+  { profiles, links }: { profiles: Profiles; links: Links }
+) {
   const [isOpen, setIsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
-  const [popoverOpen, setPopoverOpen] = useState(false);
   const [search, setSearch] = useState({ query: "", value: "" });
 
   const filteredProfiles = profiles.filter(
@@ -98,20 +91,11 @@ function Navbar() {
             role="Admin"
             border={true}
             cedula="V-12345678"
-            image=''
+            image=""
             hasHover={true}
           />
         }
-        links={[
-          {
-            name: "Prueba",
-            url: "https://google.com",
-          },
-          {
-            name: "Prueba2",
-            url: "https://google.com",
-          },
-        ]}
+        links={links}
       />
       <Sidebar
         open={communityOpen}
@@ -125,26 +109,21 @@ function Navbar() {
         size="md"
       >
         <Text fw={700}>Buscar riferos</Text>
-        <div
-          onFocusCapture={() => setPopoverOpen(false)}
-          onBlurCapture={() => setPopoverOpen(false)}
-        >
-          <Input
-            icon={<IconAt />}
-            variant="filled"
-            placeholder="Cedula/rif, Nombre o Apellido"
-            radius="sm"
-            size="md"
-            mb={20}
-            value={search.value}
-            onChange={(event) =>
-              setSearch({
-                query: event.target.value,
-                value: event.target.value,
-              })
-            }
-          />
-        </div>
+        <Input
+          icon={<IconAt />}
+          variant="filled"
+          placeholder="Cedula/rif, Nombre o Apellido"
+          radius="sm"
+          size="md"
+          mb={20}
+          value={search.value}
+          onChange={(event) =>
+            setSearch({
+              query: event.target.value,
+              value: event.target.value,
+            })
+          }
+        />
         <div
           style={{
             marginTop: "0",
@@ -158,15 +137,17 @@ function Navbar() {
                   role={profile.role}
                   border={true}
                   cedula={profile.cedula}
-                  image={profile.image || ''}
+                  image={profile.image || ""}
                   style={{ marginBottom: 10 }}
                 />
               ))
             : null}
           {search.value !== "" && filteredProfiles.length === 0 ? (
             <Card withBorder my={20} shadow="sm">
-              <Text ta='center' m={20}>No se encontraron riferos<br/>
-              <NotFound size={100} strokeWidth={0.75} color='#000' />
+              <Text ta="center" m={20}>
+                No se encontraron riferos
+                <br />
+                <NotFound size={100} strokeWidth={0.75} color="#000" />
               </Text>
             </Card>
           ) : null}
@@ -178,7 +159,7 @@ function Navbar() {
               role={profile.role}
               border={true}
               cedula={profile.cedula}
-              image={profile.image || ''}
+              image={profile.image || ""}
               style={{ marginBottom: 10 }}
             />
           ))}
