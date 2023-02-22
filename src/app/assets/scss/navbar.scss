@@ -161,3 +161,43 @@
     margin-right: calc(100% - 5em);
   }
 }
+
+// make color scheme dark
+
+@media screen and (prefers-color-scheme: dark) {
+  .navbar {
+    background-color: #2b2c3d;
+    box-shadow: 0 0 5px #0c0c0c8f;
+  }
+  .sidebar-items {
+    background-color: #1f1f1f;
+    color: #ffffff;
+  }
+  .sidebar-items:hover {
+    background-color: #35abfa6e;
+    color: #ffffff;
+  }
+  .button-users {
+    .users-icon {
+      color: #ffffff;
+    }
+    .users-icon:hover {
+      color: #ffffff;
+    }
+  }
+  .user-icon {
+    color: #ffffff;
+  }
+  .user-icon:hover {
+    color: #ffffff;
+  }
+
+  .menu {
+    .open {
+      background-color: #ffffff;
+    }
+    .close {
+      background-color: #ffffff;
+    }
+  }
+}

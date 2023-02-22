@@ -3,22 +3,36 @@ import { Grid, Card, Text, Button } from '@mantine/core'
 import AccordionList from '../components/accordionList'
 import { rifaData } from '../assets/data/rifaData'
 
+interface RiferosProps {
+  data: {
+    id?: number;
+    name?: string;
+    email?: string;
+    phone?: string;
+    role?: string;
+  }[]
+}
+
 interface RifaAccordionProps {
   data: {
-    signo: string;
-    price: string;
-    prizes: { name: string; value: string }[];
-    series: string;
-    lottery: string;
-    date: string;
-    time: string;
-    expires: string;
-    rifero: string;
-    phone: string;
+    id?: number;
+    numbers?: string;
+    awardSign?: string;
+    awardNoSign: string | null;
+    plate: string | null;
+    year: string | number | null
+    is_send: boolean | false
+    price?: number;
+    serial?: string
+    loteria?: string;
+    rifDate?: string
+    expired?: string;
+    riferos?: RiferosProps;
+    created_at?: string;
   }[];
 }
 
-function RifaAccordion({}: RifaAccordionProps) {
+function RifaAccordion({data}: RifaAccordionProps) {
   return (
     <>
       <Card shadow={

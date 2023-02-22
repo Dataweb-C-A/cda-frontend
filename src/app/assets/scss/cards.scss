@@ -27,3 +27,16 @@
     }
   }
 }
+
+@media screen and (prefers-color-scheme: dark) {
+  .card-container{
+    background-color: #2b2c3d;
+    box-shadow: 0 0 7px 0 #0c0c0c8f;
+    .card-body{
+      background-color: #2b2c3d;
+      .card-number{
+        color: #ffffff;
+      }
+    }
+  }
+}
