@@ -5,7 +5,7 @@ import { BsPencil as Pencil } from 'react-icons/bs'
 import { DropArea } from '../droparea'
 
 type AvatarProps = {
-  image: string
+  image: string | ''
   name: string
   role: string
   cedula: string
@@ -16,6 +16,12 @@ type AvatarProps = {
   children?: React.ReactNode
   hasHover?: boolean | false
   style?: React.CSSProperties
+}
+
+const getInitials = (name: string) => {
+  const names = name.split(' ')
+  if (names.length === 1) return names[0].charAt(0)
+  return `${names[0].charAt(0)}${names[names.length - 1].charAt(0)}`.toUpperCase()
 }
 
 function AvatarCard({name, image, role, border, width, padding, margin, style, children, hasHover}: AvatarProps) {
@@ -35,7 +41,9 @@ function AvatarCard({name, image, role, border, width, padding, margin, style, c
               hasHover && setIsHovering(true)
             }}
             onMouseLeave={() => setIsHovering(false)}
-          />
+          >
+            {getInitials(name)}
+          </Avatar>
           {hasHover && (
             <div 
               className="pencil-overlay"

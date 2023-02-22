@@ -26,7 +26,6 @@ const data = [
     content: 'prueba 3',
     rifero: 'Javier Diaz'
   },
-
 ];
 
 const App: React.FC = () => {
