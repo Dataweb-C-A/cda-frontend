@@ -6,3 +6,18 @@ body {
   box-sizing: border-box;
   overflow-x: hidden;
 }
+
+.modal-open::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 5px!important;
+  border-radius: 15px 0 0 15px!important;
+}
+
+.modal-open::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+  background-color: #ffffff!important;
+  border-radius: 15px 0 0 15px!important;
+}
+
+.modal-open::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+  background-color: rgba(#000000, 0.27)!important;
+  border-radius: 15px!important;
+}
