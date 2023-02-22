@@ -50,7 +50,6 @@
 
 .user-icon {
   font-size: 1.8em;
-  color: #202020;
   cursor: pointer;
 }
 
@@ -102,7 +101,6 @@
   }
 
   .close {
-    background-color: black;
     height: 2px;
     width: 100%;
     border-radius: 10px;
@@ -155,16 +153,14 @@
   box-shadow: 0 0 5px 0 #35abfa6e;
 }
 
-@media screen and (max-width: 575px) {
+@media (max-width: 575px) {
   .logo {
     display: flex;
     margin-right: calc(100% - 5em);
   }
 }
 
-// make color scheme dark
-
-@media screen and (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   .navbar {
     background-color: #2b2c3d;
     box-shadow: 0 0 5px #0c0c0c8f;
@@ -176,28 +172,5 @@
   .sidebar-items:hover {
     background-color: #35abfa6e;
     color: #ffffff;
-  }
-  .button-users {
-    .users-icon {
-      color: #ffffff;
-    }
-    .users-icon:hover {
-      color: #ffffff;
-    }
-  }
-  .user-icon {
-    color: #ffffff;
-  }
-  .user-icon:hover {
-    color: #ffffff;
-  }
-
-  .menu {
-    .open {
-      background-color: #ffffff;
-    }
-    .close {
-      background-color: #ffffff;
-    }
   }
 }

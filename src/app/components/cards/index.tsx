@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../assets/scss/cards.scss'
-import { Text } from '@mantine/core'
+import { Card, Text } from '@mantine/core'
 
 type CardProps = {
   color: string
@@ -12,6 +12,7 @@ type CardProps = {
 
 function Cards({color, number, label, right, left}: CardProps) {
   return (
+    <>
       <div className='card-container' style={{ marginLeft: left, marginRight: right }}>
         <div className='card-body'>
           <div className='dot-color' style={{backgroundColor: color}}>
@@ -29,6 +30,7 @@ function Cards({color, number, label, right, left}: CardProps) {
           </div>
         </div>
       </div>
+    </>
   )
 }
 
