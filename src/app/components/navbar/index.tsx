@@ -7,6 +7,93 @@ import '../../assets/scss/navbar.scss'
 import { Drawer } from '@mantine/core'
 import AvatarCard from '../avatarCard'
 
+const profiles = [
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678',
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678',
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678', 
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678',
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678',
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678', 
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678',
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678',
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678', 
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678',
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678',
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+  {
+    name: 'Andys Fuenmayor',
+    role: 'Admin',
+    border: true,
+    cedula: 'V-12345678', 
+    image: 'https://avatars.githubusercontent.com/u/25126241?v=4',
+  },
+]
+
 function Navbar() { 
   
   const [isOpen, setIsOpen] = useState(false)
@@ -48,6 +135,7 @@ function Navbar() {
         open={isOpen}
         onClose={() => setIsOpen(false)}
         position='left'
+        title=''
         profile={
           <AvatarCard
             name='Andys Fuenmayor'
@@ -70,24 +158,20 @@ function Navbar() {
         open={communityOpen}
         onClose={() => setCommunityOpen(false)}
         position='right'
-        profile={
+        title='Usuarios'
+      >
+        {profiles.map((profile, index) => (
           <AvatarCard
-            name='Andys Fuenmayor'
-            role='Admin'
-            border={true}
-            cedula='V-12345678'
-            image='https://avatars.githubusercontent.com/u/25126241?v=4'
-            hasHover={true}
+            key={index}
+            name={profile.name}
+            role={profile.role}
+            border={profile.border}
+            cedula={profile.cedula}
+            image={profile.image}
+            style={{ marginBottom: 10 }}
           />
-        }
-        links={[{
-          name: 'Prueba',
-          url: 'https://google.com'
-        }, {
-          name: 'Prueba2',
-          url: 'https://google.com'
-        }]}
-      />
+        ))}
+      </Sidebar>
     </nav>
   )
 }

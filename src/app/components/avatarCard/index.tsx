@@ -31,7 +31,9 @@ function AvatarCard({name, image, role, border, width, padding, margin, style, c
             size="lg"
             radius="md"
             style={{ filter: isHovering ? 'blur(5px)' : 'none' }}
-            onMouseEnter={() => setIsHovering(true)}
+            onMouseEnter={() => {
+              hasHover && setIsHovering(true)
+            }}
             onMouseLeave={() => setIsHovering(false)}
           />
           {hasHover && (

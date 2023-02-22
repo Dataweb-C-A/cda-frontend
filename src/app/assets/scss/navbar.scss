@@ -80,6 +80,11 @@
     transition: all 0.5s;
     transform-origin: left;
   }
+  .open:nth-child(2) {
+    width: 70%;
+    margin-left: 10px
+  }
+
   &:hover .open:first-child {
     transform: rotate(44deg);
     width: 80%;
