@@ -18,7 +18,7 @@ const App: React.FC = () => {
             { name: 'Comunidad', url: '/comunidad' },
           ]}
         />
-        <Grid gutter={20} my={5}>
+        <Grid gutter={20} m={5}>
           <Grid.Col xs={6} lg={4} span={12}>
             <Cards
               left={0}

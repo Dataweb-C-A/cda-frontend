@@ -35,9 +35,12 @@ interface RifaAccordionProps {
 function RifaAccordion({data}: RifaAccordionProps) {
   return (
     <>
-      <Card shadow={
-            '0 0 7px 0 #5f5f5f3d'
-          }>
+      <Card 
+        mx={15}
+        shadow={
+          '0 0 7px 0 #5f5f5f3d'
+        }
+      >
           <AccordionList data={rifaData}>
             <Card
               withBorder
