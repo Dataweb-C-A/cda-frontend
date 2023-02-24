@@ -12,9 +12,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       theme={{
         colorScheme: 'dark',
         colors: {
-          light: [
-            '#fff'
-          ],
           dark: [
             '#d5d7e0',
             '#acaebf',
