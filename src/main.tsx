@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <Mantine
       withGlobalStyles
       theme={{
-        colorScheme: 'light',
+        colorScheme: 'dark',
         colors: {
           light: [
             '#fff'

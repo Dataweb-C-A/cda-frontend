@@ -152,7 +152,7 @@ function RifaAccordion({data}: RifaAccordionProps) {
               </Grid.Col>
               <Grid.Col span={6}>
                 <Text ta='end' fz='lg' fw={400} style={{ marginTop: '-15px' }}>
-                Briyisita
+                Briyith Portillo
                 </Text>
               </Grid.Col>
               <Grid.Col span={6}>
@@ -167,7 +167,7 @@ function RifaAccordion({data}: RifaAccordionProps) {
               </Grid.Col>
               </Grid>
               <Text ta='center' fz={19} c='#8fa2a2' style={{ margin: '20px' }}>
-                Hola diosmio salvame ayudame señor dios nuestro
+              Esto es una representación de como lucirán los tickets.
               </Text>
             </Card>
             <Button
@@ -181,10 +181,11 @@ function RifaAccordion({data}: RifaAccordionProps) {
                 borderRadius: '0 0 6px 6px'
               }}
               color='blue'
+              size='md'
               variant='filled'
               fullWidth
             >
-              Ver Tickets
+              <Text fz='md'>Ver Tickets</Text>
             </Button>
           </AccordionList>
         </Card>
