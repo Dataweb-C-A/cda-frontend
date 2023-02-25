@@ -180,7 +180,7 @@ function Navbar(
               <Text ta="center" m={20}>
                 No se encontraron riferos
                 <br />
-                <NotFound size={100} strokeWidth={0.75} color="#000" />
+                <NotFound size={100} strokeWidth={0.75} />
               </Text>
             </Card>
           ) : null}
