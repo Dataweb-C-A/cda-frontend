@@ -1,45 +1,45 @@
-import { useState } from "react";
-import { BsFillPersonFill } from "react-icons/bs";
-import { FaUsers } from "react-icons/fa";
-import { Button, Menu, Text, Input, Card, useMantineTheme } from "@mantine/core";
-import { Sidebar } from "../sidebar";
-import "../../assets/scss/navbar.scss";
-import AvatarCard from "../avatarCard";
+import { useState } from "react"
+import { BsFillPersonFill } from "react-icons/bs"
+import { FaUsers } from "react-icons/fa"
+import { Button, Menu, Text, Input, Card, useMantineTheme } from "@mantine/core"
+import { Sidebar } from "../sidebar"
+import "../../assets/scss/navbar.scss"
+import AvatarCard from "../avatarCard"
 import {
   IconUserSearch as IconAt,
   IconMoodSadDizzy as NotFound,
-} from "@tabler/icons";
-import ThemeSwitcher from "../theme";
+} from "@tabler/icons"
+import ThemeSwitcher from "../theme"
 
 interface ProfileProps {
-  name: string;
-  role: string;
-  cedula: string;
-  image: string | null;
-};
+  name: string
+  role: string
+  cedula: string
+  image: string | null
+}
 
-type Profiles = ProfileProps[];
+type Profiles = ProfileProps[]
 
 interface LinksProps {
-  name: string;
-  url: string;
-};
+  name: string
+  url: string
+}
 
-type Links = LinksProps[];
+type Links = LinksProps[]
 
 function Navbar(
   { profiles, links }: { profiles: Profiles; links: Links }
 ) {
-  const theme = useMantineTheme();
-  const [isOpen, setIsOpen] = useState(false);
-  const [communityOpen, setCommunityOpen] = useState(false);
-  const [search, setSearch] = useState({ query: "", value: "" });
+  const theme = useMantineTheme()
+  const [isOpen, setIsOpen] = useState(false)
+  const [communityOpen, setCommunityOpen] = useState(false)
+  const [search, setSearch] = useState({ query: "", value: "" })
 
   const filteredProfiles = profiles.filter(
     (profile) =>
       profile.name.toLowerCase().includes(search.value.toLowerCase()) ||
       profile.cedula.toLowerCase().includes(search.value.toLowerCase())
-  );
+  )
 
   return (
     <nav 
@@ -91,7 +91,7 @@ function Navbar(
       <div
         className="menu"
         onClick={() => {
-          setIsOpen(!isOpen);
+          setIsOpen(!isOpen)
         }}
       >
         <div 
@@ -199,7 +199,7 @@ function Navbar(
         </div>
       </Sidebar>
     </nav>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar

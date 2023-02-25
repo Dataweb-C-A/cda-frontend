@@ -24,7 +24,7 @@ function Cards({color, number, label, right, left}: CardProps) {
           </div>
           <div className='card-number'>
             <Text fw={450} style={{
-              color: theme.colorScheme === "dark" ? '#ddd' : '#000'
+              color: theme.colorScheme === "dark" ? '#eee' : '#000'
             }}>
               {number}
             </Text>
