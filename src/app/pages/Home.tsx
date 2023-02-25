@@ -12,10 +12,10 @@ const App: React.FC = () => {
         <Navbar 
           profiles={profiles}
           links={[
-            { name: 'Inicio', url: '/' },
-            { name: 'Rifas', url: '/rifas' },
-            { name: 'Agencias', url: '/agencias' },
-            { name: 'Billetera', url: '/wallet' },
+            // { name: 'Inicio', url: '/' },
+            // { name: 'Rifas', url: '/rifas' },
+            // { name: 'Agencias', url: '/agencias' },
+            // { name: 'Billetera', url: '/wallet' },
           ]}
         />
         <Grid gutter={20} m={5}>

@@ -7,7 +7,7 @@ import Home from './app/pages/Home'
 import './app/assets/scss/styles.scss'
 
 function App() {
-  const colorScheme = useSelector((state: RootState) => state.theme.mode) // Get the colorScheme from the store
+  const colorScheme = useSelector((state: RootState) => 'dark') // Get the colorScheme from the store
 
   return (
     <Mantine

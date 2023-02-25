@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Grid, Card, Text, Button, Title } from '@mantine/core'
 import AccordionList from '../components/accordionList'
 import { rifaData } from '../assets/data/rifaData'
+import FormModal from '../components/formModal'
 
 interface RiferosProps {
   data: {
@@ -33,6 +34,7 @@ interface RifaAccordionProps {
 }
 
 function RifaAccordion({}: RifaAccordionProps) {
+  const [ formModal, setFormModal ] = useState(true)
   return (
     <>
       <Card 
@@ -206,6 +208,10 @@ function RifaAccordion({}: RifaAccordionProps) {
               <Text fz='md'>Ver Tickets</Text>
             </Button>
           </AccordionList>
+          <FormModal 
+            opened={formModal}
+            onClose={() => setFormModal(false)}
+          />
         </Card>
     </>
   )
