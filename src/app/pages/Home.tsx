@@ -1,6 +1,6 @@
 import React from 'react'
 import Navbar from '../components/navbar'
-import { Grid, Card, Text, Button } from '@mantine/core'
+import { Grid, Card, Text, Button, useMantineTheme } from '@mantine/core'
 import Cards from '../components/cards'
 import { profiles } from '../assets/data/profiles'
 import RifaAccordion from './prueba'
@@ -14,8 +14,8 @@ const App: React.FC = () => {
           links={[
             { name: 'Inicio', url: '/' },
             { name: 'Rifas', url: '/rifas' },
-            { name: 'Riferos', url: '/riferos' },
-            { name: 'Comunidad', url: '/comunidad' },
+            { name: 'Agencias', url: '/agencias' },
+            { name: 'Billetera', url: '/wallet' },
           ]}
         />
         <Grid gutter={20} m={5}>

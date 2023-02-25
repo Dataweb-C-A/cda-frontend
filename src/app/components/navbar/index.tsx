@@ -9,6 +9,7 @@ import {
   IconUserSearch as IconAt,
   IconMoodSadDizzy as NotFound,
 } from "@tabler/icons";
+import ThemeSwitcher from "../theme";
 
 interface ProfileProps {
   name: string;
@@ -55,6 +56,9 @@ function Navbar(
         alt="logo"
       />
       <div>
+        <div className='button-theme'>
+          <ThemeSwitcher/>
+        </div>
         <Button className="button-users" onClick={() => setCommunityOpen(true)}>
           <FaUsers className="users-icon"
             style={{
