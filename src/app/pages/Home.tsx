@@ -47,7 +47,7 @@ const App: React.FC = () => {
             />
           </Grid.Col>
         </Grid>
-        <RifaAccordion />
+        <RifaAccordion data={[]} />
       </div>
     </section>
   )

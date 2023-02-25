@@ -32,7 +32,7 @@ interface RifaAccordionProps {
   }[];
 }
 
-function RifaAccordion({data}: RifaAccordionProps) {
+function RifaAccordion({}: RifaAccordionProps) {
   return (
     <>
       <Card 
