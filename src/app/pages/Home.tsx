@@ -24,7 +24,7 @@ const App: React.FC = () => {
               left={0}
               right={0}
               color= "blue"
-              number="1,234"
+              number="4950"
               label="Total de Rifas"
             />
           </Grid.Col>
@@ -33,8 +33,8 @@ const App: React.FC = () => {
               left={0}
               right={0}
               color= "green"
-              number="1,234"
-              label="Total de Rifas"
+              number="3"
+              label="Rifas activas"
             />
           </Grid.Col>
           <Grid.Col xs={12} lg={4} span={12}>
@@ -42,8 +42,8 @@ const App: React.FC = () => {
               left={0}
               right={0}
               color= "red"
-              number="1,234"
-              label="Total de Rifas"
+              number="4947"
+              label="Rifas expiradas"
             />
           </Grid.Col>
         </Grid>

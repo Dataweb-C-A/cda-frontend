@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Card, Text, Button } from '@mantine/core'
+import { Grid, Card, Text, Button, Title } from '@mantine/core'
 import AccordionList from '../components/accordionList'
 import { rifaData } from '../assets/data/rifaData'
 
@@ -41,6 +41,24 @@ function RifaAccordion({data}: RifaAccordionProps) {
           '0 0 7px 0 #5f5f5f3d'
         }
       >
+        <Grid>
+          <Grid.Col md={6} sm={12}>
+            <Title order={2} fw={500} mb={20}>
+              Rifas
+              <Text fw={300} fz={20}>Estado de las Rifas mensuales</Text>
+            </Title>
+          </Grid.Col>
+          <Grid.Col md={6} sm={12}>
+            <Button
+              variant='filled'
+              color='blue'
+              style={{ float: 'right', marginTop: '15px' }}
+              className='btn-rifa'
+            >
+              Agregar Rifa
+            </Button>
+          </Grid.Col>
+        </Grid>
           <AccordionList data={rifaData}>
             <Card
               withBorder
