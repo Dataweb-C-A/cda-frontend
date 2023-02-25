@@ -52,7 +52,7 @@ function RifaAccordion({data}: RifaAccordionProps) {
             <Button
               variant='filled'
               color='blue'
-              style={{ float: 'right', marginTop: '15px' }}
+              style={{ float: 'right' }}
               className='btn-rifa'
             >
               Agregar Rifa

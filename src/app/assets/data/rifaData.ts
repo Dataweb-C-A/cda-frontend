@@ -1,20 +1,20 @@
 export const rifaData = [
   {
-    id: 1,
+    id: 4950,
     value: 'prueba',
     label: 'Prueba',
     content: 'prueba',
     rifero: 'Javier Diaz'
   },
   {
-    id: 10,
+    id: 4949,
     value: 'prueba2',
     label: 'Prueba 2',
     content: 'prueba 2',
     rifero: 'Javier Diaz'
   },
   {
-    id: 100,
+    id: 4948,
     value: 'prueba3',
     label: 'Prueba 3',
     content: 'prueba 3',

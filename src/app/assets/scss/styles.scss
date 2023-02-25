@@ -26,12 +26,15 @@ body {
 }
 
 .btn-rifa {
+  margin-top: 15px;
   width: 300px
 }
 
 @media (max-width: 991px) {
   .btn-rifa {
     width: 100%;
+    margin-top: 0;
+    margin-bottom: 20px;
   }
 }
 

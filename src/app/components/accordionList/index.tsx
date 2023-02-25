@@ -1,4 +1,4 @@
-import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title } from '@mantine/core';
+import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title, Button } from '@mantine/core';
 import { IconDots } from '@tabler/icons';
 import { useStyles } from './accordionList.styles';
 
