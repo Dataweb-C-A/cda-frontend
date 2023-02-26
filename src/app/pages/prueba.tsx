@@ -34,7 +34,7 @@ interface RifaAccordionProps {
 }
 
 function RifaAccordion({}: RifaAccordionProps) {
-  const [ formModal, setFormModal ] = useState(true)
+  const [ formModal, setFormModal ] = useState(false)
   return (
     <>
       <Card 
@@ -56,6 +56,7 @@ function RifaAccordion({}: RifaAccordionProps) {
               color='blue'
               style={{ float: 'right' }}
               className='btn-rifa'
+              onClick={() => setFormModal(true)}
             >
               Agregar Rifa
             </Button>
@@ -197,7 +198,7 @@ function RifaAccordion({}: RifaAccordionProps) {
                 flex: '1 1 auto',
                 margin: '0 auto 0 auto',
                 maxWidth: '22rem',
-                minWidth: '18rem',
+                minWidth: 'auto',
                 borderRadius: '0 0 6px 6px'
               }}
               color='blue'
