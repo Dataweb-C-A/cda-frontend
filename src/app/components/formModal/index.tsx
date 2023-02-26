@@ -48,6 +48,7 @@ function FormModal({opened, onClose}: Props) {
         title="Agregar Rifas"
         size="xl"
       >
+        <>
         <Stepper active={active} breakpoint="sm">
           <Stepper.Step label="Paso 1" description="Datos de la rifa">
             <Title order={4} mt={-10} c="blue" mb="md" ta="center">
@@ -332,6 +333,7 @@ function FormModal({opened, onClose}: Props) {
             }
           </Button>
         </Group>
+        </>
       </Modal>
     </>
   )
