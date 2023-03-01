@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Grid, Card, Text, Button, Title } from '@mantine/core'
+import { Grid, Card, Text, Button, Title, Collapse, Breadcrumbs, Anchor } from '@mantine/core'
 import AccordionList from '../components/accordionList'
 import { rifaData } from '../assets/data/rifaData'
 import FormModal from '../components/formModal'
+import Chips from '../components/chip'
 
 interface RiferosProps {
   data: {
@@ -35,6 +36,15 @@ interface RifaAccordionProps {
 
 function RifaAccordion({}: RifaAccordionProps) {
   const [ formModal, setFormModal ] = useState(false)
+  const items = [
+    { title: 'Filtrar'},
+    { title: 'Todas'}
+  ].map((item, index) => (
+    <Text key={index}>
+      {item.title}
+    </Text>
+  ));
+
   return (
     <>
       <Card 
@@ -49,6 +59,7 @@ function RifaAccordion({}: RifaAccordionProps) {
               Rifas
               <Text fw={300} fz={20}>Estado de las Rifas mensuales</Text>
             </Title>
+            <Breadcrumbs separator=">" mt={-12} mb={10}>{items}</Breadcrumbs>
           </Grid.Col>
           <Grid.Col md={6} sm={12}>
             <Button
