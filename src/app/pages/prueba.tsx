@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, Card, Text, Button, Title, Collapse, Breadcrumbs, Anchor } from '@mantine/core'
+import { Grid, Card, Text, Button, Title, Collapse, Breadcrumbs, Anchor, Chip, CloseButton, Group } from '@mantine/core'
 import AccordionList from '../components/accordionList'
 import { rifaData } from '../assets/data/rifaData'
 import FormModal from '../components/formModal'
@@ -36,6 +36,7 @@ interface RifaAccordionProps {
 
 function RifaAccordion({}: RifaAccordionProps) {
   const [ formModal, setFormModal ] = useState(false)
+  const [ openFilter, setOpenFilter ] = useState(false)
   const items = [
     { title: 'Filtrar'},
     { title: 'Todas'}
@@ -58,8 +59,46 @@ function RifaAccordion({}: RifaAccordionProps) {
             <Title order={2} fw={500} mb={20}>
               Rifas
               <Text fw={300} fz={20}>Estado de las Rifas mensuales</Text>
+              <Card>
+              <Chip color='blue' my={-10} onClick={() => setOpenFilter(!openFilter)} checked={openFilter}>Filtrar</Chip>
+              </Card>
             </Title>
-            <Breadcrumbs separator=">" mt={-12} mb={10}>{items}</Breadcrumbs>
+            {
+              openFilter && (
+              <>
+              <Card mt={-20}>
+              <Title order={2} fw={500} mb={20}>
+                Filtrar
+              </Title>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop:'-15px', marginBottom:'10px' }}>
+              <Text fw={300} fz={20} mt={5}>
+                Según tipo:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </Text>
+              <Chip color="blue" variant="outline" size='sm' mt={10}>
+                Normal
+              </Chip>
+              <Chip color="blue" variant="outline" size='sm' mt={10}>
+                Especial
+              </Chip>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop:'-15px', marginBottom:'10px' }}>
+              <Text fw={300} fz={20} mt={5}>
+                Según números: &nbsp;
+              </Text>
+              <Chip color="blue" variant="outline" size='sm' mt={10}>
+                Normal
+              </Chip>
+              <Chip color="blue" variant="outline" size='sm' mt={10}>
+                Triple
+              </Chip>
+              <Chip color="blue" variant="outline" size='sm' mt={10}>
+                Terminal
+              </Chip>
+            </div>
+            </Card>
+            </>
+              )
+            }
           </Grid.Col>
           <Grid.Col md={6} sm={12}>
             <Button
