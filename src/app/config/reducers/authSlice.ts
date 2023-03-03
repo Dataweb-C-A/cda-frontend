@@ -1,6 +1,25 @@
-import { store } from '../store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+interface AuthState {
+  name: string | null;
+  role: string | null;
+  token: string | null;
+}
 
-export default store;
+const initialState: AuthState = {
+  token: null,
+};
+
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    updateAuth: (state, action: PayloadAction<string | null>) => {
+      state.token = action.payload;
+    },
+  },
+});
+
+export const { updateAuth } = authSlice.actions;
+
+export default authSlice.reducer;
