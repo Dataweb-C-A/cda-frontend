@@ -41,7 +41,7 @@ function RifaAccordion({}: RifaAccordionProps) {
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key === 'm' || event.key === 'M') {
-        setHelpModal(true)
+        setHelpModal(!helpModal)
       }
     }
     
