@@ -223,6 +223,7 @@ function Dashboard() {
           </Grid.Col>
         </Grid>
         <AccordionList data={rifaData}>
+          <RifaTicket />
         </AccordionList>
         <FormModal opened={formModal} onClose={() => setFormModal(false)} />
       </Card>
