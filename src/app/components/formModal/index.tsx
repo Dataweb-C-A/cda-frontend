@@ -55,9 +55,9 @@ function FormModal({opened, onClose}: Props) {
               Llena los datos de la rifa
             </Title>
           </Stepper.Step>
-          <Stepper.Step label="Paso 2" description="Configuracion">
+          <Stepper.Step label="Paso 2" description="Verificar">
             <Title order={4} mt={-10} c="blue" mb="md" ta="center">
-              Configura tus tickets
+              Verifica los datos
             </Title>
           </Stepper.Step>
         </Stepper>
@@ -239,42 +239,10 @@ function FormModal({opened, onClose}: Props) {
           active === 1 && (
             <>
               <Grid>
-                <Grid.Col span={12}>
-                  <Title order={4} mt={10} fw={450} c="blue" mb="md" ta="center">
-                    Especial
-                  </Title>
-                  <div style={{
-                    margin: '-10px 0 -20px 47.2%',
-                    justifyContent: 'center',
-                  }}>
-                    <Switch
-                      checked={special}
-                      onChange={(event) => setSpecial(event.currentTarget.checked)}
-                      mt="lg"
-                      mb="lg"
-                    />
-                  </div>
-                </Grid.Col>
-                <Grid.Col span={12}>
+                <Grid.Col mt={5} span={12}>
                   <Card p="lg" mb="lg">
-                    <Text ta='center'>
-                      La rifas especiales pueden tener mas de 12 tickets y no trabajan con signos ni comodines, los numeros de tickets pueden ser asiganados manualmente y van desde el 100 hasta el 1000.
-                    </Text>
+                    {/* Datos de la rifa */}
                   </Card>
-                </Grid.Col>
-                <Grid.Col span={12}>
-                  <TextInput
-                    label="Numero de tickets"
-                    placeholder="Numero de tickets"
-                    required={special}
-                    disabled={!special}
-                    onChange={(event) => {
-                      setRifa({
-                        ...rifa,
-                        nro_tickets: event.currentTarget.value,
-                      })
-                    }}
-                  />
                 </Grid.Col>
               </Grid>
             </>
