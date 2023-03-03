@@ -13,6 +13,7 @@ import AccordionList from "../accordionList";
 import { rifaData } from "../../assets/data/rifaData";
 import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
+import HelpModalBody from "./HelpModal";
 
 interface RiferosProps {
   data: {
@@ -48,69 +49,19 @@ function Dashboard() {
   const [helpModal, setHelpModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
 
-  const HelpModalBody = () => {
-    useEffect(() => {
-      const keyDownHandler = (event: KeyboardEvent) => {
-        if ((event.ctrlKey && event.key === "m") || event.key === "M") {
-          setHelpModal(!helpModal);
-        }
-      };
+  useEffect(() => {
+    const keyDownHandler = (event: KeyboardEvent) => {
+      if ((event.ctrlKey && event.key === "m") || event.key === "M") {
+        setHelpModal(!helpModal);
+      }
+    }
 
-      document.addEventListener("keydown", keyDownHandler);
+    document.addEventListener("keydown", keyDownHandler);
 
-      return () => {
-        document.removeEventListener("keydown", keyDownHandler);
-      };
-    }, []);
-
-    return (
-      <Modal
-        opened={helpModal}
-        onClose={() => setHelpModal(false)}
-        title="Ayuda"
-        size="sm"
-      >
-        <Text>
-          <hr />
-          <p>
-            En esta sección se muestran las rifas, puedes filtrar por categoria
-            y tipo.
-            <br />
-          </p>
-          <p>
-            <hr />
-            <br />
-            <Text ta="center">
-              <b>Tipos:</b> Normal y Especial
-            </Text>
-            <br />
-            <b>Normal:</b> Rifas que contienen números o comodines y sus numeros
-            de tickets no son mayor a 12.
-            <br />
-            <br />
-            <b>Especial:</b> Rifas que contienen números o comodines y sus
-            numeros de tickets son mayor a 12.
-          </p>
-          <p>
-            <Text ta="center">
-              <b>Categorias:</b> Normal, Triples y Terminal
-            </Text>
-            <br />
-            <b>Normal:</b> Rifas en las cuales sus numeros van desde el 100
-            hasta el 999.
-            <br />
-            <br />
-            <b>Triple:</b> Rifas en las cuales sus numeros van desde el 010
-            hasta el 099.
-            <br />
-            <br />
-            <b>Terminal:</b> Rifas en las cuales sus numeros van desde el 001
-            hasta el 009.
-          </p>
-        </Text>
-      </Modal>
-    );
-  };
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    }
+  }, [])
 
   const FilterBody = () => {
     return (
@@ -119,9 +70,9 @@ function Dashboard() {
           <Title order={2} fw={500} mb={20}>
             Filtrar
           </Title>
+          
           <div
             style={{
-              display: "flex",
               alignItems: "center",
               gap: "5px",
               marginTop: "-15px",
@@ -129,59 +80,34 @@ function Dashboard() {
             }}
           >
             <Text fw={300} fz={20} mt={5}>
-              Tipo:
+              Categorias:
             </Text>
-            <Chip color="blue" variant="outline" size="sm" mt={10} ml={55.5}>
-              Normal
-            </Chip>
-            <Chip color="blue" variant="outline" size="sm" mt={10}>
-              Especial
-            </Chip>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
-              marginTop: "-15px",
-              marginBottom: "10px",
-            }}
-          >
-            <Text fw={300} fz={20} mt={5}>
-              Categoria: &nbsp;
-            </Text>
-            <Chip color="blue" variant="outline" size="sm" mt={10}>
-              Normal
-            </Chip>
-            <Chip color="blue" variant="outline" size="sm" mt={10}>
-              Triple
-            </Chip>
-            <Chip color="blue" variant="outline" size="sm" mt={10}>
-              Terminal
-            </Chip>
+            <div style={{ display: "flex", gap: "7px" }}>
+              <Chip color="blue" variant="outline" size="sm" mt={10}>
+                Normal
+              </Chip>
+              <Chip color="blue" variant="outline" size="sm" mt={10}>
+                Triples
+              </Chip>
+              <Chip color="blue" variant="outline" size="sm" mt={10}>
+                Terminales
+              </Chip>
+            </div>
           </div>
         </Card>
       </>
-    );
-  };
-
-  useEffect(() => {
-    const keyDownHandler = (event: KeyboardEvent) => {
-      if ((event.ctrlKey && event.key === "m") || event.key === "M") {
-        setHelpModal(!helpModal);
-      }
-    };
-
-    document.addEventListener("keydown", keyDownHandler);
-
-    return () => {
-      document.removeEventListener("keydown", keyDownHandler);
-    };
-  }, []);
+    )
+  }
 
   return (
     <>
-      {helpModal && <HelpModalBody />}
+      {
+        helpModal && 
+        <HelpModalBody 
+          open={helpModal}
+          onClose={() => setHelpModal(false)}
+        />
+      }
       <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
         <Grid>
           <Grid.Col md={6} sm={12}>
@@ -202,7 +128,7 @@ function Dashboard() {
                   >
                     {openFilter === true ? "Filtrar" : "Todas"}
                   </Chip>
-                  <Kbd ml={10} mt={10}>
+                  <Kbd ml={10} mt={10} onClick={() => setHelpModal(true)} className="kbd">
                     Ctrl + M
                   </Kbd>
                 </div>

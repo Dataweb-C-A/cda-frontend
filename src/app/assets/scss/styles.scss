@@ -66,6 +66,14 @@ select option:checked {
   width: 300px
 }
 
+.kbd {
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    scale: 1.03;
+  }
+}
+
 @media (max-width: 991px) {
   .btn-rifa {
     width: 100%;
