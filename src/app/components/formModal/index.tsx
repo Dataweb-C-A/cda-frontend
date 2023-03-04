@@ -254,31 +254,6 @@ function FormModal({opened, onClose}: Props) {
               <Grid>
                 <Grid.Col mt={20} span={12}>
                   <Card p="lg" mb="lg">
-                    {/* Datos de la rifa
-                    <Text>
-                      Premio: {rifa.premio}
-                    </Text>
-                    <Text>
-                      Placa: {rifa.placa}
-                    </Text>
-                    <Text>
-                      Modelo: {rifa.modelo}
-                    </Text>
-                    <Text>
-                      Loteria: {rifa.loteria}
-                    </Text>
-                    <Text>
-                      Moneda: {rifa.moneda}
-                    </Text>
-                    <Text>
-                      Numeros: {rifa.numeros}
-                    </Text>
-                    <Text>
-                      Precio: {rifa.precio}
-                    </Text>
-                    <Text>
-                      Rifero: {rifa.rifero}
-                    </Text> */}
                     <Title order={4} mt={10} fw={450} mb="md" ta="center">
                       Esta seguro de crear la rifa?
                     </Title>
