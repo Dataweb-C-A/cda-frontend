@@ -5,6 +5,7 @@ import { MantineProvider as Mantine } from '@mantine/core'
 import { store, RootState } from './app/config/store'
 import Home from './app/pages/Home'
 import './app/assets/scss/styles.scss'
+import Login from './app/pages/Login'
 
 function App() {
   const colorScheme = useSelector((state: RootState) => state.theme.mode) // Get the colorScheme from the store
@@ -30,7 +31,7 @@ function App() {
         },
       }}
     >
-      <Home />
+      <Login />
     </Mantine>
   )
 }
