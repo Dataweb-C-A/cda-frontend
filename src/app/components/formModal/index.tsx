@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Modal, Group, TextInput, Stepper, Button, Title, Grid, Switch, Text, Select, Card } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { DatePicker } from '@mantine/dates';
 
 type Props = {
@@ -17,16 +18,14 @@ type Rifa = {
   numeros: string | null
   precio: string | null
   rifero: string | null 
-  nro_tickets: string | null
+  nro_tickets: number
 }
 
 function FormModal({opened, onClose}: Props) {
-  const [active, setActive] = useState(0)
-  const [money, setMoney] = useState(false);
-  const [open, setOpen] = useState(true);
-  const [special, setSpecial] = useState(false);
-  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current))
-  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current))
+  const [active, setActive] = useState<number>(0)
+  const [money, setMoney] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(true);
+  const [special, setSpecial] = useState<boolean>(false);
   const [rifa, setRifa] = useState<Rifa>({
     fecha: null,
     premio: '',
@@ -37,8 +36,49 @@ function FormModal({opened, onClose}: Props) {
     numeros: '',
     precio: '',
     rifero: '',
-    nro_tickets: '',
+    nro_tickets: 12,
   })
+  const form = useForm({
+    initialValues: {
+      fecha: null,
+      premio: '',
+      placa: '',
+      modelo: '',
+      loteria: '',
+      money: '',
+      numbers: '',
+      precio: '',
+      rifero: '',
+      nro_tickets: 12,
+    },
+
+    validate: {
+      fecha: (value) => {
+        if (!value) return 'Fecha requerida'
+        if (value < new Date()) return 'Fecha invalida'
+        return null
+      },
+      premio: (value) => {
+        if (!value) return 'Premio requerido'
+        if (value.length < 4) return 'Caracteres insuficientes'
+        if (value.length > 50) return 'Caracteres excedidos'
+        return null
+      },
+      placa: (value) => {
+        if (!value) return 'Placa requerida'
+        if (value.length < 3) return 'Caracteres insuficientes'
+        return null
+      },
+      modelo: (value) => (/^[a-zA-Z0-9]*$/.test(value) ? null : 'Modelo invalido'),
+      loteria: (value) => (value === '' ? 'Loteria requerida' : null),
+      money: (value) => (value === '' ? 'Moneda requerida' : null),
+      numbers: (value) => (Number(value) === 0 || NaN ? 'Numeros invalidos' : null),
+      rifero: (value) => (value === '' ? 'Rifero requerido' : null),
+    }
+  })
+
+  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current))
+  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current))
 
   return (
     <>
