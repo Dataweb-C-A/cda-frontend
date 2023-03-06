@@ -82,7 +82,14 @@ function Navbar(
               Opciones
             </Menu.Label>
             <Menu.Divider />
-            <Menu.Item color="red" ta="center" fw={600}>
+            <Menu.Item 
+              color="red" 
+              ta="center" 
+              fw={600}
+              onClick={() => {
+                window.location.href = "/login"
+              }}
+            >
               Cerrar Sesión
             </Menu.Item>
           </Menu.Dropdown>
@@ -120,10 +127,10 @@ function Navbar(
         title=""
         profile={
           <AvatarCard
-            name="Andys Fuenmayor"
-            role="Admin"
+            name="Javier Diaz"
+            role="Rifero"
             border={true}
-            cedula="V-12345678"
+            cedula="V-29543140"
             image=""
             hasHover={true}
           />

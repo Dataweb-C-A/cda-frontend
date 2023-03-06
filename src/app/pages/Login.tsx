@@ -4,10 +4,7 @@ import {
   PasswordInput,
   Checkbox,
   Anchor,
-  Modal,
   Paper,
-  Text,
-  Title,
   Container,
   Image,
   Group,
@@ -20,8 +17,16 @@ type LoginProps = {}
 function Login({}: LoginProps) {
   const [open, setOpen] = useState(false)
   const [remember, setRemember] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const theme = useMantineTheme()
+
+  const simulateLogin = () => {
+    if (email === 'javierdiazt406@gmail.com' && password === '12345678') {
+      window.location.href = '/dashboard'
+    }
+  }
   
   return (
     <Container size={420} my='23vh'>
@@ -33,15 +38,25 @@ function Login({}: LoginProps) {
           alt='Rifamax'
           style={{ margin: '0 auto' }}
         />
-        <TextInput label='Correo' placeholder='micorreo@rifamax.com' required withAsterisk={false} />
-        <PasswordInput label='Contraseña' placeholder='********' required withAsterisk={false} />
+        <TextInput label='Correo' placeholder='micorreo@rifamax.com' required withAsterisk={false} onChange={
+          (e) => setEmail(e.currentTarget.value)
+        } />
+        <PasswordInput label='Contraseña' placeholder='********' required withAsterisk={false} onChange={
+          (e) => setPassword(e.currentTarget.value)
+        }/>
         <Group position='apart' mt='lg'>
           <Anchor href='#' color='blue' onClick={() => setOpen(!open)} style={{ display: 'none' }}>
             Olvidé mi contraseña
           </Anchor>
           <Checkbox label='Recordarme' onChange={(e) => setRemember(e.currentTarget.checked)}/>
         </Group>
-        <Button fullWidth mt='xl'>
+        <Button 
+          fullWidth 
+          mt='xl'
+          onClick={
+            () => simulateLogin()
+          }
+        >
           Iniciar Sesión
         </Button>
       </Paper>
