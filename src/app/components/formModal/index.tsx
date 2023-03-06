@@ -265,7 +265,9 @@ function FormModal({opened, onClose}: Props) {
         {
           active === 3 ? (
             <Code>
-              {rifas}
+              {
+                JSON.stringify(form.values, null, 2)
+              }
             </Code>
           ) : null
         }
@@ -279,9 +281,6 @@ function FormModal({opened, onClose}: Props) {
             onClick={nextStep} 
             type={active === 0 ? 'submit' : 'button'} 
             disabled={active === 3}
-            onSubmit={
-              rifas = form.values
-            }  
           >
             {
               active === 2 ? 'Finalizar' : 'Siguiente'

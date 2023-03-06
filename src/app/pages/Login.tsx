@@ -33,8 +33,8 @@ function Login({}: LoginProps) {
           alt='Rifamax'
           style={{ margin: '0 auto' }}
         />
-        <TextInput label='Correo' placeholder='micorreo@rifamax.com' required />
-        <PasswordInput label='Contraseña' placeholder='********' required />
+        <TextInput label='Correo' placeholder='micorreo@rifamax.com' required withAsterisk={false} />
+        <PasswordInput label='Contraseña' placeholder='********' required withAsterisk={false} />
         <Group position='apart' mt='lg'>
           <Anchor href='#' color='blue' onClick={() => setOpen(!open)} style={{ display: 'none' }}>
             Olvidé mi contraseña
