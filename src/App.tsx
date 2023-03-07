@@ -70,10 +70,10 @@ const App: React.FC = () => {
     <div className="app">
       <Navbar
         links={[
-          { name: 'Inicio', url: '/' },
-          { name: 'Rifas', url: '/rifas' },
-          { name: 'Riferos', url: '/riferos' },
-          { name: 'Comunidad', url: '/comunidad' }
+          { name: 'Inicio', url: '/', chevron: true },
+          { name: 'Rifas', url: '/rifas', chevron: true },
+          { name: 'Riferos', url: '/riferos', chevron: true },
+          { name: 'Comunidad', url: '/comunidad', chevron: true }
         ]}
         profiles={[
           {

@@ -23,6 +23,11 @@ type Profiles = ProfileProps[]
 interface LinksProps {
   name: string
   url: string
+  chevron: boolean
+  description?: string
+  descriptionColor?: string | 'blue'
+  descriptionSize?: number | 10
+  icon?: React.ReactNode
 }
 
 type Links = LinksProps[]
