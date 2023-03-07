@@ -7,6 +7,7 @@ import Home from './app/pages/Home'
 import './app/assets/scss/styles.scss'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './app/pages/Login'
+import Operadora from './app/pages/Operadora'
 
 function App() {
   const colorScheme = useSelector((state: RootState) => state.theme.mode) // Get the colorScheme from the store
@@ -39,7 +40,7 @@ function App() {
             </Switch>
           </Router>  */}
           {
-            window.location.pathname === '/login' ? <Login /> : <Home />
+            window.location.pathname === '/login' ? <Login /> : window.location.pathname === '/operadora' ? <Operadora /> : <Home />
           }
       </Mantine>
   )
