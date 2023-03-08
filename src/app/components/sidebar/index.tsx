@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Drawer, DrawerProps, NavLink, Box } from '@mantine/core';
-import { IconChevronRight } from '@tabler/icons';
+import { IconChevronDown } from '@tabler/icons';
 
 interface SidebarProps {
   profile?: React.ReactNode;
@@ -49,7 +49,7 @@ function Sidebar({ profile, links, open, title, onClose, position, children, siz
                   {link.description}
                 </Text>
               }
-              rightSection={link.chevron ? <IconChevronRight size="1rem" stroke={1.5} /> : null}
+              rightSection={link.chevron ? <IconChevronDown size="1rem" stroke={1.5} /> : null}
               icon={link.icon}
               onClick={link.onClick || undefined}
               color="blue"
