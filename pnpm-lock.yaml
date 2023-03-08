@@ -15,6 +15,7 @@ specifiers:
   '@mantine/prism': ^5.10.2
   '@mantine/spotlight': ^5.10.2
   '@mantine/tiptap': ^5.10.2
+  '@reactivex/rxjs': ^6.6.7
   '@reduxjs/toolkit': ^1.9.2
   '@tabler/icons': 1.119.0
   '@tiptap/core': 2.0.0-beta.209
@@ -23,8 +24,8 @@ specifiers:
   '@tiptap/react': 2.0.0-beta.209
   '@tiptap/starter-kit': 2.0.0-beta.209
   '@types/node-sass': ^4.11.3
-  '@types/react': ^18.0.26
-  '@types/react-dom': ^18.0.9
+  '@types/react': ^18.0.28
+  '@types/react-dom': ^18.0.11
   '@types/react-router-dom': 5.3.0
   '@vitejs/plugin-react-swc': ^3.0.0
   dayjs: ^1.11.7
@@ -45,6 +46,7 @@ specifiers:
   react-redux: ^8.0.5
   react-router-dom: 5.3.4
   redux: ^4.2.1
+  rxjs: ^7.8.0
   sass: ^1.58.3
   typescript: ^4.9.3
   vite: ^4.0.0
@@ -66,6 +68,7 @@ dependencies:
   '@mantine/prism': 5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy
   '@mantine/spotlight': 5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy
   '@mantine/tiptap': 5.10.5_iscsbbrswl74e2tqlw4dsj76l4
+  '@reactivex/rxjs': 6.6.7
   '@reduxjs/toolkit': 1.9.3_k4ae6lp43ej6mezo3ztvx6pykq
   '@tabler/icons': 1.119.0_biqbaboplfbrettd7655fr4n2y
   '@tiptap/core': 2.0.0-beta.209_zxiuxob337btkneyggrvsd7l3m
@@ -90,6 +93,7 @@ dependencies:
   react-redux: 8.0.5_ctrls2ti7t7iutxbwkm5ipogyy
   react-router-dom: 5.3.4_react@18.2.0
   redux: 4.2.1
+  rxjs: 7.8.0
   sass: 1.58.3
   webpack: 5.75.0
 
@@ -1965,6 +1969,13 @@ packages:
     dependencies:
       '@babel/runtime': 7.21.0
       react: 18.2.0
+    dev: false
+
+  /@reactivex/rxjs/6.6.7:
+    resolution: {integrity: sha512-xZIV2JgHhWoVPm3uVcFbZDRVJfx2hgqmuTX7J4MuKaZ+j5jN29agniCPBwrlCmpA15/zLKcPi7/bogt0ZwOFyA==}
+    engines: {npm: '>=2.0.0'}
+    dependencies:
+      tslib: 1.14.1
     dev: false
 
   /@reduxjs/toolkit/1.9.3_k4ae6lp43ej6mezo3ztvx6pykq:
@@ -5284,6 +5295,12 @@ packages:
     resolution: {integrity: sha512-85aZYCxweiD5J8yTEbw+E6A27zSnLPNDL0WfPdw3YYodq7WjnTKo0q4dtyQ2gz23iPT8Q9CUyJtAaUNcTxRf5Q==}
     dev: false
 
+  /rxjs/7.8.0:
+    resolution: {integrity: sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==}
+    dependencies:
+      tslib: 2.5.0
+    dev: false
+
   /safe-buffer/5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
     dev: true
@@ -5764,6 +5781,10 @@ packages:
   /true-case-path/2.2.1:
     resolution: {integrity: sha512-0z3j8R7MCjy10kc/g+qg7Ln3alJTodw9aDuVWZa3uiWqfuBMKeAeP2ocWcxoyM3D73yz3Jt/Pu4qPr4wHSdB/Q==}
     dev: true
+
+  /tslib/1.14.1:
+    resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+    dev: false
 
   /tslib/2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
