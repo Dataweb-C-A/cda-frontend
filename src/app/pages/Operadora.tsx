@@ -1,4 +1,4 @@
-import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress } from "@mantine/core";
+import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -53,11 +53,15 @@ function Operadora({}: Props) {
                 }
               >
                 <BadgeStatus status={"Activo"} color={"green"} />
-                <Text mt={-3} fw={300} fz={20}>
+                <Text mt={-3} fw={500} fz={20}>
                   Sorteo 1
                 </Text>
+                <Text mt={-3} fw={500} fz={15}>
+                  Operadora
+                </Text>
                 <Text mt={-3} fw={300} fz={15}>
-                  Fecha de inicio: 08/03/2023
+                  Inicio: 08/03/2023 <br/>
+                  Cierre: 10/03/2023
                 </Text>
                 <Text mt={10} fw={300} fz={15}>
                   Progreso:
@@ -70,6 +74,17 @@ function Operadora({}: Props) {
                   mt={10}
                   mb={10}
                 />
+                <Group>
+                  <Text fw={500} fz={15} mt={5}>
+                    Visible para: 
+                  </Text>
+                  <Avatar.Group mt={7} ml={-10}>
+                    <Avatar size={30} radius='xl'>AF</Avatar>
+                    <Avatar size={30} radius='xl'>JD</Avatar>
+                    <Avatar size={30} radius='xl'>BP</Avatar>
+                    <Avatar size={30} radius='xl'>+10</Avatar>
+                  </Avatar.Group>
+                </Group>
               </Card>
             </Grid.Col>
             <Grid.Col xs={12} lg={6}>
@@ -82,11 +97,15 @@ function Operadora({}: Props) {
                 }
               >
                 <BadgeStatus status={"Finalizado"} color={"red"} />
-                <Text mt={-3} fw={300} fz={20}>
+                <Text mt={-3} fw={500} fz={20}>
                   Sorteo 2
                 </Text>
+                <Text mt={-3} fw={500} fz={15}>
+                  Operadora
+                </Text>
                 <Text mt={-3} fw={300} fz={15}>
-                  Fecha de inicio: 08/03/2023
+                  Inicio: 08/03/2023 <br/>
+                  Cierre: 10/03/2023
                 </Text>
                 <Text mt={10} fw={300} fz={15}>
                   Progreso:
@@ -99,6 +118,17 @@ function Operadora({}: Props) {
                   mt={10}
                   mb={10}
                 />
+                <Group>
+                  <Text fw={500} fz={15} mt={5}>
+                    Visible para: 
+                  </Text>
+                  <Avatar.Group mt={7} ml={-10}>
+                    <Avatar size={30} radius='xl'>AF</Avatar>
+                    <Avatar size={30} radius='xl'>JD</Avatar>
+                    <Avatar size={30} radius='xl'>BP</Avatar>
+                    <Avatar size={30} radius='xl'>+10</Avatar>
+                  </Avatar.Group>
+                </Group>
               </Card>
             </Grid.Col>
           </Grid>
