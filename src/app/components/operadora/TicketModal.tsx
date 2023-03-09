@@ -23,7 +23,7 @@ function TicketModal({ tickets }: ModalProps) {
       {
         tickets.map((item, index) => {
           return (
-            <Card>
+            <Card key={index}>
               <Text>{item.place}</Text>
             </Card>
           )
