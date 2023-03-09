@@ -3,9 +3,18 @@ import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
 import '../assets/scss/operadora.scss'
-import { fromEvent, map } from 'rxjs';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import TicketModal from "../components/operadora/TicketModal";
 
 type Props = {}
+
+const tickets = [
+  { place: 1, isSold: true, soldTo: { name: 'Juan', lastname: 'Pérez', username: 'juanperez', cedula: '12345678' } },
+  { place: 2, isSold: false },
+  { place: 3, isSold: false },
+  { place: 4, isSold: true, soldTo: { name: 'María', lastname: 'García', username: 'mariagarcia', cedula: '87654321' } },
+];
 
 function Operadora({}: Props) {
   const theme = useMantineTheme()
@@ -133,6 +142,7 @@ function Operadora({}: Props) {
             </Grid.Col>
           </Grid>
       </Card>
+      {/* <TicketModal tickets={tickets} /> */}
     </>
   )
 }
