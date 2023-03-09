@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, Drawer, DrawerProps, NavLink, Box } from '@mantine/core';
-import { IconChevronDown } from '@tabler/icons';
+import { IconChevronDown, IconTemperature } from '@tabler/icons';
+import { Link } from 'react-router-dom';
 
 interface SidebarProps {
   profile?: React.ReactNode;
@@ -37,25 +38,30 @@ function Sidebar({ profile, links, open, title, onClose, position, children, siz
       <Box w='100%' mt={20}>
         {links && (
           links.map((link) => (
-            <NavLink
-              key={link.name}
-              active={link.url === window.location.pathname}
-              label={link.name}
-              description={
-                <Text 
-                  size={link.descriptionSize || 10}
-                  color={link.descriptionColor || 'blue'} 
-                >
-                  {link.description}
-                </Text>
-              }
-              rightSection={link.chevron ? <IconChevronDown size="1rem" stroke={1.5} /> : null}
-              icon={link.icon}
-              onClick={link.onClick || undefined}
-              color="blue"
-              variant="subtle"
-              style={{ borderRadius: '5px', padding: 12 }}
-            />
+            <Link
+              to={link.url}
+              style={{ textDecoration: 'none' }}
+            >
+              <NavLink
+                key={link.name}
+                active={link.url === window.location.pathname}
+                label={link.name}
+                description={
+                  <Text
+                    size={link.descriptionSize || 10}
+                    color={link.descriptionColor || 'blue'} 
+                  >
+                    {link.description}
+                  </Text>
+                }
+                rightSection={link.chevron ? <IconChevronDown size="1rem" stroke={1.5} /> : null}
+                icon={link.icon}
+                onClick={link.onClick || undefined}
+                color="blue"
+                variant="subtle"
+                style={{ borderRadius: '5px', padding: 12 }}
+              />
+            </Link>
           ))
         )}
       </Box>

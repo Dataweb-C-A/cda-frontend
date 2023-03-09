@@ -80,8 +80,8 @@ function Operadora({}: Props) {
                   </Text>
                   <Avatar.Group mt={7} ml={-10}>
                     <Avatar size={30} radius='xl'>AF</Avatar>
-                    <Avatar size={30} radius='xl'>JD</Avatar>
-                    <Avatar size={30} radius='xl'>BP</Avatar>
+                    <Avatar size={30} radius='xl' src="https://avatars.githubusercontent.com/u/70349374?s=400&u=7c776e13c5735d0bd26900b1f8627aefa0fafabf&v=4">JD</Avatar>
+                    <Avatar size={30} radius='xl' src="https://avatars.githubusercontent.com/u/105239421?v=4">BP</Avatar>
                     <Avatar size={30} radius='xl'>+10</Avatar>
                   </Avatar.Group>
                 </Group>
@@ -124,8 +124,8 @@ function Operadora({}: Props) {
                   </Text>
                   <Avatar.Group mt={7} ml={-10}>
                     <Avatar size={30} radius='xl'>AF</Avatar>
-                    <Avatar size={30} radius='xl'>JD</Avatar>
-                    <Avatar size={30} radius='xl'>BP</Avatar>
+                    <Avatar size={30} radius='xl' src="https://avatars.githubusercontent.com/u/70349374?s=400&u=7c776e13c5735d0bd26900b1f8627aefa0fafabf&v=4">JD</Avatar>
+                    <Avatar size={30} radius='xl' src="https://avatars.githubusercontent.com/u/105239421?v=4">BP</Avatar>
                     <Avatar size={30} radius='xl'>+10</Avatar>
                   </Avatar.Group>
                 </Group>

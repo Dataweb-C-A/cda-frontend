@@ -1,5 +1,5 @@
 import React from 'react'
-import { SimpleGrid, Text } from '@mantine/core'
+import { SimpleGrid } from '@mantine/core'
 import AvatarCard from './app/components/avatarCard'
 import Navbar from './app/components/navbar'
 import Cards from './app/components/cards'
