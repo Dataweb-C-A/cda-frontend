@@ -10,10 +10,36 @@ import TicketModal from "../components/operadora/TicketModal";
 type Props = {}
 
 const tickets = [
-  { place: 1, isSold: true, soldTo: { name: 'Juan', lastname: 'Pérez', username: 'juanperez', cedula: '12345678' } },
+  { place: 1, isSold: false },
   { place: 2, isSold: false },
   { place: 3, isSold: false },
-  { place: 4, isSold: true, soldTo: { name: 'María', lastname: 'García', username: 'mariagarcia', cedula: '87654321' } },
+  { place: 4, isSold: false },
+  { place: 5, isSold: false },
+  { place: 6, isSold: false },
+  { place: 7, isSold: false },  
+  { place: 8, isSold: false },
+  { place: 9, isSold: false },
+  { place: 10, isSold: false },
+  { place: 11, isSold: false },
+  { place: 12, isSold: false },
+  { place: 13, isSold: false },
+  { place: 14, isSold: false },
+  { place: 15, isSold: false },
+  { place: 16, isSold: false },
+  { place: 17, isSold: false },
+  { place: 18, isSold: false },
+  { place: 19, isSold: false },
+  { place: 20, isSold: false },
+  { place: 21, isSold: false },
+  { place: 22, isSold: false },
+  { place: 23, isSold: false },
+  { place: 24, isSold: false },
+  { place: 25, isSold: false },
+  { place: 26, isSold: false },
+  { place: 27, isSold: false },
+  { place: 28, isSold: false },
+  { place: 29, isSold: false },
+  { place: 30, isSold: false }
 ];
 
 function Operadora({}: Props) {
@@ -142,7 +168,7 @@ function Operadora({}: Props) {
             </Grid.Col>
           </Grid>
       </Card>
-      {/* <TicketModal tickets={tickets} /> */}
+      <TicketModal tickets={tickets} />
     </>
   )
 }
