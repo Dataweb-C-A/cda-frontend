@@ -36,7 +36,6 @@ function TicketModal({ tickets }: modalProps) {
       userSelect: 'none',
       '&:hover': {
         background: theme.colors.blue[5],
-        animation: `${bounce} 2s ease-in-out infinite`,
       },
     },
     selected: {
@@ -49,7 +48,6 @@ function TicketModal({ tickets }: modalProps) {
       cursor: 'not-allowed',
       '&:hover': {
         background: theme.colors.red[7],
-        animation: 'none',
       },
     },
   }))
