@@ -19,7 +19,7 @@ type ModalProps = {
 }
 
 const bounce = keyframes({
-  'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
+  '0%, 20%, 53%, 80%, 100%': { transform: 'translate3d(0, 0, 0)' },
   '40%, 43%': { transform: 'translate3d(0, -0.455rem, 0)' },
   '70%': { transform: 'translate3d(0, -0.3575rem, 0)' },
   '90%': { transform: 'translate3d(0, -0.0598rem, 0)' },
@@ -30,14 +30,11 @@ const useStyles = createStyles((theme) => ({
     background: '#bbb',
     cursor: 'pointer',
     userSelect: 'none',
-    '&:hover': {
-      background: theme.colors.blue[5],
-      animation: `${bounce} 2s ease-in-out infinite`,
-    },
+    animation: `${bounce} 2s ease-in-out infinite`,
   },
   selected: {
     background: theme.colors.green[7],
-    animation: `${bounce} 2s ease-in-out infinite`,
+    animation: 'none',
   },
 }))
 
@@ -63,6 +60,7 @@ function TicketModal({ tickets }: ModalProps) {
                 className={cx(classes.ticket, { [classes.selected]: active.includes(item.place) })}
                 key={index} 
                 onClick={() => handleTickets(item.place)}
+                style={{ animationDelay: `-${index * 0.1}s` }}
               >
                 <Text>{item.place}</Text>
               </Card>

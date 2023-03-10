@@ -128,7 +128,7 @@ function Navbar(
       <Sidebar
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        position="left"
+        position="right"
         title=""
         profile={
           <AvatarCard
