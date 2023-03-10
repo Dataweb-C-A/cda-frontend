@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, Text, Group, createStyles, keyframes } from '@mantine/core'
 
 type ClientProps = {
@@ -43,6 +43,7 @@ const useStyles = createStyles((theme) => ({
 
 function TicketModal({ tickets }: ModalProps) {
   const [active, setActive] = useState<number[]>([]);
+  const [counter, setCounter] = useState(0);
   const { classes, cx } = useStyles()
 
   const handleTickets = (register: number) => {
@@ -51,25 +52,30 @@ function TicketModal({ tickets }: ModalProps) {
         ? active.filter((item) => item !== register)
         : active.concat(register)
     )
+    setCounter(counter + 1);
   }
+
+  useEffect(() => {
+    setCounter(0);
+  }, [active]);
 
   return (
       <Card shadow={"0 0 7px 0 #5f5f5f3d"} mx='15px' mt={20}>
-        <Group>
-          {
-            tickets.map((item, index) => (
-              <Card 
-                px={20}
-                className={cx(classes.ticket, { [classes.selected]: active.includes(item.place) })}
-                key={index} 
-                onClick={() => handleTickets(item.place)}
-              >
-                <Text>{item.place}</Text>
-              </Card>
-            ))
-          }
-        </Group>
-      </Card>
+      <Group key={counter}>
+        {
+          tickets.map((item, index) => (
+            <Card 
+              px={20}
+              className={cx(classes.ticket, { [classes.selected]: active.includes(item.place) })}
+              key={index} 
+              onClick={() => handleTickets(item.place)}
+            >
+              <Text>{item.place}</Text>
+            </Card>
+          ))
+        }
+      </Group>
+    </Card>
   )
 }
 
