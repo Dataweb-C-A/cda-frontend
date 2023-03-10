@@ -37,10 +37,11 @@ function Sidebar({ profile, links, open, title, onClose, position, children, siz
       {profile}
       <Box w='100%' mt={20}>
         {links && (
-          links.map((link) => (
+          links.map((link, index) => (
             <Link
               to={link.url}
               style={{ textDecoration: 'none' }}
+              key={index}
             >
               <NavLink
                 key={link.name}

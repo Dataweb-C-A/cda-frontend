@@ -1,6 +1,7 @@
-import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title, Button } from '@mantine/core';
+import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title, Button, Menu } from '@mantine/core';
 import { IconDots } from '@tabler/icons';
 import { useStyles } from './accordionList.styles';
+import { Message, Printer } from 'tabler-icons-react';
 
 type AccordionItem = {
   id: number;
@@ -18,7 +19,21 @@ export function AccordionControl(props: AccordionControlProps) {
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Accordion.Control {...props} />
       <ActionIcon size="lg">
-        <IconDots size={16} />
+        <Menu position='top' trigger="hover" openDelay={100} closeDelay={450}>
+          <Menu.Target>
+            <IconDots size={16} />
+          </Menu.Target>
+          <Menu.Dropdown style={{
+            width: 100,
+            marginLeft: -100,  
+            marginTop: -130
+          }}>
+            <Menu.Label>Opciones de Rifas</Menu.Label>
+            <Menu.Divider />
+            <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>Enviar a APP</Menu.Item>
+            <Menu.Item onClick={() => console.log('Edit')} icon={<Printer size={15}/>}>Imprimir</Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </ActionIcon>
     </Box>
   );
@@ -63,7 +78,7 @@ export default function AccordionList({ data, children }: AccordionProps) {
                 </Title>
               </Grid.Col>
             </Grid>
-          </AccordionControl>
+            </AccordionControl>
           <Accordion.Panel>{children}</Accordion.Panel>
         </Accordion.Item>
       ))}

@@ -14,6 +14,7 @@ import { rifaData } from "../../assets/data/rifaData";
 import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
 import HelpModalBody from "./HelpModal";
+import { Zzz } from 'tabler-icons-react';
 
 interface RiferosProps {
   data: {
@@ -48,6 +49,7 @@ function Dashboard() {
   const [formModal, setFormModal] = useState(false);
   const [helpModal, setHelpModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+  const [timer, setTimer] = useState(0);
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -142,9 +144,11 @@ function Dashboard() {
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
+              disabled
+              leftIcon={<Zzz/>}
               onClick={() => setFormModal(true)}
             >
-              Agregar Rifa
+              09:01:20
             </Button>
           </Grid.Col>
         </Grid>

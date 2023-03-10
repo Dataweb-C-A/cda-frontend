@@ -26,6 +26,7 @@
     "@reactivex/rxjs": "^6.6.7",
     "@reduxjs/toolkit": "^1.9.2",
     "@tabler/icons": "1.119.0",
+    "@tabler/icons-react": "^2.9.0",
     "@tiptap/core": "2.0.0-beta.209",
     "@tiptap/extension-link": "2.0.0-beta.209",
     "@tiptap/pm": ">=2.0.0-beta.209 <3.0.0",
@@ -50,6 +51,7 @@
     "redux": "^4.2.1",
     "rxjs": "^7.8.0",
     "sass": "^1.58.3",
+    "tabler-icons-react": "^1.56.0",
     "webpack": "^4.4.0 || ^5.9.0"
   },
   "devDependencies": {
