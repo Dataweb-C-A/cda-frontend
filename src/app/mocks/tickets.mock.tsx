@@ -1,25 +1,59 @@
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
-type Props = {}
+type mocksProps = {}
 
-function TicketsMocks(props: Props) {
+function TicketsMocks({}: mocksProps) {
   const styles = StyleSheet.create({
     page: {
       flexDirection: 'row',
+      flexWrap: 'wrap',
       backgroundColor: '#E4E4E4'
     },
+    views: {
+      border: '1px solid black',
+      width: '33.33%',
+      height: '25%',
+    }
   })
 
   return (
     <Document>
-      <Page>
-        <View>
-          <Text>Este es un título</Text>
-          <View>
-            <Text>Elemento 1</Text>
-            <Text>Elemento 2</Text>
-            <Text>Elemento 3</Text>
-          </View>
+      <Page style={styles.page}>
+        <View style={styles.views}>
+          <Text>Section #1</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #2</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #3</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #1</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #2</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #3</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #1</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #2</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #3</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #1</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #2</Text>
+        </View>
+        <View style={styles.views}>
+          <Text>Section #3</Text>
         </View>
       </Page>
     </Document>
