@@ -1,7 +1,10 @@
 import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title, Button, Menu } from '@mantine/core';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import { IconDots } from '@tabler/icons';
 import { useStyles } from './accordionList.styles';
 import { Message, Printer } from 'tabler-icons-react';
+import ReactPDF from '@react-pdf/renderer';
+import TicketsMocks from '../../mocks/tickets.mock';
 
 type AccordionItem = {
   id: number;
@@ -15,6 +18,7 @@ type AccordionProps = {
 }
 
 export function AccordionControl(props: AccordionControlProps) {
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Accordion.Control {...props} />
@@ -26,12 +30,16 @@ export function AccordionControl(props: AccordionControlProps) {
           <Menu.Dropdown style={{
             width: 100,
             marginLeft: -100,  
-            marginTop: -130
+            marginTop: -125
           }}>
             <Menu.Label>Opciones de Rifas</Menu.Label>
             <Menu.Divider />
             <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>Enviar a APP</Menu.Item>
-            <Menu.Item onClick={() => console.log('Edit')} icon={<Printer size={15}/>}>Imprimir</Menu.Item>
+            <PDFDownloadLink document={<TicketsMocks />} fileName={`tickets-${new Date().toISOString()}.pdf`}>
+              <Menu.Item icon={<Printer size={15} />}>
+                  Imprimir
+              </Menu.Item>
+            </PDFDownloadLink>
           </Menu.Dropdown>
         </Menu>
       </ActionIcon>

@@ -3,8 +3,6 @@ import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
 import '../assets/scss/operadora.scss'
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
 import TicketModal from "../components/operadora/TicketModal";
 
 type Props = {}
