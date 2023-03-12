@@ -14,7 +14,8 @@ function TicketsMocks({}: mocksProps) {
       width: '32.1%',
       height: '24.125%',
       marginHorizontal: '5px',
-      marginVertical: '2.5px'
+      marginVertical: '2.5px',
+      
     },
     container: {
       display: 'flex',
@@ -24,9 +25,25 @@ function TicketsMocks({}: mocksProps) {
       width: '50%',
       height: '100%',
     },
+    ticketsSectionup: {
+      width: '50%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginTop: '6px',
+    },
+    ticketsSectionsi: {
+      width: '50%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: '6px',
+    },
     image: {
-      marginLeft: '17px',
-      width: '100px',
+      marginLeft: '15px',
+      marginTop: '0px',
+      width: '105px',
       height: 'auto',
     }
   })
@@ -39,8 +56,12 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
             </View>
-            <View style={styles.ticketsSection}>
-              <Text>Section</Text>
+            <View style={styles.ticketsSectionup}>
+              <Text>157</Text>
+              <Text>20$</Text>
+            </View>
+          <View style={styles.ticketsSectionsi}>
+              <Text>Aries</Text>
             </View>
           </View>
         </View>
