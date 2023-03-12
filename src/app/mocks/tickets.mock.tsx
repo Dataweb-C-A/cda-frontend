@@ -15,7 +15,15 @@ function TicketsMocks({}: mocksProps) {
       height: '24.125%',
       marginHorizontal: '5px',
       marginVertical: '2.5px',
-      
+    },
+    WaterMark: {
+      position: 'absolute',
+      top: '0px',
+      left: '0px',
+      width: '100%',
+      height: '100%',
+      opacity: '0.1',
+      zIndex: '-1',
     },
     container: {
       display: 'flex',
@@ -25,54 +33,84 @@ function TicketsMocks({}: mocksProps) {
       width: '50%',
       height: '100%',
     },
-    ticketsSectionup: {
+    paramsSection: {
       width: '50%',
       height: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      marginTop: '6px',
-    },
-    ticketsSectionsi: {
-      width: '50%',
-      height: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      marginTop: '6px',
     },
     image: {
       marginLeft: '15px',
       marginTop: '0px',
       width: '105px',
       height: 'auto',
-    }
+    },
   })
 
   return (
     <Document>
       <Page style={styles.page} orientation='landscape' size="A4">
         <View style={styles.views}>
+          <Image style={styles.WaterMark} src={RifamaxLogo} />
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Text style={{ fontSize: '11px' }}>
+                &nbsp; Agencia: &nbsp; &nbsp; &nbsp; &nbsp; Mi angel
+              </Text>
             </View>
-            <View style={styles.ticketsSectionup}>
-              <Text>157</Text>
-              <Text>20$</Text>
-            </View>
-          <View style={styles.ticketsSectionsi}>
-              <Text>Aries</Text>
+            <View style={styles.paramsSection}>
+              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
+              </Text>
+              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px' }}>
+                Capricornio
+              </Text>
             </View>
           </View>
         </View>
         <View style={styles.views}>
-          <Text>Section #2</Text>
+          <View style={styles.container}>
+            <View style={styles.ticketsSection}>
+              <Image style={styles.image} src={RifamaxLogo} />
+            </View>
+            <View style={styles.paramsSection}>
+              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
+              </Text>
+              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '25px' }}>
+                Aries
+              </Text>
+            </View>
+          </View>
         </View>
         <View style={styles.views}>
-          <Text>Section #3</Text>
+          <View style={styles.container}>
+            <View style={styles.ticketsSection}>
+              <Image style={styles.image} src={RifamaxLogo} />
+            </View>
+            <View style={styles.paramsSection}>
+              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
+              </Text>
+              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '25px' }}>
+                Aries
+              </Text>
+            </View>
+          </View>
         </View>
         <View style={styles.views}>
-          <Text>Section #1</Text>
+          <View style={styles.container}>
+            <View style={styles.ticketsSection}>
+              <Image style={styles.image} src={RifamaxLogo} />
+            </View>
+            <View style={styles.paramsSection}>
+              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
+              </Text>
+              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '25px' }}>
+                Aries
+              </Text>
+            </View>
+          </View>
         </View>
         <View style={styles.views}>
           <Text>Section #2</Text>
