@@ -1,4 +1,5 @@
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
+import RifamaxLogo from "../assets/images/rifamax-logo.png"
 
 type mocksProps = {}
 
@@ -7,20 +8,41 @@ function TicketsMocks({}: mocksProps) {
     page: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      backgroundColor: '#E4E4E4'
     },
     views: {
       border: '1px solid black',
-      width: '33.33%',
-      height: '25%',
+      width: '32.1%',
+      height: '24.125%',
+      marginHorizontal: '5px',
+      marginVertical: '2.5px'
+    },
+    container: {
+      display: 'flex',
+      flexDirection: 'row',
+    },
+    ticketsSection: {
+      width: '50%',
+      height: '100%',
+    },
+    image: {
+      marginLeft: '17px',
+      width: '100px',
+      height: 'auto',
     }
   })
 
   return (
     <Document>
-      <Page style={styles.page}>
+      <Page style={styles.page} orientation='landscape' size="A4">
         <View style={styles.views}>
-          <Text>Section #1</Text>
+          <View style={styles.container}>
+            <View style={styles.ticketsSection}>
+              <Image style={styles.image} src={RifamaxLogo} />
+            </View>
+            <View style={styles.ticketsSection}>
+              <Text>Section</Text>
+            </View>
+          </View>
         </View>
         <View style={styles.views}>
           <Text>Section #2</Text>

@@ -10,6 +10,7 @@ import {
   IconMoodSadDizzy as NotFound,
 } from "@tabler/icons"
 import ThemeSwitcher from "../theme"
+import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 
 interface ProfileProps {
   name: string
@@ -54,7 +55,7 @@ function Navbar(
       }}
     >
       <img
-        src="https://admin.rifa-max.com/static/media/ticket.1e676ae5de33fcd376d5.png"
+        src={RifamaxLogo}
         className="logo"
         width="89px"
         height="54px"
