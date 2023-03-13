@@ -1,4 +1,5 @@
-import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group } from "@mantine/core";
+import { useState } from "react";
+import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -7,45 +8,37 @@ import TicketModal from "../components/operadora/TicketModal";
 
 type Props = {}
 
-const tickets = [
-  { place: 1, isSold: false },
-  { place: 2, isSold: false },
-  { place: 3, isSold: false },
-  { place: 4, isSold: false },
-  { place: 5, isSold: true },
-  { place: 6, isSold: true },
-  { place: 7, isSold: true },  
-  { place: 8, isSold: true },
-  { place: 9, isSold: false },
-  { place: 10, isSold: false },
-  { place: 11, isSold: false },
-  { place: 12, isSold: false },
-  { place: 13, isSold: false },
-  { place: 14, isSold: true },
-  { place: 15, isSold: true },
-  { place: 16, isSold: true },
-  { place: 17, isSold: true },
-  { place: 18, isSold: false },
-  { place: 19, isSold: false },
-  { place: 20, isSold: false },
-  { place: 21, isSold: false },
-  { place: 22, isSold: false },
-  { place: 23, isSold: false },
-  { place: 24, isSold: false },
-  { place: 25, isSold: false },
-  { place: 26, isSold: false },
-  { place: 27, isSold: false },
-  { place: 28, isSold: false },
-  { place: 29, isSold: false },
-  { place: 30, isSold: false }
-];
+const tickets = [];
+
+for (let i = tickets.length +1; i <=200; i++) {
+  tickets.push({place:i,isSold:false});
+}
 
 function Operadora({}: Props) {
   const theme = useMantineTheme()
+  const [modalOpened, setModalOpened] = useState(false)
+
+  const ModalSell = () => {
+    return (
+      <Drawer
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title={
+          <Text size="xl" weight={500} ml={13} pt={5}>
+            Vender boletos
+          </Text>
+        }
+        size="100%"
+        position="left"
+      >
+        <TicketModal tickets={tickets}/>
+      </Drawer>
+    )
+  }
 
   const BadgeStatus = ({ status, color }: { status: string, color: string }) => {
     return(
-      <div style={{ display: "block" }}>
+      <div style={{ display: "block", cursor: "pointer" }} onClick={() => setModalOpened(true)}>
         <div style={{ float: "right", top: '100px'}}>
           <ChevronIcon style={{rotate: '-90deg', marginTop: '6px', marginLeft: '10px'}}/>
         </div>
@@ -64,6 +57,7 @@ function Operadora({}: Props) {
 
   return (
     <>
+      <ModalSell />
       <Navbar
         profiles={profiles}
         links={links}
@@ -166,7 +160,6 @@ function Operadora({}: Props) {
             </Grid.Col>
           </Grid>
       </Card>
-      <TicketModal tickets={tickets} />
     </>
   )
 }

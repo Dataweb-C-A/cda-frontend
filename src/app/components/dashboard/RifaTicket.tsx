@@ -34,6 +34,7 @@ type TicketsLabelProps = {
   sleft?: number | 6;
   sright?: number | 6;
   fw?: number | 400;
+  data?: TicketProps;
 };
 
 function RifaTicket() {

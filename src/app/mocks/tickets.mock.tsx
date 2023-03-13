@@ -59,7 +59,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -71,30 +71,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -109,7 +109,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -121,30 +121,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -159,7 +159,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -168,33 +168,33 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
+                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Yohandry Bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -209,7 +209,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -221,30 +221,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -259,7 +259,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -271,30 +271,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -309,7 +309,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -321,30 +321,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -359,7 +359,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -371,30 +371,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -409,7 +409,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -421,30 +421,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -459,7 +459,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -471,30 +471,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -509,7 +509,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -521,30 +521,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -559,7 +559,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -571,30 +571,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
@@ -609,7 +609,7 @@ function TicketsMocks({}: mocksProps) {
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Mi angel
+                &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
@@ -621,30 +621,30 @@ function TicketsMocks({}: mocksProps) {
                 &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  ZULIA 7A 7:05PM
+                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Javier Diaz
+                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Telefono: &nbsp; 0414-1234567
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'bold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
                 Capricornio
               </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Premio: &nbsp; Toyota Corolla
+              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
               <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                PLACA: AA720GF &nbsp;Año: 2018
+                Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
