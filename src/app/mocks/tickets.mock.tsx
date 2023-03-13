@@ -99,7 +99,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -149,7 +149,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -199,7 +199,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -249,7 +249,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -299,7 +299,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -349,7 +349,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -399,7 +399,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -449,7 +449,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -499,7 +499,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -549,7 +549,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -599,7 +599,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
@@ -649,7 +649,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
-              <QRCode value="aa" type="pdf" />
+              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
           </View>
         </View>
