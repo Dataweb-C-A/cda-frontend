@@ -1,5 +1,6 @@
 import { Page, Text, View, Document, StyleSheet, Image, Svg } from '@react-pdf/renderer';
 import RifamaxLogo from "../assets/images/rifamax-logo-bw.png"
+import QRCode from '../components/qr';
 
 type mocksProps = {}
 
@@ -98,6 +99,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -147,6 +149,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -196,6 +199,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -245,6 +249,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -294,6 +299,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -343,6 +349,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -392,6 +399,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -441,6 +449,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -490,6 +499,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -539,6 +549,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -588,6 +599,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
@@ -637,6 +649,7 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '9px' }}>
                 Caduca en 5 dias &nbsp; Escanee aqui
               </Text>
+              <QRCode value="aa" type="pdf" />
             </View>
           </View>
         </View>
