@@ -32,7 +32,7 @@ function generarCodigoQR({ value, type, style }: QRProps) {
         <Path d={path} fill="#000" />
       </Svg>
     ) : (
-      <svg viewBox={`0 0 ${tamaño} ${tamaño}`}>
+      <svg viewBox={`0 0 ${tamaño} ${tamaño}`} style={style}>
         <path d={path} fill="#000" />
       </svg>
     )
