@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Card, Text, Group, createStyles, keyframes } from '@mantine/core'
+import { Card, Text, Group, createStyles, keyframes, useMantineTheme } from '@mantine/core'
 
 type clientProps = {
   name: string
@@ -18,9 +18,23 @@ type modalProps = {
   tickets: ticketProps[]
 }
 
+function formatPlace(place: number): string {
+  if (place <= 9) {
+    return '00' + place;
+  } else if (place <= 99) {
+    return '0' + place;
+  } else if (place === 1000) {
+    return '000';
+  } else {
+    return place.toString();
+  }
+}
+
 function TicketModal({ tickets }: modalProps) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const theme = useMantineTheme()
 
   const bounce = keyframes({
     'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
@@ -30,6 +44,10 @@ function TicketModal({ tickets }: modalProps) {
   })
 
   const useStyles = createStyles((theme) => ({
+    container: {
+      display: 'flex',
+      width: '100%',
+    },
     ticket: {
       background: '#bbb',
       cursor: 'pointer',
@@ -37,6 +55,19 @@ function TicketModal({ tickets }: modalProps) {
       '&:hover': {
         background: theme.colors.blue[5],
       },
+    },
+    ticketsFlex: {
+      width: '70%'
+    },
+    taquillaFlex: {
+      width: '30%',
+    },
+    cardTaquilla: {
+      position: 'sticky',
+      top: '0',
+      right: '0',
+      width: '100%',
+      background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.white,
     },
     selected: {
       background: theme.colors.green[7],
@@ -64,22 +95,37 @@ function TicketModal({ tickets }: modalProps) {
   }, [active])
 
   return (
-    <Card shadow={'0 0 7px 0 #5f5f5f3d'} mx='15px' mt={20}>
-      <Group key={counter}>
-        {tickets.map((item, index) => (
-          <Card
-            px={20}
-            className={cx(classes.ticket, {
-              [classes.selected]: active.includes(item.place),
-              [classes.sold]: item.isSold,
-            })}
-            key={index}
-            onClick={() => item.isSold ? null : handleTickets(item.place)}
-          >
-            <Text>{item.place}</Text>
-          </Card>
-        ))}
-      </Group>
+    <Card shadow={'0 0 7px 0 #5f5f5f3d'} my={20} mx={10}>
+      <div className={classes.container}>
+        <div className={classes.ticketsFlex}>
+          <Group key={counter}>
+            {tickets.map((item, index) => (
+              <Card
+                px={20}
+                className={cx(classes.ticket, {
+                  [classes.selected]: active.includes(item.place),
+                  [classes.sold]: item.isSold,
+                })}
+                key={index}
+                onClick={() => item.isSold ? null : handleTickets(item.place)}
+              >
+                <Text>{formatPlace(item.place)}</Text>
+              </Card>
+            ))}
+          </Group>
+        </div>
+        <div className={classes.taquillaFlex}>
+          <nav>
+            <Card 
+              shadow={'0 0 7px 0 #5f5f5f3d'} 
+              title="Taquilla"
+              className={classes.cardTaquilla}
+              id="sticky"
+            >
+            </Card>
+          </nav>
+        </div>
+      </div>
     </Card>
   )
 }

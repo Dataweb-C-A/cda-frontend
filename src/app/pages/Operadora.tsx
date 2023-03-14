@@ -1,18 +1,13 @@
 import { useState } from "react";
-import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer } from "@mantine/core";
+import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
 import '../assets/scss/operadora.scss'
 import TicketModal from "../components/operadora/TicketModal";
+import tickets from '../assets/data/tickets.json'
 
 type Props = {}
-
-const tickets = [];
-
-for (let i = tickets.length +1; i <=200; i++) {
-  tickets.push({place:i,isSold:false});
-}
 
 function Operadora({}: Props) {
   const theme = useMantineTheme()
@@ -36,9 +31,24 @@ function Operadora({}: Props) {
     )
   }
 
+
   const BadgeStatus = ({ status, color }: { status: string, color: string }) => {
+
+    const useStyles = createStyles((theme) => ({
+      trigger: { 
+        cursor: "pointer",
+        zIndex: 99999,
+        background: '#fff',
+        '&:hover': {
+          background: theme.colors.blue[1],
+        },
+      },
+    }))
+
+    const { classes, cx } = useStyles()
+
     return(
-      <div style={{ display: "block", cursor: "pointer" }} onClick={() => setModalOpened(true)}>
+      <Paper className={cx(classes.trigger)} onClick={() => setModalOpened(true)}>
         <div style={{ float: "right", top: '100px'}}>
           <ChevronIcon style={{rotate: '-90deg', marginTop: '6px', marginLeft: '10px'}}/>
         </div>
@@ -51,7 +61,7 @@ function Operadora({}: Props) {
             {status}
           </Badge>
         </div>
-      </div>
+      </Paper>
     )
   }
 
