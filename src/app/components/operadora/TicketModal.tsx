@@ -49,7 +49,7 @@ function TicketModal({ tickets }: modalProps) {
       width: '100%',
     },
     ticket: {
-      background: '#bbb',
+      background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.dark[1],
       cursor: 'pointer',
       userSelect: 'none',
       '&:hover': {
@@ -74,7 +74,7 @@ function TicketModal({ tickets }: modalProps) {
       animation: `${bounce} 2s ease-in-out infinite`,
     },
     sold: {
-      background: theme.colors.red[7],
+      background: theme.colorScheme === 'dark' ? theme.colors.red[7] : theme.colors.red[5],
       animation: 'none',
       cursor: 'not-allowed',
       '&:hover': {
