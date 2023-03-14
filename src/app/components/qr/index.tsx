@@ -28,7 +28,7 @@ function generarCodigoQR({ value, type, style }: QRProps) {
 
   return (
     type === 'pdf' ? (
-      <Svg viewBox={`0 0 ${tamaño} ${tamaño}`} style={{ width: '52px', height: '52px', marginLeft: '78px'}}>
+      <Svg viewBox={`0 0 ${tamaño} ${tamaño}`} style={{ width: '52px', height: '52px', marginLeft: '74px'}}>
         <Path d={path} fill="#000" />
       </Svg>
     ) : (

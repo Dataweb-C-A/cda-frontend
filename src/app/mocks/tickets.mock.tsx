@@ -85,13 +85,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -135,13 +135,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -185,13 +185,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -235,13 +235,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -285,13 +285,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -335,13 +335,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -385,13 +385,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -435,13 +435,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -485,13 +485,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -535,13 +535,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -585,13 +585,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
@@ -635,13 +635,13 @@ function TicketsMocks({}: mocksProps) {
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
               </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px'}}>
+              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
                 Sin Signo: &nbsp; 1000$
               </Text>
               <Text style={{ fontSize: '9px' }}>
