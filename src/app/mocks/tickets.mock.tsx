@@ -9,13 +9,14 @@ function TicketsMocks({}: mocksProps) {
     page: {
       flexDirection: 'row',
       flexWrap: 'wrap',
+      paddingLeft: '60px'
     },
     views: {
       border: '1px solid black',
       backgroundColor: '#eee',
-      width: '32.1%',
+      width: '32.5%',
       height: '24.125%',
-      marginHorizontal: '5px',
+      marginHorizontal: '2.5px',
       marginVertical: '2.5px',
     },
     WaterMark: {
@@ -81,10 +82,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -97,7 +98,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -131,10 +132,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -147,7 +148,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -181,10 +182,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -197,7 +198,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -231,10 +232,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -247,7 +248,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -281,10 +282,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -297,7 +298,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -331,10 +332,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -347,7 +348,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -381,10 +382,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -397,7 +398,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -431,10 +432,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -447,7 +448,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -481,10 +482,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -497,7 +498,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -531,10 +532,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -547,7 +548,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -581,10 +582,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -597,7 +598,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
@@ -631,10 +632,10 @@ function TicketsMocks({}: mocksProps) {
               </Text>
             </View>
             <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '7px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
-              <Text style={{ fontSize: '15px', fontWeight: 'extrabold', marginTop: '3px', marginLeft: '18px', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px' }}>
                 Capricornio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
@@ -647,7 +648,7 @@ function TicketsMocks({}: mocksProps) {
                 Placa: AA720GF &nbsp;Año: 2018
               </Text>
               <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias &nbsp; Escanee aqui
+                Caduca en 5 dias Escanee aqui
               </Text>
               <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
             </View>
