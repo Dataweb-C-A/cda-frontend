@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Card, Text, Group, createStyles, keyframes, useMantineTheme } from '@mantine/core'
+import { Card, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid } from '@mantine/core'
+import { IconTrash } from '@tabler/icons'
 
 type clientProps = {
   name: string
@@ -33,8 +34,16 @@ function formatPlace(place: number): string {
 function TicketModal({ tickets }: modalProps) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const theme = useMantineTheme()
+
+  useEffect(() => {
+    const scroll = () => {
+      const scroll = document.getElementById('scroll')
+      if (scroll) {
+        scroll.scrollTop = scroll.scrollHeight
+      }
+    }
+    scroll()
+  }, [counter])
 
   const bounce = keyframes({
     'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
@@ -49,12 +58,30 @@ function TicketModal({ tickets }: modalProps) {
       width: '100%',
     },
     ticket: {
-      background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.dark[1],
+      background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1],
       cursor: 'pointer',
       userSelect: 'none',
       '&:hover': {
         background: theme.colors.blue[5],
       },
+    },
+    ticketsLeft: {
+      position: 'absolute',
+      width: '7px',
+      top: '13px',
+      right: '91%',
+      height: '30px',
+      borderRadius: '0 5px 5px 0',
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
+    },
+    ticketsRight: {
+      position: 'absolute',
+      width: '7px',
+      top: '13px',
+      left: '91%',
+      height: '30px',
+      borderRadius: '5px 0 0 5px',
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
     },
     ticketsFlex: {
       width: '70%'
@@ -109,11 +136,14 @@ function TicketModal({ tickets }: modalProps) {
                 key={index}
                 onClick={() => item.isSold ? null : handleTickets(item.place)}
               >
+                <div className={classes.ticketsLeft}></div>
                 <Text>{formatPlace(item.place)}</Text>
+                <div className={classes.ticketsRight}></div>
               </Card>
             ))}
           </Group>
         </div>
+        <Divider orientation="vertical" label="Sorteos" variant="dashed" mr={37} />
         <div className={classes.taquillaFlex}>
           <nav>
             <Card 
@@ -122,6 +152,43 @@ function TicketModal({ tickets }: modalProps) {
               className={classes.cardTaquilla}
               id="sticky"
             >
+              {
+                active.length % 4 || active.length === 0 ? (
+                  <Text>Debe seleccionar 4 boletos</Text>
+                ) : (
+                  <>
+                    <Button fullWidth mb={10} variant="filled" color="blue">
+                      Comprar
+                    </Button>
+                    <Grid>
+                      <Grid.Col xl={6} sm={12}>
+                        <Paper shadow="sm" mb={10}>
+                          <Card shadow="sm" mb={10}>
+                            <Text>Arreglo 1</Text>
+                            {
+                              active.map((item, index) => (
+                                <Text key={index}>{formatPlace(item)}</Text>
+                              ))
+                            }
+                          </Card>
+                        </Paper>
+                      </Grid.Col>
+                      <Grid.Col xl={6} sm={12}>
+                        <Paper shadow="sm" mb={10}>
+                        <Card shadow="sm" mb={10}>
+                            <Text>Arreglo 1</Text>
+                            {
+                              active.map((item, index) => (
+                                <Text key={index}>{formatPlace(item)}</Text>
+                              ))
+                            }
+                          </Card>
+                        </Paper>
+                      </Grid.Col>
+                    </Grid>                         
+                  </>
+                )
+              }
             </Card>
           </nav>
         </div>

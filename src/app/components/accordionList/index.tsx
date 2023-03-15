@@ -37,7 +37,7 @@ export function AccordionControl(props: AccordionControlProps) {
             <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>Enviar a APP</Menu.Item>
             <PDFDownloadLink document={<TicketsMocks />} fileName={`tickets-${new Date().toISOString()}.pdf`} style={{ textDecoration: 'none' }}>
               <Menu.Item icon={<Printer size={15} />}>
-                  Imprimir
+                Guardar
               </Menu.Item>
             </PDFDownloadLink>
           </Menu.Dropdown>

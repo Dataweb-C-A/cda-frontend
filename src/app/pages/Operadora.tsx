@@ -13,6 +13,13 @@ function Operadora({}: Props) {
   const theme = useMantineTheme()
   const [modalOpened, setModalOpened] = useState(false)
 
+  // makes a function to sort the tickets by sold status
+  const filterTickets = (tickets: any) => {
+    const soldTickets = tickets.filter((ticket: any) => ticket.isSold === true)
+    const unsoldTickets = tickets.filter((ticket: any) => ticket.isSold === false)
+    return [...unsoldTickets, ...soldTickets]
+  }
+
   const ModalSell = () => {
     return (
       <Drawer
@@ -26,7 +33,7 @@ function Operadora({}: Props) {
         size="100%"
         position="left"
       >
-        <TicketModal tickets={tickets}/>
+        <TicketModal tickets={filterTickets(tickets)}/>
       </Drawer>
     )
   }
