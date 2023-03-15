@@ -60,27 +60,28 @@ function TicketModal({ tickets }: modalProps) {
     ticket: {
       background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1],
       cursor: 'pointer',
+      height: '100px',
       userSelect: 'none',
       '&:hover': {
         background: theme.colors.blue[5],
       },
     },
-    ticketsLeft: {
+    ticketsTop: {
       position: 'absolute',
-      width: '7px',
-      top: '13px',
-      right: '91%',
-      height: '30px',
-      borderRadius: '0 5px 5px 0',
+      width: '50%',
+      bottom: '93%',
+      height: '7px',
+      left: '25%',
+      borderRadius: '0 0 3px 3px',
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
     },
-    ticketsRight: {
+    ticketsBottom: {
       position: 'absolute',
-      width: '7px',
-      top: '13px',
-      left: '91%',
-      height: '30px',
-      borderRadius: '5px 0 0 5px',
+      width: '50%',
+      top: '93%',
+      height: '7px',
+      left: '25%',
+      borderRadius: '3px 3px 0 0',
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
     },
     ticketsFlex: {
@@ -136,9 +137,9 @@ function TicketModal({ tickets }: modalProps) {
                 key={index}
                 onClick={() => item.isSold ? null : handleTickets(item.place)}
               >
-                <div className={classes.ticketsLeft}></div>
-                <Text>{formatPlace(item.place)}</Text>
-                <div className={classes.ticketsRight}></div>
+                <div className={classes.ticketsTop}></div>
+                <Text ta="center" mt='70%'>{formatPlace(item.place)}</Text>
+                <div className={classes.ticketsBottom}></div>
               </Card>
             ))}
           </Group>
