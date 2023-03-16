@@ -26,6 +26,7 @@ export function AccordionControl(props: AccordionControlProps) {
         onClose={() => setPrintModal(false)}
         title={<Title order={4}>¿Desea imprimir los tickets?</Title>}
         size="sm"
+        centered
       >
         <Divider label="Normas" labelPosition="center" mb={15}/>
         <Text mx={5} mb={20}>Para que los tickets se logren imprimir bien debe utilizar en formato de hoja de impresión A2</Text>
