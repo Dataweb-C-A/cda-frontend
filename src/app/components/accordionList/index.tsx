@@ -1,9 +1,9 @@
-import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title, Button, Menu } from '@mantine/core';
+import { useState } from 'react'
+import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title, Button, Menu, Modal, Divider } from '@mantine/core';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { IconDots } from '@tabler/icons';
 import { useStyles } from './accordionList.styles';
 import { Message, Printer } from 'tabler-icons-react';
-import ReactPDF from '@react-pdf/renderer';
 import TicketsMocks from '../../mocks/tickets.mock';
 
 type AccordionItem = {
@@ -18,32 +18,53 @@ type AccordionProps = {
 }
 
 export function AccordionControl(props: AccordionControlProps) {
-
+  const [printModal, setPrintModal] = useState(false);
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Accordion.Control {...props} />
-      <ActionIcon size="lg">
-        <Menu position='top' trigger="hover" openDelay={100} closeDelay={450}>
-          <Menu.Target>
-            <IconDots size={16} />
-          </Menu.Target>
-          <Menu.Dropdown style={{
-            width: 100,
-            marginLeft: -100,  
-            marginTop: -125
-          }}>
-            <Menu.Label>Opciones de Rifas</Menu.Label>
-            <Menu.Divider />
-            <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>Enviar a APP</Menu.Item>
-            <PDFDownloadLink document={<TicketsMocks />} fileName={`tickets-${new Date().toISOString()}.pdf`} style={{ textDecoration: 'none' }}>
-              <Menu.Item icon={<Printer size={15} />}>
+    <>
+      <Modal
+        opened={printModal}
+        onClose={() => setPrintModal(false)}
+        title={<Title order={4}>¿Desea imprimir los tickets?</Title>}
+        size="sm"
+      >
+        <Divider label="Normas" labelPosition="center" mb={15}/>
+        <Text mx={5} mb={20}>Para que los tickets se logren imprimir bien debe utilizar en formato de hoja de impresión A2</Text>
+        <PDFDownloadLink document={<TicketsMocks />} fileName={`tickets-${new Date().toISOString()}.pdf`} style={{ textDecoration: 'none' }}>
+          <Button
+            mt={10}
+            variant="filled"
+            color="blue"
+            size="sm"
+            fullWidth
+            onClick={() => setPrintModal(false)}
+          >
+            Descargar
+          </Button>
+        </PDFDownloadLink>
+      </Modal>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Accordion.Control {...props} />
+        <ActionIcon size="lg">
+          <Menu position='top' trigger="hover" openDelay={100} closeDelay={450}>
+            <Menu.Target>
+              <IconDots size={16} />
+            </Menu.Target>
+            <Menu.Dropdown style={{
+              width: 100,
+              marginLeft: -100,  
+              marginTop: -125
+            }}>
+              <Menu.Label>Opciones de Rifas</Menu.Label>
+              <Menu.Divider />
+              <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>Enviar a APP</Menu.Item>
+              <Menu.Item icon={<Printer size={15} />} onClick={() => setPrintModal(true)}>
                 Guardar
               </Menu.Item>
-            </PDFDownloadLink>
-          </Menu.Dropdown>
-        </Menu>
-      </ActionIcon>
-    </Box>
+            </Menu.Dropdown>
+          </Menu>
+        </ActionIcon>
+      </Box>
+    </>
   );
 }
 
