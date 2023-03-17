@@ -7,8 +7,13 @@ import Home from './app/pages/Home'
 import './app/assets/scss/styles.scss'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './app/pages/Login'
+import Operadora from './app/pages/Operadora'
 
-function App() {
+type AppProps = {
+  children: React.ReactNode
+}
+
+function App({children}: AppProps) {
   const colorScheme = useSelector((state: RootState) => state.theme.mode) // Get the colorScheme from the store
 
   return (
@@ -32,15 +37,9 @@ function App() {
           },
         }}
       >
-          {/* <Router>
-            <Switch>
-              <Route path='/login' component={Login}/>
-              <Route path='/' component={Home}/>
-            </Switch>
-          </Router>  */}
-          {
-            window.location.pathname === '/login' ? <Login /> : <Home />
-          }
+          <Router>
+            {children}
+          </Router>
       </Mantine>
   )
 }
@@ -48,7 +47,15 @@ function App() {
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <App>
+        <div>
+          <Switch>
+            <Route path='/login' component={Login}/>
+            <Route path='/operadora' component={Operadora}/>
+            <Route path='/' component={Home}/>
+          </Switch>
+        </div>
+      </App>
     </Provider>
   </React.StrictMode>,
 )

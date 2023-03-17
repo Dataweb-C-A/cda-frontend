@@ -3,6 +3,7 @@ import Navbar from "../components/navbar";
 import { Grid, Card, Text, Button, useMantineTheme } from "@mantine/core";
 import Cards from "../components/cards";
 import { profiles } from "../assets/data/profiles";
+import { links } from "../assets/data/links";
 import Dashboard from "../components/dashboard/Dashboard";
 
 const Home: React.FC = () => {
@@ -11,14 +12,7 @@ const Home: React.FC = () => {
       <div style={{ flex: 1 }}>
         <Navbar
           profiles={profiles}
-          links={
-            [
-              // { name: 'Inicio', url: '/' },
-              // { name: 'Rifas', url: '/rifas' },
-              // { name: 'Agencias', url: '/agencias' },
-              // { name: 'Billetera', url: '/wallet' },
-            ]
-          }
+          links={links}
         />
         <Grid gutter={20} m={5}>
           <Grid.Col xs={6} lg={4} span={12}>

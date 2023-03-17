@@ -1,4 +1,5 @@
 import { Card, Button, Text, Grid } from "@mantine/core";
+import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 
 interface RiferosProps {
   data: {
@@ -33,6 +34,7 @@ type TicketsLabelProps = {
   sleft?: number | 6;
   sright?: number | 6;
   fw?: number | 400;
+  data?: TicketProps;
 };
 
 function RifaTicket() {
@@ -68,7 +70,7 @@ function RifaTicket() {
         }}
       >
         <img
-          src="https://admin.rifa-max.com/static/media/ticket.1e676ae5de33fcd376d5.png"
+          src={RifamaxLogo}
           alt="ticket"
           style={{ width: "80%", height: "80%", margin: "0 0 0 10%" }}
         />

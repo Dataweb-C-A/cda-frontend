@@ -14,6 +14,8 @@ import { rifaData } from "../../assets/data/rifaData";
 import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
 import HelpModalBody from "./HelpModal";
+import { Zzz } from 'tabler-icons-react';
+import useTimer from "../../hooks/useTimer";
 
 interface RiferosProps {
   data: {
@@ -142,6 +144,8 @@ function Dashboard() {
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
+              disabled
+              leftIcon={<Zzz/>}
               onClick={() => setFormModal(true)}
             >
               Agregar Rifa
