@@ -11,7 +11,7 @@ The system uses [TypeScript](https://www.typescriptlang.org/) language and the p
 To manage UI we are using [Mantine UI](https://mantine.dev/) and [Redux](https://es.redux.js.org/) to manage states, to improve perfomance of system and perform sync and async actions we are using [RxJs](https://rxjs.dev/).
 
 <p align="center">
-  <img src="https://i.imgur.com/CaKVn4r.png" width="70%"/>
+  <img src="https://i.imgur.com/2WOWP2C.png" width="80%"/>
 </p>
 
 ## How to Compile the Project
