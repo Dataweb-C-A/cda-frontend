@@ -1,5 +1,5 @@
 import React from 'react'
-import { SimpleGrid, Text } from '@mantine/core'
+import { SimpleGrid } from '@mantine/core'
 import AvatarCard from './app/components/avatarCard'
 import Navbar from './app/components/navbar'
 import Cards from './app/components/cards'
@@ -70,10 +70,10 @@ const App: React.FC = () => {
     <div className="app">
       <Navbar
         links={[
-          { name: 'Inicio', url: '/' },
-          { name: 'Rifas', url: '/rifas' },
-          { name: 'Riferos', url: '/riferos' },
-          { name: 'Comunidad', url: '/comunidad' }
+          { name: 'Inicio', url: '/', chevron: true },
+          { name: 'Rifas', url: '/rifas', chevron: true },
+          { name: 'Riferos', url: '/riferos', chevron: true },
+          { name: 'Comunidad', url: '/comunidad', chevron: true }
         ]}
         profiles={[
           {

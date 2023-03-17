@@ -10,6 +10,7 @@ import {
   IconMoodSadDizzy as NotFound,
 } from "@tabler/icons"
 import ThemeSwitcher from "../theme"
+import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 
 interface ProfileProps {
   name: string
@@ -23,6 +24,11 @@ type Profiles = ProfileProps[]
 interface LinksProps {
   name: string
   url: string
+  chevron: boolean
+  description?: string
+  descriptionColor?: string | 'blue'
+  descriptionSize?: number | 10
+  icon?: React.ReactNode
 }
 
 type Links = LinksProps[]
@@ -49,7 +55,7 @@ function Navbar(
       }}
     >
       <img
-        src="https://admin.rifa-max.com/static/media/ticket.1e676ae5de33fcd376d5.png"
+        src={RifamaxLogo}
         className="logo"
         width="89px"
         height="54px"
@@ -82,7 +88,14 @@ function Navbar(
               Opciones
             </Menu.Label>
             <Menu.Divider />
-            <Menu.Item color="red" ta="center" fw={600}>
+            <Menu.Item 
+              color="red" 
+              ta="center" 
+              fw={600}
+              onClick={() => {
+                window.location.href = "/login"
+              }}
+            >
               Cerrar Sesión
             </Menu.Item>
           </Menu.Dropdown>
@@ -120,10 +133,10 @@ function Navbar(
         title=""
         profile={
           <AvatarCard
-            name="Andys Fuenmayor"
-            role="Admin"
+            name="Javier Diaz"
+            role="Rifero"
             border={true}
-            cedula="V-12345678"
+            cedula="V-29543140"
             image=""
             hasHover={true}
           />
