@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Card, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid } from '@mantine/core'
-import { IconTrash } from '@tabler/icons'
+import { useScrollPosition } from '../../hooks/useScroll'
 
 type clientProps = {
   name: string
@@ -34,16 +34,14 @@ function formatPlace(place: number): string {
 function TicketModal({ tickets }: modalProps) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
+  const elementRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const scroll = () => {
-      const scroll = document.getElementById('scroll')
-      if (scroll) {
-        scroll.scrollTop = scroll.scrollHeight
-      }
-    }
-    scroll()
-  }, [counter])
+  const handleScroll = ({ prevPos, currPos }: { prevPos: any; currPos: any }) => {
+    console.log('prevPos:', prevPos)
+    console.log('currPos:', currPos)
+  }
+
+  useScrollPosition(handleScroll, [], elementRef, false, 200)
 
   const bounce = keyframes({
     'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
@@ -84,6 +82,12 @@ function TicketModal({ tickets }: modalProps) {
       borderRadius: '3px 3px 0 0',
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
     },
+    stickyNav: {
+      position: 'sticky',
+      top: `${window.pageYOffset}rem`,
+      right: '0',
+      width: '100%',
+    },
     ticketsFlex: {
       width: '70%'
     },
@@ -92,7 +96,7 @@ function TicketModal({ tickets }: modalProps) {
     },
     cardTaquilla: {
       position: 'sticky',
-      top: '0',
+      top: `${window.pageYOffset}px`,
       right: '0',
       width: '100%',
       background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.white,
@@ -123,7 +127,7 @@ function TicketModal({ tickets }: modalProps) {
   }, [active])
 
   return (
-    <Card shadow={'0 0 7px 0 #5f5f5f3d'} my={20} mx={10}>
+    <Card shadow={'0 0 7px 0 #5f5f5f3d'} my={20} mx={10} ref={elementRef}>
       <div className={classes.container}>
         <div className={classes.ticketsFlex}>
           <Group key={counter}>
@@ -146,7 +150,9 @@ function TicketModal({ tickets }: modalProps) {
         </div>
         <Divider orientation="vertical" label="Sorteos" variant="dashed" mr={37} />
         <div className={classes.taquillaFlex}>
-          <nav>
+          <nav
+            className={classes.stickyNav}
+          >
             <Card 
               shadow={'0 0 7px 0 #5f5f5f3d'} 
               title="Taquilla"

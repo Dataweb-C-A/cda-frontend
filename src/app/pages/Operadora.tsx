@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
@@ -12,6 +12,19 @@ type Props = {}
 function Operadora({}: Props) {
   const theme = useMantineTheme()
   const [modalOpened, setModalOpened] = useState(false)
+  const [scrollPosition, setScrollPosition] = useState(0)
+
+  const handleScroll = () => {
+    const position = window.pageYOffset
+    setScrollPosition(position)
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   // makes a function to sort the tickets by sold status
   const filterTickets = (tickets: any) => {
@@ -37,7 +50,6 @@ function Operadora({}: Props) {
       </Drawer>
     )
   }
-
 
   const BadgeStatus = ({ status, color }: { status: string, color: string }) => {
 
