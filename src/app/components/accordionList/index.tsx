@@ -29,7 +29,7 @@ export function AccordionControl(props: AccordionControlProps) {
         centered
       >
         <Divider label="Normas" labelPosition="center" mb={15}/>
-        <Text mx={5} mb={20}>Para que los tickets se logren imprimir bien debe utilizar en formato de hoja de impresión A2</Text>
+        <Text mx={5} mb={20}>Para que los tickets se logren imprimir bien debe utilizar en formato de hoja de impresión Carta</Text>
         <PDFDownloadLink document={<TicketsMocks />} fileName={`tickets-${new Date().toISOString()}.pdf`} style={{ textDecoration: 'none' }}>
           <Button
             mt={10}
@@ -59,7 +59,7 @@ export function AccordionControl(props: AccordionControlProps) {
               <Menu.Divider />
               <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>Enviar a APP</Menu.Item>
               <Menu.Item icon={<Printer size={15} />} onClick={() => setPrintModal(true)}>
-                Guardar
+                Descargar
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>

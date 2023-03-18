@@ -9,12 +9,12 @@ function TicketsMocks({}: mocksProps) {
     page: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      paddingLeft: '60px'
+      paddingLeft: '30px'
     },
     views: {
       border: '1px solid black',
       backgroundColor: '#eee',
-      width: '32.5%',
+      width: '32.7%',
       height: '24.125%',
       marginHorizontal: '2.5px',
       marginVertical: '2.5px',
@@ -86,7 +86,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Geminis
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -136,7 +136,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Sagitario
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -186,7 +186,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Geminis
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -236,7 +236,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Tauro
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -286,7 +286,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Cancer
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -336,7 +336,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Piscis
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -386,7 +386,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Escorpio
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -436,7 +436,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Acuario
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -486,7 +486,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Virgo
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -536,7 +536,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Libra
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
@@ -586,7 +586,7 @@ function TicketsMocks({}: mocksProps) {
                 157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
               </Text>
               <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
+                Leo
               </Text>
               <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                 Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
