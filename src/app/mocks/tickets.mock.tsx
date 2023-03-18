@@ -1,5 +1,6 @@
 import { Page, Text, View, Document, StyleSheet, Image, Svg } from '@react-pdf/renderer';
 import RifamaxLogo from "../assets/images/rifamax-logo-bw.png"
+import Firma from "../assets/images/firma-ticket.png"
 import QRCode from '../components/qr';
 
 type mocksProps = {}
@@ -27,6 +28,16 @@ function TicketsMocks({}: mocksProps) {
       height: '100%',
       opacity: 0.1,
       zIndex: '-1',
+    },
+    Firma: {
+      position: 'absolute',
+      top: 0,
+      bottom: '0px',
+      left: '230px',
+      width: '40px',
+      height: '80px',
+      zIndex: '1',
+      opacity: 0.5,
     },
     container: {
       display: 'flex',
@@ -59,6 +70,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -109,6 +121,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -159,6 +172,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -209,6 +223,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -259,6 +274,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -309,6 +325,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -359,6 +376,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -409,6 +427,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -459,6 +478,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -509,6 +529,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -559,6 +580,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
@@ -609,6 +631,7 @@ function TicketsMocks({}: mocksProps) {
           <View style={styles.container}>
             <View style={styles.ticketsSection}>
               <Image style={styles.image} src={RifamaxLogo} />
+              <Image style={styles.Firma} src={Firma} />
               <Text style={{ fontSize: '9px' }}>
                 &nbsp; Agencia: &nbsp;  Los Compadres
               </Text>
