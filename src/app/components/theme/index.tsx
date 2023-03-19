@@ -3,17 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setThemeMode } from '../../config/reducers/themeSlice';
 import { RootState } from '../../config/store';
 
-function ThemeSwitcher() {
+type ThemeSwitcherProps = {
+  style?: React.CSSProperties;
+};
+
+function ThemeSwitcher({ style }: ThemeSwitcherProps) {
   const dispatch = useDispatch();
   const mode = useSelector((state: RootState) => state.theme.mode);
 
-  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newMode = event.target.checked ? 'dark' : 'light';
-    dispatch(setThemeMode(newMode));
-  };
-
   return (
-    <>
+    <div style={style}>
       {mode === 'light' ? (
         <BsFillSunFill
           size={22}
@@ -27,7 +26,7 @@ function ThemeSwitcher() {
           onClick={() => dispatch(setThemeMode('light'))}
         />
       )}
-    </>
+    </div>
   );
 }
 

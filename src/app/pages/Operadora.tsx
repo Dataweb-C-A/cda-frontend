@@ -12,21 +12,7 @@ type Props = {}
 function Operadora({}: Props) {
   const theme = useMantineTheme()
   const [modalOpened, setModalOpened] = useState(false)
-  const [scrollPosition, setScrollPosition] = useState(0)
 
-  const handleScroll = () => {
-    const position = window.pageYOffset
-    setScrollPosition(position)
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
-  // makes a function to sort the tickets by sold status
   const filterTickets = (tickets: any) => {
     const soldTickets = tickets.filter((ticket: any) => ticket.isSold === true)
     const unsoldTickets = tickets.filter((ticket: any) => ticket.isSold === false)
@@ -69,7 +55,7 @@ function Operadora({}: Props) {
     return(
       <Paper className={cx(classes.trigger)} onClick={() => setModalOpened(true)}>
         <div style={{ float: "right", top: '100px'}}>
-          <ChevronIcon style={{rotate: '-90deg', marginTop: '6px', marginLeft: '10px'}}/>
+          <ChevronIcon style={{rotate: '-90deg', marginTop: '6px', marginLeft: '10px'}} />
         </div>
         <div style={{ float: "right" }}>
           <Badge
@@ -79,7 +65,7 @@ function Operadora({}: Props) {
           >
             {status}
           </Badge>
-        </div>
+        </div> 
       </Paper>
     )
   }

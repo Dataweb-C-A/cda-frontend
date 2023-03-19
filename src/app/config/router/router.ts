@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 const Home = lazy(() => import('../../pages/Home'))
 const Login = lazy(() => import('../../pages/Login'))
+const App = lazy(() => import('../../../App'))
 
 const Router = [
   {
@@ -10,7 +11,7 @@ const Router = [
   },
   {
     path: '/',
-    component: Home,
+    component: App,
     isPrivate: true
   }
 ]

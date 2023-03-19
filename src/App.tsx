@@ -1,5 +1,5 @@
 import React from 'react'
-import { SimpleGrid } from '@mantine/core'
+import { Paper, SimpleGrid } from '@mantine/core'
 import AvatarCard from './app/components/avatarCard'
 import Navbar from './app/components/navbar'
 import Cards from './app/components/cards'
@@ -84,74 +84,21 @@ const App: React.FC = () => {
           }
         ]}
       />
-      <SimpleGrid cols={3} m={0} spacing={30}>
-        <Cards
-          right={0}
-          left={0}
-          color= "blue"
-          number="1,234"
-          label="Total de Rifas"
-        />
-        <Cards
-          right={0}
-          left={0}
-          color= "green"
-          number="1,234"
-          label="Total de Rifas"
-        />
-        <Cards
-          right={0}
-          left={0}
-          color= "red"
-          number="1,234"
-          label="Total de Rifas"
-        />
-      </SimpleGrid>
-      <SimpleGrid cols={4} m={2} spacing={80}>
-      <AvatarCard
-        cedula="V-29543140"
-        image="https://avatars.githubusercontent.com/u/25126241?v=4"
-        name="Andys Fuenmayor"
-        role="Admin"
-        width={250}
-        padding={20}
-      >
-        <ToolkitRender />
-      </AvatarCard>
-      <AvatarCard
-        cedula="V-29543140"
-        image="https://avatars.githubusercontent.com/u/25126241?v=4"
-        name="4 Bocas"
-        role="Agencia"
-        width={250}
-        padding={20}
-      >
-        <ToolkitRender />
-      </AvatarCard>
-      <AvatarCard
-        cedula="V-29543140"
-        image="https://avatars.githubusercontent.com/u/25126241?v=4"
-        name="Oswaldo Garcia"
-        role="Rifero"
-        width={250}
-        padding={20}
-      >
-        <ToolkitRender />
-      </AvatarCard>
-      <AvatarCard
-        cedula="V-29543140"
-        image="https://avatars.githubusercontent.com/u/25126241?v=4"
-        name="Javier Diaz"
-        role="Rifero"
-        width={250}
-        padding={20}
-      >
-        <ToolkitRender 
-          cols={4}
-          spacing={0}
-        />
-      </AvatarCard>
-      </SimpleGrid>
+      <Paper my='15%' mx='44%'>
+        <AvatarCard
+          cedula="V-29543140"
+          image="https://avatars.githubusercontent.com/u/25126241?v=4"
+          name="Javier Diaz"
+          role="Rifero"
+          width={250}
+          padding={20}
+        >
+          <ToolkitRender 
+            cols={4}
+            spacing={0}
+          />
+        </AvatarCard>
+      </Paper>
     </div>
   )
 }

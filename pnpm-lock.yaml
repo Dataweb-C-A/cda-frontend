@@ -28,7 +28,9 @@ specifiers:
   '@types/node-sass': ^4.11.3
   '@types/react': ^18.0.28
   '@types/react-dom': ^18.0.11
+  '@types/react-redux': ^7.1.25
   '@types/react-router-dom': 5.3.3
+  '@types/redux-thunk': ^2.1.0
   '@vitejs/plugin-react-swc': ^3.0.0
   axios: ^1.3.4
   dayjs: ^1.11.7
@@ -55,6 +57,7 @@ specifiers:
   react-redux: ^8.0.5
   react-router-dom: 5.3.4
   redux: ^4.2.1
+  redux-thunk: ^2.4.2
   rxjs: ^7.8.0
   sass: ^1.58.3
   tabler-icons-react: ^1.56.0
@@ -88,7 +91,9 @@ dependencies:
   '@tiptap/pm': 2.0.0-beta.220_f4ffqkgz5d3wev7su7t7l2rrua
   '@tiptap/react': 2.0.0-beta.209_ilkruz76jjy2bv35qkzorsk5ji
   '@tiptap/starter-kit': 2.0.0-beta.209_ca6cbdtsn7p376ahqgh64d6cpu
+  '@types/react-redux': 7.1.25
   '@types/react-router-dom': 5.3.3
+  '@types/redux-thunk': 2.1.0_redux@4.2.1
   axios: 1.3.4
   dayjs: 1.11.7
   embla-carousel-react: 7.1.0_react@18.2.0
@@ -112,6 +117,7 @@ dependencies:
   react-redux: 8.0.5_ctrls2ti7t7iutxbwkm5ipogyy
   react-router-dom: 5.3.4_react@18.2.0
   redux: 4.2.1
+  redux-thunk: 2.4.2_redux@4.2.1
   rxjs: 7.8.0
   sass: 1.59.3
   tabler-icons-react: 1.56.0_react@18.2.0
@@ -2736,6 +2742,15 @@ packages:
     dependencies:
       '@types/react': 18.0.28
 
+  /@types/react-redux/7.1.25:
+    resolution: {integrity: sha512-bAGh4e+w5D8dajd6InASVIyCo4pZLJ66oLb80F9OBLO1gKESbZcRCJpTT6uLXX+HAB57zw1WTdwJdAsewuTweg==}
+    dependencies:
+      '@types/hoist-non-react-statics': 3.3.1
+      '@types/react': 18.0.28
+      hoist-non-react-statics: 3.3.2
+      redux: 4.2.1
+    dev: false
+
   /@types/react-router-dom/5.3.3:
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
     dependencies:
@@ -2757,6 +2772,15 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
+
+  /@types/redux-thunk/2.1.0_redux@4.2.1:
+    resolution: {integrity: sha512-8M+kcrnZQYO3A40d8a1lieBFur/ab8EXHqa2dGMQqsmBaVCbNp3gd8ed/HuSjLoLA63ov/trXaXWlkiKVF4VUw==}
+    deprecated: This is a stub types definition for Redux Thunk (https://github.com/gaearon/redux-thunk). Redux Thunk provides its own type definitions, so you don't need @types/redux-thunk installed!
+    dependencies:
+      redux-thunk: 2.4.2_redux@4.2.1
+    transitivePeerDependencies:
+      - redux
+    dev: false
 
   /@types/resolve/1.17.1:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
