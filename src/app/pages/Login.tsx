@@ -40,17 +40,17 @@ function Login() {
             'Content-Type': 'application/json',
           },
         },
-      );
-      console.log(JSON.stringify(data, null, 4));
-      console.log(status);
+      )
+      console.log(JSON.stringify(data, null, 4))
+      console.log(status)
       setErrorMessage('')
       setToken(data.token)
       if (remember) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.token)
       } else {
-        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('token')
       }
-      return data;
+      return data
     } catch (error) {
       setToken('')
       setErrorMessage('Correo o contraseña incorrectos')
