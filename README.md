@@ -15,7 +15,7 @@ To manage UI we are using [Mantine UI](https://mantine.dev/) and [Redux](https:/
 </p>
 
 ## How to Compile the Project
-To compile the project, follow the steps below:
+To compile the project, follow these steps below:
 
 1. Clone the repository
 ```bash
