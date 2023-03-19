@@ -47,6 +47,8 @@ function Login() {
       setToken(data.token)
       if (remember) {
         localStorage.setItem('token', data.token);
+      } else {
+        sessionStorage.removeItem('token');
       }
       return data;
     } catch (error) {
