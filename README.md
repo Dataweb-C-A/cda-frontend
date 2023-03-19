@@ -4,7 +4,7 @@
   <img src="https://rifa-max.com/logo-rifamax.png" />
 </p>
 
-Rifamax is a raffle management system that allows the creation, sale, and management of raffles that last for 5 days. This system has a raffle module that consists of 3 phases: Raffle Creation, Sending to the APP, and Ticket Sales. Additionally, it has administrative modules such as user management, raffle management, agency management, and wallet management.
+Rifamax is a raffle management system that allows the creation, sale, and management of raffles for the lasts 5 days. This system has a raffle module that consists of 3 phases: Raffle Creation, Sending to the APP, and Ticket Sales. Additionally, it has administrative modules such as user management, raffle management, agency management, and wallet management.
 
 The system uses [TypeScript](https://www.typescriptlang.org/) language and the primary library used is [React](https://beta.reactjs.org/) with [Vite](https://vitejs.dev/). Rifamax uses JSON Web Token (JWT) for authentication and Role-Based Authentication to manage permissions. The entire system is managed by an administrator user that has access to all the features of the system.
 
