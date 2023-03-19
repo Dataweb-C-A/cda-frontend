@@ -50,6 +50,7 @@ function Login() {
       }
       return data;
     } catch (error) {
+      setToken('')
       setErrorMessage('Correo o contraseña incorrectos')
     }
   }
