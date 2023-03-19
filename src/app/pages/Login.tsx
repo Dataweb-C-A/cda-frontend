@@ -3,6 +3,7 @@ import {
   TextInput,
   PasswordInput,
   Checkbox,
+  Text,
   Anchor,
   Paper,
   Container,
@@ -11,20 +12,42 @@ import {
   Button,
   useMantineTheme
 } from '@mantine/core'
+import axios from 'axios'
 
-type LoginProps = {}
+type LoginResponse = {
+  email: string,
+  password: string
+  token: string
+}
 
-function Login({}: LoginProps) {
-  const [open, setOpen] = useState(false)
-  const [remember, setRemember] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+function Login() {
+  const [open, setOpen] = useState<boolean>(false)
+  const [remember, setRemember] = useState<boolean>(false)
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const theme = useMantineTheme()
 
-  const simulateLogin = () => {
-    if (email === 'javierdiazt406@gmail.com' && password === '12345678') {
-      window.location.href = '/dashboard'
+  async function handleLogin(remember: boolean) {
+    try {
+      const { data, status } = await axios.post<LoginResponse>(
+        'https://rifa-max.com/api/v1/login',
+        { email: email, password: password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      console.log(JSON.stringify(data, null, 4));
+      console.log(status);
+      if (remember) {
+        localStorage.setItem('token', data.token);
+      }
+      return data;
+    } catch (error) {
+      setErrorMessage('Correo o contraseña incorrectos')
     }
   }
   
@@ -39,26 +62,33 @@ function Login({}: LoginProps) {
           style={{ margin: '0 auto' }}
         />
         <TextInput label='Correo' placeholder='micorreo@rifamax.com' required withAsterisk={false} onChange={
-          (e) => setEmail(e.currentTarget.value)
+          (e: any) => setEmail(e.currentTarget.value)
         } />
         <PasswordInput label='Contraseña' placeholder='********' required withAsterisk={false} onChange={
-          (e) => setPassword(e.currentTarget.value)
+          (e: any) => setPassword(e.currentTarget.value)
         }/>
         <Group position='apart' mt='lg'>
           <Anchor href='#' color='blue' onClick={() => setOpen(!open)} style={{ display: 'none' }}>
             Olvidé mi contraseña
           </Anchor>
-          <Checkbox label='Recordarme' onChange={(e) => setRemember(e.currentTarget.checked)}/>
+          <Checkbox label='Recordarme' onChange={(e: any) => setRemember(e.currentTarget.checked)}/>
         </Group>
         <Button 
           fullWidth 
           mt='xl'
           onClick={
-            () => simulateLogin()
+            () => {
+              handleLogin(remember)
+            }
           }
         >
           Iniciar Sesión
         </Button>
+        {
+          errorMessage !== '' && (
+            <Text c='red' mt={20} ta='center'>{errorMessage}</Text>
+          )
+        }
       </Paper>
     </Container>
   )

@@ -6,7 +6,7 @@ interface RiferosProps {
     id: number;
     name: string;
     phone: string;
-  }[];
+  };
 }
 
 type TicketProps = {

@@ -11,6 +11,7 @@ import {
 } from "@tabler/icons"
 import ThemeSwitcher from "../theme"
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
+import { Link } from "react-router-dom"
 
 interface ProfileProps {
   name: string
@@ -88,16 +89,15 @@ function Navbar(
               Opciones
             </Menu.Label>
             <Menu.Divider />
-            <Menu.Item 
-              color="red" 
-              ta="center" 
-              fw={600}
-              onClick={() => {
-                window.location.href = "/login"
-              }}
-            >
-              Cerrar Sesión
-            </Menu.Item>
+            <Link to="/login" style={{ textDecoration: 'none' }}>
+              <Menu.Item 
+                color="red" 
+                ta="center" 
+                fw={600}
+              >
+                Cerrar Sesión
+              </Menu.Item>
+            </Link>
           </Menu.Dropdown>
         </Menu>
       </div>
