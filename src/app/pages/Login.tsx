@@ -26,6 +26,7 @@ function Login() {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [token, setToken] = useState<string>('')
 
   const theme = useMantineTheme()
 
@@ -42,6 +43,8 @@ function Login() {
       );
       console.log(JSON.stringify(data, null, 4));
       console.log(status);
+      setErrorMessage('')
+      setToken(data.token)
       if (remember) {
         localStorage.setItem('token', data.token);
       }
@@ -87,6 +90,11 @@ function Login() {
         {
           errorMessage !== '' && (
             <Text c='red' mt={20} ta='center'>{errorMessage}</Text>
+          )
+        }
+        {
+          token !== '' && (
+            <Text c='green' mt={20} ta='center'>Inicio de sesión exitoso</Text>
           )
         }
       </Paper>
