@@ -168,6 +168,7 @@ function Login() {
                     cursor: 'pointer',
                     backgroundColor: checkLastSession ? theme.colors.blue[5] : 'transparent',
                   }}
+                  border={true}
                   name={
                     JSON.parse(sessionStorage.getItem('lastSession') || '{}').name
                   }

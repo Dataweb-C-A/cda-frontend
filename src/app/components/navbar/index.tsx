@@ -12,6 +12,7 @@ import {
 import ThemeSwitcher from "../theme"
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 import { Link } from "react-router-dom"
+import { useUser } from "../../hooks/useUser"
 
 interface ProfileProps {
   name: string
@@ -41,6 +42,8 @@ function Navbar(
   const [isOpen, setIsOpen] = useState(false)
   const [communityOpen, setCommunityOpen] = useState(false)
   const [search, setSearch] = useState({ query: "", value: "" })
+
+  const { user } = useUser();
 
   const filteredProfiles = profiles.filter(
     (profile) =>
@@ -133,12 +136,12 @@ function Navbar(
         title=""
         profile={
           <AvatarCard
-            name="Javier Diaz"
-            role="Rifero"
+            name={user ? user.name : 'Usuario'}
+            role={user ? user.role : 'Usuario'}
             border={true}
             cedula="V-29543140"
             image=""
-            hasHover={true}
+            hasHover={false}
           />
         }
         links={links}
