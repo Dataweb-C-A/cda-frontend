@@ -8,6 +8,7 @@ type User = {
   token: string
   remenber: boolean | false
   expires: Date | string
+  lastEmail?: string | null
 }
 
 type UserState = {
@@ -33,7 +34,7 @@ export const userSlice = createSlice({
       if (user) {
         state.user = JSON.parse(user)
       }
-      
+
       if (state.user) {
         const expires = new Date(state.user.expires)
         const now = new Date()

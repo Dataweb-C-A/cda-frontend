@@ -10,7 +10,9 @@ import {
   Image,
   Group,
   Button,
-  useMantineTheme
+  Card,
+  useMantineTheme,
+  Avatar
 } from '@mantine/core'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
@@ -18,6 +20,8 @@ import RifamaxLogo from '../assets/images/rifamax-logo.png'
 import ThemeSwitcher from '../components/theme'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../config/reducers/usersSlice'
+import { useUser } from '../hooks/useUser'
+import AvatarCard from '../components/avatarCard'
 
 type User = {
   name: string,
@@ -39,6 +43,7 @@ function Login() {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [checkLastSession, setCheckLastSession] = useState<boolean>(false)
 
   const theme = useMantineTheme()
 
@@ -69,6 +74,16 @@ function Login() {
         expires: data.exp,
         avatar: null
       }))
+      if (remember) {
+        sessionStorage.setItem('lastSession', JSON.stringify({
+          name: data.user.name,
+          role: data.user.role,
+          email: email,
+          password: password,
+        }))
+      } else {
+        sessionStorage.removeItem('lastSession')
+      }
       history.push('/')
       setErrorMessage('')
       return data
@@ -93,12 +108,26 @@ function Login() {
             alt='Rifamax'
             style={{ margin: '0 auto' }}
           />
-          <TextInput label='Correo' placeholder='micorreo@rifamax.com' required withAsterisk={false} onChange={
-            (e: any) => setEmail(e.currentTarget.value)
-          } />
-          <PasswordInput label='Contraseña' placeholder='********' required withAsterisk={false} onChange={
-            (e: any) => setPassword(e.currentTarget.value)
-          } />
+          <TextInput 
+            label='Correo' 
+            placeholder='micorreo@rifamax.com' 
+            required 
+            withAsterisk={false} 
+            value={checkLastSession ? JSON.parse(sessionStorage.getItem('lastSession') || '{}').email : email}
+            onChange={
+              (e: any) => setEmail(e.currentTarget.value)
+            } 
+          />
+          <PasswordInput 
+            label='Contraseña' 
+            placeholder='********' 
+            required 
+            withAsterisk={false} 
+            value={checkLastSession ? JSON.parse(sessionStorage.getItem('lastSession') || '{}').password : password }
+            onChange={
+              (e: any) => setPassword(e.currentTarget.value)
+            } 
+          />
           <Group position='apart' mt='lg'>
             <Anchor href='#' color='blue' onClick={() => setOpen(!open)} style={{ display: 'none' }}>
               Olvidé mi contraseña
@@ -119,6 +148,34 @@ function Login() {
           {
             errorMessage !== '' && (
               <Text c='red' mt={20} ta='center'>{errorMessage}</Text>
+            )
+          }
+
+          {
+            sessionStorage.getItem('lastSession') && (
+              <div onClick={
+                () => {
+                  {
+                    setCheckLastSession(true)
+                    setEmail(JSON.parse(sessionStorage.getItem('lastSession') || '{}').email)
+                    setPassword(JSON.parse(sessionStorage.getItem('lastSession') || '{}').password)
+                  }
+                }
+              }>
+                <AvatarCard
+                  style={{
+                    marginTop: 20,
+                    cursor: 'pointer',
+                    backgroundColor: checkLastSession ? theme.colors.blue[5] : 'transparent',
+                  }}
+                  name={
+                    JSON.parse(sessionStorage.getItem('lastSession') || '{}').name
+                  }
+                  role={
+                    JSON.parse(sessionStorage.getItem('lastSession') || '{}').role
+                  }
+                />
+              </div>
             )
           }
         </Paper>

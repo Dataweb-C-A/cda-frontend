@@ -5,10 +5,10 @@ import { BsPencil as Pencil } from 'react-icons/bs'
 import { DropArea } from '../droparea'
 
 type AvatarProps = {
-  image: string | ''
+  image?: string | ''
   name: string
   role: string
-  cedula: string
+  cedula?: string
   border?: boolean | false
   width?: number | undefined
   margin?: number | undefined
