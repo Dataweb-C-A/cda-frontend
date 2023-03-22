@@ -1,11 +1,12 @@
 import { Card, Button, Text, Grid } from "@mantine/core";
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
+import Moment from "moment";
 
 interface RiferosProps {
   phone: string;
 }
 
-interface UserProps: {
+interface UserProps {
   name: string;
 }
 
@@ -14,17 +15,17 @@ type TicketProps = {
     id: number;
     numbers: string;
     awardSign: string;
-    awardNoSign: string | null;
-    plate: string | null;
-    year: string | number | null;
+    awardNoSign?: string | null;
+    plate?: string | null;
+    year?: string | number | null;
     is_send: boolean | false;
-    price?: number;
-    serial?: string;
-    money?: string;
+    price: number;
+    serial: string;
+    money: string;
     loteria?: string;
-    rifDate?: string;
-    expired?: string;
-    riferos: RiferosProps;
+    rifDate: string;
+    expired: string;
+    rifero: RiferosProps;
     user: UserProps;
     created_at: string;
   }
@@ -36,14 +37,15 @@ type TicketsLabelProps = {
   sleft?: number | 6;
   sright?: number | 6;
   fw?: number | 400;
+  mb?: number;
 };
 
 function RifaTicket({ ticket }: TicketProps) {
-  const TicketsLabel = ({label, value, sleft, sright, fw }: TicketsLabelProps) => {
+  const TicketsLabel = ({label, value, sleft, sright, fw, mb }: TicketsLabelProps) => {
     return (
       <>
         <Grid.Col span={sleft}>
-          <Text ta="start" fz="lg" fw={fw}>
+          <Text ta="start" fz="lg" fw={fw} mb={mb}>
             {label}:
           </Text>
         </Grid.Col>
@@ -85,23 +87,27 @@ function RifaTicket({ ticket }: TicketProps) {
         <hr />
         <div className="premios" style={{ marginBottom: "-18px" }}>
           <Grid>
-            <TicketsLabel label="PREMIO" value={ticket.awardSign} sleft={4} sright={8} fw={600}/>
+            <TicketsLabel label="PREMIO" value={ticket.awardSign} sleft={4} sright={8} fw={600} />
           </Grid>
         </div>
-        <div className="premios" style={{ marginBottom: "-18px" }}>
-          <Grid>
             {
-              ticket.plate && <TicketsLabel label="PLACA" value={ticket.plate} sleft={4} sright={8} fw={600} />
+              ticket.plate && (
+                <div className="premios" style={{ marginBottom: "-18px" }}>
+                  <Grid>
+                    <TicketsLabel label="PLACA" value={ticket.plate} sleft={4} sright={8} fw={600} />
+                  </Grid>
+                </div>
+              )
             }
-          </Grid>
-        </div>
-        <div className="premios" style={{ marginBottom: "-18px" }}>
-          <Grid>
             {
-              ticket.year && <TicketsLabel label="MODELO" value={ticket.year} sleft={5} sright={7} fw={600} />
+              ticket.year && (
+                <div className="premios" style={{ marginBottom: "-18px" }}>
+                  <Grid>
+                    <TicketsLabel label="MODELO" value={ticket.year} sleft={5} sright={7} fw={600} />
+                  </Grid>
+                </div>
+              )
             }
-          </Grid>
-        </div>
         <Grid>
           {
             ticket.awardNoSign && <TicketsLabel label="SIN SIGNO" value={ticket.awardNoSign} sleft={5} sright={7} fw={600} />
@@ -111,11 +117,11 @@ function RifaTicket({ ticket }: TicketProps) {
         <Grid gutter={0} grow={true}>
           <TicketsLabel label="SERIE NUMERO" value={ticket.id} sleft={8} sright={4} fw={400} />
           <TicketsLabel label="LOTERIA" value="ZULIA 7A" sleft={4} sright={8} fw={400} />
-          <TicketsLabel label="FECHA" value={ticket.rifDate} sleft={5} sright={7} fw={400} />
-          <TicketsLabel label="HORA" value={ticket.created_at} sleft={5} sright={7} fw={400} />
-          <TicketsLabel label="CADUCA" value={ticket.expired} sleft={5} sright={7} fw={400} />
+          <TicketsLabel label="FECHA" value={Moment(ticket.rifDate).format("DD/MM/YYYY")} sleft={5} sright={7} fw={400} />
+          <TicketsLabel label="HORA" value={ticket.created_at.substring(11, 19)} sleft={5} sright={7} fw={400} />
+          <TicketsLabel label="CADUCA" value={Moment(ticket.expired).format("DD/MM/YYYY")} sleft={5} sright={7} fw={400} />
           <TicketsLabel label="RIFERO" value={ticket.user.name} sleft={4} sright={8} fw={400} />
-          <TicketsLabel label="TELEFONO" value={ticket.riferos.phone} sleft={5} sright={7} fw={400} />
+          <TicketsLabel label="TELEFONO" value={ticket.rifero.phone} sleft={5} sright={7} fw={400} />
         </Grid>
         <Text ta="center" fz={15} c="#8fa2a2" style={{ margin: "20px" }}>
           Esto es una representación de como lucirán los tickets.

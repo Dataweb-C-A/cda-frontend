@@ -16,6 +16,8 @@ import RifaTicket from "./RifaTicket";
 import HelpModalBody from "./HelpModal";
 import { Zzz } from 'tabler-icons-react';
 import useTimer from "../../hooks/useTimer";
+import axios from "axios";
+import { useUser } from "../../hooks/useUser";
 
 interface RiferosProps {
   data: {
@@ -46,10 +48,39 @@ interface RifaAccordionProps {
   };
 }
 
+const ticketData =  {
+  id: 1,
+  numbers: "123",
+  awardSign: "1000$",
+  awardNoSign: "100$",
+  is_send: false,
+  price: 10,
+  serial: "NS8CH20",
+  loteria: "Zulia 7A",
+  rifDate: "2021-05-01",
+  money: "$",
+  created_at: "2023-03-14T17:15:52.836-04:00",
+  expired: "2021-05-01",
+  user: {
+    name: "Jhon Doe"
+  },
+  rifero: {
+    phone: "0412-1688466"
+  }
+};
+
 function Dashboard() {
   const [formModal, setFormModal] = useState(false);
   const [helpModal, setHelpModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+  const [tickets, setTickets] = useState([]);
+
+  function compararPorId(a: any, b: any) {
+    return b.id - a.id;
+  }
+  
+
+  const { user } = useUser();
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -59,6 +90,17 @@ function Dashboard() {
     }
 
     document.addEventListener("keydown", keyDownHandler);
+
+    axios.get('https://rifa-max.com/api/v1/rifas/actives_no_tickets', {
+      headers: {
+        ContentType: 'application/json',
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3MTEwOTA5Njh9.aSxZrUNUcL6__6clS8JscfXjel_avgDG4Zq7R4GIm9k`
+      }
+    }).then((response) => {
+      setTickets(response.data);
+    }).catch((error) => {
+      console.log(error);
+    });
 
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
@@ -152,9 +194,23 @@ function Dashboard() {
             </Button>
           </Grid.Col>
         </Grid>
-        <AccordionList data={rifaData}>
-          <RifaTicket />
-        </AccordionList>
+        {
+          tickets.sort(compararPorId).map((ticket: any) => {
+            return (
+              <AccordionList
+                data={{
+                  id: ticket.id,
+                  rifero: ticket.user.name,
+                  prize: ticket.awardSign,
+                }}
+              >
+                <RifaTicket
+                  ticket={ticket}
+                />
+              </AccordionList>
+            )
+          })
+        }
         <FormModal opened={formModal} onClose={() => setFormModal(false)} />
       </Card>
     </>

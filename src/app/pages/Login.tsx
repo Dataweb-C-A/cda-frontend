@@ -78,6 +78,7 @@ function Login() {
         sessionStorage.setItem('lastSession', JSON.stringify({
           name: data.user.name,
           role: data.user.role,
+          token: data.token,
           email: email,
           password: password,
         }))

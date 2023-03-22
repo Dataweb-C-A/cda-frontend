@@ -5,7 +5,7 @@ type User = {
   role: string
   email: string
   avatar?: string | null
-  token: string
+  token?: string | null
   remenber: boolean | false
   expires: Date | string
   lastEmail?: string | null
