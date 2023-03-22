@@ -2,30 +2,32 @@ import { Card, Button, Text, Grid } from "@mantine/core";
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 
 interface RiferosProps {
-  data: {
-    id: number;
-    name: string;
-    phone: string;
-  };
+  phone: string;
+}
+
+interface UserProps: {
+  name: string;
 }
 
 type TicketProps = {
-  data: {
-    id?: number;
+  ticket: {
+    id: number;
     numbers: string;
-    awardSign?: string;
+    awardSign: string;
     awardNoSign: string | null;
     plate: string | null;
     year: string | number | null;
     is_send: boolean | false;
     price?: number;
     serial?: string;
+    money?: string;
     loteria?: string;
     rifDate?: string;
     expired?: string;
     riferos: RiferosProps;
+    user: UserProps;
     created_at: string;
-  };
+  }
 }
 
 type TicketsLabelProps = {
@@ -34,11 +36,10 @@ type TicketsLabelProps = {
   sleft?: number | 6;
   sright?: number | 6;
   fw?: number | 400;
-  data?: TicketProps;
 };
 
-function RifaTicket() {
-  const TicketsLabel = ({label, value, sleft, sright, fw}: TicketsLabelProps) => {
+function RifaTicket({ ticket }: TicketProps) {
+  const TicketsLabel = ({label, value, sleft, sright, fw }: TicketsLabelProps) => {
     return (
       <>
         <Grid.Col span={sleft}>
@@ -75,46 +76,46 @@ function RifaTicket() {
           style={{ width: "80%", height: "80%", margin: "0 0 0 10%" }}
         />
         <Text ta="center" fz="xl" fw={600}>
-          222 - SIGNO
+          {ticket.numbers} - SIGNO
         </Text>
         <Text ta="center" fz="xl" fw={600}>
-          PRECIO: 22$
+          PRECIO: {ticket.price}{ticket.money}
         </Text>
         <br />
         <hr />
         <div className="premios" style={{ marginBottom: "-18px" }}>
           <Grid>
-            <TicketsLabel label="PREMIO" value="3000$" sleft={4} sright={8} fw={600}/>
+            <TicketsLabel label="PREMIO" value={ticket.awardSign} sleft={4} sright={8} fw={600}/>
           </Grid>
         </div>
         <div className="premios" style={{ marginBottom: "-18px" }}>
           <Grid>
             {
-              true && <TicketsLabel label="PLACA" value="Crapice" sleft={4} sright={8} fw={600} />
+              ticket.plate && <TicketsLabel label="PLACA" value={ticket.plate} sleft={4} sright={8} fw={600} />
             }
           </Grid>
         </div>
         <div className="premios" style={{ marginBottom: "-18px" }}>
           <Grid>
             {
-              true && <TicketsLabel label="MODELO" value="2010" sleft={5} sright={7} fw={600} />
+              ticket.year && <TicketsLabel label="MODELO" value={ticket.year} sleft={5} sright={7} fw={600} />
             }
           </Grid>
         </div>
         <Grid>
           {
-            true && <TicketsLabel label="SIN SIGNO" value="aaaa" sleft={5} sright={7} fw={600} />
+            ticket.awardNoSign && <TicketsLabel label="SIN SIGNO" value={ticket.awardNoSign} sleft={5} sright={7} fw={600} />
           }
         </Grid>
         <hr />
         <Grid gutter={0} grow={true}>
-          <TicketsLabel label="SERIE NUMERO" value="5000" sleft={8} sright={4} fw={400} />
+          <TicketsLabel label="SERIE NUMERO" value={ticket.id} sleft={8} sright={4} fw={400} />
           <TicketsLabel label="LOTERIA" value="ZULIA 7A" sleft={4} sright={8} fw={400} />
-          <TicketsLabel label="FECHA" value="3/3/2023" sleft={5} sright={7} fw={400} />
-          <TicketsLabel label="HORA" value="12:20:02" sleft={5} sright={7} fw={400} />
-          <TicketsLabel label="CADUCA" value="6/6/2023" sleft={5} sright={7} fw={400} />
-          <TicketsLabel label="RIFERO" value="Andys Fuenmayor" sleft={4} sright={8} fw={400} />
-          <TicketsLabel label="TELEFONO" value="0414-1234567" sleft={5} sright={7} fw={400} />
+          <TicketsLabel label="FECHA" value={ticket.rifDate} sleft={5} sright={7} fw={400} />
+          <TicketsLabel label="HORA" value={ticket.created_at} sleft={5} sright={7} fw={400} />
+          <TicketsLabel label="CADUCA" value={ticket.expired} sleft={5} sright={7} fw={400} />
+          <TicketsLabel label="RIFERO" value={ticket.user.name} sleft={4} sright={8} fw={400} />
+          <TicketsLabel label="TELEFONO" value={ticket.riferos.phone} sleft={5} sright={7} fw={400} />
         </Grid>
         <Text ta="center" fz={15} c="#8fa2a2" style={{ margin: "20px" }}>
           Esto es una representación de como lucirán los tickets.
