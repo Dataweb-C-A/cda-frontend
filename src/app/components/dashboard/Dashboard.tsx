@@ -8,6 +8,7 @@ import {
   Chip,
   Kbd,
   Modal,
+  Loader
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 import { rifaData } from "../../assets/data/rifaData";
@@ -194,6 +195,17 @@ function Dashboard() {
             </Button>
           </Grid.Col>
         </Grid>
+        {
+          tickets.length === 0 &&
+          <>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+              <Loader size='xl' variant='bars' />
+            </div>
+            <Text mt={-100} fw={300} fz={20} ta='center'>
+              Cargando rifas...
+            </Text>
+          </>
+        }
         {
           tickets.sort(compararPorId).map((ticket: any) => {
             return (
