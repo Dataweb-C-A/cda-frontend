@@ -17,60 +17,81 @@ type AccordionProps = {
   children?: React.ReactNode;
 }
 
-export function AccordionControl(props: AccordionControlProps) {
-  const [printModal, setPrintModal] = useState(false);
-  return (
-    <>
-      <Modal
-        opened={printModal}
-        onClose={() => setPrintModal(false)}
-        title={<Title order={4}>¿Desea imprimir los tickets?</Title>}
-        size="sm"
-        centered
-      >
-        <Divider label="Normas" labelPosition="center" mb={15}/>
-        <Text mx={5} mb={20}>Para que los tickets se logren imprimir bien debe utilizar en formato de hoja de impresión Carta</Text>
-        <PDFDownloadLink document={<TicketsMocks />} fileName={`tickets-${new Date().toISOString()}.pdf`} style={{ textDecoration: 'none' }}>
-          <Button
-            mt={10}
-            variant="filled"
-            color="blue"
-            size="sm"
-            fullWidth
-            onClick={() => setPrintModal(false)}
-          >
-            Descargar
-          </Button>
-        </PDFDownloadLink>
-      </Modal>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Accordion.Control {...props} />
-        <ActionIcon size="lg">
-          <Menu position='top' trigger="hover" openDelay={100} closeDelay={450}>
-            <Menu.Target>
-              <IconDots size={16} />
-            </Menu.Target>
-            <Menu.Dropdown style={{
-              width: 100,
-              marginLeft: -100,  
-              marginTop: -125
-            }}>
-              <Menu.Label>Opciones de Rifas</Menu.Label>
-              <Menu.Divider />
-              <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>Enviar a APP</Menu.Item>
-              <Menu.Item icon={<Printer size={15} />} onClick={() => setPrintModal(true)}>
-                Descargar
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        </ActionIcon>
-      </Box>
-    </>
-  );
-}
-
 export default function AccordionList({ data, children }: AccordionProps) {
   const { classes } = useStyles();
+  
+  function AccordionControl(props: AccordionControlProps) {
+    const [printModal, setPrintModal] = useState(false);
+    const [status, setStatus] = useState(false);
+    const [Pin, setPin] = useState(false);
+  
+    return (
+      <>
+        <Modal
+          opened={printModal}
+          onClose={() => setPrintModal(false)}
+          title={<Title order={4}>¿Desea imprimir los tickets?</Title>}
+          size="sm"
+          centered
+        >
+          <Divider label="Normas" labelPosition="center" mb={15}/>
+          <Text mx={5} mb={20}>Para que los tickets se logren imprimir bien debe utilizar en formato de hoja de impresión Carta</Text>
+          <PDFDownloadLink document={<TicketsMocks />} fileName={`tickets-${new Date().toISOString()}.pdf`} style={{ textDecoration: 'none' }}>
+            <Button
+              mt={10}
+              variant="filled"
+              color="blue"
+              size="sm"
+              fullWidth
+              onClick={() => setPrintModal(false)}
+            >
+              Descargar
+            </Button>
+          </PDFDownloadLink>
+        </Modal>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Accordion.Control {...props} />
+          <ActionIcon size="lg">
+            <Menu position='top' trigger="hover" openDelay={100} closeDelay={450}>
+              <Menu.Target>
+                <IconDots size={16} />
+              </Menu.Target>
+              <Menu.Dropdown style={{
+                width: 100,
+                marginLeft: -100,  
+                marginTop: -125
+              }}>
+                <Menu.Label>Opciones de Rifas</Menu.Label>
+                <Menu.Divider />
+                <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>Enviar a APP</Menu.Item>
+                <Menu.Item icon={<Printer size={15} />} onClick={() => setPrintModal(true)}>
+                  Descargar
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </ActionIcon>
+          {
+            !status || !Pin ? (
+              <Chip mr={10} ml={10} onClick={() => {
+                if(!status) {
+                  setStatus(true)
+                }
+                if(status) {
+                  setPin(true)
+                }
+              }} variant="outline" checked={false} size='sm'>
+                <Text c={status ? 'blue' : 'green'} fz={11} inherit>{status ? 'Agregar Pin' : 'Enviar a APP'}</Text>
+              </Chip>
+            ) : Pin && (
+              <Chip mr={10} ml={10} onClick={() => setStatus(true)} variant="outline" checked={false} size='sm'>
+                <Text c='grape' fz={11} inherit>Finalizado</Text>
+              </Chip>
+            )
+          }
+        </Box>
+      </>
+    );
+  }
 
   return (
     <Accordion
