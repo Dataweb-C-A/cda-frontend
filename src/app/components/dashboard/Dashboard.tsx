@@ -187,8 +187,7 @@ function Dashboard() {
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
-              disabled
-              leftIcon={<Zzz/>}
+              // leftIcon={<Zzz/>}
               onClick={() => setFormModal(true)}
             >
               Agregar Rifa
