@@ -10,6 +10,8 @@ type AccordionItem = {
   id: number;
   rifero: string;
   prize: string;
+  status: boolean;
+  pin: boolean;
 }
 
 type AccordionProps = {
@@ -22,8 +24,8 @@ export default function AccordionList({ data, children }: AccordionProps) {
   
   function AccordionControl(props: AccordionControlProps) {
     const [printModal, setPrintModal] = useState(false);
-    const [status, setStatus] = useState(false);
-    const [Pin, setPin] = useState(false);
+    const [status, setStatus] = useState(data.status);
+    const [Pin, setPin] = useState(data.pin);
   
     return (
       <>

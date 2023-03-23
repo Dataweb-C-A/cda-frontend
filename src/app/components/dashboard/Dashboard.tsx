@@ -214,6 +214,8 @@ function Dashboard() {
                   id: ticket.id,
                   rifero: ticket.user.name,
                   prize: ticket.awardSign,
+                  status: ticket.is_send,
+                  pin: ticket.pin ? true : false,
                 }}
               >
                 <RifaTicket
