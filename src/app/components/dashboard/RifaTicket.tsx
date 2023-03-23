@@ -1,6 +1,7 @@
 import { Card, Button, Text, Grid } from "@mantine/core";
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 import Moment from "moment";
+import TicketsModal from "../ticketsModal";
 
 interface RiferosProps {
   phone: string;
@@ -127,23 +128,7 @@ function RifaTicket({ ticket }: TicketProps) {
           Esto es una representación de como lucirán los tickets.
         </Text>
       </Card>
-      <Button
-        style={{
-          boxShadow: "0 0.5rem 1rem rgb(0 0 0 / 12%)",
-          padding: "0 1rem",
-          flex: "1 1 auto",
-          margin: "0 auto 0 auto",
-          maxWidth: "22rem",
-          minWidth: "auto",
-          borderRadius: "0 0 6px 6px",
-        }}
-        color="blue"
-        size="md"
-        variant="filled"
-        fullWidth
-      >
-        <Text fz="md">Ver Tickets</Text>
-      </Button>
+      <TicketsModal serial={ticket.serial}/>
     </>
   );
 }
