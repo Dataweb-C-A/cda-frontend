@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Text, Title, Card, Group, Chip, Grid } from '@mantine/core';
+import { Modal, Button, Text, Title, Card, Grid } from '@mantine/core';
 
 type TicketsModalProps = {
   serial: string;
@@ -25,13 +25,34 @@ function TicketsModal({serial}: TicketsModalProps) {
       }>
         <Grid>
         {
-          tickets.map((ticket: any) => (
+          tickets.map((ticket: any, index: number) => (
             <Grid.Col sm={12} md={4}>
               <Card shadow="sm" radius="sm">
-                <Text size="sm" weight={500}>
-                  :
+                {
+                  ticket.is_sold && (
+                    <div className='ticket-sold' style={{
+                      position: "absolute",
+                      top: "12px",
+                      right: "0",
+                      background: 'red',
+                      transform: 'rotate(45deg)'
+                    }}>
+                      <Text size="xs" weight={500}>
+                        Vendido
+                      </Text>
+                    </div>
+                  )
+                }
+                <Text size="sm" weight={300}>
+                  {index + 1}
                 </Text>
-                <Text size="xl" weight={500}>
+                <Text size="md" weight={300}>
+                  {ticket.number}
+                </Text>
+                <Text size="md" weight={300}>
+                  {ticket.sign}
+                </Text>
+                <Text size="md" weight={300}>
                   {ticket.serial}
                 </Text>
               </Card>
