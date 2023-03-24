@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Text, Title, Card, Grid } from '@mantine/core';
+import { Modal, Button, Text, Title, Card, Grid, useMantineTheme } from '@mantine/core';
 
 type TicketsModalProps = {
   serial: string;
@@ -9,6 +9,7 @@ type TicketsModalProps = {
 function TicketsModal({serial}: TicketsModalProps) {
   const [opened, { open, close }] = useDisclosure(false);
   const [tickets, setTickets] = useState([])
+  const theme = useMantineTheme();
 
   useEffect(() => {
     fetch(`https://rifa-max.com/api/v1/rifas/tickets/${serial}`)
@@ -27,7 +28,18 @@ function TicketsModal({serial}: TicketsModalProps) {
         {
           tickets.map((ticket: any, index: number) => (
             <Grid.Col sm={12} md={4}>
-              <Card shadow="sm" radius="sm">
+              <Card 
+                shadow="sm" 
+                radius="sm" 
+                bg={theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[0]}
+                style={{
+                  cursor: 'pointer',
+                }}
+                className='ticket'
+                onClick={() => {
+                  window.location.href = `https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`
+                }}
+              >
                 {
                   ticket.is_sold && (
                     <div className='ticket-sold' style={{
@@ -37,7 +49,7 @@ function TicketsModal({serial}: TicketsModalProps) {
                       background: 'red',
                       transform: 'rotate(45deg)'
                     }}>
-                      <Text size="xs" weight={500}>
+                      <Text size="xs" weight={500} c='white'>
                         Vendido
                       </Text>
                     </div>
