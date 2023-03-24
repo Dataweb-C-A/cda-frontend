@@ -1,6 +1,25 @@
 import { useState } from 'react'
-import { TextInput, NumberInput, Select, Image, Text, Title, Switch, Group, Button, Modal, Stepper } from "@mantine/core"
-import { useForm } from '@mantine/form'
+import { 
+  TextInput, 
+  NumberInput, 
+  Select, 
+  Image, 
+  Text, 
+  Title, 
+  Switch, 
+  Group, 
+  Button, 
+  Modal, 
+  Stepper, 
+} from "@mantine/core"
+import { 
+  useForm,
+  isNotEmpty, 
+  isEmail, 
+  isInRange, 
+  hasLength, 
+  matches 
+} from '@mantine/form'
 import { DatePicker } from "@mantine/dates"
 import EmojiSuccess from '/src/app/assets/images/emoji-fiesta-success.png'
 import moment from 'moment'
@@ -48,7 +67,7 @@ export default function Test({
     }
   }
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-  const form = useForm<FormProps>({
+  const form = useForm({
     initialValues: {
       rifDate: '',
       awardSign: '',
@@ -61,55 +80,36 @@ export default function Test({
       price: 0.0,
       rifero: '',
     },
-    validations: {
-      rifDate: (value: string | Date) => {
-        if (!value) return 'Fecha requerida'
-        if (new Date(value) <= new Date(moment().format('YYYY-MM-DD'))) return 'Fecha invalida'
-        return null
+    validate: {
+      rifDate: (value: Date | string) => {
+        isNotEmpty('La fecha de la rifa es requerida')
+        if (new Date(value) < new Date(moment().format('YYYY-MM-DD'))) return 'Fecha invalida'
       },
       awardSign: (value: string) => {
-        if (!value) return 'Premio requerido'
-        if (value.length > 50) return 'Caracteres excedidos'
-        return null
-      },
-      plate: (value: string) => {
-        if (!value) return 'Placa requerida'
-        return null
+        isNotEmpty('El premio de la rifa es requerido')
+        if (value.length < 5) return 'El premio debe tener mas de 5 caracteres'
       },
       year: (value: string | number) => {
-        if (!value) return 'Año requerido'
-        if (Number(value) < 1949) return 'Año invalido'
-        if (Number(value) > Number(moment().format('YYYY'))) return 'Año invalido'
-        return null
+        isNotEmpty('El año del premio es requerido')
+        if (Number(value < 1949)) return 'El año debe ser mayor a 1950'
       },
-      loteria: (value: string) => {
-        if (!value) return 'Loteria requerida'
-        return null
+      numbers: (value: string | number) => {
+        isNotEmpty('Los numeros de la rifa son requeridos')
+        if (Number(value > 999)) return 'Los numeros no pueden tener mas de 3 caracteres'
       },
-      money: (value: string) => {
-        if (!value) return 'Moneda requerida'
-        return null
+      price: isInRange({min: 1.0, max: 100.0}, 'El precio de la rifa es requerido'),
+      rifero: (value: string | number) => {
+        isNotEmpty('El rifero es requerido')
+        if (!Number(value)) return 'Rifero invalido'
       },
-      numbers: (value: string) => {
-        if (!value) return 'Numeros requeridos'
-        if (value.length > 3) return 'Caracteres excedidos'
-        return null
-      },
-      price: (value: number) => {
-        if (!value) return 'Precio requerido'
-        if (value < 0) return 'Precio invalido'
-        return null
-      },
-      rifero: (value: number | string) => {
-        if (!value) return 'Rifero requerido'
-        if (Number(value < 0)) return 'Rifero invalido'
-        return null
-      }
-    },
-    onSubmit: (values) => {
-      console.log(values)
+      loteria: isNotEmpty('La loteria es requerida')
     }
   })
+
+  const onSubmit = (values: FormProps) => {
+    console.log(values)
+    nextStep()
+  }
 
   return(
     <>
@@ -126,12 +126,13 @@ export default function Test({
         <>
           <Stepper size="xs" active={active} onStepClick={setActive} allowNextStepsSelect={false}>
             <Stepper.Step label="Datos de la rifa" description="Llena los datos de la rifa para proceder">
-              <form onSubmit={form.onSubmit(form.values)}>
+              <form 
+                onSubmit={form.onSubmit(onSubmit)}
+              >
                 <DatePicker
                   label="Fecha de la rifa"
                   placeholder="Fecha de la rifa"
-                  minDate={new Date(Number(moment().format('YYYY')), Number(moment().format('MM')-1), Number(moment().format('DD')))}
-                  defaultDate={new Date(Number(moment().format('YYYY')), Number(moment().format('MM')-1), Number(moment().format('DD')))}
+                  minDate={new Date(Number(moment().format('YYYY')), Number(moment().format('MM'))-1, Number(moment().format('DD')))}
                   required
                   error={form.errors.rifDate}
                   {...form.getInputProps('rifDate')}
@@ -155,7 +156,7 @@ export default function Test({
           }>
             Atrás
           </Button>
-          <Button onClick={nextStep}>Siguiente</Button>
+          <Button onClick={nextStep} type="submit">Siguiente</Button>
         </Group>
       </>
       </Modal>
