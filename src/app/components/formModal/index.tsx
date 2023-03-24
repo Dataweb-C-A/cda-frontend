@@ -11,35 +11,20 @@ type Props = {
 type Rifa = {
   rifDate: Date | string | null
   awardSign: string | null
-  awardNoSign: string | null
-  plate: string | null
+  awardNoSign?: string | null
+  plate?: string | null
   year: string | null
-  loteria: string | null
-  money: string | null
-  numbers: string | null
-  price: number | null
-  riferos: string[] 
+  loteria: string
+  money: string
+  numbers: string
+  price: number
+  riferos: number | null
   nro_tickets: number
 }
 
 function FormModal({opened, onClose}: Props) {
   const [active, setActive] = useState<number>(0)
   const [money, setMoney] = useState<boolean>(false)
-  const [rifa, setRifa] = useState({
-    rifDate: null,
-    awardSign: '',
-    awardNoSign: null,
-    plate: '',
-    year: '',
-    loteria: '',
-    money: '',
-    numbers: '',
-    price: 0.0,
-    riferos: [],
-    nro_tickets: 12,
-  })
-  
-  let rifas: Rifa
   
   const form = useForm<Rifa>({
     initialValues: {
@@ -49,10 +34,10 @@ function FormModal({opened, onClose}: Props) {
       plate: '',
       year: null,
       loteria: '',
-      money: '',
+      money: '$',
       numbers: '',
       price: 0.0,
-      riferos: [],
+      riferos: null,
       nro_tickets: 12,
     },
 
@@ -78,11 +63,16 @@ function FormModal({opened, onClose}: Props) {
       money: (value) => (value === '' ? 'Moneda requerida' : null),
       numbers: (value) => (Number(value) === 0 || NaN ? 'Numeros invalidos' : null),
       price: (value) => (value === 0.0 ? 'Precio requerido' : null),
-      riferos: (value) => (value.length === 0 ? 'Riferos requeridos' : null),
+      riferos: (value) => (value === null ? 'Rifero requeridos' : null),
     }
   })
 
-  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current))
+  const nextStep = () => {
+    setActive((current) => (current < 3 ? current + 1 : current))
+    if (active === 2) {
+      console.log(form.values)
+    }
+  }
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current))
 
   return (
@@ -109,128 +99,133 @@ function FormModal({opened, onClose}: Props) {
         {
           active === 0 && (
             <>
-              <DatePicker
-                label='Fecha de la rifa'
-                placeholder='Fecha de la rifa'
-                withAsterisk
-                required
-                {...form.getInputProps('rifDate')}
-              />
-              <Grid>
-                <Grid.Col xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextInput
-                    label='Premio con signo'
-                    placeholder='Premio con signo'
-                    required
-                    mt='lg'
-                    mb='lg'
-                    {...form.getInputProps('awardSign')}
-                  />
-                </Grid.Col>
-                <Grid.Col xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextInput
-                    label='Premio sin signo'
-                    placeholder='Premio sin signo'
-                    mt='lg'
-                    mb='lg'
-                    {...form.getInputProps('awardNoSign')}
-                  />
-                </Grid.Col>
-                <Grid.Col span={12}>
-                  <Title order={4} mt={-10} c='blue' mb='md' ta='center'>
-                    Opciones
-                  </Title>
-                  <Text ta='center' fz='lg' c='blue' fw={400} style={{ marginTop: '5px' }}>
-                    Dinero
-                  </Text>
-                  <div style={{
-                    margin: '-10px 0 -20px 47.2%',
-                    justifyContent: 'center',
-                  }}>
-                    <Switch
-                      checked={money}
-                      onChange={(event) => setMoney(event.currentTarget.checked)}
+              <form onSubmit={form.onSubmit(nextStep)}>
+                <DatePicker
+                  label='Fecha de la rifa'
+                  placeholder='Fecha de la rifa'
+                  withAsterisk
+                  required
+                  {...form.getInputProps('rifDate')}
+                />
+                <Grid>
+                  <Grid.Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextInput
+                      label='Premio con signo'
+                      placeholder='Premio con signo'
+                      required
                       mt='lg'
                       mb='lg'
+                      {...form.getInputProps('awardSign')}
                     />
-                  </div>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <TextInput
-                    label='Placa'
-                    placeholder='Placa'
-                    disabled={money}
-                    required={!money}
-                    {...form.getInputProps('plate')}
-                  />
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <TextInput
-                    placeholder='Modelo'
-                    label='Modelo'
-                    disabled={money}
-                    required={!money}
-                    type='number'
-                    {...form.getInputProps('year')}
-                  />
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <Select
-                    label='Loteria'
-                    placeholder='Loteria'
-                    required
-                    data={[
-                      { label: 'ZULIA 7A', value: 'ZULIA 7:05PM' },
-                      { label: 'TRIPLE PELOTICA', value: 'TRIPLE PELOTICA' },
-                    ]}
-                    {...form.getInputProps('loteria')}
-                  />
-                </Grid.Col>
-                <Grid.Col span={12}>
-                  <Select
-                    label='Moneda'
-                    placeholder='Moneda'
-                    required
-                    data={[
-                      { label: 'Dolares', value: 'Dolares' },
-                      { label: 'Bolivares', value: 'Bolivares' },
-                      { label: 'Pesos Colombianos', value: 'COP' },
-                    ]}
-                    {...form.getInputProps('money')}
-                  />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <TextInput
-                    label='Numeros'
-                    placeholder='Numeros'
-                    required
-                    type='number'
-                    {...form.getInputProps('numbers')}
-                  />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <TextInput
-                    label='Precio'
-                    placeholder='Precio'
-                    required
-                    type='number'
-                    {...form.getInputProps('price')}
-                  />
-                </Grid.Col>
-                <Grid.Col span={12}>
-                  <Select
-                    label='Rifero'
-                    placeholder='Rifero' 
-                    required
-                    data={[
-                      { label: 'Javier Diaz', value: 'Javier Diaz' },
-                      { label: 'Oswaldo Garcia', value: 'Oswaldo Garcia' },
-                      { label: 'Andys Fuenmayor', value: 'Andys Fuenmayor' },
-                    ]}
-                    {...form.getInputProps('riferos')}
-                  />
-                </Grid.Col>
-              </Grid>
+                  </Grid.Col>
+                  <Grid.Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextInput
+                      label='Premio sin signo'
+                      placeholder='Premio sin signo'
+                      mt='lg'
+                      mb='lg'
+                      {...form.getInputProps('awardNoSign')}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={12}>
+                    <Title order={4} mt={-10} c='blue' mb='md' ta='center'>
+                      Opciones
+                    </Title>
+                    <Text ta='center' fz='lg' c='blue' fw={400} style={{ marginTop: '5px' }}>
+                      Dinero
+                    </Text>
+                    <div style={{
+                      margin: '-10px 0 -20px 47.2%',
+                      justifyContent: 'center',
+                    }}>
+                      <Switch
+                        checked={money}
+                        onChange={(e) => setMoney(e.currentTarget.checked)}
+                        mt='lg'
+                        mb='lg'
+                      />
+                    </div>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <TextInput
+                      label='Placa'
+                      placeholder='Placa'
+                      disabled={money}
+                      required={!money}
+                      {...form.getInputProps('plate')}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <TextInput
+                      placeholder='Modelo'
+                      label='Modelo'
+                      disabled={money}
+                      required={!money}
+                      type='number'
+                      {...form.getInputProps('year')}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Select
+                      label='Loteria'
+                      placeholder='Loteria'
+                      disabled
+                      defaultValue='ZULIA 7A 7:05PM'
+                      data={[
+                        { label: 'ZULIA 7A', value: 'ZULIA 7A 7:05PM' },
+                        { label: 'TRIPLE PELOTICA', value: 'TRIPLE PELOTICA' },
+                      ]}
+                      {...form.getInputProps('loteria')}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={12}>
+                    <Select
+                      label='Moneda'
+                      placeholder='Moneda'
+                      defaultValue='$'
+                      required
+                      data={[
+                        { label: 'Dolares', value: '$' },
+                        { label: 'Bolivares', value: 'Bs' },
+                        { label: 'Pesos Colombianos', value: 'COP' },
+                      ]}
+                      {...form.getInputProps('money')}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <TextInput
+                      label='Numeros'
+                      placeholder='Numeros'
+                      required
+                      type='number'
+                      {...form.getInputProps('numbers')}
+                      
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <TextInput
+                      label='Precio'
+                      placeholder='Precio'
+                      required
+                      type='number'
+                      {...form.getInputProps('price')}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={12}>
+                    <Select
+                      label='Rifero'
+                      placeholder='Rifero' 
+                      required
+                      data={[
+                        { label: 'Javier Diaz', value: 'Javier Diaz' },
+                        { label: 'Oswaldo Garcia', value: 'Oswaldo Garcia' },
+                        { label: 'Andys Fuenmayor', value: 'Andys Fuenmayor' },
+                      ]}
+                      {...form.getInputProps('riferos')}
+                    />
+                  </Grid.Col>
+                </Grid>
+              </form>
             </>
           )  
         }
@@ -240,7 +235,9 @@ function FormModal({opened, onClose}: Props) {
               <Grid>
                 <Grid.Col mt={5} span={12}>
                   <Card p='lg' mb='lg'>
-                    {/* Datos de la rifa */}
+                    <Title order={4} mt={10} fw={450} mb='md' ta='center'>
+                      Fecha de la rifa {form.values.rifDate?.toString()}
+                    </Title>
                   </Card>
                 </Grid.Col>
               </Grid>
@@ -278,8 +275,8 @@ function FormModal({opened, onClose}: Props) {
           <Button 
             variant='filled' 
             color='blue' 
-            onClick={nextStep} 
-            type={active === 0 ? 'submit' : 'button'} 
+            // onClick={nextStep} 
+            type='submit'
             disabled={active === 3}
           >
             {

@@ -19,6 +19,7 @@ import { Zzz } from 'tabler-icons-react';
 import useTimer from "../../hooks/useTimer";
 import axios from "axios";
 import { useUser } from "../../hooks/useUser";
+import Test from "../formModal/test";
 
 interface RiferosProps {
   data: {
@@ -49,27 +50,6 @@ interface RifaAccordionProps {
   };
 }
 
-const ticketData =  {
-  id: 1,
-  numbers: "123",
-  awardSign: "1000$",
-  awardNoSign: "100$",
-  is_send: false,
-  price: 10,
-  serial: "NS8CH20",
-  loteria: "Zulia 7A",
-  rifDate: "2021-05-01",
-  money: "$",
-  created_at: "2023-03-14T17:15:52.836-04:00",
-  expired: "2021-05-01",
-  user: {
-    name: "Jhon Doe"
-  },
-  rifero: {
-    phone: "0412-1688466"
-  }
-};
-
 function Dashboard() {
   const [formModal, setFormModal] = useState(false);
   const [helpModal, setHelpModal] = useState(false);
@@ -79,7 +59,6 @@ function Dashboard() {
   function compararPorId(a: any, b: any) {
     return b.id - a.id;
   }
-  
 
   const { user } = useUser();
 
@@ -182,16 +161,14 @@ function Dashboard() {
             {openFilter && <FilterBody />}
           </Grid.Col>
           <Grid.Col md={6} sm={12}>
-            <Button
+            <Test
               variant="filled"
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
-              // leftIcon={<Zzz/>}
-              onClick={() => setFormModal(true)}
             >
               Agregar Rifa
-            </Button>
+            </Test>
           </Grid.Col>
         </Grid>
         {
@@ -224,7 +201,6 @@ function Dashboard() {
             )
           })
         }
-        <FormModal opened={formModal} onClose={() => setFormModal(false)} />
       </Card>
     </>
   )

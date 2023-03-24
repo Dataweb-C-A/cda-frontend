@@ -29,6 +29,9 @@ function TicketsModal({serial}: TicketsModalProps) {
           tickets.map((ticket: any, index: number) => (
             <Grid.Col sm={12} md={4}>
               <Card 
+                component='a' 
+                target='_blank' 
+                href={`https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`}
                 shadow="sm" 
                 radius="sm" 
                 bg={theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[0]}
@@ -36,9 +39,6 @@ function TicketsModal({serial}: TicketsModalProps) {
                   cursor: 'pointer',
                 }}
                 className='ticket'
-                onClick={() => {
-                  window.location.href = `https://rifa-max.com/api/v1/rifas/ticket/${ticket.serial}`
-                }}
               >
                 {
                   ticket.is_sold && (
@@ -57,15 +57,15 @@ function TicketsModal({serial}: TicketsModalProps) {
                 }
                 <Text size="sm" weight={300}>
                   {index + 1}
-                </Text>
-                <Text size="md" weight={300}>
-                  {ticket.number}
-                </Text>
-                <Text size="md" weight={300}>
-                  {ticket.sign}
-                </Text>
-                <Text size="md" weight={300}>
-                  {ticket.serial}
+                  <Text size="md" weight={300}>
+                    {ticket.number}
+                  </Text>
+                  <Text size="md" weight={300}>
+                    {ticket.sign}
+                  </Text>
+                  <Text size="md" weight={300}>
+                    {ticket.serial}
+                  </Text>
                 </Text>
               </Card>
             </Grid.Col>
