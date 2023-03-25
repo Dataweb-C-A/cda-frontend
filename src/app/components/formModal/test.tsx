@@ -111,7 +111,6 @@ export default function Test({
       price: (value: number) => {
         if (!value) return 'Precio requerido'
         if (value <= 0) return 'El precio no puede ser negativo o cero'
-        if (value > 1000) return 'El precio no puede ser mayor a 1000'
       },
       plate: (value: string) => {
         if (!value && !money) return 'Placa requerida'
