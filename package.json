@@ -20,7 +20,7 @@
     "@mantine/modals": "^5.10.2",
     "@mantine/notifications": "^5.10.2",
     "@mantine/nprogress": "^5.10.2",
-    "@mantine/prism": "^5.10.2",
+    "@mantine/prism": "^5.10.5",
     "@mantine/spotlight": "^5.10.2",
     "@mantine/tiptap": "^5.10.2",
     "@reactivex/rxjs": "^6.6.7",

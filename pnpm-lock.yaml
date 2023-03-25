@@ -12,7 +12,7 @@ specifiers:
   '@mantine/modals': ^5.10.2
   '@mantine/notifications': ^5.10.2
   '@mantine/nprogress': ^5.10.2
-  '@mantine/prism': ^5.10.2
+  '@mantine/prism': ^5.10.5
   '@mantine/spotlight': ^5.10.2
   '@mantine/tiptap': ^5.10.2
   '@react-pdf/renderer': ^3.1.7

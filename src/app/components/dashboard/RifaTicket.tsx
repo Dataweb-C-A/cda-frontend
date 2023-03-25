@@ -1,4 +1,4 @@
-import { Card, Button, Text, Grid } from "@mantine/core";
+import { Card, Button, Text, Grid, Chip, Badge } from "@mantine/core";
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 import Moment from "moment";
 import TicketsModal from "../ticketsModal";
@@ -73,13 +73,26 @@ function RifaTicket({ ticket }: TicketProps) {
           borderRadius: "6px 6px 0 0",
         }}
       >
+        <div style={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Badge color="blue">
+          {
+            Number(ticket.numbers) < 10 ? 'Terminal' : Number(ticket.numbers) < 100 ? 'Triple' : 'Normal' 
+          }
+        </Badge>
+      </div>
         <img
           src={RifamaxLogo}
           alt="ticket"
           style={{ width: "80%", height: "80%", margin: "0 0 0 10%" }}
         />
         <Text ta="center" fz="xl" fw={600}>
-          {ticket.numbers} - SIGNO
+          {
+            Number(ticket.numbers) < 10 ? '0' + ticket.numbers : Number(ticket.numbers) < 100 ? '0' + ticket.numbers : ticket.numbers
+          } - SIGNO
         </Text>
         <Text ta="center" fz="xl" fw={600}>
           PRECIO: {ticket.price}{ticket.money}
