@@ -15,9 +15,11 @@ import { Link } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
 
 interface ProfileProps {
-  name: string
-  role: string
-  cedula: string
+  user: {
+    name: string
+    role: string
+    cedula: string
+  }
   image: string | null
 }
 
@@ -47,8 +49,8 @@ function Navbar(
 
   const filteredProfiles = profiles.filter(
     (profile) =>
-      profile.name.toLowerCase().includes(search.value.toLowerCase()) ||
-      profile.cedula.toLowerCase().includes(search.value.toLowerCase())
+      profile.user.name.toLowerCase().includes(search.value.toLowerCase()) ||
+      profile.user.cedula.toLowerCase().includes(search.value.toLowerCase())
   )
 
   return (
@@ -152,7 +154,7 @@ function Navbar(
         position="right"
         title={
           <Text fw={700} fz="lg">
-            Usuarios Recientes
+            Buscar Usuarios
           </Text>
         }
         size="md"
@@ -182,10 +184,10 @@ function Navbar(
             ? filteredProfiles.map((profile, index) => (
                 <AvatarCard
                   key={index}
-                  name={profile.name}
-                  role={profile.role}
+                  name={profile.user.name}
+                  role={profile.user.role === 'Admin' ? 'Rifero' : profile.user.role}
                   border={true}
-                  cedula={profile.cedula}
+                  cedula={profile.user.cedula}
                   image={profile.image || ""}
                   style={{ marginBottom: 10 }}
                 />
@@ -200,14 +202,14 @@ function Navbar(
               </Text>
             </Card>
           ) : null}
-          <Text fw={700}>Riferos Recientes</Text>
+          <Text fw={700}>Lista de Riferos</Text>
           {profiles.map((profile, index) => (
             <AvatarCard
               key={index}
-              name={profile.name}
-              role={profile.role}
+              name={profile.user.name}
+              role={profile.user.role === 'Admin' ? 'Rifero' : profile.user.role}
               border={true}
-              cedula={profile.cedula}
+              cedula={profile.user.cedula}
               image={profile.image || ""}
               style={{ marginBottom: 10 }}
             />

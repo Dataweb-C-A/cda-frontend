@@ -61,6 +61,19 @@ function Dashboard() {
     return b.id - a.id;
   }
 
+  const filterTickets = (type: string) => {
+    switch (type) {
+      case "normal":
+        return tickets.filter((ticket: any) => ticket.numbers >= 100);
+      case "triples":
+        return setTickets(tickets.filter((ticket: any) => ticket.numbers <=  99));
+      case "terminales":
+        return setTickets(tickets.filter((ticket: any) => ticket.numbers <= 9));
+      default:
+        return tickets;
+    }
+  }
+
   const { user } = useUser();
 
   useEffect(() => {
@@ -75,7 +88,7 @@ function Dashboard() {
     axios.get('https://rifa-max.com/api/v1/rifas/actives_no_tickets', {
       headers: {
         ContentType: 'application/json',
-        Authorization: `Bearer ${user?.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((response) => {
       setTickets(response.data);
@@ -92,7 +105,7 @@ function Dashboard() {
     return (
       <>
         <Card mt={-20}>
-          <Title order={2} fw={500} mb={20}>
+          <Title order={2} fw={500} mb={20} onClick={() => filterTickets('all')}>
             Filtrar
           </Title>
           
@@ -108,13 +121,13 @@ function Dashboard() {
               Categorias:
             </Text>
             <div style={{ display: "flex", gap: "7px" }}>
-              <Chip color="blue" variant="outline" size="sm" mt={10}>
+              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('normal')}>
                 Normal
               </Chip>
-              <Chip color="blue" variant="outline" size="sm" mt={10}>
+              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('triples')}>
                 Triples
               </Chip>
-              <Chip color="blue" variant="outline" size="sm" mt={10}>
+              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('terminales')}>
                 Terminales
               </Chip>
             </div>
@@ -141,7 +154,7 @@ function Dashboard() {
               <Text fw={300} fz={20}>
                 Estado de las Rifas mensuales
               </Text>
-              {/* <Card>
+              <Card>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "5px" }}
                 >
@@ -157,9 +170,9 @@ function Dashboard() {
                     Ctrl + M
                   </Kbd>
                 </div>
-              </Card> */}
+              </Card>
             </Title>
-            {/* {openFilter && <FilterBody />} */}
+            {openFilter && <FilterBody />}
           </Grid.Col>
           <Grid.Col md={6} sm={12}>
             <FormModal
