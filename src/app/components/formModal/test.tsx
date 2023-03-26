@@ -13,7 +13,8 @@ import {
   Stepper,
   Divider,
   Box,
-  Card, 
+  Card,
+  NumberInput, 
 } from "@mantine/core"
 import { 
   useForm,
@@ -94,7 +95,7 @@ export default function Test({
       loteria: 'ZULIA 7A',
       money: '$',
       numbers: null,
-      price: 0.0,
+      price: null,
       rifero_id: null,
     },
     validate: {
@@ -188,6 +189,7 @@ export default function Test({
                       placeholder='Premio con signo'
                       mt='lg'
                       mb='lg'
+                      withAsterisk
                       error={form.errors.awardSign}
                       {...form.getInputProps('awardSign')}
                     />
@@ -223,6 +225,7 @@ export default function Test({
                       placeholder='Placa'
                       disabled={money}
                       error={form.errors.plate}
+                      withAsterisk={!money}
                       {...form.getInputProps('plate')}
                     />
                   </Grid.Col>
@@ -238,6 +241,7 @@ export default function Test({
                       label='Modelo'
                       disabled={money}
                       type='number'
+                      withAsterisk={!money}
                       error={form.errors.year}
                       {...form.getInputProps('year')}
                     />
@@ -261,10 +265,11 @@ export default function Test({
                       label='Moneda'
                       placeholder='Moneda'
                       defaultValue='$'
+                      withAsterisk
                       data={[
-                        { label: 'Dolares', value: '$' },
                         { label: 'Bolivares', value: 'Bs' },
                         { label: 'Pesos Colombianos', value: 'COP' },
+                        { label: 'Dolares Estadounidenses', value: '$' },
                       ]}
                       error={form.errors.money}
                       {...form.getInputProps('money')}
@@ -274,15 +279,18 @@ export default function Test({
                     <TextInput
                       label='Numeros'
                       placeholder='Numeros'
+                      withAsterisk
                       type='number'
                       error={form.errors.numbers}
                       {...form.getInputProps('numbers')}
                     />
                   </Grid.Col>
                   <Grid.Col span={6}>
-                    <TextInput
+                    <NumberInput
                       label='Precio'
                       placeholder='Precio'
+                      withAsterisk
+                      hideControls
                       error={form.errors.price}
                       {...form.getInputProps('price')}
                     />
@@ -290,8 +298,8 @@ export default function Test({
                   <Grid.Col span={12}>
                     <Select
                       label='Rifero'
-                      placeholder='Rifero' 
-                      required
+                      placeholder='Rifero'
+                      withAsterisk
                       error={form.errors.rifero_id}
                       data={
                         usersSelect.map((user: any) => {
