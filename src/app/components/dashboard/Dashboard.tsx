@@ -76,7 +76,7 @@ function Dashboard() {
     axios.get('https://rifa-max.com/api/v1/rifas/actives_no_tickets', {
       headers: {
         ContentType: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${user?.token}`
       }
     }).then((response) => {
       setTickets(response.data);

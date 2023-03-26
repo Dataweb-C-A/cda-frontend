@@ -24,6 +24,7 @@ import { DatePicker } from "@mantine/dates"
 import EmojiSuccess from '/src/app/assets/images/emoji-fiesta-success.png'
 import moment from 'moment'
 import axios from 'axios'
+import { useUser } from '../../hooks/useUser'
 
 type FormModalProps = {
   variant?: "filled" | "outline" | "light" | "gradient" | "white" | "default" | "subtle";
@@ -69,6 +70,8 @@ export default function Test({
       setFormModal(false)
     }, 10000)
   }
+
+  const { user } = useUser();
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
@@ -142,7 +145,7 @@ export default function Test({
       axios.post('https://rifa-max.com/api/v1/rifas', values, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${user?.token}`
         }
       }).then((res) => {
         console.log(res)
