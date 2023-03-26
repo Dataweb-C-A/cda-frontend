@@ -68,7 +68,7 @@ const ToolkitRender = ({ cols, spacing }: ToolkitProps) => {
 const App: React.FC = () => {
   return (
     <div className="app">
-      <Navbar
+      {/* <Navbar
         links={[
           { name: 'Inicio', url: '/', chevron: true },
           { name: 'Rifas', url: '/rifas', chevron: true },
@@ -83,7 +83,7 @@ const App: React.FC = () => {
             cedula: 'V-29543140'
           }
         ]}
-      />
+      /> */}
       <Paper my='15%' mx='44%'>
         <AvatarCard
           cedula="V-29543140"

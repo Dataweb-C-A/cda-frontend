@@ -6,13 +6,22 @@ import { useStyles } from './accordionList.styles';
 import { Message, Printer } from 'tabler-icons-react';
 import TicketsMocks from '../../mocks/tickets.mock';
 
-type TicketProps = {
-  serial: string;
-  sign: string;
-}
-
 type PDFProps = {
-  tickets: TicketProps[]
+  agency: string;
+  serie: string | number;
+  rifDate: string;
+  lotery: string;
+  phone: string;
+  hour: string;
+  awardNoSign: string;
+  numbers: string;
+  money: string;
+  serial: string;
+  price: string;
+  awardSign?: string | 'N/A';
+  plate?: string | 'N/A';
+  year?: string | 'N/A';
+  rifero: string;
 } 
 
 type AccordionItem = {
@@ -27,10 +36,18 @@ type AccordionItem = {
 
 type AccordionProps = {
   data: AccordionItem;
+  dataPDF: PDFProps;
   children?: React.ReactNode;
 }
 
-export default function AccordionList({ data, children }: AccordionProps) {
+function formatName(name: string): string {
+  const nameParts = name.toLowerCase().split(" ");
+  const firstName = nameParts[0].charAt(0).toUpperCase() + nameParts[0].slice(1);
+  const lastName = nameParts[1].charAt(0).toUpperCase() + nameParts[1].slice(1);
+  return `${firstName} ${lastName}`;
+}
+
+export default function AccordionList({ data, children, dataPDF }: AccordionProps) {
   const { classes } = useStyles();
 
   function AccordionControl(props: AccordionControlProps) {
@@ -38,6 +55,14 @@ export default function AccordionList({ data, children }: AccordionProps) {
     const [status, setStatus] = useState(data.status);
     const [Pin, setPin] = useState(data.pin);
     const [pinModal, setPinModal] = useState(false);
+    const [isAvailable, setIsAvailable] = useState(true);
+
+    const handleAvailable = () => {
+      setInterval(() => {
+        setIsAvailable(false);
+      }, 10000);
+      return isAvailable;
+    }
     
     const PinModal = ({ pinNumber }: { pinNumber: string | null }) => {
       return (
@@ -59,25 +84,43 @@ export default function AccordionList({ data, children }: AccordionProps) {
         <PinModal pinNumber={data.pinNumber} />
         <Modal
           opened={printModal}
-          onClose={() => setPrintModal(false)}
+          onClose={() => window.location.reload()}
           title={<Title order={4}>¿Desea imprimir los tickets?</Title>}
           size="sm"
           centered
         >
           <Divider label="Normas" labelPosition="center" mb={15}/>
           <Text mx={5} mb={20}>Para que los tickets se logren imprimir bien debe utilizar en formato de hoja de impresión Carta</Text>
-          <PDFDownloadLink document={<TicketsMocks />} fileName={`tickets-${new Date().toISOString()}.pdf`} style={{ textDecoration: 'none' }}>
-            <Button
-              mt={10}
-              variant="filled"
-              color="blue"
-              size="sm"
-              fullWidth
-              onClick={() => setPrintModal(false)}
-            >
-              Descargar
-            </Button>
+          <PDFDownloadLink document={<TicketsMocks data={dataPDF} />} fileName={`tickets-${new Date().toISOString()}.pdf`} style={{ textDecoration: 'none', display: isAvailable ? 'none' : 'block'}}>
+          {
+            !handleAvailable() && (
+                <Button
+                  mt={10}
+                  variant="filled"
+                  color="blue"
+                  size="sm"
+                  fullWidth
+                  onClick={() => setPrintModal(false)}
+                >
+                  Descargar
+                </Button>
+            )
+          }
           </PDFDownloadLink>
+          {
+            handleAvailable() && (
+              <Button
+                mt={10}
+                variant="filled"
+                color="blue"
+                size="sm"
+                fullWidth
+                loading
+              >
+                Descargar
+              </Button>
+            )
+          }
         </Modal>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Accordion.Control {...props} />
@@ -178,7 +221,7 @@ export default function AccordionList({ data, children }: AccordionProps) {
             >
               <Title order={5} ta='start' fw={620}>
                 {data.prize}
-                <Text c="blue" inherit>{data.rifero}</Text>
+                <Text c="blue" inherit>{formatName(data.rifero)}</Text>
               </Title>
             </Grid.Col>
           </Grid>

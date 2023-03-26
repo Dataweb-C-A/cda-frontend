@@ -1,11 +1,49 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Page, Text, View, Document, StyleSheet, Image, Svg } from '@react-pdf/renderer';
 import RifamaxLogo from "../assets/images/rifamax-logo-bw.png"
 import Firma from "../assets/images/firma-ticket.png"
 import QRCode from '../components/qr';
 
-type mocksProps = {}
+type TicketProps = {
+  id: number;
+  serial: string;
+  sign: string;
+}
 
-function TicketsMocks({}: mocksProps) {
+type mocksProps = {
+  data: {
+    agency: string;
+    serie: string | number;
+    rifDate: string;
+    hour: string;
+    lotery: string;
+    serial: string;
+    numbers: string;
+    phone: string;
+    money: string;
+    price: string;
+    rifero: string;
+    awardNoSign: string;
+    awardSign?: string | 'N/A';
+    plate?: string | 'N/A';
+    year?: string | 'N/A';
+  }
+}
+
+function TicketsMocks({data}: mocksProps) {
+  const [tickets, setTickets] = useState<TicketProps[]>([]);
+
+  useEffect(() => {
+    axios.get(`https://rifa-max.com/api/v1/rifas/tickets/${data.serial}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((response) => {
+      setTickets(response.data);
+    })
+  }, [])
   const styles = StyleSheet.create({
     page: {
       flexDirection: 'row',
@@ -65,618 +103,59 @@ function TicketsMocks({}: mocksProps) {
   return (
     <Document>
       <Page style={styles.page} orientation='landscape' size="A4">
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Geminis
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Sagitario
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
+        {tickets.map((ticket, index) => (
+          <View style={styles.views} key={ticket.id}>
+            <Image style={styles.WaterMark} src={RifamaxLogo} />
+            <View style={styles.container}>
+              <View style={styles.ticketsSection}>
+                <Image style={styles.image} src={RifamaxLogo} />
+                <Image style={styles.Firma} src={Firma} />
+                <Text style={{ fontSize: '9px' }}>
+                  &nbsp; Agencia: &nbsp;  {data.agency}
+                </Text>
+                <Text style={{ fontSize: '9px' }}>
+                  &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; {data.serie}
+                </Text>
+                <Text style={{ fontSize: '9px' }}>
+                  &nbsp; Fecha: &nbsp; &nbsp; &nbsp; {data.rifDate}
+                </Text>
+                <Text style={{ fontSize: '9px' }}>
+                  &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; {data.hour}
+                </Text>
+                <Text style={{ fontSize: '9px' }}>
+                  &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
+                </Text>
+                <Text style={{ fontSize: '9px' }}>
+                  &nbsp; Rifero: &nbsp; &nbsp; &nbsp; {data.rifero}
+                </Text>
+                <Text style={{ fontSize: '9px' }}>
+                  &nbsp; Telefono: &nbsp; {data.phone}
+                </Text>
+              </View>
+              <View style={styles.paramsSection}>
+                <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
+                  {data.numbers} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {data.price}{data.money}
+                </Text>
+                <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
+                  {tickets[index].sign}
+                </Text>
+                <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
+                  Premio: &nbsp; {data.awardSign}
+                </Text>
+                <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
+                  Sin Signo: &nbsp; {data.awardNoSign}
+                </Text>
+                <Text style={{ fontSize: '9px' }}>
+                  Placa: {data.plate} &nbsp;Año: {data.year}
+                </Text>
+                <Text style={{ fontSize: '9px' }}>
+                  Caduca en 5 dias Escanee aqui
+                </Text>
+                <QRCode value={`https://rifa-max.com/api/v1/rifas/ticket/${tickets[index].serial}`} type="pdf" />
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; Yohandry Bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Geminis
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Tauro
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Cancer
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Piscis
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Escorpio
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Acuario
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Virgo
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Libra
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Leo
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
-        <View style={styles.views}>
-          <Image style={styles.WaterMark} src={RifamaxLogo} />
-          <View style={styles.container}>
-            <View style={styles.ticketsSection}>
-              <Image style={styles.image} src={RifamaxLogo} />
-              <Image style={styles.Firma} src={Firma} />
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Agencia: &nbsp;  Los Compadres
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Serie &nbsp; &nbsp; &nbsp; &nbsp; 5845
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Fecha: &nbsp; &nbsp; &nbsp; 08/03/2023
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Hora: &nbsp; &nbsp; &nbsp; &nbsp; 06:00 PM
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Loteria: &nbsp; &nbsp;  Zulia 7A 7:05Pm
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Rifero: &nbsp; &nbsp; &nbsp; yohandry bohorquez
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                &nbsp; Telefono: &nbsp; 0414-1234567
-              </Text>
-            </View>
-            <View style={styles.paramsSection}>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginTop: '2px' }}>
-                157 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $20
-              </Text>
-              <Text style={{ fontSize: '13px', fontWeight: 'extrabold', marginLeft: '18px', marginBottom: '6px', marginTop:'5px' }}>
-                Capricornio
-              </Text>
-              <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
-                Premio: &nbsp; Moto+1000$+Ovejo+CajaGranReserva
-              </Text>
-              <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                Sin Signo: &nbsp; 1000$
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Placa: AA720GF &nbsp;Año: 2018
-              </Text>
-              <Text style={{ fontSize: '9px' }}>
-                Caduca en 5 dias Escanee aqui
-              </Text>
-              <QRCode value="https://rifa-max.com/api/v1/rifas/ticket/046a8b1b" type="pdf" />
-            </View>
-          </View>
-        </View>
+        ))}
       </Page>
     </Document>
   )

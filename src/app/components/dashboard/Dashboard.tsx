@@ -19,6 +19,7 @@ import { Zzz } from 'tabler-icons-react';
 import useTimer from "../../hooks/useTimer";
 import axios from "axios";
 import { useUser } from "../../hooks/useUser";
+import moment from "moment";
 
 interface RiferosProps {
   data: {
@@ -59,6 +60,19 @@ function Dashboard() {
 
   function compararPorId(a: any, b: any) {
     return b.id - a.id;
+  }
+
+  const catchTickets = (serial: string) => {
+    axios.get(`https://rifa-max.com/api/v1/rifas/tickets/${serial}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((response) => {
+      return response.data;
+    }).catch((error) => {
+      return [];
+    });
   }
 
   const filterTickets = (type: string) => {
@@ -203,6 +217,23 @@ function Dashboard() {
                   pin: ticket.pin ? true : false,
                   pinNumber: ticket.pin ? ticket.pin : null,
                   verify: ticket.verify
+                }}
+                dataPDF={{
+                  agency: ticket.user.name,
+                  serie: ticket.id,
+                  rifDate: moment(ticket.rifDate).format("DD/MM/YYYY"),
+                  hour: moment(new Date()).format("hh:mm A"),
+                  lotery: 'ZULIA 7A 7:05PM',
+                  phone: ticket.rifero.phone,
+                  awardNoSign: ticket.awardNoSign,
+                  numbers: ticket.numbers,
+                  money: ticket.money,
+                  price: ticket.price,
+                  awardSign: ticket.awardSign,
+                  serial: ticket.serial,
+                  plate: ticket.plate,
+                  year: ticket.year,
+                  rifero: ticket.user.name,
                 }}
               >
                 <RifaTicket

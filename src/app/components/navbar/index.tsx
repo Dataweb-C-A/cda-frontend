@@ -37,6 +37,13 @@ interface LinksProps {
 
 type Links = LinksProps[]
 
+function formatName(profile: any): string {
+  const nameParts = profile.user.name.toLowerCase().split(" ");
+  const firstName = nameParts[0].charAt(0).toUpperCase() + nameParts[0].slice(1);
+  const lastName = nameParts[1].charAt(0).toUpperCase() + nameParts[1].slice(1);
+  return `${firstName} ${lastName}`;
+}
+
 function Navbar(
   { profiles, links }: { profiles: Profiles; links: Links }
 ) {
@@ -184,7 +191,7 @@ function Navbar(
             ? filteredProfiles.map((profile, index) => (
                 <AvatarCard
                   key={index}
-                  name={profile.user.name}
+                  name={formatName(profile)}
                   role={profile.user.role === 'Admin' ? 'Rifero' : profile.user.role}
                   border={true}
                   cedula={profile.user.cedula}
@@ -206,7 +213,7 @@ function Navbar(
           {profiles.map((profile, index) => (
             <AvatarCard
               key={index}
-              name={profile.user.name}
+              name={formatName(profile)}
               role={profile.user.role === 'Admin' ? 'Rifero' : profile.user.role}
               border={true}
               cedula={profile.user.cedula}

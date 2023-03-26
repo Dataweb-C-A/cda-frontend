@@ -73,10 +73,10 @@ function Operadora({}: Props) {
   return (
     <>
       <ModalSell />
-      <Navbar
+      {/* <Navbar
         profiles={profiles}
         links={links}
-      />
+      /> */}
       <Card mx={15} mt={20} shadow={"0 0 7px 0 #5f5f5f3d"}>
         <Title order={3} fw={500}>
           Sorteos
