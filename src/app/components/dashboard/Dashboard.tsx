@@ -24,6 +24,7 @@ import Test from "../formModal/test";
 interface RiferosProps {
   data: {
     id?: number;
+    pin?: string;
     name?: string;
     email?: string;
     phone?: string;
@@ -43,6 +44,7 @@ interface RifaAccordionProps {
     price?: number;
     serial?: string;
     loteria?: string;
+    pin?: string;
     rifDate?: string;
     expired?: string;
     riferos?: RiferosProps;
@@ -173,14 +175,9 @@ function Dashboard() {
         </Grid>
         {
           tickets.length === 0 &&
-          <>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
-              <Loader size='xl' variant='bars' />
-            </div>
-            <Text mt={-100} fw={300} fz={20} ta='center'>
-              Cargando rifas...
-            </Text>
-          </>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+            <Loader size="lg" />
+          </div>
         }
         {
           tickets.sort(compararPorId).map((ticket: any) => {
@@ -192,6 +189,8 @@ function Dashboard() {
                   prize: ticket.awardSign,
                   status: ticket.is_send,
                   pin: ticket.pin ? true : false,
+                  pinNumber: ticket.pin ? ticket.pin : null,
+                  verify: ticket.verify
                 }}
               >
                 <RifaTicket

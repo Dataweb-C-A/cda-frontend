@@ -24,33 +24,37 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     getUser: (state) => {
-      const user = sessionStorage.getItem('user')
+      const user = localStorage.getItem('user')
       if (user) {
         state.user = JSON.parse(user)
       }
     },
     validateToken: (state) => {
-      const user = sessionStorage.getItem('user')
+      const user = localStorage.getItem('user')
       if (user) {
         state.user = JSON.parse(user)
       }
+
+      const token = state.user?.token
 
       if (state.user) {
         const expires = new Date(state.user.expires)
         const now = new Date()
         if (expires < now) {
           state.user = null
-          sessionStorage.removeItem('user')
+          localStorage.removeItem('user')
+          localStorage.removeItem('token')
         }
       }
     },
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload
-      sessionStorage.setItem('user', JSON.stringify(action.payload))
+      localStorage.setItem('user', JSON.stringify(action.payload))
+      localStorage.setItem('token', action.payload.token || '')
     },
     clearUser: (state) => {
       state.user = null
-      sessionStorage.removeItem('user')
+      localStorage.removeItem('user')
     }
   }
 })

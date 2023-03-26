@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   TextInput,
   Select, 
@@ -18,13 +18,11 @@ import {
 import { 
   useForm,
   isNotEmpty,
-  isInRange,
 } from '@mantine/form'
-import { Prism } from '@mantine/prism'
 import { DatePicker } from "@mantine/dates"
 import EmojiSuccess from '/src/app/assets/images/emoji-fiesta-success.png'
 import moment from 'moment'
-import RifaTicket from '../dashboard/RifaTicket'
+import axios from 'axios'
 
 type FormModalProps = {
   variant?: "filled" | "outline" | "light" | "gradient" | "white" | "default" | "subtle";
@@ -46,7 +44,7 @@ type FormProps = {
   money: string | null;
   numbers: string | null;
   price: number | null;
-  rifero: number | string | null;
+  rifero_id: number | string | null;
 }
 
 export default function Test({
@@ -61,8 +59,7 @@ export default function Test({
   const [formModal, setFormModal] = useState(false)
   const [active, setActive] = useState(0);
   const [money, setMoney] = useState<boolean>(false)
-  
-  const nextStep = () => setActive((current) => (current < 2 ? current + 1 : current));
+  const [usersSelect, setUsersSelect] = useState<any>([])
 
   if (active === 2) {
     setTimeout(() => {
@@ -73,6 +70,20 @@ export default function Test({
   }
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+
+  useEffect(() => {
+    axios.get('https://rifa-max.com/api/v1/riferos', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((res) => {
+      setUsersSelect(res.data)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }, [])
+
   const form = useForm({
     initialValues: {
       rifDate: null,
@@ -84,7 +95,7 @@ export default function Test({
       money: '$',
       numbers: null,
       price: 0.0,
-      rifero: null,
+      rifero_id: null,
     },
     validate: {
       rifDate: (value: Date | string) => {
@@ -116,7 +127,7 @@ export default function Test({
         if (!value && !money) return 'Placa requerida'
         isNotEmpty('La placa del premio es requerida')
       },
-      rifero: (value: string | number) => {
+      rifero_id: (value: string | number) => {
         isNotEmpty('El rifero es requerido')
         if (!Number(value)) return 'Rifero invalido'
       },
@@ -124,8 +135,25 @@ export default function Test({
     }
   })
 
-  const onSubmit = (values: FormProps) => {
-    nextStep()
+  const nextStep = (values?: FormProps) => {
+    setActive((current) => (current < 2 ? current + 1 : current))
+    active === 2 && (
+      axios.post('https://rifa-max.com/api/v1/rifas', values, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }).then((res) => {
+        console.log(res)
+        window.location.reload()
+      }).catch((err) => {
+        console.log(err)
+      })
+    )
+  }
+
+  const onSubmit = (values?: FormProps) => {
+    nextStep(values)
   }
 
   return(
@@ -143,7 +171,7 @@ export default function Test({
         <>
           <Stepper size="sm" active={active} allowNextStepsSelect={false}>
             <Stepper.Step label="Datos de la rifa" description="Llena los datos de la rifa para proceder">
-              <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
+              <form onSubmit={form.onSubmit(() => onSubmit())}>
                 <DatePicker
                   label='Fecha de la rifa'
                   placeholder='Fecha de la rifa'
@@ -264,13 +292,16 @@ export default function Test({
                       label='Rifero'
                       placeholder='Rifero' 
                       required
-                      error={form.errors.rifero}
-                      data={[
-                        { label: 'Javier Diaz', value: '1' },
-                        { label: 'Oswaldo Garcia', value: '2' },
-                        { label: 'Andys Fuenmayor', value: '3' },
-                      ]}
-                      {...form.getInputProps('rifero')}
+                      error={form.errors.rifero_id}
+                      data={
+                        usersSelect.map((user: any) => {
+                          return {
+                            label: user.user.name,
+                            value: user.id
+                          }
+                        }
+                      )}
+                      {...form.getInputProps('rifero_id')}
                     />
                   </Grid.Col>
                 </Grid>
@@ -292,7 +323,7 @@ export default function Test({
                 style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
               >
                 <Card mt="xl" p="xl" w='100%'>
-                <Group position="center" grow={true}>
+                  <Group position="center" grow={true}>
                     <Text fw={300} fz={11.5} ta="center">
                       <b>Fecha de la rifa</b>
                     </Text>
@@ -399,7 +430,7 @@ export default function Test({
               }>
                 Atrás
               </Button>
-              <Button onClick={() => nextStep()}>Siguiente</Button>
+              <Button onClick={() => onSubmit(form.values)}>Siguiente</Button>
             </Group>
           )
         }

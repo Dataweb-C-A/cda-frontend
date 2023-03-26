@@ -1,10 +1,19 @@
 import { useState } from 'react'
-import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title, Button, Menu, Modal, Divider } from '@mantine/core';
+import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title, Button, Menu, Modal, Divider, Badge } from '@mantine/core';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { IconDots } from '@tabler/icons';
 import { useStyles } from './accordionList.styles';
 import { Message, Printer } from 'tabler-icons-react';
 import TicketsMocks from '../../mocks/tickets.mock';
+
+type TicketProps = {
+  serial: string;
+  sign: string;
+}
+
+type PDFProps = {
+  tickets: TicketProps[]
+} 
 
 type AccordionItem = {
   id: number;
@@ -12,6 +21,8 @@ type AccordionItem = {
   prize: string;
   status: boolean;
   pin: boolean;
+  pinNumber: string | null;
+  verify: boolean;
 }
 
 type AccordionProps = {
@@ -21,14 +32,31 @@ type AccordionProps = {
 
 export default function AccordionList({ data, children }: AccordionProps) {
   const { classes } = useStyles();
-  
+
   function AccordionControl(props: AccordionControlProps) {
     const [printModal, setPrintModal] = useState(false);
     const [status, setStatus] = useState(data.status);
     const [Pin, setPin] = useState(data.pin);
-  
+    const [pinModal, setPinModal] = useState(false);
+    
+    const PinModal = ({ pinNumber }: { pinNumber: string | null }) => {
+      return (
+        <Modal
+          opened={pinModal}
+          onClose={() => setPinModal(false)}
+          title={<Badge variant='filled' bg={data.verify ? 'green' : 'blue'} size='xs' ml={5} mt={-30}>{data.verify ? 'Procesado' : 'En proceso'}</Badge>}
+          size="sm"
+          centered
+        >
+          <Text>El PIN de esta rifa es:</Text>
+          <Title order={4}>{pinNumber}</Title>
+        </Modal>
+      )
+    }
+    
     return (
       <>
+        <PinModal pinNumber={data.pinNumber} />
         <Modal
           opened={printModal}
           onClose={() => setPrintModal(false)}
@@ -60,15 +88,39 @@ export default function AccordionList({ data, children }: AccordionProps) {
               </Menu.Target>
               <Menu.Dropdown style={{
                 width: 100,
-                marginLeft: -100,  
-                marginTop: -125
+                marginLeft: -100,
+                marginTop: !status ? -135 : -92,
               }}>
                 <Menu.Label>Opciones de Rifas</Menu.Label>
                 <Menu.Divider />
-                <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>Enviar a APP</Menu.Item>
-                <Menu.Item icon={<Printer size={15} />} onClick={() => setPrintModal(true)}>
-                  Descargar
-                </Menu.Item>
+                {
+                  status && Pin && (
+                    <Menu.Item icon={<Message size={15} />} onClick={() => setPinModal(true)}>
+                      Finalizado
+                    </Menu.Item>
+                  )
+                }
+                {
+                  status && !Pin && (
+                    <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>
+                      Agregar PIN
+                    </Menu.Item>
+                  )
+                }
+                {
+                  !status && (
+                    <Menu.Item icon={<Message size={15} />} onClick={() => console.log('Edit')}>
+                      Enviar a APP
+                    </Menu.Item>
+                  )
+                }
+                {
+                  !status && (
+                    <Menu.Item icon={<Printer size={15} />} onClick={() => setPrintModal(true)}>
+                      Descargar
+                    </Menu.Item>
+                  )
+                }
               </Menu.Dropdown>
             </Menu>
           </ActionIcon>
