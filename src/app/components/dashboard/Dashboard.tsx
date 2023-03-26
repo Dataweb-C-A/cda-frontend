@@ -19,7 +19,6 @@ import { Zzz } from 'tabler-icons-react';
 import useTimer from "../../hooks/useTimer";
 import axios from "axios";
 import { useUser } from "../../hooks/useUser";
-import Test from "../formModal/test";
 
 interface RiferosProps {
   data: {
@@ -163,14 +162,14 @@ function Dashboard() {
             {/* {openFilter && <FilterBody />} */}
           </Grid.Col>
           <Grid.Col md={6} sm={12}>
-            <Test
+            <FormModal
               variant="filled"
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
             >
               Agregar Rifa
-            </Test>
+            </FormModal>
           </Grid.Col>
         </Grid>
         {

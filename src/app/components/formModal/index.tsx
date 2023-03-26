@@ -1,110 +1,188 @@
-import { useState } from 'react'
-import { Modal, Group, TextInput, Stepper, Button, Title, Grid, Switch, Text, Select, Card, Code } from '@mantine/core'
-import { useForm } from '@mantine/form'
-import { DatePicker } from '@mantine/dates'
+import { useState, useEffect } from 'react'
+import { 
+  TextInput,
+  Select, 
+  Grid,
+  Image, 
+  Text, 
+  Title, 
+  Switch, 
+  Group, 
+  Button, 
+  Modal, 
+  Stepper,
+  Divider,
+  Box,
+  Card,
+  NumberInput, 
+} from "@mantine/core"
+import { 
+  useForm,
+  isNotEmpty,
+} from '@mantine/form'
+import { DatePicker } from "@mantine/dates"
+import EmojiSuccess from '/src/app/assets/images/emoji-fiesta-success.png'
+import moment from 'moment'
+import axios from 'axios'
+import { useUser } from '../../hooks/useUser'
 
-type Props = {
-  opened: boolean
-  onClose: () => void
+type FormModalProps = {
+  variant?: "filled" | "outline" | "light" | "gradient" | "white" | "default" | "subtle";
+  color: 'blue' | 'red' | 'green' | 'yellow' | 'teal' | 'pink' | 'gray' | 'violet' | 'indigo' | 'cyan' | 'orange';
+  style: object;
+  className: string;
+  leftIcon?: React.ReactNode;
+  disabled?: boolean | false;
+  children?: React.ReactNode;
 }
 
-type Rifa = {
-  rifDate: Date | string | null
-  awardSign: string | null
-  awardNoSign?: string | null
-  plate?: string | null
-  year: string | null
-  loteria: string
-  money: string
-  numbers: string
-  price: number
-  riferos: number | null
-  nro_tickets: number
+type FormProps = {
+  rifDate: string | Date | null;
+  awardSign: string | null;
+  awardNoSign?: string | null;
+  plate?: string | null;
+  year?: string | number | null;
+  loteria?: string | 'Zulia 7A 7:05PM' | null;
+  money: string | null;
+  numbers: string | null;
+  price: number | null;
+  rifero_id: number | string | null;
 }
 
-function FormModal({opened, onClose}: Props) {
-  const [active, setActive] = useState<number>(0)
+export default function FormModal({
+  variant,
+  color,
+  style,
+  className,
+  leftIcon,
+  disabled,
+  children
+}: FormModalProps) {
+  const [formModal, setFormModal] = useState(false)
+  const [active, setActive] = useState(0);
   const [money, setMoney] = useState<boolean>(false)
-  
-  const form = useForm<Rifa>({
+  const [usersSelect, setUsersSelect] = useState<any>([])
+
+  if (active === 2) {
+    setTimeout(() => {
+      setActive(0)
+      form.reset()
+      setFormModal(false)
+    }, 10000)
+  }
+
+  const { user } = useUser();
+
+  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+
+  useEffect(() => {
+    axios.get('https://rifa-max.com/api/v1/riferos', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((res) => {
+      setUsersSelect(res.data)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }, [])
+
+  const form = useForm({
     initialValues: {
       rifDate: null,
-      awardSign: '',
+      awardSign: null,
       awardNoSign: null,
-      plate: '',
+      plate: null,
       year: null,
-      loteria: '',
+      loteria: 'ZULIA 7A',
       money: '$',
-      numbers: '',
-      price: 0.0,
-      riferos: null,
-      nro_tickets: 12,
+      numbers: null,
+      price: null,
+      rifero_id: null,
     },
-
     validate: {
-      rifDate: (value) => {
+      rifDate: (value: Date | string) => {
         if (!value) return 'Fecha requerida'
-        if (value < new Date()) return 'Fecha invalida'
-        return null
+        isNotEmpty('La fecha de la rifa es requerida')
+        if (new Date(value) < new Date(moment().format('YYYY-MM-DD'))) return 'Fecha invalida'
       },
-      awardSign: (value) => {
+      awardSign: (value: string) => {
         if (!value) return 'Premio requerido'
-        if (value.length < 4) return 'Caracteres insuficientes'
-        if (value.length > 50) return 'Caracteres excedidos'
-        return null
+        isNotEmpty('El premio de la rifa es requerido')
+        if (value.length < 3) return 'El premio debe tener mas de 3 caracteres'
       },
-      plate: (value) => {
-        if (!value) return 'Placa requerida'
-        if (value.length < 3) return 'Caracteres insuficientes'
-        return null
+      year: (value: string | number) => {
+        if (!value && !money) return 'Año requerido'
+        if (value !== null) {
+          if (Number(value < 1949)) return 'El año debe ser mayor a 1950'
+        }
       },
-      year: (value) => ( value !== null ? /^[a-zA-Z0-9]*$/.test(value) ? null : 'Modelo invalido' : null),
-      loteria: (value) => (value === '' ? 'Loteria requerida' : null),
-      money: (value) => (value === '' ? 'Moneda requerida' : null),
-      numbers: (value) => (Number(value) === 0 || NaN ? 'Numeros invalidos' : null),
-      price: (value) => (value === 0.0 ? 'Precio requerido' : null),
-      riferos: (value) => (value === null ? 'Rifero requeridos' : null),
+      numbers: (value: string | number) => {
+        if (!value) return 'Numero requeridos'
+        isNotEmpty('Los numeros de la rifa son requeridos')
+        if (Number(value > 999)) return 'Los numeros no pueden tener mas de 3 caracteres'
+      },
+      price: (value: number) => {
+        if (!value) return 'Precio requerido'
+        if (value <= 0) return 'El precio no puede ser negativo o cero'
+      },
+      plate: (value: string) => {
+        if (!value && !money) return 'Placa requerida'
+        isNotEmpty('La placa del premio es requerida')
+      },
+      rifero_id: (value: string | number) => {
+        isNotEmpty('El rifero es requerido')
+        if (!Number(value)) return 'Rifero invalido'
+      },
+      loteria: isNotEmpty('La loteria es requerida')
     }
   })
 
-  const nextStep = () => {
-    setActive((current) => (current < 3 ? current + 1 : current))
-    if (active === 2) {
-      console.log(form.values)
-    }
+  const nextStep = (values?: FormProps) => {
+    setActive((current) => (current < 2 ? current + 1 : current))
+    active === 2 && (
+      axios.post('https://rifa-max.com/api/v1/rifas', values, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`
+        }
+      }).then((res) => {
+        console.log(res)
+        window.location.reload()
+      }).catch((err) => {
+        console.log(err)
+      })
+    )
   }
-  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current))
 
-  return (
+  const onSubmit = (values?: FormProps) => {
+    nextStep(values)
+  }
+
+  return(
     <>
       <Modal
-        opened={opened}
-        onClose={onClose}
-        title='Agregar Rifas'
-        size='xl'
+        opened={formModal}
+        onClose={() => {
+          setFormModal(false)
+          setActive(0)
+          form.reset()
+        }}
+        title="Agregar Rifa"
+        size="xl"
       >
         <>
-        <Stepper active={active} breakpoint='sm'>
-          <Stepper.Step label='Paso 1' description='Datos de la rifa'>
-            <Title order={4} mt={-10} c='blue' mb='md' ta='center'>
-              Llena los datos de la rifa
-            </Title>
-          </Stepper.Step>
-          <Stepper.Step label='Paso 2' description='Verificar'>
-            <Title order={4} mt={-10} c='blue' mb='md' ta='center'>
-              Verifica los datos
-            </Title>
-          </Stepper.Step>
-        </Stepper>
-        {
-          active === 0 && (
-            <>
-              <form onSubmit={form.onSubmit(nextStep)}>
+          <Stepper size="sm" active={active} allowNextStepsSelect={false}>
+            <Stepper.Step label="Datos de la rifa" description="Llena los datos de la rifa para proceder">
+              <form onSubmit={form.onSubmit(() => onSubmit())}>
                 <DatePicker
                   label='Fecha de la rifa'
                   placeholder='Fecha de la rifa'
                   withAsterisk
-                  required
+                  minDate={new Date(moment().add(1, 'days').format('YYYY-MM-DD'))}
+                  maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
+                  error={form.errors.rifDate}
                   {...form.getInputProps('rifDate')}
                 />
                 <Grid>
@@ -112,37 +190,35 @@ function FormModal({opened, onClose}: Props) {
                     <TextInput
                       label='Premio con signo'
                       placeholder='Premio con signo'
-                      required
                       mt='lg'
                       mb='lg'
+                      withAsterisk
+                      error={form.errors.awardSign}
                       {...form.getInputProps('awardSign')}
                     />
                   </Grid.Col>
                   <Grid.Col xs={6} sm={6} md={6} lg={6} xl={6}>
                     <TextInput
                       label='Premio sin signo'
-                      placeholder='Premio sin signo'
+                      placeholder='Premio sin signo (opcional)'
                       mt='lg'
                       mb='lg'
+                      error={form.errors.awardNoSign}
                       {...form.getInputProps('awardNoSign')}
                     />
                   </Grid.Col>
                   <Grid.Col span={12}>
-                    <Title order={4} mt={-10} c='blue' mb='md' ta='center'>
-                      Opciones
-                    </Title>
+                    <Divider label='▼&nbsp;&nbsp;  Opciones de la Rifa  &nbsp;&nbsp;▼' labelPosition='center' mb='lg'/>
                     <Text ta='center' fz='lg' c='blue' fw={400} style={{ marginTop: '5px' }}>
                       Dinero
                     </Text>
-                    <div style={{
-                      margin: '-10px 0 -20px 47.2%',
-                      justifyContent: 'center',
-                    }}>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
                       <Switch
                         checked={money}
+                        mx='auto'
                         onChange={(e) => setMoney(e.currentTarget.checked)}
-                        mt='lg'
-                        mb='lg'
+                        mt='xs'
+                        mb='md'
                       />
                     </div>
                   </Grid.Col>
@@ -151,17 +227,25 @@ function FormModal({opened, onClose}: Props) {
                       label='Placa'
                       placeholder='Placa'
                       disabled={money}
-                      required={!money}
+                      error={form.errors.plate}
+                      withAsterisk={!money}
                       {...form.getInputProps('plate')}
                     />
                   </Grid.Col>
                   <Grid.Col span={4}>
+                    {
+                      money && (
+                        form.values.year = null,
+                        form.values.plate = null
+                      )
+                    }
                     <TextInput
                       placeholder='Modelo'
                       label='Modelo'
                       disabled={money}
-                      required={!money}
                       type='number'
+                      withAsterisk={!money}
+                      error={form.errors.year}
                       {...form.getInputProps('year')}
                     />
                   </Grid.Col>
@@ -170,11 +254,12 @@ function FormModal({opened, onClose}: Props) {
                       label='Loteria'
                       placeholder='Loteria'
                       disabled
-                      defaultValue='ZULIA 7A 7:05PM'
+                      defaultValue='ZULIA 7A'
                       data={[
-                        { label: 'ZULIA 7A', value: 'ZULIA 7A 7:05PM' },
+                        { label: 'ZULIA 7A 7:05PM', value: 'ZULIA 7A' },
                         { label: 'TRIPLE PELOTICA', value: 'TRIPLE PELOTICA' },
                       ]}
+                      error={form.errors.loteria}
                       {...form.getInputProps('loteria')}
                     />
                   </Grid.Col>
@@ -183,12 +268,13 @@ function FormModal({opened, onClose}: Props) {
                       label='Moneda'
                       placeholder='Moneda'
                       defaultValue='$'
-                      required
+                      withAsterisk
                       data={[
-                        { label: 'Dolares', value: '$' },
                         { label: 'Bolivares', value: 'Bs' },
                         { label: 'Pesos Colombianos', value: 'COP' },
+                        { label: 'Dolares Estadounidenses', value: '$' },
                       ]}
+                      error={form.errors.money}
                       {...form.getInputProps('money')}
                     />
                   </Grid.Col>
@@ -196,98 +282,182 @@ function FormModal({opened, onClose}: Props) {
                     <TextInput
                       label='Numeros'
                       placeholder='Numeros'
-                      required
+                      withAsterisk
                       type='number'
+                      error={form.errors.numbers}
                       {...form.getInputProps('numbers')}
-                      
                     />
                   </Grid.Col>
                   <Grid.Col span={6}>
-                    <TextInput
+                    <NumberInput
                       label='Precio'
                       placeholder='Precio'
-                      required
-                      type='number'
+                      withAsterisk
+                      hideControls
+                      error={form.errors.price}
                       {...form.getInputProps('price')}
                     />
                   </Grid.Col>
                   <Grid.Col span={12}>
                     <Select
                       label='Rifero'
-                      placeholder='Rifero' 
-                      required
-                      data={[
-                        { label: 'Javier Diaz', value: 'Javier Diaz' },
-                        { label: 'Oswaldo Garcia', value: 'Oswaldo Garcia' },
-                        { label: 'Andys Fuenmayor', value: 'Andys Fuenmayor' },
-                      ]}
-                      {...form.getInputProps('riferos')}
+                      placeholder='Rifero'
+                      withAsterisk
+                      error={form.errors.rifero_id}
+                      data={
+                        usersSelect.map((user: any) => {
+                          return {
+                            label: user.user.name,
+                            value: user.id
+                          }
+                        }
+                      )}
+                      {...form.getInputProps('rifero_id')}
                     />
                   </Grid.Col>
                 </Grid>
+                <Group position="center" mt="xl">
+                  <Button variant="default" onClick={prevStep} disabled={
+                    active === 2 ? true : false
+                  }>
+                    Atrás
+                  </Button>
+                  <Button type="submit">Siguiente</Button>
+                </Group>
               </form>
-            </>
-          )  
-        }
+            </Stepper.Step>
+            <Stepper.Step label="Verificación" description="Verifica que los datos de la rifa sean correctos">
+              <Box
+                display="flex"
+                ta="center"
+                p="xl"
+                style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+              >
+                <Card mt="xl" p="xl" w='100%'>
+                  <Group position="center" grow={true}>
+                    <Text fw={300} fz={11.5} ta="center">
+                      <b>Fecha de la rifa</b>
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      =
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      {moment(form.values.rifDate).format('DD/MM/YYYY')}
+                    </Text>
+                  </Group>
+                  <Group position="center" grow={true}>
+                    <Text fw={300} fz={11.5} ta="center">
+                      <b>Premio con signo:</b>
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      =
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      {form.values.awardSign}
+                    </Text>
+                  </Group>
+                  <Group position="center" grow={true}>
+                    <Text fw={300} fz={11.5} ta="center">
+                      <b>Premio sin signo:</b>
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      =
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      {form.values.awardNoSign || 'No aplica'}
+                    </Text>
+                  </Group>
+                  <Group position="center" grow={true}>
+                    <Text fw={300} fz={11.5} ta="center">
+                      <b>Placa:</b>
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      =
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      {form.values.plate || 'No aplica'}
+                    </Text>
+                  </Group>
+                  <Group position="center" grow={true}>
+                    <Text fw={300} fz={11.5} ta="center">
+                      <b>Modelo:</b> 
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      =
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      {form.values.year || 'No aplica'}
+                    </Text>
+                  </Group>
+                  <Group position="center" grow={true}>
+                    <Text fw={300} fz={11.5} ta="center">
+                      <b>Loteria:</b>
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      =
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      {form.values.loteria}
+                    </Text>
+                  </Group>
+                  <Group position="center" grow={true}>
+                    <Text fw={300} fz={11.5} ta="center">
+                      <b>Numeros:</b>
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      =
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      {form.values.numbers}
+                    </Text>
+                  </Group>
+                  <Group position="center" grow={true}>
+                    <Text fw={300} fz={11.5} ta="center">
+                      <b>Precio:</b>
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      =
+                    </Text>
+                    <Text fw={300} fz={11.5} ta="center">
+                      {form.values.price}{form.values.money}
+                    </Text>
+                  </Group>
+                </Card>
+              </Box>
+            </Stepper.Step>
+            <Stepper.Completed>
+              <Title order={4} c="green" ta="center" my={10}>Rifa agregada con exito</Title>
+              <Image src={EmojiSuccess} mx='auto' my={20} width={125} height={125} alt="Emoji de fiesta" style={{ userSelect: 'none' }}/>
+              <Text fw={300} fz={11.5} ta="center">
+                Puedes cerrar esta ventana o darle a "Siguiente" para cerrarla automaticamente
+              </Text>
+            </Stepper.Completed>
+          </Stepper>
         {
-          active === 1 && (
-            <>
-              <Grid>
-                <Grid.Col mt={5} span={12}>
-                  <Card p='lg' mb='lg'>
-                    <Title order={4} mt={10} fw={450} mb='md' ta='center'>
-                      Fecha de la rifa {form.values.rifDate?.toString()}
-                    </Title>
-                  </Card>
-                </Grid.Col>
-              </Grid>
-            </>
-          )  
-        }
-        {
-          active === 2 && (
-            <>
-              <Grid>
-                <Grid.Col mt={20} span={12}>
-                  <Card p='lg' mb='lg'>
-                    <Title order={4} mt={10} fw={450} mb='md' ta='center'>
-                      Esta seguro de crear la rifa?
-                    </Title>
-                  </Card>
-                </Grid.Col>
-              </Grid>
-            </>
+          active > 0 && (
+            <Group position="center" mt="xl">
+              <Button variant="default" onClick={prevStep} disabled={
+                active === 2 ? true : false
+              }>
+                Atrás
+              </Button>
+              <Button onClick={() => onSubmit(form.values)}>Siguiente</Button>
+            </Group>
           )
         }
-        {
-          active === 3 ? (
-            <Code>
-              {
-                JSON.stringify(form.values, null, 2)
-              }
-            </Code>
-          ) : null
-        }
-        <Group position='center' mt='xl'>
-          <Button variant='default' onClick={prevStep} disabled={active === 0}>
-            Anterior
-          </Button>
-          <Button 
-            variant='filled' 
-            color='blue' 
-            // onClick={nextStep} 
-            type='submit'
-            disabled={active === 3}
-          >
-            {
-              active === 2 ? 'Finalizar' : 'Siguiente'
-            }
-          </Button>
-        </Group>
-        </>
+      </>
       </Modal>
+      <Button
+        variant={variant}
+        color={color}
+        style={style}
+        className={className}
+        leftIcon={leftIcon}
+        disabled={disabled}
+        onClick={() => setFormModal(true)}
+      >
+        {children}
+      </Button>
     </>
   )
-}
-
-export default FormModal
+} 
