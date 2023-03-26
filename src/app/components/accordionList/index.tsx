@@ -1,10 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Accordion, ActionIcon, AccordionControlProps, Box, Chip, Text, Grid, Title, Button, Menu, Modal, Divider, Badge } from '@mantine/core';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { IconDots } from '@tabler/icons';
 import { useStyles } from './accordionList.styles';
 import { Message, Printer } from 'tabler-icons-react';
 import TicketsMocks from '../../mocks/tickets.mock';
+import axios from 'axios';
+
+type RifaTicketsProps = {
+  id: number;
+  serial: string;
+  sign: string;
+}
 
 type PDFProps = {
   agency: string;
@@ -55,15 +62,27 @@ export default function AccordionList({ data, children, dataPDF }: AccordionProp
     const [status, setStatus] = useState(data.status);
     const [Pin, setPin] = useState(data.pin);
     const [pinModal, setPinModal] = useState(false);
+    const [error, setError] = useState(false);
     const [isAvailable, setIsAvailable] = useState(true);
+    const [rifaTicket, setRifaTicket] = useState<RifaTicketsProps[]>([{
+      id: 0,
+      serial: '',
+      sign: ''
+    }]);
 
-    const handleAvailable = () => {
-      setInterval(() => {
-        setIsAvailable(false);
-      }, 10000);
-      return isAvailable;
+    const handlePrint = async () => {
+      await axios.get(`https://rifa-max.com/api/v1/rifas/tickets/${dataPDF.serial}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }).then((response) => {
+        setRifaTicket(response.data);
+        return setIsAvailable(false);
+      }).catch(() => {
+        return setError(true);
+      })
     }
-    
     const PinModal = ({ pinNumber }: { pinNumber: string | null }) => {
       return (
         <Modal
@@ -90,10 +109,24 @@ export default function AccordionList({ data, children, dataPDF }: AccordionProp
           centered
         >
           <Divider label="Normas" labelPosition="center" mb={15}/>
+          {isAvailable}
           <Text mx={5} mb={20}>Para que los tickets se logren imprimir bien debe utilizar en formato de hoja de impresión Carta</Text>
-          <PDFDownloadLink document={<TicketsMocks data={dataPDF} />} fileName={`tickets-${new Date().toISOString()}.pdf`} style={{ textDecoration: 'none', display: isAvailable ? 'none' : 'block'}}>
+          <PDFDownloadLink 
+            document={
+              <TicketsMocks 
+                data={dataPDF}
+                tickets={rifaTicket}
+              />
+            } 
+            fileName={
+              `tickets-${new Date().toISOString()}.pdf`
+            } 
+            style={{ 
+              textDecoration: 'none'
+            }}
+          >
           {
-            !handleAvailable() && (
+            !isAvailable && (
                 <Button
                   mt={10}
                   variant="filled"
@@ -108,7 +141,7 @@ export default function AccordionList({ data, children, dataPDF }: AccordionProp
           }
           </PDFDownloadLink>
           {
-            handleAvailable() && (
+            isAvailable && (
               <Button
                 mt={10}
                 variant="filled"

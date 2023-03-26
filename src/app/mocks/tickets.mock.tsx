@@ -28,22 +28,11 @@ type mocksProps = {
     awardSign?: string | 'N/A';
     plate?: string | 'N/A';
     year?: string | 'N/A';
-  }
+  },
+  tickets: TicketProps[]
 }
 
-function TicketsMocks({data}: mocksProps) {
-  const [tickets, setTickets] = useState<TicketProps[]>([]);
-
-  useEffect(() => {
-    axios.get(`https://rifa-max.com/api/v1/rifas/tickets/${data.serial}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    }).then((response) => {
-      setTickets(response.data);
-    })
-  }, [])
+function TicketsMocks({data, tickets}: mocksProps) {
   const styles = StyleSheet.create({
     page: {
       flexDirection: 'row',
@@ -103,7 +92,7 @@ function TicketsMocks({data}: mocksProps) {
   return (
     <Document>
       <Page style={styles.page} orientation='landscape' size="A4">
-        {tickets.map((ticket, index) => (
+        {tickets.map((ticket: any, index: number) => (
           <View style={styles.views} key={ticket.id}>
             <Image style={styles.WaterMark} src={RifamaxLogo} />
             <View style={styles.container}>

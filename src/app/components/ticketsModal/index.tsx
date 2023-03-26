@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Text, Title, Card, Grid, useMantineTheme } from '@mantine/core';
+import { Modal, Button, Text, Title, Card, Grid, useMantineTheme, Loader } from '@mantine/core';
 
 type TicketsModalProps = {
   serial: string;
@@ -11,11 +11,17 @@ function TicketsModal({serial}: TicketsModalProps) {
   const [tickets, setTickets] = useState([])
   const theme = useMantineTheme();
 
-  useEffect(() => {
-    fetch(`https://rifa-max.com/api/v1/rifas/tickets/${serial}`)
+  // useEffect(() => {
+  //   fetch(`https://rifa-max.com/api/v1/rifas/tickets/${serial}`)
+  //     .then((response) => response.json())
+  //     .then((data) => setTickets(data))
+  // }, [])
+
+  const catchTickets = async () => {
+    await fetch(`https://rifa-max.com/api/v1/rifas/tickets/${serial}`)
       .then((response) => response.json())
       .then((data) => setTickets(data))
-  }, [])
+  }
   
     return (
     <>
@@ -25,6 +31,11 @@ function TicketsModal({serial}: TicketsModalProps) {
         </Title>
       }>
         <Grid>
+        {
+          tickets.length === 0 && (
+            <Loader my={50} mx='auto' />
+          )
+        }
         {
           tickets.map((ticket: any, index: number) => (
             <Grid.Col sm={12} md={4}>
@@ -88,7 +99,10 @@ function TicketsModal({serial}: TicketsModalProps) {
         size="md"
         variant="filled"
         fullWidth
-        onClick={open}
+        onClick={() => {
+          open()
+          catchTickets()
+        }}
       >
         <Text fz="md">Ver Tickets</Text>
       </Button>
