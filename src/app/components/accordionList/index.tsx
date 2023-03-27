@@ -220,7 +220,7 @@ export default function AccordionList({ data, children, dataPDF }: AccordionProp
                 <Text c={status ? 'blue' : 'green'} fz={11} inherit>{status ? 'Agregar Pin' : 'Enviar a APP'}</Text>
               </Chip>
             ) : Pin && (
-              <Chip mr={10} ml={10} onClick={() => setStatus(true)} variant="outline" checked={false} size='sm'>
+              <Chip mr={10} ml={10} onClick={() => setPinModal(true)} variant="outline" checked={false} size='sm'>
                 <Text c='grape' fz={11} inherit>Finalizado</Text>
               </Chip>
             )

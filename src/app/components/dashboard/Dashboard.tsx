@@ -26,22 +26,22 @@ function Dashboard() {
     return b.id - a.id;
   }
 
-  const [isTime, setIsTime] = useState(false);
+  // const [isTime, setIsTime] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const time = moment().format('HH:mm:ss');
-      if (time >= '19:00:00' && time <= '23:59:59') {
-        setIsTime(true);
-      } else {
-        setIsTime(false);
-      }
-    }, 100);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const time = moment().format('HH:mm:ss');
+  //     if (time >= '19:00:00' && time <= '23:59:59') {
+  //       setIsTime(true);
+  //     } else {
+  //       setIsTime(false);
+  //     }
+  //   }, 100);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
-  const { time } = useTimer('23:59:59');
+  // const { time } = useTimer('23:59:59');
 
   const filterTickets = (type: string) => {
     switch (type) {
@@ -162,12 +162,13 @@ function Dashboard() {
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
-              leftIcon={isTime && <Zzz size={20} />}
-              disabled={isTime}
+              // leftIcon={isTime && <Zzz size={20} />}
+              // disabled={isTime}
             >
-              {
+              {/* {
                 isTime ? time : "Agregar Rifa"
-              }
+              } */}
+              Agregar Rifa
             </FormModal>
           </Grid.Col>
         </Grid>
