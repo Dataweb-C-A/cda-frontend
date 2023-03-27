@@ -11,7 +11,7 @@
   background-color: transparent;
   border: none;
   position: absolute;
-  left: calc(100% - 8.9em);
+  left: calc(100vw - 8.9em);
   top: 17.5px;
 }
 
@@ -24,7 +24,7 @@
   background-color: transparent;
   border: none;
   position: absolute;
-  left: calc(100% - 13.2em);
+  left: calc(100vw - 13.2em);
   top: 19px;
 }
 
@@ -32,7 +32,7 @@
   background-color: transparent;
   border: none;
   position: absolute;
-  left: calc(100% - 13em);
+  left: calc(100vw - 13em);
   top: 12.5px;
   .users-icon {
     font-size: 1.8em;
@@ -163,9 +163,24 @@
 }
 
 @media (max-width: 575px) {
+  .navbar { 
+    width: 150vw;
+  }
   .logo {
     display: flex;
     margin-right: calc(100% - 5em);
+  }
+  .button-theme {
+    left: calc(150vw - 13.2em);
+  }
+  .button-user {
+    left: calc(150vw - 8.9em);
+  }
+  .button-users {
+    left: calc(150vw - 13em);
+  }
+  .menu {
+    left: calc(150% - 4em);
   }
 }
 

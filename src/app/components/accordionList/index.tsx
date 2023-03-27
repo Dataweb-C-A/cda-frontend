@@ -458,7 +458,7 @@ export default function AccordionList({
             <Grid.Col xs={9} sm={9} md={11} lg={11} xl={11}>
               <Title order={5} ta="start" fw={620}>
                 {data.prize}
-                <Text c="blue" inherit>
+                <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
                   {data.rifero}
                 </Text>
               </Title>

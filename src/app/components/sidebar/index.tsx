@@ -33,6 +33,7 @@ function Sidebar({ profile, links, open, title, onClose, position, children, siz
       padding="xl"
       size={size || 'md'}
       title={title}
+      className="sidebar"
     >
       {profile}
       <Box w='100%' mt={20}>
