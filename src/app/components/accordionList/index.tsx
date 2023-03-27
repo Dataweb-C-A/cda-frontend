@@ -18,7 +18,7 @@ import {
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { IconDots } from "@tabler/icons";
 import { useStyles } from "./accordionList.styles";
-import { Message, Printer, Ticket } from "tabler-icons-react";
+import { Message, Printer, Ticket, OneTwoThree  } from "tabler-icons-react";
 import TicketsMocks from "../../mocks/tickets.mock";
 import axios from "axios";
 
@@ -35,12 +35,12 @@ type PDFProps = {
   lotery: string;
   phone: string;
   hour: string;
-  awardNoSign: string;
+  awardNoSign?: string;
   numbers: string;
   money: string;
   serial: string;
   price: string;
-  awardSign?: string | "N/A";
+  awardSign: string | "N/A";
   plate?: string | "N/A";
   year?: string | "N/A";
   rifero: string;
@@ -365,7 +365,7 @@ export default function AccordionList({
                 )}
                 {status && !Pin && (
                   <Menu.Item
-                    icon={<Message size={15} />}
+                    icon={<OneTwoThree size={15} />}
                     onClick={() => setAddPin(true)}
                   >
                     Agregar PIN
@@ -436,7 +436,6 @@ export default function AccordionList({
 
   return (
     <Accordion
-      sx={{ maxWidth: "100%" }}
       mx="auto"
       variant="filled"
       classNames={classes}

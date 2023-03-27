@@ -24,8 +24,8 @@ type mocksProps = {
     money: string;
     price: string;
     rifero: string;
-    awardNoSign: string;
-    awardSign?: string | 'N/A';
+    awardNoSign?: string;
+    awardSign: string | 'N/A';
     plate?: string | 'N/A';
     year?: string | 'N/A';
   },
@@ -85,7 +85,8 @@ function TicketsMocks({data, tickets}: mocksProps) {
       height: 'auto',
     },
     qr: {
-      marginLeft: '12px'
+      marginLeft: '12px',
+      marginTop: '4px'
     }
   })
 
@@ -131,12 +132,20 @@ function TicketsMocks({data, tickets}: mocksProps) {
                 <Text style={{ fontSize: '9px', marginTop: "-6px" }}>
                   Premio: &nbsp; {data.awardSign}
                 </Text>
-                <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
-                  Sin Signo: &nbsp; {data.awardNoSign}
-                </Text>
-                <Text style={{ fontSize: '9px' }}>
-                  Placa: {data.plate} &nbsp;Año: {data.year}
-                </Text>
+                {
+                  data.awardNoSign && (
+                    <Text style={{ fontSize: '9px', marginBottom: '2px', marginTop: '5px'}}>
+                      Sin Signo: &nbsp; {data.awardNoSign}
+                    </Text>
+                  )
+                }
+                {
+                  data.plate || data.year && (
+                    <Text style={{ fontSize: '9px' }}>
+                      Placa: {data.plate} &nbsp;Año: {data.year}
+                    </Text>
+                  )
+                }
                 <Text style={{ fontSize: '9px' }}>
                   Caduca en 5 dias Escanee aqui
                 </Text>

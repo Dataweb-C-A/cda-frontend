@@ -9,8 +9,19 @@ import axios from 'axios'
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<any>([])
+  const [stats, setStats] = useState<any>({})
   
   useEffect(() => {
+    axios.get('https://rifa-max.com/api/v1/rifas/stats', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(res => {
+        setStats(res.data)
+      })
+      .catch(err => { 
+        console.log(err)
+      })
     axios.get('https://rifa-max.com/api/v1/riferos', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -37,7 +48,7 @@ const Home: React.FC = () => {
               left={0}
               right={0}
               color='blue'
-              number='4950'
+              number={stats.totals}
               label='Total de Rifas'
             />
           </Grid.Col>
@@ -46,7 +57,7 @@ const Home: React.FC = () => {
               left={0}
               right={0}
               color='green'
-              number='3'
+              number={stats.actives}
               label='Rifas activas'
             />
           </Grid.Col>
@@ -55,7 +66,7 @@ const Home: React.FC = () => {
               left={0}
               right={0}
               color='red'
-              number='4947'
+              number={stats.expired}
               label='Rifas expiradas'
             />
           </Grid.Col>

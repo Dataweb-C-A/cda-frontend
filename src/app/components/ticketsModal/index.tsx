@@ -91,7 +91,7 @@ function TicketsModal({serial}: TicketsModalProps) {
           padding: "0 1rem",
           flex: "1 1 auto",
           margin: "0 auto 0 auto",
-          maxWidth: "22rem",
+          maxWidth: "20rem",
           minWidth: "auto",
           borderRadius: "0 0 6px 6px",
         }}

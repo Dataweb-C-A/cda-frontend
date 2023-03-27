@@ -68,7 +68,7 @@ function RifaTicket({ ticket }: TicketProps) {
           padding: "1rem 1rem",
           flex: "1 1 auto",
           margin: "0 auto 0 auto",
-          maxWidth: "22rem",
+          maxWidth: "20rem",
           minWidth: "18rem",
           borderRadius: "6px 6px 0 0",
         }}
