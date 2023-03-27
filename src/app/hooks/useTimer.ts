@@ -21,7 +21,7 @@ const useTimer = (endTime: string): TimerHook => {
   useEffect(() => {
     const id = setInterval(() => {
       setTime((prevTime) => {
-        const nextTime = prevTime - 0.52;
+        const nextTime = prevTime - 0.5125;
         if (nextTime === 0) clearInterval(id);
         return nextTime;
       });
