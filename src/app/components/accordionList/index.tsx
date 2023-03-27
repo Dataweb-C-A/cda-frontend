@@ -62,14 +62,6 @@ type AccordionProps = {
   children?: React.ReactNode;
 };
 
-function formatName(name: string): string {
-  const nameParts = name.toLowerCase().split(" ");
-  const firstName =
-    nameParts[0].charAt(0).toUpperCase() + nameParts[0].slice(1);
-  const lastName = nameParts[1].charAt(0).toUpperCase() + nameParts[1].slice(1);
-  return `${firstName} ${lastName}`;
-}
-
 export default function AccordionList({
   data,
   children,
@@ -468,7 +460,7 @@ export default function AccordionList({
               <Title order={5} ta="start" fw={620}>
                 {data.prize}
                 <Text c="blue" inherit>
-                  {formatName(data.rifero)}
+                  {data.rifero}
                 </Text>
               </Title>
             </Grid.Col>
