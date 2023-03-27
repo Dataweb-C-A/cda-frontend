@@ -35,8 +35,6 @@ export const userSlice = createSlice({
         state.user = JSON.parse(user)
       }
 
-      const token = state.user?.token
-
       if (state.user) {
         const expires = new Date(state.user.expires)
         const now = new Date()

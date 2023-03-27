@@ -11,7 +11,7 @@ const Router = [
   },
   {
     path: '/',
-    component: App,
+    component: Home,
     isPrivate: true
   }
 ]

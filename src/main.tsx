@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './app/pages/Login'
 import Operadora from './app/pages/Operadora'
 import App2 from './App'
+import AuthRouter from './app/components/auth/authRouter'
 
 type AppProps = {
   children: React.ReactNode
@@ -49,14 +50,16 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <App>
-        <div>
-          <Switch>
-            <Route path='/login' component={Login}/>
-            <Route path='/operadora' component={Operadora}/>
-            <Route path='/app' component={App2}/>
-            <Route path='/' component={Home}/>
-          </Switch>
-        </div>
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route> 
+          <AuthRouter 
+            path="/"
+            component={Home}
+            isPrivate={true}
+          />
+        </Switch>
       </App>
     </Provider>
   </React.StrictMode>,
