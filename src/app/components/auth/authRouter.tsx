@@ -28,7 +28,7 @@ const AuthRouter: React.FC<AuthRouterProps> = ({ component: Component, path, isP
     <Route
       path={path}
       render={(props) =>
-        isPrivate && !Boolean(localStorage.getItem('token')) ? (
+        isPrivate && !Boolean(localStorage.getItem('token') && localStorage.getItem('user')) ? (
           <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
         ) : (
           permissions[user?.role || 'undefined'].includes(path) ? (

@@ -52,7 +52,7 @@ function Navbar(
   const [communityOpen, setCommunityOpen] = useState(false)
   const [search, setSearch] = useState({ query: "", value: "" })
 
-  const { user } = useUser();
+  const { user, destroy } = useUser();
 
   const filteredProfiles = profiles.filter(
     (profile) =>
@@ -106,6 +106,9 @@ function Navbar(
                 color="red" 
                 ta="center" 
                 fw={600}
+                onClick={() => {
+                  destroy()
+                }}
               >
                 Cerrar Sesión
               </Menu.Item>
