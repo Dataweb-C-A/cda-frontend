@@ -187,7 +187,7 @@ function Navbar(
             ? filteredProfiles.map((profile, index) => (
                 <AvatarCard
                   key={index}
-                  name={formatName(profile)}
+                  name={profile.user.name}
                   role={profile.user.role === 'Admin' ? 'Rifero' : profile.user.role}
                   border={true}
                   cedula={profile.user.cedula}
