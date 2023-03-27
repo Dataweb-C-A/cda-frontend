@@ -94,7 +94,10 @@ function Login() {
   }
   
   return (
-    <>
+    <section className="login" style={{
+      height: '100vh',
+      background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
+    }}>
       <ThemeSwitcher style={{
         position: 'absolute',
         top: 10,
@@ -182,7 +185,7 @@ function Login() {
           }
         </Paper>
       </Container>
-    </>
+    </section>
   )
 }
 

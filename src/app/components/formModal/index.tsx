@@ -25,6 +25,7 @@ import EmojiSuccess from '/src/app/assets/images/emoji-fiesta-success.png'
 import moment from 'moment'
 import axios from 'axios'
 import { useUser } from '../../hooks/useUser'
+import { Calendar } from 'tabler-icons-react'
 
 type FormModalProps = {
   variant?: "filled" | "outline" | "light" | "gradient" | "white" | "default" | "subtle";
@@ -173,13 +174,20 @@ export default function FormModal({
         size="xl"
       >
         <>
-          <Stepper size="sm" active={active} allowNextStepsSelect={false}>
+          <Stepper size="md" active={active} allowNextStepsSelect={false}>
             <Stepper.Step label="Datos de la rifa" description="Llena los datos de la rifa para proceder">
               <form onSubmit={form.onSubmit(() => onSubmit())}>
                 <DatePicker
                   label='Fecha de la rifa'
                   placeholder='Fecha de la rifa'
                   withAsterisk
+                  size='md'
+                  fullWidth
+                  rightSection={
+                    <Calendar 
+                      opacity={0.8}
+                    />
+                  }
                   minDate={new Date(moment().add(1, 'days').format('YYYY-MM-DD'))}
                   maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
                   error={form.errors.rifDate}
@@ -193,6 +201,7 @@ export default function FormModal({
                       mt='lg'
                       mb='lg'
                       withAsterisk
+                      size='md'
                       error={form.errors.awardSign}
                       {...form.getInputProps('awardSign')}
                     />
@@ -203,6 +212,7 @@ export default function FormModal({
                       placeholder='Premio sin signo (opcional)'
                       mt='lg'
                       mb='lg'
+                      size='md'
                       error={form.errors.awardNoSign}
                       {...form.getInputProps('awardNoSign')}
                     />
@@ -229,6 +239,7 @@ export default function FormModal({
                       disabled={money}
                       error={form.errors.plate}
                       withAsterisk={!money}
+                      size='md'
                       {...form.getInputProps('plate')}
                     />
                   </Grid.Col>
@@ -246,6 +257,7 @@ export default function FormModal({
                       type='number'
                       withAsterisk={!money}
                       error={form.errors.year}
+                      size='md'
                       {...form.getInputProps('year')}
                     />
                   </Grid.Col>
@@ -255,6 +267,7 @@ export default function FormModal({
                       placeholder='Loteria'
                       disabled
                       defaultValue='ZULIA 7A'
+                      size='md'
                       data={[
                         { label: 'ZULIA 7A 7:05PM', value: 'ZULIA 7A' },
                         { label: 'TRIPLE PELOTICA', value: 'TRIPLE PELOTICA' },
@@ -269,6 +282,7 @@ export default function FormModal({
                       placeholder='Moneda'
                       defaultValue='$'
                       withAsterisk
+                      size='md'
                       data={[
                         { label: 'Bolivares', value: 'Bs' },
                         { label: 'Pesos Colombianos', value: 'COP' },
@@ -283,6 +297,7 @@ export default function FormModal({
                       label='Numeros'
                       placeholder='Numeros'
                       withAsterisk
+                      size='md'
                       type='number'
                       error={form.errors.numbers}
                       {...form.getInputProps('numbers')}
@@ -293,6 +308,7 @@ export default function FormModal({
                       label='Precio'
                       placeholder='Precio'
                       withAsterisk
+                      size='md'
                       hideControls
                       error={form.errors.price}
                       {...form.getInputProps('price')}
@@ -303,6 +319,7 @@ export default function FormModal({
                       label='Rifero'
                       placeholder='Rifero'
                       withAsterisk
+                      size='md'
                       error={form.errors.rifero_id}
                       data={
                         usersSelect.map((user: any) => {
