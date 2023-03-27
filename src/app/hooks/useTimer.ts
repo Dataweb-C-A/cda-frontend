@@ -1,37 +1,40 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+import moment from 'moment';
 
-interface UseTimerProps {
-  from: Date;
-  to: Date;
-}
+type TimerHook = {
+  time: string;
+  stop: () => void;
+};
 
-const useTimer = ({ from, to }: UseTimerProps) => {
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft());
+const useTimer = (endTime: string): TimerHook => {
+  const duration = moment.duration(moment(endTime, 'HH:mm:ss').diff(moment(moment().format('HH:mm:ss'), 'HH:mm:ss')));
+  const [time, setTime] = useState(duration.asSeconds());
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
-  function getTimeLeft() {
-    const now = new Date().getTime();
-    const difference = to.getTime() - now;
-
-    if (difference <= 0) {
-      return { hours: 0, minutes: 0, seconds: 0 };
+  const stop = () => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(null);
     }
-
-    const hours = Math.floor(difference / (1000 * 60 * 60));
-    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-    return { hours, minutes, seconds };
-  }
+  };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft(getTimeLeft());
+    const id = setInterval(() => {
+      setTime((prevTime) => {
+        const nextTime = prevTime - 0.56;
+        if (nextTime === 0) clearInterval(id);
+        return nextTime;
+      });
     }, 1000);
-
-    return () => clearInterval(interval);
+    setIntervalId(id);
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
   }, []);
 
-  return { timeLeft, isTimeOver: timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 };
+  const formattedTime = moment.utc(time * 1000).format('HH:mm:ss');
+
+  return { time: formattedTime, stop };
 };
 
 export default useTimer;

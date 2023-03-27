@@ -83,6 +83,7 @@ export default function AccordionList({ data, children, dataPDF }: AccordionProp
         return setError(true);
       })
     }
+    
     const PinModal = ({ pinNumber }: { pinNumber: string | null }) => {
       return (
         <Modal
@@ -118,6 +119,9 @@ export default function AccordionList({ data, children, dataPDF }: AccordionProp
                 tickets={rifaTicket}
               />
             } 
+            className={
+              isAvailable === true ? 'hide' : 'tickets-link-pdf'
+            }
             fileName={
               `tickets-${new Date().toISOString()}.pdf`
             } 
@@ -192,7 +196,10 @@ export default function AccordionList({ data, children, dataPDF }: AccordionProp
                 }
                 {
                   !status && (
-                    <Menu.Item icon={<Printer size={15} />} onClick={() => setPrintModal(true)}>
+                    <Menu.Item icon={<Printer size={15} />} onClick={() => { 
+                      setPrintModal(true)
+                      handlePrint()
+                    }}>
                       Descargar
                     </Menu.Item>
                   )

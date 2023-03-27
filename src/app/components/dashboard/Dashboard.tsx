@@ -1,59 +1,23 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Grid,
   Card,
   Text,
-  Button,
   Title,
   Chip,
-  Kbd,
-  Modal,
   Loader
 } from "@mantine/core";
 import AccordionList from "../accordionList";
-import { rifaData } from "../../assets/data/rifaData";
 import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
 import HelpModalBody from "./HelpModal";
 import { Zzz } from 'tabler-icons-react';
-import useTimer from "../../hooks/useTimer";
 import axios from "axios";
 import { useUser } from "../../hooks/useUser";
 import moment from "moment";
-
-interface RiferosProps {
-  data: {
-    id?: number;
-    pin?: string;
-    name?: string;
-    email?: string;
-    phone?: string;
-    role?: string;
-  }[];
-}
-
-interface RifaAccordionProps {
-  data: {
-    id?: number;
-    numbers?: string;
-    awardSign?: string;
-    awardNoSign: string | null;
-    plate: string | null;
-    year: string | number | null;
-    is_send: boolean | false;
-    price?: number;
-    serial?: string;
-    loteria?: string;
-    pin?: string;
-    rifDate?: string;
-    expired?: string;
-    riferos?: RiferosProps;
-    created_at?: string;
-  };
-}
+import useTimer from "../../hooks/useTimer";
 
 function Dashboard() {
-  const [formModal, setFormModal] = useState(false);
   const [helpModal, setHelpModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [tickets, setTickets] = useState([]);
@@ -62,18 +26,22 @@ function Dashboard() {
     return b.id - a.id;
   }
 
-  const catchTickets = (serial: string) => {
-    axios.get(`https://rifa-max.com/api/v1/rifas/tickets/${serial}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+  const [isTime, setIsTime] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const time = moment().format('HH:mm:ss');
+      if (time >= '19:00:00' && time <= '23:59:59') {
+        setIsTime(true);
+      } else {
+        setIsTime(false);
       }
-    }).then((response) => {
-      return response.data;
-    }).catch((error) => {
-      return [];
-    });
-  }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const { time } = useTimer('23:59:59');
 
   const filterTickets = (type: string) => {
     switch (type) {
@@ -168,7 +136,7 @@ function Dashboard() {
               <Text fw={300} fz={20}>
                 Estado de las Rifas mensuales
               </Text>
-              <Card>
+              {/* <Card>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "5px" }}
                 >
@@ -180,11 +148,11 @@ function Dashboard() {
                   >
                     {openFilter === true ? "Filtrar" : "Todas"}
                   </Chip>
-                  <Kbd ml={10} mt={10} onClick={() => setHelpModal(true)} className="kbd">
+                  <Kbd ml={10}mt={10} onClick={() => setHelpModal(true)} className="kbd">
                     Ctrl + M
                   </Kbd>
                 </div>
-              </Card>
+              </Card> */}
             </Title>
             {openFilter && <FilterBody />}
           </Grid.Col>
@@ -194,8 +162,12 @@ function Dashboard() {
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
+              leftIcon={isTime && <Zzz size={20} />}
+              disabled={isTime}
             >
-              Agregar Rifa
+              {
+                isTime ? time : "Agregar Rifa"
+              }
             </FormModal>
           </Grid.Col>
         </Grid>
