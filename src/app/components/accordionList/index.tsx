@@ -357,7 +357,7 @@ export default function AccordionList({
                 <Menu.Divider />
                 {status && Pin && (
                   <Menu.Item
-                    icon={<Message size={15} />}
+                    icon={<Ticket size={15} />}
                     onClick={() => setPinModal(true)}
                   >
                     Finalizado
