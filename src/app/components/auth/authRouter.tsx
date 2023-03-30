@@ -18,7 +18,7 @@ const AuthRouter: React.FC<AuthRouterProps> = ({ component: Component, path, isP
   const permissions: PermissionMap = {
     Admin: ['/', '/users', '/rifas/motos'],
     Rifero: ['/'],
-    Taquilla: ['/', '/riferos'],
+    Taquilla: ['/', '/riferos', '/operadora'],
     Agencia: ['/'],
     undefined: ['/login'],
     null: ['/login'],

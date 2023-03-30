@@ -11,6 +11,7 @@ import Operadora from './app/pages/Operadora'
 import App2 from './App'
 import AuthRouter from './app/components/auth/authRouter'
 import Riferos from './app/pages/Riferos'
+import { Router as Routing } from './app/config/router/router'
 
 type AppProps = {
   children: React.ReactNode
@@ -40,9 +41,9 @@ function App({children}: AppProps) {
         },
       }}
     >
-        <Router>
-          {children}
-        </Router>
+      <Router>
+        {children}
+      </Router>
     </Mantine>
   )
 }
@@ -52,19 +53,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <Provider store={store}>
       <App>
         <Switch>
-          <Route path="/login">
-            <Login />
-          </Route> 
-          <AuthRouter
-            path="/riferos"
-            component={Riferos}
-            isPrivate={true}
-          />
-          <AuthRouter 
-            path="/"
-            component={Home}
-            isPrivate={true}
-          />
+          <Route path="/login" component={Login} />
+          <AuthRouter path="/riferos" component={Riferos} isPrivate />
+          <AuthRouter path="/operadora" component={Operadora} isPrivate />
+          <AuthRouter path="/" component={Home} isPrivate />
         </Switch>
       </App>
     </Provider>
