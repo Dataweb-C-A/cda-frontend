@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, Drawer, DrawerProps, NavLink, Box } from '@mantine/core';
 import { IconChevronDown, IconTemperature } from '@tabler/icons';
 import { Link } from 'react-router-dom';
+import { useUser } from '../../hooks/useUser';
 
 interface SidebarProps {
   profile?: React.ReactNode;
@@ -17,6 +18,7 @@ interface SidebarProps {
     descriptionColor?: string | 'blue',
     descriptionSize?: number | 10, 
     chevron?: boolean, 
+    role?: string,
     onClick?: void 
   }>;
   children?: React.ReactNode;
@@ -24,7 +26,32 @@ interface SidebarProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 }
 
+interface DisplayRole {
+  role?: string;
+  match?: string | null;
+} 
+
+function DisplayRole({ role, match }: DisplayRole){
+  if (role === 'Admin' && match === 'Admin') {
+    return 'block'
+  }
+
+  if (!role) {
+    return 'block'
+  } else {
+    if (role === match) {
+      return 'block'
+    } else {
+      return 'none'
+    }
+  }
+
+}
+
 function Sidebar({ profile, links, open, title, onClose, position, children, size }: SidebarProps) {
+  
+  const { user } = useUser();
+  
   return (
     <Drawer
       opened={open || false}
@@ -41,10 +68,11 @@ function Sidebar({ profile, links, open, title, onClose, position, children, siz
           links.map((link, index) => (
             <Link
               to={link.url}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: 'none', display: DisplayRole({ role: link.role, match: user?.role }) }}
               key={index}
             >
               <NavLink
+
                 key={link.name}
                 active={link.url === window.location.pathname}
                 label={link.name}

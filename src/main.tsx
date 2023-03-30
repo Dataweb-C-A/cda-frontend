@@ -10,6 +10,7 @@ import Login from './app/pages/Login'
 import Operadora from './app/pages/Operadora'
 import App2 from './App'
 import AuthRouter from './app/components/auth/authRouter'
+import Riferos from './app/pages/Riferos'
 
 type AppProps = {
   children: React.ReactNode
@@ -54,6 +55,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/login">
             <Login />
           </Route> 
+          <AuthRouter
+            path="/riferos"
+            component={Riferos}
+            isPrivate={true}
+          />
           <AuthRouter 
             path="/"
             component={Home}
