@@ -105,6 +105,12 @@ select option:checked {
   width: 300px
 }
 
+.search-riferos {
+  margin-bottom: 15px;
+  margin-top: -10px;
+  width: 390px
+}
+
 .kbd {
   cursor: pointer;
   user-select: none;
@@ -118,6 +124,10 @@ select option:checked {
     width: 100%;
     margin-top: 0;
     margin-bottom: 20px;
+  }
+  .search-riferos {
+    margin-bottom: 0;
+    width: 100%
   }
 }
 
