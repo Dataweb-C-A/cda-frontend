@@ -84,7 +84,7 @@ function Riferos() {
         mx={15}
         shadow={"0 0 7px 0 #5f5f5f3d"}
         mt={15}
-        style={{ overflowX: "auto" }}
+        style={{ overflowX: "auto", width: "100vw"}}
       >
         <Grid>
           <Grid.Col md={6} sm={12}>
