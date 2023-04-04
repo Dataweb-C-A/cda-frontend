@@ -34,7 +34,7 @@ const AuthRouter: React.FC<AuthRouterProps> = ({ component: Component, path, isP
           permissions[user?.role || 'undefined'].includes(path) ? (
             <Component {...props} />
           ) : (
-            <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+            <Redirect to={{ pathname: props.location.pathname, state: { from: props.location } }} />
           )
         )
       }

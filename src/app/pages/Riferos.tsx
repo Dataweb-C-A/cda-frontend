@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   Modal,
+  Loader,
 } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { links } from "../assets/data/links";
@@ -35,10 +36,13 @@ interface RiferoProps {
 }
 
 function Riferos() {
+  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [setOpened, opened] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("https://rifa-max.com/api/v1/riferos", {
         headers: {
@@ -47,11 +51,12 @@ function Riferos() {
       })
       .then((res) => {
         setUsers(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [setOpened]);
 
   const filteredUsers = users.filter(
     (user: RiferoProps) =>
@@ -135,16 +140,27 @@ function Riferos() {
             </tr>
           </thead>
           <tbody>
-            {rows.length > 0 ? (
-              rows
-            ) : (
-              <tr>
-                <td colSpan={7} style={{ textAlign: "center" }}>
-                  <Text mt="7%" fz="25px" fw="bold">No se encontraron riferos</Text>
-                  <NotFound style={{ marginBottom: '7%' }} size={160} stroke={1.5} />
-                </td>
-              </tr>
-            )}
+            {
+              loading ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: "center" }}>
+                    <Loader mt="7%" size="lg" />
+                    <Text mb="7%" fz="25px" fw="bold">Cargando riferos...</Text>
+                  </td>
+                </tr>
+              ) : (
+                rows.length > 0 ? (
+                  rows
+                ) : (
+                  <tr>
+                    <td colSpan={7} style={{ textAlign: "center" }}>
+                      <Text mt="7%" fz="25px" fw="bold">No se encontraron riferos</Text>
+                      <NotFound style={{ marginBottom: '7%' }} size={160} stroke={1.5} />
+                    </td>
+                  </tr>
+                )
+              )
+            }
           </tbody>
         </Table>
       </Card>
