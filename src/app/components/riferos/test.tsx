@@ -18,7 +18,7 @@ import {
 } from '@mantine/form'
 import axios from 'axios'
 import { useUser } from "../../hooks/useUser";
-import { IconAt, IconDna, IconLock, IconPhone, IconUser } from "@tabler/icons";
+import { IconAt, IconLock, IconPhone, IconUser, IconUserSearch, IconWorld } from "@tabler/icons";
 
 type RiferosModalProps = {
   variant?: "filled" | "outline" | "light" | "gradient" | "white" | "default" | "subtle";
@@ -157,6 +157,7 @@ export default function RiferosModal({
                 <Grid>
                   <Grid.Col span={6}>
                     <TextInput
+                      icon={<IconUser />}
                       label="Nombre"
                       placeholder="Nombre"
                       mt='lg'
@@ -168,6 +169,7 @@ export default function RiferosModal({
                   </Grid.Col>
                   <Grid.Col span={6}>
                     <TextInput
+                      icon={<IconUser />}
                       label="Apellido"
                       placeholder="Apellido"
                       mt='lg'
@@ -191,7 +193,7 @@ export default function RiferosModal({
                   </Grid.Col>
                   <Grid.Col xs={6}>
                     <TextInput
-                      icon={<IconUser />}
+                      icon={<IconUserSearch />}
                       label="Nombre de usuario"
                       placeholder="Nombre de usuario"
                       withAsterisk
@@ -203,7 +205,7 @@ export default function RiferosModal({
                   </Grid.Col>
                   <Grid.Col xs={6}>
                     <TextInput
-                      icon={<IconDna />}
+                      icon={<IconWorld />}
                       label="Cédula"
                       placeholder="Cédula"
                       mt='xs'
