@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { links } from "../assets/data/links";
+import FormRifero from "../components/riferos/test";
 import axios from "axios";
 import moment from "moment";
 import {
@@ -111,14 +112,14 @@ function Riferos() {
             />
           </Grid.Col>
           <Grid.Col md={6} sm={12}>
-            <Button
+            <FormRifero
               variant="filled"
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
             >
               Agregar rifero
-            </Button>
+            </FormRifero>
           </Grid.Col>
         </Grid>
         <Table

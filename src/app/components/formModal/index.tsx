@@ -116,13 +116,13 @@ export default function FormModal({
       year: (value: string | number) => {
         if (!value && !money) return 'Año requerido'
         if (value !== null) {
-          if (Number(value < 1949)) return 'El año debe ser mayor a 1950'
+          if (Number(value) < 1949) return 'El año debe ser mayor a 1950'
         }
       },
       numbers: (value: string | number) => {
         if (!value) return 'Numero requeridos'
         isNotEmpty('Los numeros de la rifa son requeridos')
-        if (Number(value > 999)) return 'Los numeros no pueden tener mas de 3 caracteres'
+        if (Number(value) > 999) return 'Los numeros no pueden tener mas de 3 caracteres'
       },
       price: (value: number) => {
         if (!value) return 'Precio requerido'
