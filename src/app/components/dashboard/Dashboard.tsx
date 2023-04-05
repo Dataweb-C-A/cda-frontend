@@ -21,6 +21,7 @@ function Dashboard() {
   const [helpModal, setHelpModal] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [tickets, setTickets] = useState([]);
+  const [openForm, setOpenForm] = useState(false);
 
   function compararPorId(a: any, b: any) {
     return b.id - a.id;
@@ -81,7 +82,7 @@ function Dashboard() {
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     }
-  }, [])
+  }, [openForm])
 
   const FilterBody = () => {
     return (
@@ -162,6 +163,9 @@ function Dashboard() {
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
+              onClick={() => setOpenForm(!openForm)}
+              onClose={() => setOpenForm(false)}
+              open={openForm}
               // leftIcon={isTime && <Zzz size={20} />}
               // disabled={isTime}
             >

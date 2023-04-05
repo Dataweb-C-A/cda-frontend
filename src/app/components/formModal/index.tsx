@@ -35,6 +35,9 @@ type FormModalProps = {
   leftIcon?: React.ReactNode;
   disabled?: boolean | false;
   children?: React.ReactNode;
+  onClick?: () => void;
+  onClose: () => void;
+  open: boolean;
 }
 
 type FormProps = {
@@ -57,7 +60,10 @@ export default function FormModal({
   className,
   leftIcon,
   disabled,
-  children
+  children,
+  onClick,
+  onClose,
+  open
 }: FormModalProps) {
   const [formModal, setFormModal] = useState(false)
   const [active, setActive] = useState(0);
@@ -140,6 +146,12 @@ export default function FormModal({
     }
   })
 
+  const closeModal = () => {
+    setActive(0)
+    form.reset()
+    onClose()
+  }
+
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
     active === 2 && (
@@ -150,7 +162,7 @@ export default function FormModal({
         }
       }).then((res) => {
         console.log(res)
-        window.location.reload()
+        closeModal()
       }).catch((err) => {
         console.log(err)
       })
@@ -164,12 +176,8 @@ export default function FormModal({
   return(
     <>
       <Modal
-        opened={formModal}
-        onClose={() => {
-          setFormModal(false)
-          setActive(0)
-          form.reset()
-        }}
+        opened={open}
+        onClose={() => closeModal()}
         title="Agregar Rifa"
         size="xl"
       >
@@ -471,7 +479,7 @@ export default function FormModal({
         className={className}
         leftIcon={leftIcon}
         disabled={disabled}
-        onClick={() => setFormModal(true)}
+        onClick={onClick}
       >
         {children}
       </Button>
