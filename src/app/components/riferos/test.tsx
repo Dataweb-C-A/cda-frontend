@@ -10,7 +10,9 @@ import {
   Grid,
   Button,
   Group,
-  PasswordInput
+  PasswordInput,
+  Avatar,
+  CopyButton
 } from '@mantine/core'
 import {
   useForm,
@@ -18,7 +20,7 @@ import {
 } from '@mantine/form'
 import axios from 'axios'
 import { useUser } from "../../hooks/useUser";
-import { IconAt, IconLock, IconPhone, IconUser, IconUserSearch, IconWorld } from "@tabler/icons";
+import { IconAt, IconCheck, IconCopy, IconLock, IconPhone, IconUser, IconUserSearch, IconWorld } from "@tabler/icons";
 
 type RiferosModalProps = {
   variant?: "filled" | "outline" | "light" | "gradient" | "white" | "default" | "subtle";
@@ -149,6 +151,7 @@ export default function RiferosModal({
         }}
         title="Agregar Rifero"
         size="xl"
+        centered
       >
         <>
           <Stepper size="md" active={active} allowNextStepsSelect={false}>
@@ -183,7 +186,7 @@ export default function RiferosModal({
                     <TextInput
                       icon={<IconAt />}
                       label="Correo electrónico"
-                      placeholder="Correo electrónico"
+                      placeholder="rifero@rifamax.com"
                       withAsterisk
                       mt='xs'
                       size='md'
@@ -265,6 +268,33 @@ export default function RiferosModal({
               </form>
             </Stepper.Step>
             <Stepper.Step label="Verificación" description="Verifica que los datos del rifero sean correctos">
+              <Card w="80%" mx="auto" radius='md' mt={25} py={35}>
+                <CopyButton value={`email: ${form.values.email} || password: ${form.values.password}`}>
+                  {({ copied, copy }) => (
+                    <Button color={copied ? 'teal' : 'blue'} onClick={copy} size="sm" style={{ position: 'absolute', top: 10, right: 10 }}>
+                      {copied ? <IconCheck /> : <IconCopy />}
+                    </Button>
+                  )}
+                </CopyButton>
+                <Avatar size={128} radius='xl' bg='blue' mx='auto'>
+                  <IconUserSearch size={64} />
+                </Avatar>
+                <Text mt='lg' ta='center' fz='xl' fw='bold'>
+                  {form.values.firstName} {form.values.lastName}
+                </Text>
+                <Text ta='center' fz='md' fw='bold'>
+                  @{form.values.username}
+                </Text>
+                <Text ta='center' fz='md' fw='bold'>
+                  {form.values.email}
+                </Text>
+                <Text ta='center' fz='md' fw='bold'>
+                  {form.values.cedula}
+                </Text>
+                <Text ta='center' fz='md' fw='bold'>
+                  {form.values.phone}
+                </Text>
+              </Card>
             </Stepper.Step>
           </Stepper>
           {
