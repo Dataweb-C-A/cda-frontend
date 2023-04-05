@@ -14,32 +14,36 @@ import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 import { Link } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
 
+// Interface for the props of the Navbar component
+interface NavbarProps {
+  profiles: ProfileProps[];
+  links: LinksProps[];
+  responsive?: boolean | false;
+}
+
+// Interface for the profile props
 interface ProfileProps {
   user: {
-    name: string
-    role: string
-    cedula: string
-  }
-  image: string | null
+    name: string;
+    role: string;
+    cedula: string;
+  };
+  image: string | null;
 }
 
-type Profiles = ProfileProps[]
-
+// Interface for the links props
 interface LinksProps {
-  name: string
-  url: string
-  chevron: boolean
-  description?: string
-  descriptionColor?: string | 'blue'
-  descriptionSize?: number | 10
-  icon?: React.ReactNode
+  name: string;
+  url: string;
+  chevron: boolean;
+  description?: string;
+  descriptionColor?: string | "blue";
+  descriptionSize?: number | 10;
+  icon?: React.ReactNode;
 }
 
-type Links = LinksProps[]
-
-function Navbar(
-  { profiles, links }: { profiles: Profiles; links: Links }
-) {
+// Navbar component
+const Navbar: React.FC<NavbarProps> = ({ profiles, links, responsive = false }) => {
   const theme = useMantineTheme()
   const [isOpen, setIsOpen] = useState(false)
   const [communityOpen, setCommunityOpen] = useState(false)
@@ -47,6 +51,7 @@ function Navbar(
 
   const { user, destroy } = useUser();
 
+  // Filter profiles by name or cedula
   const filteredProfiles = profiles.filter(
     (profile) =>
       profile.user.name.toLowerCase().includes(search.value.toLowerCase()) ||
@@ -55,7 +60,7 @@ function Navbar(
 
   return (
     <nav 
-      className="navbar"
+      className={`navbar${responsive ? "-responsive" : ""}`}
       style={{
         backgroundColor: theme.colorScheme === "dark" ? '#2b2c3d' : '#fff'
       }}
@@ -68,10 +73,10 @@ function Navbar(
         alt="logo"
       />
       <div>
-        <div className='button-theme'>
+        <div className={`button-theme${responsive ? "-responsive" : ""}`}>
           <ThemeSwitcher/>
         </div>
-        <Button className="button-users" onClick={() => setCommunityOpen(true)}>
+        <Button className={`button-users${responsive ? "-responsive" : ""}`} onClick={() => setCommunityOpen(true)}>
           <FaUsers className="users-icon"
             style={{
               color: theme.colorScheme === "dark" ? '#fff' : '#202020'
@@ -80,7 +85,7 @@ function Navbar(
         </Button>
         <Menu shadow="md" width={200}>
           <Menu.Target>
-            <button className="button-user">
+            <button className={`button-user${responsive ? "-responsive" : ""}`}>
               <BsFillPersonFill className="user-icon" 
                 style={{
                   color: theme.colorScheme === "dark" ? '#fff' : '#202020'

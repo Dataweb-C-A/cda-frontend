@@ -41,6 +41,7 @@ const Home: React.FC = () => {
         <Navbar
           profiles={users}
           links={links}
+          responsive={true}
         />
         <Grid gutter={20} m={5}>
           <Grid.Col xs={6} lg={4} span={12}>
