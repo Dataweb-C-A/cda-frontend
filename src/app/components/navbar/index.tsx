@@ -18,7 +18,7 @@ import { useUser } from "../../hooks/useUser"
 interface NavbarProps {
   profiles: ProfileProps[];
   links: LinksProps[];
-  responsive?: boolean | false;
+  expandScreen?: boolean | false;
 }
 
 // Interface for the profile props
@@ -43,7 +43,7 @@ interface LinksProps {
 }
 
 // Navbar component
-const Navbar: React.FC<NavbarProps> = ({ profiles, links, responsive = false }) => {
+const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false }) => {
   const theme = useMantineTheme()
   const [isOpen, setIsOpen] = useState(false)
   const [communityOpen, setCommunityOpen] = useState(false)
@@ -60,7 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, responsive = false }) 
 
   return (
     <nav 
-      className={`navbar${responsive ? "-responsive" : ""}`}
+      className={`navbar ${expandScreen ? "navbar-expandScreen" : ""}`}
       style={{
         backgroundColor: theme.colorScheme === "dark" ? '#2b2c3d' : '#fff'
       }}
@@ -73,10 +73,10 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, responsive = false }) 
         alt="logo"
       />
       <div>
-        <div className={`button-theme${responsive ? "-responsive" : ""}`}>
+        <div className={`button-theme ${expandScreen ? "button-theme-expandScreen" : ""}`}>
           <ThemeSwitcher/>
         </div>
-        <Button className={`button-users${responsive ? "-responsive" : ""}`} onClick={() => setCommunityOpen(true)}>
+        <Button className={`button-users ${expandScreen ? "button-users-expandScreen" : ""}`} onClick={() => setCommunityOpen(true)}>
           <FaUsers className="users-icon"
             style={{
               color: theme.colorScheme === "dark" ? '#fff' : '#202020'
@@ -85,7 +85,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, responsive = false }) 
         </Button>
         <Menu shadow="md" width={200}>
           <Menu.Target>
-            <button className={`button-user${responsive ? "-responsive" : ""}`}>
+            <button className={`button-user ${expandScreen ? "button-user-expandScreen" : ""}`}>
               <BsFillPersonFill className="user-icon" 
                 style={{
                   color: theme.colorScheme === "dark" ? '#fff' : '#202020'

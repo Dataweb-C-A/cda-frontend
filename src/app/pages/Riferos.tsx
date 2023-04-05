@@ -84,7 +84,7 @@ function Riferos() {
 
   return (
     <section className="riferos">
-      <Navbar profiles={users} links={links} responsive={false}/>
+      <Navbar profiles={users} links={links} />
       <Card
         mx={15}
         shadow={"0 0 7px 0 #5f5f5f3d"}
