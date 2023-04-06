@@ -44,7 +44,7 @@ function Dashboard() {
 
   // const { time } = useTimer('23:59:59');
 
-  const filterTickets = (type: string) => {
+  const filterTickets = (type: string | 'all') => {
     switch (type) {
       case "normal":
         return tickets.filter((ticket: any) => ticket.numbers >= 100);
@@ -104,13 +104,13 @@ function Dashboard() {
               Categorias:
             </Text>
             <div style={{ display: "flex", gap: "7px" }}>
-              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('normal')}>
+              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('normal')} onAbort={() => filterTickets('all')}>
                 Normal
               </Chip>
-              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('triples')}>
+              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('triples')} onAbort={() => filterTickets('all')}>
                 Triples
               </Chip>
-              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('terminales')}>
+              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('terminales')} onAbort={() => filterTickets('all')}>
                 Terminales
               </Chip>
             </div>

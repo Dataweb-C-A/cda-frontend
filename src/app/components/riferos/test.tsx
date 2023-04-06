@@ -17,6 +17,7 @@ import {
 import {
   useForm,
   isNotEmpty,
+  matches as Match,
 } from '@mantine/form'
 import axios from 'axios'
 import { useUser } from "../../hooks/useUser";
@@ -70,37 +71,38 @@ export default function RiferosModal({
     },
     validate: {
       firstName: (value: string) => {
-        if(!value) return 'Valor Requerido'
-        isNotEmpty('Valor requerido')
+        if(!value) return 'Atributo requerido'
+        isNotEmpty('Atributo requerido')
       },
       lastName: (value: string) => {
-        if(!value) return 'Valor Requerido'
-        isNotEmpty('Valor requerido')
+        if(!value) return 'Atributo requerido'
+        isNotEmpty('Atributo requerido')
       },
       username: (value: string) => {
-        if(!value) return 'Valor Requerido'
-        isNotEmpty('Valor requerido')
+        if(!value) return 'Atributo requerido'
+        isNotEmpty('Atributo requerido')
       },
       email: (value: string) => {
-        if(!value) return 'Valor Requerido'
-        isNotEmpty('Valor requerido')
+        if(!value) return 'Atributo requerido'
+        isNotEmpty('Atributo requerido')
       },
       cedula: (value: string) => {
-        if(!value) return 'Valor Requerido'
-        isNotEmpty('Valor requerido')
+        if(!value) return 'Atributo requerido'
+        isNotEmpty('Atributo requerido')
       },
       phone: (value: string) => {
-        if(!value) return 'Valor Requerido'
-        isNotEmpty('Valor requerido')
+        if(!value) return 'Atributo requerido'
+        isNotEmpty('Atributo requerido')
+        Match(/^[0-9]+$/, 'Solo se permiten números')
       },
       password: (value: string) => {
-        if(!value) return 'Valor Requerido'
-        isNotEmpty('Valor requerido')
+        if(!value) return 'Atributo requerido'
+        isNotEmpty('Atributo requerido')
         if (value.length < 6) return 'La contraseña debe tener al menos 6 caracteres'
       },
       passwordConfirmation: (value: string) => {
-        if(!value) return 'Valor Requerido'
-        isNotEmpty('Valor requerido')
+        if(!value) return 'Atributo requerido'
+        isNotEmpty('Atributo requerido')
         if (value !== form.values.password) return 'Las contraseñas no coinciden'
       }
     },
@@ -119,12 +121,11 @@ export default function RiferosModal({
   const nextStep = () => {
     setActive((current) => (current < 2 ? current + 1 : current))
     active === 2 && (
-      axios.post('https://rifa-max.com/api/v1/riferos', {
+      axios.post('https://rifa-max.com/api/v1/users', {
         name: form.values.firstName + ' ' + form.values.lastName,
         username: form.values.username,
         email: form.values.email,
-        cedula: form.values.cedula,
-        phone: form.values.phone,
+        cedula: "V" + form.values.cedula,
         password: form.values.password,
         password_confirmation: form.values.passwordConfirmation,
         status: true
@@ -133,7 +134,16 @@ export default function RiferosModal({
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       }).then((res) => {
-        console.log(res)
+        axios.post('https://rifa-max.com/api/v1/riferos', {
+          phone: form.values.phone,
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }).then((res) => {
+          console.log(res)
+          window.location.reload()
+        })
       }).catch((err) => {
         console.log(err)
       })
@@ -187,6 +197,7 @@ export default function RiferosModal({
                       icon={<IconAt />}
                       label="Correo electrónico"
                       placeholder="rifero@rifamax.com"
+                      type="email"
                       withAsterisk
                       mt='xs'
                       size='md'
@@ -213,6 +224,7 @@ export default function RiferosModal({
                       placeholder="Cédula"
                       mt='xs'
                       withAsterisk
+                      type="number"
                       size='md'
                       error={form.errors.cedula}
                       {...form.getInputProps('cedula')}
@@ -224,6 +236,7 @@ export default function RiferosModal({
                       label="Teléfono"
                       placeholder="0414-1384991"
                       withAsterisk
+                      type="number"
                       mt='xs'
                       size='md'
                       error={form.errors.phone}
@@ -263,7 +276,7 @@ export default function RiferosModal({
                   }>
                     Atrás
                   </Button>
-                  <Button onClick={() => nextStep()}>Siguiente</Button>
+                  <Button type="submit" onSubmit={() => nextStep()}>Siguiente</Button>
                 </Group>
               </form>
             </Stepper.Step>
@@ -305,7 +318,7 @@ export default function RiferosModal({
                 }>
                   Atrás
                 </Button>
-                <Button onClick={() => nextStep()}>Siguiente</Button>
+                <Button type="submit" onClick={() => nextStep()}>Siguiente</Button>
               </Group>
             )
           }
