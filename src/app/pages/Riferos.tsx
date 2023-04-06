@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { links } from "../assets/data/links";
-import FormRifero from "../components/riferos/test";
+import FormRifero from "../components/riferos";
 import axios from "axios";
 import moment from "moment";
 import {
