@@ -8,10 +8,10 @@ Rifamax is a raffle management system that allows the creation, sale, and manage
 
 The system uses [TypeScript](https://www.typescriptlang.org/) language and the primary library used is [React](https://beta.reactjs.org/) with [Vite](https://vitejs.dev/). Rifamax uses JSON Web Token ([JWT](https://jwt.io/)) for authentication and Role-Based Authentication to manage permissions. The entire system is managed by an administrator user that has access to all the features of the system.
 
-To manage UI we are using [Mantine UI](https://mantine.dev/) and [Redux](https://es.redux.js.org/) to manage states, to improve perfomance of system and perform sync and async actions we are using [RxJs](https://rxjs.dev/).
+To manage UI we are using [Mantine UI](https://mantine.dev/), [SCSS](https://sass-lang.com/) to add styles to pages and [Redux](https://es.redux.js.org/) to manage states, to improve perfomance of system and perform sync and async actions we are using [RxJs](https://rxjs.dev/).
 
 <p align="center">
-  <img src="https://i.imgur.com/2WOWP2C.png" width="80%"/>
+  <img src="https://i.imgur.com/uRMHtbx.png" width="80%"/>
 </p>
 
 ## How to Compile the Project
