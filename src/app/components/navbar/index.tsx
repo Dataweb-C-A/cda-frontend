@@ -13,6 +13,7 @@ import ThemeSwitcher from "../theme"
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 import { Link } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
+import { ChevronRight } from "tabler-icons-react"
 
 // Interface for the props of the Navbar component
 interface NavbarProps {
@@ -198,7 +199,15 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false }
                   cedula={profile.user.cedula}
                   image={profile.image || ""}
                   style={{ marginBottom: 10 }}
-                />
+                >
+                  <Button
+                    variant="outline"
+                    color="red"
+                    style={{ zIndex: 99999 }}
+                  >
+                    Rifas
+                  </Button>
+                </AvatarCard>
               ))
             : null}
           {search.value !== "" && filteredProfiles.length === 0 ? (
@@ -220,7 +229,16 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false }
               cedula={profile.user.cedula}
               image={profile.image || ""}
               style={{ marginBottom: 10 }}
-            />
+            >
+              <div 
+                style={{ position: "absolute", display: 'flex', left: '91%', top: '0', height: '100%', width: '100px', cursor: 'pointer', userSelect: 'none' }}
+                className='avatar-div'
+              >
+                <ChevronRight
+                  style={{ marginTop: '33.33%'}}
+                />
+              </div>
+            </AvatarCard>
           ))}
         </div>
       </Sidebar>
