@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { BsFillPersonFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
-import { Button, Menu, Text, Input, Card, useMantineTheme } from "@mantine/core"
+import { Button, Menu, Text, Input, Card, useMantineTheme, Modal } from "@mantine/core"
 import { Sidebar } from "../sidebar"
 import "../../assets/scss/navbar.scss"
 import AvatarCard from "../avatarCard"
@@ -14,12 +14,14 @@ import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 import { Link } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
 import { ChevronRight } from "tabler-icons-react"
+import useLastRifas from "./rifas.module"
 
 // Interface for the props of the Navbar component
 interface NavbarProps {
   profiles: ProfileProps[];
   links: LinksProps[];
   expandScreen?: boolean | false;
+  hasLastsRifasModal?: boolean | false;
 }
 
 // Interface for the profile props
@@ -28,6 +30,7 @@ interface ProfileProps {
     name: string;
     role: string;
     cedula: string;
+    rifero_id: number;
   };
   image: string | null;
 }
@@ -44,13 +47,18 @@ interface LinksProps {
 }
 
 // Navbar component
-const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false }) => {
+const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, hasLastsRifasModal = true }) => {
   const theme = useMantineTheme()
   const [isOpen, setIsOpen] = useState(false)
+  const [lastsRifasModal, setLastsRifasModal] = useState({ open: false, user: '' })
   const [communityOpen, setCommunityOpen] = useState(false)
   const [search, setSearch] = useState({ query: "", value: "" })
 
   const { user, destroy } = useUser();
+
+  const fetchLastsRifas = (user: string) => {
+    setLastsRifasModal({ open: true, user })
+  }
 
   // Filter profiles by name or cedula
   const filteredProfiles = profiles.filter(
@@ -168,13 +176,28 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false }
         }
         size="md"
       >
-        <Text fw={700}>Buscar riferos</Text>
+        {
+          hasLastsRifasModal && (
+            <Modal 
+              title={`Últimas rifas de ${lastsRifasModal.user}`}
+              opened={lastsRifasModal.open}
+              onClose={() => setLastsRifasModal({ open: false, user: '' })}
+              size="md"
+            >
+              {
+                useLastRifas(lastsRifasModal.rifero_id).year
+              }
+            </Modal>
+          )
+        }
+          <Text fw={700}>Buscar riferos</Text>
         <Input
           icon={<IconAt />}
           variant="filled"
-          placeholder="Cedula/rif, Nombre o Apellido"
+          placeholder="Cedula/RIF, Nombre o Apellido"
           radius="sm"
-          size="md"
+          size="sm"
+          mt={3}
           mb={20}
           value={search.value}
           onChange={(event) =>
@@ -233,6 +256,9 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false }
               <div 
                 style={{ position: "absolute", display: 'flex', left: '91%', top: '0', height: '100%', width: '100px', cursor: 'pointer', userSelect: 'none' }}
                 className='avatar-div'
+                onClick={() => {
+                  fetchLastsRifas(profile.user.name)
+                }}
               >
                 <ChevronRight
                   style={{ marginTop: '33.33%'}}
