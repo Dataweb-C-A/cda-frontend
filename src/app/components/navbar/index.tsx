@@ -184,9 +184,6 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
               onClose={() => setLastsRifasModal({ open: false, user: '' })}
               size="md"
             >
-              {
-                useLastRifas(lastsRifasModal.rifero_id).year
-              }
             </Modal>
           )
         }
