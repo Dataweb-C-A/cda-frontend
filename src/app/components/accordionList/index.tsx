@@ -14,11 +14,12 @@ import {
   Divider,
   Badge,
   TextInput,
+  useMantineTheme,
 } from "@mantine/core";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { IconDots } from "@tabler/icons";
 import { useStyles } from "./accordionList.styles";
-import { Message, Printer, Ticket, OneTwoThree  } from "tabler-icons-react";
+import { Message, Printer, Ticket, OneTwoThree, Repeat  } from "tabler-icons-react";
 import TicketsMocks from "../../mocks/tickets.mock";
 import axios from "axios";
 
@@ -434,6 +435,8 @@ export default function AccordionList({
     );
   }
 
+  const theme = useMantineTheme()
+
   return (
     <Accordion
       mx="auto"
@@ -444,18 +447,35 @@ export default function AccordionList({
       <Accordion.Item key={data.id} value={data.id.toString()}>
         <AccordionControl>
           <Grid>
-            <Grid.Col xs={3} sm={3} md={1} lg={1} xl={1}>
-              <Chip
-                color="blue"
-                variant="outline"
-                checked={false}
-                size="sm"
-                mt={10}
-              >
-                {data.id}
-              </Chip>
+            <Grid.Col xs={12} sm={12} md={3} lg={2} xl={2}>
+              <div style={{ display: 'flex', gap: "10px" }}>
+                <Badge
+                  bg={
+                    theme.colorScheme === 'dark' ? '#34354a' : 'light'
+                  }
+                  c={
+                    theme.colorScheme === 'dark' ? 'white' : 'light'
+                  }
+                  style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`}}
+                  variant="outline"
+                  size='md'
+                  p={13}
+                  mt={10}
+                >
+                  {data.id}
+                </Badge>
+                <Chip
+                  color="blue"
+                  variant="outline"
+                  checked={false}
+                  size="sm"
+                  mt={10}
+                >
+                  <Repeat />
+                </Chip>
+              </div>
             </Grid.Col>
-            <Grid.Col xs={9} sm={9} md={11} lg={11} xl={11}>
+            <Grid.Col xs={12} sm={12} md={9} lg={10} xl={10}>
               <Title order={5} ta="start" fw={620}>
                 {data.prize}
                 <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
