@@ -304,15 +304,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
                   cedula={profile.user.cedula}
                   image={profile.image || ""}
                   style={{ marginBottom: 10 }}
-                >
-                  <Button
-                    variant="outline"
-                    color="red"
-                    style={{ zIndex: 99999 }}
-                  >
-                    Rifas
-                  </Button>
-                </AvatarCard>
+                />
               ))
             : null}
           {search.value !== "" && filteredProfiles.length === 0 ? (
@@ -335,7 +327,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
               image={profile.image || ""}
               style={{ marginBottom: 10 }}
             >
-              <div 
+              {/* <div 
                 style={{ position: "absolute", display: 'flex', left: '91%', top: '0', height: '100%', width: '100px', cursor: 'pointer', userSelect: 'none' }}
                 className='avatar-div'
                 onClick={() => {
@@ -345,7 +337,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
                 <ChevronRight
                   style={{ marginTop: '33.33%'}}
                 />
-              </div>
+              </div> */}
             </AvatarCard>
           ))}
         </div>

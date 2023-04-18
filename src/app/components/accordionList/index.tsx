@@ -15,13 +15,16 @@ import {
   Badge,
   TextInput,
   useMantineTheme,
+  NumberInput,
 } from "@mantine/core";
+import moment from "moment";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { IconDots } from "@tabler/icons";
 import { useStyles } from "./accordionList.styles";
-import { Message, Printer, Ticket, OneTwoThree, Repeat  } from "tabler-icons-react";
+import { Message, Calendar, Printer, Ticket, OneTwoThree, Repeat  } from "tabler-icons-react";
 import TicketsMocks from "../../mocks/tickets.mock";
 import axios from "axios";
+import { DatePicker } from "@mantine/dates";
 
 type RifaTicketsProps = {
   id: number;
@@ -57,13 +60,28 @@ type AccordionItem = {
   verify: boolean;
 };
 
+interface RifasProps {
+  id: number,
+  awardSign: string,
+  awardNoSign?: string | null,
+  plate?: string | null,
+  year?: string | number | null,
+  price: number,
+  money: string,
+  loteria: string,
+  numbers: string | number,
+  rifero_id: string | number,
+}
+
 type AccordionProps = {
+  repeat: RifasProps;
   data: AccordionItem;
   dataPDF: PDFProps;
   children?: React.ReactNode;
 };
 
 export default function AccordionList({
+  repeat,
   data,
   children,
   dataPDF,
@@ -86,6 +104,7 @@ export default function AccordionList({
       },
     ]);
     const [addPin, setAddPin] = useState(false);
+    const [current, setCurrent] = useState(repeat);
 
     useEffect(() => {
       const handleContextmenu = (e: MouseEvent) => {
@@ -240,6 +259,100 @@ export default function AccordionList({
       );
     };
 
+    const handleRepeatModal = (rifa: RifasProps) => {
+      setRepeatModal(true);
+      setCurrent(rifa);
+    };
+
+    const RepeatModal = () => {
+      return (
+        <Modal
+          opened={repeatModal}
+          onClose={() => setRepeatModal(false)}
+          title="Repetir rifa"
+          size="md"
+          centered
+        >
+          <hr />
+          <Title ta="center" order={5}>¿Desea repetir esta rifa?</Title>
+          <hr />
+          <DatePicker
+            mt={20}
+            label='Fecha de la rifa'
+            placeholder='Fecha de la rifa'
+            withAsterisk
+            size='sm'
+            onChange={(date) => {
+              console.log(date);
+            }}
+            fullWidth
+            rightSection={
+              <Calendar 
+                opacity={0.8}
+              />
+            }
+            minDate={new Date(moment().add(1, 'days').format('YYYY-MM-DD'))}
+            maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
+          />
+          <Grid>
+            <Grid.Col xs={6}>
+              <NumberInput 
+                mt={10}
+                label='Numeros'
+                placeholder='Numeros'
+                withAsterisk
+                size='sm'
+                onChange={(value) => {
+                  console.log(value);
+                }}
+                hideControls
+              />
+            </Grid.Col>
+            <Grid.Col xs={6}>
+              <TextInput
+                mt={10}
+                type="text"
+                disabled
+                placeholder="ZULIA 7A"
+                label="Loteria"
+                size="sm"
+              />
+            </Grid.Col>
+          </Grid>
+          <Button
+            fullWidth
+            variant="filled"
+            color="blue"
+            mt={25}
+            onClick={() => {
+              axios
+                .post(
+                  "https://rifa-max.com/api/v1/rifas",
+                  {
+                    rifa_id: current.id,
+                  },
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                    }
+                  }
+                )
+                .then(() => {
+                  setRepeatModal(false);
+                  window.location.reload();
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }}
+          >
+            Repetir
+          </Button>
+        </Modal>
+      );
+    };
+
     const printTickets = async (tickets: RifaTicketsProps[], id: any) => {
       const ticketsSold = tickets.map((ticket) => {
         axios.put(`https://rifa-max.com/api/v1/rifas/ticket/${ticket.id}`,
@@ -282,6 +395,7 @@ export default function AccordionList({
         <SendModal id={data.id} />
         <AddPinModal id={data.id} />
         <PinModal pinNumber={data.pinNumber} />
+        <RepeatModal />
         <Modal
           opened={printModal}
           onClose={() => window.location.reload()}
@@ -436,6 +550,7 @@ export default function AccordionList({
   }
 
   const theme = useMantineTheme()
+  const [repeatModal, setRepeatModal] = useState(false);
 
   return (
     <Accordion
@@ -470,8 +585,9 @@ export default function AccordionList({
                   checked={false}
                   size="sm"
                   mt={10}
+                  onClick={() => setRepeatModal(true)}
                 >
-                  <Repeat size={14} style={{ marginTop: '6px'}} fontWeight={900}/>
+                  <Repeat size={14} style={{ marginTop: '6px'}} fontWeight={900} />
                 </Chip>
               </div>
             </Grid.Col>

@@ -186,6 +186,18 @@ function Dashboard() {
           tickets.sort(compararPorId).map((ticket: any) => {
             return (
               <AccordionList
+                repeat={{
+                  id: ticket.id,
+                  awardSign: ticket.awardSign,
+                  awardNoSign: ticket.awardNoSign,
+                  plate: ticket.plate,
+                  year: ticket.year,
+                  price: ticket.price,
+                  money: ticket.money,
+                  loteria: ticket.loteria,
+                  numbers: ticket.numbers,
+                  rifero_id: ticket.rifero.id,
+                }}
                 data={{
                   id: ticket.id,
                   rifero: ticket.user.name,
