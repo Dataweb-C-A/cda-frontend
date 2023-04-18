@@ -64,6 +64,7 @@ interface RifasProps {
   id: number,
   awardSign: string,
   awardNoSign?: string | null,
+  rifDate: Date | null,
   plate?: string | null,
   year?: string | number | null,
   price: number,
@@ -104,7 +105,6 @@ export default function AccordionList({
       },
     ]);
     const [addPin, setAddPin] = useState(false);
-    const [current, setCurrent] = useState(repeat);
 
     useEffect(() => {
       const handleContextmenu = (e: MouseEvent) => {
@@ -259,11 +259,6 @@ export default function AccordionList({
       );
     };
 
-    const handleRepeatModal = (rifa: RifasProps) => {
-      setRepeatModal(true);
-      setCurrent(rifa);
-    };
-
     const RepeatModal = () => {
       return (
         <Modal
@@ -282,8 +277,9 @@ export default function AccordionList({
             placeholder='Fecha de la rifa'
             withAsterisk
             size='md'
+            value={current.rifDate}
             onChange={(date) => {
-              console.log(date);
+              setCurrent({...current, rifDate: date });
             }}
             fullWidth
             rightSection={
@@ -296,17 +292,18 @@ export default function AccordionList({
           />
           <Grid>
             <Grid.Col xs={6}>
-              <NumberInput 
+              <TextInput
                 mt={10}
                 label='Numeros'
+                type='number'
                 placeholder='Numeros'
                 withAsterisk
                 rightSection={<Number opacity={0.5} />}
                 size='md'
-                onChange={(value) => {
-                  console.log(value);
+                value={current.numbers}
+                onChange={(e) => {
+                  setCurrent({...current, numbers: e.target.value });
                 }}
-                hideControls
               />
             </Grid.Col>
             <Grid.Col xs={6}>
@@ -333,7 +330,16 @@ export default function AccordionList({
                 .post(
                   "https://rifa-max.com/api/v1/rifas",
                   {
-                    rifa_id: current.id,
+                    awardSign: current.awardSign,
+                    awardNoSign: current.awardNoSign,
+                    rifDate: current.rifDate,
+                    numbers: current.numbers,
+                    loteria: current.loteria,
+                    price: current.price,
+                    money: current.money,
+                    rifero_id: current.rifero_id,
+                    year: current.year,
+                    plate: current.plate,
                   },
                   {
                     headers: {
@@ -555,6 +561,12 @@ export default function AccordionList({
 
   const theme = useMantineTheme()
   const [repeatModal, setRepeatModal] = useState(false);
+  const [current, setCurrent] = useState(repeat);
+
+  const handleRepeatModal = () => {
+    setRepeatModal(true);
+    setCurrent(repeat);
+  };
 
   return (
     <Accordion
@@ -589,7 +601,7 @@ export default function AccordionList({
                   checked={false}
                   size="sm"
                   mt={10}
-                  onClick={() => setRepeatModal(true)}
+                  onClick={() => handleRepeatModal()}
                 >
                   <Repeat size={14} style={{ marginTop: '6px'}} fontWeight={900} />
                 </Chip>
