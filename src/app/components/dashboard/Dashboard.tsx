@@ -187,6 +187,7 @@ function Dashboard() {
             return (
               <AccordionList
                 repeat={{
+                  rifDate: ticket.rifDate,
                   id: ticket.id,
                   awardSign: ticket.awardSign,
                   awardNoSign: ticket.awardNoSign,
