@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BsFillPersonFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
-import { Button, Menu, Text, Input, Card, useMantineTheme, Modal } from "@mantine/core"
+import { Button, Menu, Text, Input, Card, useMantineTheme, Modal, Title } from "@mantine/core"
 import { Sidebar } from "../sidebar"
 import "../../assets/scss/navbar.scss"
 import AvatarCard from "../avatarCard"
@@ -14,6 +14,7 @@ import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 import { Link } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
 import { ChevronRight } from "tabler-icons-react"
+import axios from "axios"
 import useLastRifas from "./rifas.module"
 
 // Interface for the props of the Navbar component
@@ -27,10 +28,11 @@ interface NavbarProps {
 // Interface for the profile props
 interface ProfileProps {
   user: {
+    id: number | string;
     name: string;
     role: string;
     cedula: string;
-    rifero_id: number;
+    rifero_id: string | number;
   };
   image: string | null;
 }
@@ -46,19 +48,81 @@ interface LinksProps {
   icon?: React.ReactNode;
 }
 
+interface lastRifas {
+  open: boolean,
+  user: ProfileProps
+}
+
+interface current {
+  message: string,
+  rifa: {
+    id: number,
+    awardSign: string,
+    awardNoSign?: string | null,
+    plate?: string | null,
+    year?: string | number | null,
+    price: number,
+    money: string,
+    loteria: string,
+    numbers: string | number,
+    rifero: {
+      id: number,
+    }
+  }
+}
+
+const currnetRifasInitialValues = {
+  message: '',
+  rifa: {
+    id: 0,
+    awardSign: '',
+    awardNoSign: '',
+    plate: '',
+    year: 0,
+    price: 0,
+    money: '',
+    loteria: '',
+    numbers: 0,
+    rifero: {
+      id: 0,
+    }
+  }
+}
+
+const initialValues = {
+  user: {
+    id: 0,
+    name: '',
+    role: '',
+    cedula: '',
+    rifero_id: 0,
+  },
+  image: ''
+}
+
 // Navbar component
 const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, hasLastsRifasModal = true }) => {
   const theme = useMantineTheme()
   const [isOpen, setIsOpen] = useState(false)
-  const [lastsRifasModal, setLastsRifasModal] = useState({ open: false, user: '' })
+  const [lastsRifasModal, setLastsRifasModal] = useState<lastRifas>({ open: false, user: initialValues })
   const [communityOpen, setCommunityOpen] = useState(false)
   const [search, setSearch] = useState({ query: "", value: "" })
+  const [currentRifa, setCurrentRifa] = useState<current>(currnetRifasInitialValues)
 
   const { user, destroy } = useUser();
 
-  const fetchLastsRifas = (user: string) => {
-    setLastsRifasModal({ open: true, user })
+  const fetchLastsRifas = (rifero: ProfileProps) => {
+    setLastsRifasModal({ open: true, user: rifero })
   }
+
+  useEffect(() => {
+    axios.get(`https://rifa-max.com/api/v1/last_rifas?id=${lastsRifasModal.user.user.id}`)
+      .then((response) => {
+        setCurrentRifa({ message: '', rifa: response.data })
+      }).catch(() => {
+        setCurrentRifa({ message: "Rifa couldn't load", rifa: currnetRifasInitialValues.rifa })
+      })
+  }, [lastsRifasModal.open])
 
   // Filter profiles by name or cedula
   const filteredProfiles = profiles.filter(
@@ -102,7 +166,6 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
               />
             </button>
           </Menu.Target>
-
           <Menu.Dropdown>
             <Menu.Label ta="center" fw={600} fz={14}>
               Opciones
@@ -179,11 +242,33 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
         {
           hasLastsRifasModal && (
             <Modal 
-              title={`Últimas rifas de ${lastsRifasModal.user}`}
+              title={`Últimas rifas de ${lastsRifasModal.user.user.name}`}
               opened={lastsRifasModal.open}
-              onClose={() => setLastsRifasModal({ open: false, user: '' })}
+              onClose={() => setLastsRifasModal({ open: false, user: initialValues })}
               size="md"
             >
+              {
+                currentRifa.message !== '' ? (
+                  <>
+                    <Text my={20} ta="center">
+                      {currentRifa.message}
+                      <br />
+                      <NotFound size={100} strokeWidth={0.75} />
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Card>
+                      <Title order={5} mb={10}>
+                        Premio:
+                        <Text fw={700} ml={10}>
+                          {currentRifa.rifa.awardSign}
+                        </Text>
+                      </Title>
+                    </Card>
+                  </>
+                )
+              }
             </Modal>
           )
         }
@@ -254,7 +339,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
                 style={{ position: "absolute", display: 'flex', left: '91%', top: '0', height: '100%', width: '100px', cursor: 'pointer', userSelect: 'none' }}
                 className='avatar-div'
                 onClick={() => {
-                  fetchLastsRifas(profile.user.name)
+                  fetchLastsRifas(profile)
                 }}
               >
                 <ChevronRight

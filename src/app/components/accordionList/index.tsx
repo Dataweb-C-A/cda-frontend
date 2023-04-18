@@ -471,7 +471,7 @@ export default function AccordionList({
                   size="sm"
                   mt={10}
                 >
-                  <Repeat />
+                  <Repeat size={14} style={{ marginTop: '6px'}} fontWeight={900}/>
                 </Chip>
               </div>
             </Grid.Col>
