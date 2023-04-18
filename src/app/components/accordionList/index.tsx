@@ -288,7 +288,7 @@ export default function AccordionList({
             fullWidth
             rightSection={
               <Calendar 
-                opacity={0.8}
+                opacity={0.5}
               />
             }
             minDate={new Date(moment().add(1, 'days').format('YYYY-MM-DD'))}
@@ -301,7 +301,7 @@ export default function AccordionList({
                 label='Numeros'
                 placeholder='Numeros'
                 withAsterisk
-                rightSection={<Number opacity={0.8} />}
+                rightSection={<Number opacity={0.5} />}
                 size='md'
                 onChange={(value) => {
                   console.log(value);
@@ -318,7 +318,7 @@ export default function AccordionList({
                 label="Loteria"
                 size="md"
                 rightSection={
-                  <Cash opacity={0.8} />
+                  <Cash opacity={0.5} />
                 }
               />
             </Grid.Col>
