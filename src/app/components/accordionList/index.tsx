@@ -21,7 +21,7 @@ import moment from "moment";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { IconDots } from "@tabler/icons";
 import { useStyles } from "./accordionList.styles";
-import { Message, Calendar, Printer, Ticket, OneTwoThree, Repeat  } from "tabler-icons-react";
+import { Message, Calendar, Printer, Ticket, OneTwoThree, Repeat, Number, Cash  } from "tabler-icons-react";
 import TicketsMocks from "../../mocks/tickets.mock";
 import axios from "axios";
 import { DatePicker } from "@mantine/dates";
@@ -301,6 +301,7 @@ export default function AccordionList({
                 label='Numeros'
                 placeholder='Numeros'
                 withAsterisk
+                rightSection={<Number opacity={0.8} />}
                 size='md'
                 onChange={(value) => {
                   console.log(value);
@@ -316,6 +317,9 @@ export default function AccordionList({
                 placeholder="ZULIA 7A"
                 label="Loteria"
                 size="md"
+                rightSection={
+                  <Cash opacity={0.8} />
+                }
               />
             </Grid.Col>
           </Grid>
