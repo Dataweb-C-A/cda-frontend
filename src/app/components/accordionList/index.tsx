@@ -274,14 +274,14 @@ export default function AccordionList({
           centered
         >
           <hr />
-          <Title ta="center" order={5}>¿Desea repetir esta rifa?</Title>
+          <Title ta="center" my={30} order={4}>¿Desea repetir esta rifa?</Title>
           <hr />
           <DatePicker
             mt={20}
             label='Fecha de la rifa'
             placeholder='Fecha de la rifa'
             withAsterisk
-            size='sm'
+            size='md'
             onChange={(date) => {
               console.log(date);
             }}
@@ -301,7 +301,7 @@ export default function AccordionList({
                 label='Numeros'
                 placeholder='Numeros'
                 withAsterisk
-                size='sm'
+                size='md'
                 onChange={(value) => {
                   console.log(value);
                 }}
@@ -315,7 +315,7 @@ export default function AccordionList({
                 disabled
                 placeholder="ZULIA 7A"
                 label="Loteria"
-                size="sm"
+                size="md"
               />
             </Grid.Col>
           </Grid>
