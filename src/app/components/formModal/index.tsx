@@ -69,6 +69,7 @@ export default function FormModal({
   const [active, setActive] = useState(0);
   const [money, setMoney] = useState<boolean>(false)
   const [usersSelect, setUsersSelect] = useState<any>([])
+  const [validate, setValidate] = useState<Date>(new Date(moment().format('YYYY-MM-DD 19:30:00')))
 
   if (active === 2) {
     setTimeout(() => {
@@ -169,6 +170,14 @@ export default function FormModal({
     )
   }
 
+  const validateDate = (date: Date) => {
+    if (date > validate) {
+      return new Date(moment().add(1, 'days').format('YYYY-MM-DD'))
+    } else {
+      return new Date(moment().add(2, 'days').format('YYYY-MM-DD'))
+    }
+  }
+
   const onSubmit = (values?: FormProps) => {
     nextStep(values)
   }
@@ -196,7 +205,7 @@ export default function FormModal({
                       opacity={0.8}
                     />
                   }
-                  minDate={new Date(moment().add(1, 'days').format('YYYY-MM-DD'))}
+                  minDate={validateDate(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))}
                   maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
                   error={form.errors.rifDate}
                   {...form.getInputProps('rifDate')}
