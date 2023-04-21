@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid } from '@mantine/core'
+import { Card, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
+import Operadora from '../../pages/Operadora'
 
 type clientProps = {
   name: string
@@ -58,7 +59,9 @@ function TicketModal({ tickets }: modalProps) {
     ticket: {
       background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1],
       cursor: 'pointer',
-      height: '100px',
+      height: '50px',
+      margin: '0.3rem',
+      marginRight: '2rem',
       userSelect: 'none',
       '&:hover': {
         background: theme.colors.blue[5],
@@ -128,6 +131,9 @@ function TicketModal({ tickets }: modalProps) {
 
   return (
     <Card shadow={'0 0 7px 0 #5f5f5f3d'} my={20} mx={10} ref={elementRef}>
+      <Operadora />
+      <br />
+      
       <div className={classes.container}>
         <div className={classes.ticketsFlex}>
           <Group key={counter}>
@@ -142,7 +148,7 @@ function TicketModal({ tickets }: modalProps) {
                 onClick={() => item.isSold ? null : handleTickets(item.place)}
               >
                 <div className={classes.ticketsTop}></div>
-                <Text ta="center" mt='70%'>{formatPlace(item.place)}</Text>
+                <Text ta="center" mt='0%'>{formatPlace(item.place)}</Text>
                 <div className={classes.ticketsBottom}></div>
               </Card>
             ))}
@@ -153,34 +159,29 @@ function TicketModal({ tickets }: modalProps) {
           <nav
             className={classes.stickyNav}
           >
-            <Card 
-              shadow={'0 0 7px 0 #5f5f5f3d'} 
-              title="Taquilla"
-              className={classes.cardTaquilla}
-              id="sticky"
-            >
+            
               {
-                active.length % 4 || active.length === 0 ? (
-                  <Text>Debe seleccionar 4 boletos</Text>
+                active.length % 1 || active.length === 0 ? (
+                  <Text>Debe seleccionar boletos</Text>
                 ) : (
                   <>
                     <Button fullWidth mb={10} variant="filled" color="blue">
-                      Comprar
+                      Limpiar
                     </Button>
                     <Grid>
-                      <Grid.Col xl={6} sm={12}>
+                      <Grid.Col xl={12} sm={12}>
                         <Paper shadow="sm" mb={10}>
                           <Card shadow="sm" mb={10}>
                             <Text>Arreglo 1</Text>
                             {
                               active.map((item, index) => (
-                                <Text key={index}>{formatPlace(item)}</Text>
+                                <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
                               ))
                             }
                           </Card>
                         </Paper>
                       </Grid.Col>
-                      <Grid.Col xl={6} sm={12}>
+                      {/* <Grid.Col xl={6} sm={12}>
                         <Paper shadow="sm" mb={10}>
                         <Card shadow="sm" mb={10}>
                             <Text>Arreglo 1</Text>
@@ -191,13 +192,34 @@ function TicketModal({ tickets }: modalProps) {
                             }
                           </Card>
                         </Paper>
-                      </Grid.Col>
+                      </Grid.Col> */}
                     </Grid>                         
                   </>
                 )
               }
-            </Card>
           </nav>
+        </div>
+        <div style={{ position: 'absolute', top: '88%', right: '11.4%'}}>
+          <Group style={{ gap: "200px"}}>
+          <Text mb={20}>Total Jugadas</Text>
+          <Text mb={20}>Monto</Text>
+          </Group>
+          <Button variant="filled" color="blue" onClick={() => {
+          setActive([])
+        }}>
+          Comprar
+        </Button>
+        <div style={{ position: 'absolute', top: '40%', right: '-5%'}}>
+          {
+            active.length % 1 || active.length === 0 ? (
+              <Title>0$</Title>
+            ) : (
+              <>
+                <Title>{2.5*active.length}$</Title>
+              </>
+            )
+          }
+          </div>
         </div>
       </div>
     </Card>

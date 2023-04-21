@@ -9,40 +9,40 @@ dependencies:
     version: 11.10.6(@types/react@18.0.28)(react@18.2.0)
   '@mantine/carousel':
     specifier: ^5.10.2
-    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(embla-carousel-react@7.1.0)(react@18.2.0)
+    version: 5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(embla-carousel-react@7.1.0)(react@18.2.0)
   '@mantine/core':
     specifier: ^5.10.5
-    version: 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+    version: 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/dates':
     specifier: ^5.10.2
-    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(dayjs@1.11.7)(react@18.2.0)
+    version: 5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(dayjs@1.11.7)(react@18.2.0)
   '@mantine/dropzone':
     specifier: ^5.10.2
-    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0)
+    version: 5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/form':
     specifier: ^5.10.2
-    version: 5.10.5(react@18.2.0)
+    version: 5.10.2(react@18.2.0)
   '@mantine/hooks':
     specifier: ^5.10.2
-    version: 5.10.5(react@18.2.0)
+    version: 5.10.2(react@18.2.0)
   '@mantine/modals':
     specifier: ^5.10.2
-    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0)
+    version: 5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/notifications':
     specifier: ^5.10.2
-    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0)
+    version: 5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/nprogress':
     specifier: ^5.10.2
-    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0)
+    version: 5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/prism':
-    specifier: ^5.10.5
-    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^5.10.2
+    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/spotlight':
     specifier: ^5.10.2
-    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0)
+    version: 5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/tiptap':
     specifier: ^5.10.2
-    version: 5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(@tabler/icons@1.119.0)(@tiptap/extension-link@2.0.0-beta.209)(@tiptap/react@2.0.0-beta.209)(react@18.2.0)
+    version: 5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(@tabler/icons@1.119.0)(@tiptap/extension-link@2.0.0-beta.209)(@tiptap/react@2.0.0-beta.209)(react@18.2.0)
   '@reactivex/rxjs':
     specifier: ^6.6.7
     version: 6.6.7
@@ -271,14 +271,14 @@ packages:
     resolution: {integrity: sha512-duORpUiYrEpzKIop6iNbjnwKLAKnJ47csTyRACyEmWj0QdUrm5aqNJGHSSEQSUAvNW0ojX0dOmK9dZduvkfeXA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-builder-binary-assignment-operator-visitor@7.18.9:
     resolution: {integrity: sha512-yFQ0YCHoIqarl8BCRwBL8ulYUaZpz3bNsA7oFepAzee+8/+ImtADXNOmO5vJvsPff3qi+hvpkY/NYBTrBQgdNw==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/helper-explode-assignable-expression': 7.18.6
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-compilation-targets@7.20.7(@babel/core@7.21.3):
     resolution: {integrity: sha512-4tGORmfQcrc+bvrjb5y3dG9Mx1IOZjsHqQVUz7XCNHO+iTmqxWnVg3KRygjGmpRLJGdQSKuvFinbIb0CnZwHAQ==}
@@ -344,39 +344,38 @@ packages:
     resolution: {integrity: sha512-eyAYAsQmB80jNfg4baAtLeWAQHfHFiR483rzFK+BhETlGZaQC9bsfrugfXDCbRHLQbIA7U5NxhhOxN7p/dWIcg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-function-name@7.21.0:
     resolution: {integrity: sha512-HfK1aMRanKHpxemaY2gqBmL04iAPOPRj7DxtNbiDOrJK+gdwkiNRVpCpUJYbUT+aZyemKN8brqTOxzCaG6ExRg==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.20.7
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-hoist-variables@7.18.6:
     resolution: {integrity: sha512-UlJQPkFqFULIcyW5sbzgbkxn2FKRgwWiRexcuaR8RNJRy8+LLveqPjwZV/bwrLZCN0eUHD/x8D0heK1ozuoo6Q==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-member-expression-to-functions@7.21.0:
     resolution: {integrity: sha512-Muu8cdZwNN6mRRNG6lAYErJ5X3bRevgYR2O8wN0yn7jJSnGDu6eG59RfT29JHxGUovyfrh6Pj0XzmR7drNVL3Q==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-module-imports@7.18.6:
     resolution: {integrity: sha512-0NFvs3VkuSYbFi1x2Vd6tKrywq+z/cLeYC/RJNFrIX/30Bf5aiGYbtvGXolEktzJH8o5E5KJ3tT+nkxuuZFVlA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-module-imports@7.21.4:
     resolution: {integrity: sha512-orajc5T2PsRYUN3ZryCEFeMDYwyw09c/pZeaQEZPH0MpKzSvn3e0uXsDBu3k03VI+9DBiRo+l22BfKTpKwa/Wg==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/types': 7.21.4
-    dev: false
 
   /@babel/helper-module-transforms@7.21.2:
     resolution: {integrity: sha512-79yj2AR4U/Oqq/WOV7Lx6hUjau1Zfo4cI+JLAVYeMV5XIlbOhmjEk5ulbTc9fMpmlojzZHkUUxAiK+UKn+hNQQ==}
@@ -397,7 +396,7 @@ packages:
     resolution: {integrity: sha512-HP59oD9/fEHQkdcbgFCnbmgH5vIQTJbxh2yf+CdM89/glUNnuzr87Q8GIjGEnOktTROemO0Pe0iPAYbqZuOUiA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-plugin-utils@7.20.2:
     resolution: {integrity: sha512-8RvlJG2mj4huQ4pZ+rU9lqKi9ZKiRmuvGuM2HlWmkmgOhbs6zEAw6IEiJ5cQqGbDzGZOhwuOQNtZMi/ENLjZoQ==}
@@ -413,7 +412,7 @@ packages:
       '@babel/helper-annotate-as-pure': 7.18.6
       '@babel/helper-environment-visitor': 7.18.9
       '@babel/helper-wrap-function': 7.20.5
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
     transitivePeerDependencies:
       - supports-color
 
@@ -426,7 +425,7 @@ packages:
       '@babel/helper-optimise-call-expression': 7.18.6
       '@babel/template': 7.20.7
       '@babel/traverse': 7.21.3
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
     transitivePeerDependencies:
       - supports-color
 
@@ -434,19 +433,19 @@ packages:
     resolution: {integrity: sha512-+0woI/WPq59IrqDYbVGfshjT5Dmk/nnbdpcF8SnMhhXObpTq2KNBdLFRFrkVdbDOyUmHBCxzm5FHV1rACIkIbA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-skip-transparent-expression-wrappers@7.20.0:
     resolution: {integrity: sha512-5y1JYeNKfvnT8sZcK9DVRtpTbGiomYIHviSP3OQWmDPU3DeH4a1ZlT/N2lyQ5P8egjcRaT/Y9aNqUxK0WsnIIg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-split-export-declaration@7.18.6:
     resolution: {integrity: sha512-bde1etTx6ZyTmobl9LLMMQsaizFVZrquTEHOqKeQESMKo4PlObf+8+JA25ZsIpZhT/WEd39+vOdLXAFG/nELpA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
 
   /@babel/helper-string-parser@7.19.4:
     resolution: {integrity: sha512-nHtDoQcuqFmwYNYPz3Rah5ph2p8PFeFCsZk9A/48dPc/rGocJ5J3hAAZ7pb76VWX3fZKu+uEr/FhH5jLx7umrw==}
@@ -467,7 +466,7 @@ packages:
       '@babel/helper-function-name': 7.21.0
       '@babel/template': 7.20.7
       '@babel/traverse': 7.21.3
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
     transitivePeerDependencies:
       - supports-color
 
@@ -876,7 +875,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.3
-      '@babel/helper-module-imports': 7.18.6
+      '@babel/helper-module-imports': 7.21.4
       '@babel/helper-plugin-utils': 7.20.2
       '@babel/helper-remap-async-to-generator': 7.18.9(@babel/core@7.21.3)
     transitivePeerDependencies:
@@ -1154,10 +1153,10 @@ packages:
     dependencies:
       '@babel/core': 7.21.3
       '@babel/helper-annotate-as-pure': 7.18.6
-      '@babel/helper-module-imports': 7.18.6
+      '@babel/helper-module-imports': 7.21.4
       '@babel/helper-plugin-utils': 7.20.2
       '@babel/plugin-syntax-jsx': 7.21.4(@babel/core@7.21.3)
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
     dev: false
 
   /@babel/plugin-transform-regenerator@7.20.5(@babel/core@7.21.3):
@@ -1352,7 +1351,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.18.10(@babel/core@7.21.3)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.21.3)
       '@babel/preset-modules': 0.1.5(@babel/core@7.21.3)
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.21.3)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.21.3)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.21.3)
@@ -1382,7 +1381,7 @@ packages:
       '@babel/helper-plugin-utils': 7.20.2
       '@babel/plugin-proposal-unicode-property-regex': 7.18.6(@babel/core@7.21.3)
       '@babel/plugin-transform-dotall-regex': 7.18.6(@babel/core@7.21.3)
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
       esutils: 2.0.3
 
   /@babel/preset-typescript@7.21.4(@babel/core@7.21.3):
@@ -1464,12 +1463,11 @@ packages:
       '@babel/helper-string-parser': 7.19.4
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
-    dev: false
 
   /@emotion/babel-plugin@11.10.6:
     resolution: {integrity: sha512-p2dAqtVrkhSa7xz1u/m9eHYdLi+en8NowrmXeF/dKtJpU8lCWli8RUAati7NcSl0afsBott48pdnANuD0wh9QQ==}
     dependencies:
-      '@babel/helper-module-imports': 7.18.6
+      '@babel/helper-module-imports': 7.21.4
       '@babel/runtime': 7.21.0
       '@emotion/hash': 0.9.0
       '@emotion/memoize': 0.8.0
@@ -1891,22 +1889,22 @@ packages:
     resolution: {integrity: sha512-3zEi5plBCOsEzUneRVuQb+2SAx3qaC1dj0FfFAI6zIJQoDWu0dlSwKijMRack7oO9tUWrchfj3OkKQAd1LBdVg==}
     dev: false
 
-  /@mantine/carousel@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(embla-carousel-react@7.1.0)(react@18.2.0):
-    resolution: {integrity: sha512-r7KSNqGia/HHvZGSeOqcV2ptOpk/ljrgm6L92DE03i4DgUNT1y8QlF3hCK865xHecyj6nTRYDnoBLAuBufe/Yw==}
+  /@mantine/carousel@5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(embla-carousel-react@7.1.0)(react@18.2.0):
+    resolution: {integrity: sha512-jzCWiNogL8z9qkzFCwOxWlzogiYPtvy3uiSDTr3t/y0yZXLhpv6gsLSK1CIAUOW8fOYsAS6egwc1Uqgwzrt3yg==}
     peerDependencies:
-      '@mantine/core': 5.10.5
-      '@mantine/hooks': 5.10.5
+      '@mantine/core': 5.10.2
+      '@mantine/hooks': 5.10.2
       embla-carousel-react: ^7.0.0
       react: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
-      '@mantine/utils': 5.10.5(react@18.2.0)
+      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
+      '@mantine/utils': 5.10.2(react@18.2.0)
       embla-carousel-react: 7.1.0(react@18.2.0)
       react: 18.2.0
     dev: false
 
-  /@mantine/core@5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0):
+  /@mantine/core@5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-F4tqHSEVM9D6/iSqHfPda+Xl5XgSEPHAAkT01Zwzj4Jnbd10qGrlqr/SFUop2CIcuKYnmra9XltUahUPXBC2BQ==}
     peerDependencies:
       '@mantine/hooks': 5.10.5
@@ -1914,7 +1912,7 @@ packages:
       react-dom: '>=16.8.0'
     dependencies:
       '@floating-ui/react': 0.19.2(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
       '@mantine/styles': 5.10.5(@emotion/react@11.10.6)(react-dom@18.2.0)(react@18.2.0)
       '@mantine/utils': 5.10.5(react@18.2.0)
       '@radix-ui/react-scroll-area': 1.0.2(react-dom@18.2.0)(react@18.2.0)
@@ -1926,39 +1924,39 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mantine/dates@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(dayjs@1.11.7)(react@18.2.0):
-    resolution: {integrity: sha512-l7lSgDKEV+phTgUAHIkc/22Qgq+WBg0P7JS2WpeZeERX8eyD4BGlsY3ZWqHigYxhBq/Ycd2tHZFmwl2p+694Zw==}
+  /@mantine/dates@5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(dayjs@1.11.7)(react@18.2.0):
+    resolution: {integrity: sha512-9ufXdaK8sCy6z5cUWqP8JzX9GBRQs5F+1YOJZOOE2gg6pvNSeab0fhin1rhKifEO+ufO07gE+2SElRmWG3tMhA==}
     peerDependencies:
-      '@mantine/core': 5.10.5
-      '@mantine/hooks': 5.10.5
+      '@mantine/core': 5.10.2
+      '@mantine/hooks': 5.10.2
       dayjs: '>=1.0.0'
       react: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
-      '@mantine/utils': 5.10.5(react@18.2.0)
+      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
+      '@mantine/utils': 5.10.2(react@18.2.0)
       dayjs: 1.11.7
       react: 18.2.0
     dev: false
 
-  /@mantine/dropzone@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-tBPBuQvlvesEApECTfmYFQXbS26sAQo8VaYIebTqBy9VIUoVAM9VCKHBLqa3KMKtq+/HjKCJpaa8+Cjn9riqqQ==}
+  /@mantine/dropzone@5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-7ljYzP+qHL0lnf4wW09NlYDDKBNgz/TNsbFkfwKOCeiGP/do3ztxSH3hdEcUYOfrjWV83kPPK361FsWmzOxPQw==}
     peerDependencies:
-      '@mantine/core': 5.10.5
-      '@mantine/hooks': 5.10.5
+      '@mantine/core': 5.10.2
+      '@mantine/hooks': 5.10.2
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
-      '@mantine/utils': 5.10.5(react@18.2.0)
+      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
+      '@mantine/utils': 5.10.2(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-dropzone: 14.2.3(react@18.2.0)
     dev: false
 
-  /@mantine/form@5.10.5(react@18.2.0):
-    resolution: {integrity: sha512-0ENh7W/mwbOnIjJlRUoUTZjOtEi7/qoF86k67CVjKqagsA+Wy6cuBF1spPcllMzujepprtqKACb3rVLR+Pxj7Q==}
+  /@mantine/form@5.10.2(react@18.2.0):
+    resolution: {integrity: sha512-06r/TykBRc8nxOEdeklMyIbNLWYQCRvUwGU1JLKHCKh/VLv2M0dyAFmCk8r6vnVoopbzYowHL3mcS0/qTT7PjA==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
@@ -1967,61 +1965,61 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@mantine/hooks@5.10.5(react@18.2.0):
-    resolution: {integrity: sha512-hFQp71QZDfivPzfIUOQZfMKLiOL/Cn2EnzacRlbUr55myteTfzYN8YMt+nzniE/6c4IRopFHEAdbKEtfyQc6kg==}
+  /@mantine/hooks@5.10.2(react@18.2.0):
+    resolution: {integrity: sha512-H26lZ+P2HasLXt3coXYUiN5hVRNXPYNwF93oP9TfmOOA+EEzbGtGQR/dBv51BF53UJ+rzgJ0W5lLi1CbZPdMnA==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
     dev: false
 
-  /@mantine/modals@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-q3BCqAxulcIZCL48vUrwSaXDhxDng/2daVky8K1mTPYNlcm9iN1mqVTUC4uFWhn4b2UmPu4UdbNePEgLuhK4Mw==}
+  /@mantine/modals@5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-hKd9UqHd2m+Qn5+5yMJmiFeykR+rdVlD3j9MxfjStu//NCCRSrnbj+3kgpyKn6zvZy8UV3Erg7wDzP56PgjldQ==}
     peerDependencies:
-      '@mantine/core': 5.10.5
-      '@mantine/hooks': 5.10.5
+      '@mantine/core': 5.10.2
+      '@mantine/hooks': 5.10.2
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
-      '@mantine/utils': 5.10.5(react@18.2.0)
+      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
+      '@mantine/utils': 5.10.2(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@mantine/notifications@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-IzTAXA7Zb9DcI94Mv5O2OinhLmI7fvs/VutDw9uCpp6OHtLuF/XN1d262jrsGhMZT0c4nuUsotSLFZF3GWZwXg==}
+  /@mantine/notifications@5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-JO92oVLRVbeD1Lz3zFlAFaK8uCWxev4R+RfhuAf3/MJgMLMvHT44hAJtnRUYC4jqnW0pweOKKflyQvnTZM7/Hg==}
     peerDependencies:
-      '@mantine/core': 5.10.5
-      '@mantine/hooks': 5.10.5
+      '@mantine/core': 5.10.2
+      '@mantine/hooks': 5.10.2
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
-      '@mantine/utils': 5.10.5(react@18.2.0)
+      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
+      '@mantine/utils': 5.10.2(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-transition-group: 4.4.2(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /@mantine/nprogress@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-zvETS7NKQCwCBL/e6hvZF4HoA2SqNomRyozSY5S1Tvlyd4g89nA5ZClMeTHOWcy+EWaS6DaY7Mobjh7mYrAVsg==}
+  /@mantine/nprogress@5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-m8PvrwkbN0XZgPSTm0eUuf+//JhRH9DJXdpOQDPXAZAuUOqrv4PeKreYtBei2RtpFG5kTY8DkLG+4iL1YLhqvg==}
     peerDependencies:
-      '@mantine/core': 5.10.5
-      '@mantine/hooks': 5.10.5
+      '@mantine/core': 5.10.2
+      '@mantine/hooks': 5.10.2
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
-      '@mantine/utils': 5.10.5(react@18.2.0)
+      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
+      '@mantine/utils': 5.10.2(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@mantine/prism@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0):
+  /@mantine/prism@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-xwe3RE6wg0/KuCBH/MTTQIOltBLTELSfUzHa5/66q4aPdgRPnbzOVxiH/ytndDuqJd8MKpyo25M+3nPAtq2O4A==}
     peerDependencies:
       '@mantine/core': 5.10.5
@@ -2029,25 +2027,25 @@ packages:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
+      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
       '@mantine/utils': 5.10.5(react@18.2.0)
       prism-react-renderer: 1.3.5(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@mantine/spotlight@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-OQkuHxswrapRPcKDVSjE3li9oYYMq1Nwg2zlZzHlpzP7oW1qUhbDIVRc1dOzuT+IO7ifY/zeSuYknli7T29pDA==}
+  /@mantine/spotlight@5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-x0vtYXrRWyn5oesbjeyRheMz8iOJoCc/uXidljEbmzCty/ESju4DSfRtOMpHwoWl76ZHC0KBMVd5QdFg+6zmiQ==}
     peerDependencies:
-      '@mantine/core': 5.10.5
-      '@mantine/hooks': 5.10.5
+      '@mantine/core': 5.10.2
+      '@mantine/hooks': 5.10.2
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
-      '@mantine/utils': 5.10.5(react@18.2.0)
+      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
+      '@mantine/utils': 5.10.2(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -2066,22 +2064,30 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@mantine/tiptap@5.10.5(@mantine/core@5.10.5)(@mantine/hooks@5.10.5)(@tabler/icons@1.119.0)(@tiptap/extension-link@2.0.0-beta.209)(@tiptap/react@2.0.0-beta.209)(react@18.2.0):
-    resolution: {integrity: sha512-ia8Oji18LfFO7x3sBBFR3FFMbWTHstTHnuZQvOS4Kkwi9KJLFDY5m+az0EVP548fthTK6yBHM1v/Hq1md1+D9w==}
+  /@mantine/tiptap@5.10.2(@mantine/core@5.10.5)(@mantine/hooks@5.10.2)(@tabler/icons@1.119.0)(@tiptap/extension-link@2.0.0-beta.209)(@tiptap/react@2.0.0-beta.209)(react@18.2.0):
+    resolution: {integrity: sha512-EiQ9gVMHUHZlgJ/EovEgng8YNIlUq2kEiejaEiyOF2fxUgaYShfIgGrATB43aBhCmR0EfZomfcF7ZSR8ewD9Ag==}
     peerDependencies:
-      '@mantine/core': 5.10.5
-      '@mantine/hooks': 5.10.5
+      '@mantine/core': 5.10.2
+      '@mantine/hooks': 5.10.2
       '@tabler/icons': ^1.119.0
       '@tiptap/extension-link': ^2.0.0-beta.202
       '@tiptap/react': ^2.0.0-beta.202
       react: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.5)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 5.10.5(react@18.2.0)
-      '@mantine/utils': 5.10.5(react@18.2.0)
+      '@mantine/core': 5.10.5(@emotion/react@11.10.6)(@mantine/hooks@5.10.2)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 5.10.2(react@18.2.0)
+      '@mantine/utils': 5.10.2(react@18.2.0)
       '@tabler/icons': 1.119.0(react-dom@18.2.0)(react@18.2.0)
       '@tiptap/extension-link': 2.0.0-beta.209(@tiptap/core@2.0.0-beta.209)(prosemirror-model@1.19.0)(prosemirror-state@1.4.2)
       '@tiptap/react': 2.0.0-beta.209(@tiptap/core@2.0.0-beta.209)(@tiptap/pm@2.0.0-beta.220)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+    dev: false
+
+  /@mantine/utils@5.10.2(react@18.2.0):
+    resolution: {integrity: sha512-mpXTPG9X2nPfHGg3ejcWkSlYVxuiTx6RxWbbFHEk/U2fSikEAQdMNdVPaKI2c0/S2jksqJXlODZJv2Qt9HAFMQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
       react: 18.2.0
     dev: false
 
@@ -2645,7 +2651,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.21.3
-      '@babel/helper-module-imports': 7.18.6
+      '@babel/helper-module-imports': 7.21.4
       '@rollup/pluginutils': 3.1.0(rollup@2.79.1)
       rollup: 2.79.1
     dev: true
@@ -6501,7 +6507,7 @@ packages:
     resolution: {integrity: sha512-l4VZKzdqafipriETYR6lsrwtavCF1+CMhCOY9XbyWeTrpGSNgJQgdeJpttzEZTHQQTLR0csQo0nD1ef3zEP6IQ==}
     dependencies:
       '@babel/traverse': 7.21.3
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
       invariant: 2.2.4
       metro-symbolicate: 0.73.9
       nullthrows: 1.1.1

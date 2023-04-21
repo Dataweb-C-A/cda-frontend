@@ -24,11 +24,7 @@ function Operadora({}: Props) {
       <Drawer
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
-        title={
-          <Text size="xl" weight={500} ml={13} pt={5}>
-            Vender boletos
-          </Text>
-        }
+        
         size="100%"
         position="left"
       >
@@ -77,15 +73,15 @@ function Operadora({}: Props) {
         profiles={profiles}
         links={links}
       /> */}
-      <Card mx={15} mt={20} shadow={"0 0 7px 0 #5f5f5f3d"}>
-        <Title order={3} fw={500}>
+      {/* <Card mx={15} mt={20} shadow={"0 0 7px 0 #5f5f5f3d"}> */}
+        {/* <Title order={3} fw={500}>
           Sorteos
         </Title>
         <Text mt={-3} fw={300} fz={20}>
           Sorteos disponibles para participar:
-        </Text>
+        </Text> */}
           <Grid mt={20} gutter={10}>
-            <Grid.Col xs={12} lg={6}>
+            <Grid.Col xs={12} lg={2}>
               <Card 
                 shadow={"0 0 7px 0 #5f5f5f3d"}
                 bg={
@@ -96,7 +92,7 @@ function Operadora({}: Props) {
               >
                 <BadgeStatus status={"Activo"} color={"green"} />
                 <Text mt={-3} fw={500} fz={20}>
-                  Sorteo 1
+                  Sorteo 001
                 </Text>
                 <Text mt={-3} fw={500} fz={15}>
                   Operadora
@@ -104,6 +100,9 @@ function Operadora({}: Props) {
                 <Text mt={-3} fw={300} fz={15}>
                   Inicio: 08/03/2023 <br/>
                   Cierre: 10/03/2023
+                </Text>
+                <Text mt={-3} fw={300} fz={15}>
+                  Una moto
                 </Text>
                 <Text mt={10} fw={300} fz={15}>
                   Progreso:
@@ -116,7 +115,7 @@ function Operadora({}: Props) {
                   mt={10}
                   mb={10}
                 />
-                <Group>
+                {/* <Group>
                   <Text fw={500} fz={15} mt={5}>
                     Visible para: 
                   </Text>
@@ -126,10 +125,10 @@ function Operadora({}: Props) {
                     <Avatar size={30} radius='xl' src="https://avatars.githubusercontent.com/u/105239421?v=4">BP</Avatar>
                     <Avatar size={30} radius='xl'>+10</Avatar>
                   </Avatar.Group>
-                </Group>
+                </Group> */}
               </Card>
             </Grid.Col>
-            <Grid.Col xs={12} lg={6}>
+            <Grid.Col xs={12} lg={2}>
               <Card 
                 shadow={"0 0 7px 0 #5f5f5f3d"}
                 bg={
@@ -140,7 +139,7 @@ function Operadora({}: Props) {
               >
                 <BadgeStatus status={"Finalizado"} color={"red"} />
                 <Text mt={-3} fw={500} fz={20}>
-                  Sorteo 2
+                  Sorteo 002
                 </Text>
                 <Text mt={-3} fw={500} fz={15}>
                   Operadora
@@ -148,6 +147,9 @@ function Operadora({}: Props) {
                 <Text mt={-3} fw={300} fz={15}>
                   Inicio: 08/03/2023 <br/>
                   Cierre: 10/03/2023
+                </Text>
+                <Text mt={-3} fw={300} fz={15}>
+                  Una moto
                 </Text>
                 <Text mt={10} fw={300} fz={15}>
                   Progreso:
@@ -160,7 +162,7 @@ function Operadora({}: Props) {
                   mt={10}
                   mb={10}
                 />
-                <Group>
+                {/* <Group>
                   <Text fw={500} fz={15} mt={5}>
                     Visible para: 
                   </Text>
@@ -170,11 +172,11 @@ function Operadora({}: Props) {
                     <Avatar size={30} radius='xl' src="https://avatars.githubusercontent.com/u/105239421?v=4">BP</Avatar>
                     <Avatar size={30} radius='xl'>+10</Avatar>
                   </Avatar.Group>
-                </Group>
+                </Group> */}
               </Card>
             </Grid.Col>
           </Grid>
-      </Card>
+      {/* </Card> */}
     </>
   )
 }

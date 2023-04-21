@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Text, Title, Card, Grid, useMantineTheme, Loader } from '@mantine/core';
+import Operadora from '../../pages/Operadora';
 
 type TicketsModalProps = {
   serial: string;

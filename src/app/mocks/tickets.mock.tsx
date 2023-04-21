@@ -139,13 +139,9 @@ function TicketsMocks({data, tickets}: mocksProps) {
                     </Text>
                   )
                 }
-                {
-                  data.plate || data.year && (
-                    <Text style={{ fontSize: '9px' }}>
-                      Placa: {data.plate} &nbsp;Año: {data.year}
-                    </Text>
-                  )
-                }
+                <Text style={{ fontSize: '9px' }}>
+                  Placa: {data.plate} &nbsp;Año: {data.year}
+                </Text>
                 <Text style={{ fontSize: '9px' }}>
                   Caduca en 5 dias Escanee aqui
                 </Text>

@@ -171,7 +171,7 @@ export default function FormModal({
   }
 
   const validateDate = (date: Date) => {
-    if (date > validate) {
+    if (date < validate) {
       return new Date(moment().add(1, 'days').format('YYYY-MM-DD'))
     } else {
       return new Date(moment().add(2, 'days').format('YYYY-MM-DD'))
@@ -235,17 +235,15 @@ export default function FormModal({
                     />
                   </Grid.Col>
                   <Grid.Col span={12}>
-                    <Divider label='▼&nbsp;&nbsp;  Opciones de la Rifa  &nbsp;&nbsp;▼' labelPosition='center' mb='lg'/>
-                    <Text ta='center' fz='lg' c='blue' fw={400} style={{ marginTop: '5px' }}>
-                      Dinero
-                    </Text>
+                    <Divider label='▼&nbsp;&nbsp;  Opciones de la Rifa  &nbsp;&nbsp;▼' labelPosition='center' mt={-20}/>
+                    
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                       <Switch
                         checked={money}
                         mx='auto'
+                        mt={20}
                         onChange={(e) => setMoney(e.currentTarget.checked)}
-                        mt='xs'
-                        mb='md'
+                        label='Rifa de dinero'
                       />
                     </div>
                   </Grid.Col>

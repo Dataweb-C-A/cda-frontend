@@ -5,7 +5,8 @@ import {
   Text,
   Title,
   Chip,
-  Loader
+  Loader,
+  Kbd
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 import FormModal from "../formModal";
@@ -137,7 +138,7 @@ function Dashboard() {
               <Text fw={300} fz={20}>
                 Estado de las Rifas mensuales
               </Text>
-              {/* <Card>
+              <Card>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "5px" }}
                 >
@@ -153,7 +154,7 @@ function Dashboard() {
                     Ctrl + M
                   </Kbd>
                 </div>
-              </Card> */}
+              </Card>
             </Title>
             {openFilter && <FilterBody />}
           </Grid.Col>
