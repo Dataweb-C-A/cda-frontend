@@ -260,6 +260,8 @@ export default function AccordionList({
     };
 
     const RepeatModal = () => {
+      const [formAttributes, setFormAttributes] = useState(current);
+
       return (
         <Modal
           opened={repeatModal}
@@ -271,15 +273,17 @@ export default function AccordionList({
           <hr />
           <Title ta="center" my={30} order={4}>¿Desea repetir esta rifa?</Title>
           <hr />
+          <form>
+
           <DatePicker
             mt={20}
             label='Fecha de la rifa'
             placeholder='Fecha de la rifa'
             withAsterisk
             size='md'
-            value={current.rifDate}
+            value={formAttributes.rifDate}
             onChange={(date) => {
-              setCurrent({...current, rifDate: date });
+              setFormAttributes({...formAttributes, rifDate: date });
             }}
             fullWidth
             rightSection={
@@ -300,9 +304,9 @@ export default function AccordionList({
                 withAsterisk
                 rightSection={<Number opacity={0.5} />}
                 size='md'
-                value={current.numbers}
+                value={formAttributes.numbers}
                 onChange={(e) => {
-                  setCurrent({...current, numbers: e.target.value });
+                  setFormAttributes({...formAttributes, numbers: e.target.value });
                 }}
               />
             </Grid.Col>
@@ -320,6 +324,7 @@ export default function AccordionList({
               />
             </Grid.Col>
           </Grid>
+          </form>
           <Button
             fullWidth
             variant="filled"
@@ -332,8 +337,8 @@ export default function AccordionList({
                   {
                     awardSign: current.awardSign,
                     awardNoSign: current.awardNoSign,
-                    rifDate: current.rifDate,
-                    numbers: current.numbers,
+                    rifDate: formAttributes.rifDate,
+                    numbers: formAttributes.numbers,
                     loteria: current.loteria,
                     price: current.price,
                     money: current.money,
