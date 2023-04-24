@@ -12,6 +12,7 @@ import App2 from './App'
 import AuthRouter from './app/components/auth/authRouter'
 import Riferos from './app/pages/Riferos'
 import { Router as Routing } from './app/config/router/router'
+import Reports from './app/pages/Reports'
 
 type AppProps = {
   children: React.ReactNode
@@ -56,6 +57,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/login" component={Login} />
           <AuthRouter path="/riferos" component={Riferos} isPrivate />
           <AuthRouter path="/operadora" component={Operadora} isPrivate />
+          <AuthRouter path="/reports" component={Reports} isPrivate />
           <AuthRouter path="/" component={Home} isPrivate />
         </Switch>
       </App>

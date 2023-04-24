@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, lazy } from 'react'
 import Navbar from '../components/navbar'
 import { Grid } from '@mantine/core'
 import Cards from '../components/cards'
 import { profiles } from '../assets/data/profiles'
 import { links } from '../assets/data/links'
-import Dashboard from '../components/dashboard/Dashboard'
 import axios from 'axios'
+
+const Dashboard = lazy(() => import('../components/dashboard/Dashboard'))
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<any>([])
@@ -72,7 +73,7 @@ const Home: React.FC = () => {
             />
           </Grid.Col>
         </Grid>
-        {/* <Dashboard /> */}
+        <Dashboard />
       </div>
     </section>
   )
