@@ -138,7 +138,7 @@ function Dashboard() {
               <Text fw={300} fz={20}>
                 Estado de las Rifas mensuales
               </Text>
-              <Card>
+              {/* <Card>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "5px" }}
                 >
@@ -154,9 +154,9 @@ function Dashboard() {
                     Ctrl + M
                   </Kbd>
                 </div>
-              </Card>
+              </Card> */}
             </Title>
-            {openFilter && <FilterBody />}
+            {/* {openFilter && <FilterBody />} */}
           </Grid.Col>
           <Grid.Col md={6} sm={12}>
             <FormModal
