@@ -5,8 +5,7 @@ import Cards from '../components/cards'
 import { profiles } from '../assets/data/profiles'
 import { links } from '../assets/data/links'
 import axios from 'axios'
-
-const Dashboard = lazy(() => import('../components/dashboard/Dashboard'))
+import Dashboard from '../components/dashboard/Dashboard'
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<any>([])
