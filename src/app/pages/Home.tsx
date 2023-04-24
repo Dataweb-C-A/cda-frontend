@@ -72,7 +72,7 @@ const Home: React.FC = () => {
             />
           </Grid.Col>
         </Grid>
-        <Dashboard />
+        {/* <Dashboard /> */}
       </div>
     </section>
   )

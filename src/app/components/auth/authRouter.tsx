@@ -13,15 +13,15 @@ type PermissionMap = {
 };
 
 const AuthRouter: React.FC<AuthRouterProps> = ({ component: Component, path, isPrivate, ...rest }) => {
-  const { user } = useUser();
+  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') || '{}') : useUser();
 
   const permissions: PermissionMap = {
-    Admin: ['/', '/users', '/rifas/motos'],
+    Admin: ['/', '/users', '/reports'],
     Rifero: ['/'],
     Taquilla: ['/', '/riferos', '/operadora'],
     Agencia: ['/'],
-    undefined: ['/login'],
-    null: ['/login'],
+    undefined: ['/login', '/reports'],
+    null: ['/login', '/reports'],
   };
 
   return (
