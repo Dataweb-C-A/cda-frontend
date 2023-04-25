@@ -133,6 +133,7 @@ export default function TableSort({ data }: TableSortProps) {
         icon={<IconSearch size="0.9rem" stroke={1.5} />}
         value={search}
         size='md'
+        w={340}
         onChange={handleSearchChange}
       />
       <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: 'fixed' }}>
