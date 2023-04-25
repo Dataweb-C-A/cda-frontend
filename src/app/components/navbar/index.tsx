@@ -215,7 +215,11 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
         open={isOpen}
         onClose={() => setIsOpen(false)}
         position="left"
-        title=""
+        title={
+          <Text fw={700} fz="lg">
+            Mi perfil
+          </Text>
+        }
         profile={
           <AvatarCard
             name={user ? user.name : 'Usuario'}
@@ -234,7 +238,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
         position="right"
         title={
           <Text fw={700} fz="lg">
-            Buscar Usuarios
+            Centro de interacción
           </Text>
         }
         size="md"

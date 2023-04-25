@@ -3,10 +3,9 @@ import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
 import axios from 'axios'
 import { Card, Title, Text } from '@mantine/core'
+import Table from '../components/table'
 
-type Props = {}
-
-function Reports({}: Props) {
+function Reports() {
   const [users, setUsers] = useState<any>([])
   
   useEffect(() => {
@@ -37,6 +36,18 @@ function Reports({}: Props) {
               Reportes semanal y mensual de las rifas
             </Text>
           </Title>
+          <Table data={[
+            {
+              name: 'Javier Diaz',
+              email: 'Haaa',
+              company: 'Rifamax',
+            },
+            {
+              name: 'Pedro Perez',
+              email: 'pedroperez@rifamax.com',
+              company: 'Rifamax',
+            }
+          ]} />
         </Card>
       </div>
     </section>
