@@ -32,20 +32,47 @@ function Reports() {
         <Card mx={15} mt={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
           <Title order={2} fw={500} mb={20}>
             Reportes
-            <Text fw={300} fz={20}>
+            <Text fw={300} fz={20} mb={-7}>
               Reportes semanal y mensual de las rifas
             </Text>
           </Title>
           <Table data={[
             {
-              name: 'Javier Diaz',
-              email: 'Haaa',
-              company: 'Rifamax',
+              agencia: '4 Bocas',
+              rifero: 'Javier Diaz',
+              numero: '203',
+              premio: 'Bicicleta',
+              precio: '1.00$',
+              precio_final: Number((1.00 * 12)/2).toFixed(2) + '$',
+              premiacion: Number(((1.00 * 12)/2)*600).toFixed(0) + '$',
+
             },
             {
-              name: 'Pedro Perez',
-              email: 'pedroperez@rifamax.com',
-              company: 'Rifamax',
+              agencia: 'El Cuji',
+              rifero: 'Pedro Perez',
+              numero: '213',
+              premio: 'Moto',
+              precio: '2.00$',
+              precio_final: Number((2.00 * 12)/2).toFixed(2) + '$',
+              premiacion: Number(((2.00 * 12)/2)*600).toFixed(0) + '$',
+            },
+            {
+              agencia: 'JyR',
+              rifero: 'Rafael Rodriguez',
+              numero: '392',
+              premio: 'Carro',
+              precio: '3.00$',
+              precio_final: Number((3.00 * 12)/2).toFixed(2) + '$',
+              premiacion: Number(((3.00 * 12)/2)*600).toFixed(0) + '$',
+            },
+            {
+              agencia: 'Los Compadres',
+              rifero: 'Javier Sarache',
+              numero: '103',
+              premio: 'Toyota 2023',
+              precio: '4.00$',
+              precio_final: Number((4.00 * 12)/2).toFixed(2) + '$',
+              premiacion: Number(((4.00 * 12)/2)*600).toFixed(0) + '$',
             }
           ]} />
         </Card>

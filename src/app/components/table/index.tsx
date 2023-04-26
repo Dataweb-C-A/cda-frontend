@@ -34,9 +34,13 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface RowData {
-  name: string;
-  email: string;
-  company: string;
+  agencia: string;
+  rifero: string;
+  numero: string;
+  premio: string;
+  precio: string;
+  precio_final: string;
+  premiacion: string;
 }
 
 interface TableSortProps {
@@ -118,10 +122,14 @@ export default function TableSort({ data }: TableSortProps) {
   };
 
   const rows = sortedData.map((row) => (
-    <tr key={row.name}>
-      <td>{row.name}</td>
-      <td>{row.email}</td>
-      <td>{row.company}</td>
+    <tr key={row.agencia}>
+      {
+        keys(row).map((key) => (
+          <td key={key}>
+            <Text>{row[key]}</Text>
+          </td>
+        ))
+      }
     </tr>
   ));
 
@@ -130,36 +138,32 @@ export default function TableSort({ data }: TableSortProps) {
       <TextInput
         placeholder="Buscar por cualquier campo"
         mb="md"
-        icon={<IconSearch size="0.9rem" stroke={1.5} />}
+        icon={<IconSearch size="1.3rem" stroke={2} />}
         value={search}
         size='md'
         w={340}
+        radius={0}
         onChange={handleSearchChange}
       />
-      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: 'fixed' }}>
+      <Table striped highlightOnHover withColumnBorders withBorder horizontalSpacing="md" verticalSpacing="sm" miw={700} sx={{ tableLayout: 'fixed' }}>
         <thead>
           <tr>
-            <Th
-              sorted={sortBy === 'name'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('name')}
-            >
-              Name
-            </Th>
-            <Th
-              sorted={sortBy === 'email'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('email')}
-            >
-              Email
-            </Th>
-            <Th
-              sorted={sortBy === 'company'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('company')}
-            >
-              Company
-            </Th>
+            {
+              keys(data[0]).map((key) => (
+                <Th
+                  key={key}
+                  sorted={sortBy === key}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting(key)}
+                >
+                  {
+                    key.includes('_') ? 
+                    key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ') : 
+                    key.charAt(0).toUpperCase() + key.slice(1)
+                  }
+                </Th>
+              ))
+            }
           </tr>
         </thead>
         <tbody>
@@ -168,8 +172,8 @@ export default function TableSort({ data }: TableSortProps) {
           ) : (
             <tr>
               <td colSpan={Object.keys(data[0]).length}>
-                <Text weight={500} align="center">
-                  Nothing found
+                <Text weight={700} my="8%" fz={20} align="center">
+                  No hay resultados
                 </Text>
               </td>
             </tr>
