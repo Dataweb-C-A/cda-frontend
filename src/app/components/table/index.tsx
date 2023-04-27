@@ -145,7 +145,16 @@ export default function TableSort({ data }: TableSortProps) {
         radius={0}
         onChange={handleSearchChange}
       />
-      <Table striped highlightOnHover withColumnBorders withBorder horizontalSpacing="md" verticalSpacing="sm" miw={700} sx={{ tableLayout: 'fixed' }}>
+      <Table 
+        striped 
+        highlightOnHover 
+        withColumnBorders 
+        withBorder 
+        horizontalSpacing="md" 
+        verticalSpacing="sm" 
+        miw={700} 
+        sx={{ tableLayout: 'fixed' }}
+      >
         <thead>
           <tr>
             {

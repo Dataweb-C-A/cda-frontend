@@ -70,6 +70,7 @@ export default function FormModal({
   const [money, setMoney] = useState<boolean>(false)
   const [usersSelect, setUsersSelect] = useState<any>([])
   const [validate, setValidate] = useState<Date>(new Date(moment().format('YYYY-MM-DD 19:30:00')))
+  const [actualDate, setActualDate] = useState<Date>(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))
 
   if (active === 2) {
     setTimeout(() => {
@@ -95,6 +96,13 @@ export default function FormModal({
       console.log(err)
     })
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActualDate(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [actualDate])
 
   const form = useForm({
     initialValues: {
@@ -170,8 +178,8 @@ export default function FormModal({
     )
   }
 
-  const validateDate = (date: Date) => {
-    if (date < validate) {
+  const validateDate = () => {
+    if (actualDate <= validate) {
       return new Date(moment().add(1, 'days').format('YYYY-MM-DD'))
     } else {
       return new Date(moment().add(2, 'days').format('YYYY-MM-DD'))
@@ -205,7 +213,7 @@ export default function FormModal({
                       opacity={0.8}
                     />
                   }
-                  minDate={validateDate(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))}
+                  minDate={validateDate()}
                   maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
                   error={form.errors.rifDate}
                   {...form.getInputProps('rifDate')}

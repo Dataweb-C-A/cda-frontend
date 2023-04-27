@@ -37,43 +37,7 @@ function Reports() {
             </Text>
           </Title>
           <Table data={[
-            {
-              agencia: '4 Bocas',
-              rifero: 'Javier Diaz',
-              numero: '203',
-              premio: 'Bicicleta',
-              precio: '1.00$',
-              precio_final: Number((1.00 * 12)/2).toFixed(2) + '$',
-              premiacion: Number(((1.00 * 12)/2)*600).toFixed(0) + '$',
-
-            },
-            {
-              agencia: 'El Cuji',
-              rifero: 'Pedro Perez',
-              numero: '213',
-              premio: 'Moto',
-              precio: '2.00$',
-              precio_final: Number((2.00 * 12)/2).toFixed(2) + '$',
-              premiacion: Number(((2.00 * 12)/2)*600).toFixed(0) + '$',
-            },
-            {
-              agencia: 'JyR',
-              rifero: 'Rafael Rodriguez',
-              numero: '392',
-              premio: 'Carro',
-              precio: '3.00$',
-              precio_final: Number((3.00 * 12)/2).toFixed(2) + '$',
-              premiacion: Number(((3.00 * 12)/2)*600).toFixed(0) + '$',
-            },
-            {
-              agencia: 'Los Compadres',
-              rifero: 'Javier Sarache',
-              numero: '103',
-              premio: 'Toyota 2023',
-              precio: '4.00$',
-              precio_final: Number((4.00 * 12)/2).toFixed(2) + '$',
-              premiacion: Number(((4.00 * 12)/2)*600).toFixed(0) + '$',
-            }
+            
           ]} />
         </Card>
       </div>
