@@ -69,9 +69,10 @@ export default function FormModal({
   const [active, setActive] = useState(0);
   const [money, setMoney] = useState<boolean>(false)
   const [usersSelect, setUsersSelect] = useState<any>([])
-  const [validate, setValidate] = useState<Date>(new Date(moment().format('YYYY-MM-DD 19:30:00')))
   const [actualDate, setActualDate] = useState<Date>(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))
-
+  
+  const validate = new Date(moment().format('YYYY-MM-DD 19:30:00'))
+  
   if (active === 2) {
     setTimeout(() => {
       setActive(0)
