@@ -111,7 +111,7 @@ function Reports() {
     .catch(err => {
       console.log(err)
     })
-    axios.get<IReports[] | []>('https://rifa-max.com/api/v1/rifas/actives_no_tickets', {
+    axios.get<IReports[] | []>('https://rifa-max.com/api/v1/reports', {
       headers: {
         ContentType: 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`
