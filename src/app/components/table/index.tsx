@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import {
   createStyles,
   Table,
@@ -8,9 +8,9 @@ import {
   Text,
   Center,
   TextInput,
-} from '@mantine/core';
-import { keys } from '@mantine/utils';
-import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
+} from '@mantine/core'
+import { keys } from '@mantine/utils'
+import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react'
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -31,32 +31,26 @@ const useStyles = createStyles((theme) => ({
     height: '2.4rem',
     borderRadius: '1.4rem',
   },
-}));
+}))
 
 interface RowData {
-  agencia: string;
-  rifero: string;
-  numero: string;
-  premio: string;
-  precio: string;
-  precio_final: string;
-  premiacion: string;
+  [key: string]: any
 }
 
 interface TableSortProps {
-  data: RowData[];
+  data: Object[]
 }
 
 interface ThProps {
-  children: React.ReactNode;
-  reversed: boolean;
-  sorted: boolean;
-  onSort(): void;
+  children: React.ReactNode
+  reversed: boolean
+  sorted: boolean
+  onSort(): void
 }
 
 function Th({ children, reversed, sorted, onSort }: ThProps) {
-  const { classes } = useStyles();
-  const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
+  const { classes } = useStyles()
+  const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector
   return (
     <th className={classes.th}>
       <UnstyledButton onClick={onSort} className={classes.control}>
@@ -70,68 +64,100 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
         </Group>
       </UnstyledButton>
     </th>
-  );
+  )
 }
 
-function filterData(data: RowData[], search: string) {
-  const query = search.toLowerCase().trim();
+function filterData(data: any[], search: string) {
+  const query = search.toLowerCase().trim()
   return data.filter((item) =>
     keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
-  );
+  )
 }
 
 function sortData(
   data: RowData[],
   payload: { sortBy: keyof RowData | null; reversed: boolean; search: string }
 ) {
-  const { sortBy } = payload;
+  const { sortBy } = payload
 
   if (!sortBy) {
-    return filterData(data, payload.search);
+    return filterData(data, payload.search)
   }
 
   return filterData(
     [...data].sort((a, b) => {
       if (payload.reversed) {
-        return b[sortBy].localeCompare(a[sortBy]);
+        return b[sortBy].localeCompare(a[sortBy])
       }
 
-      return a[sortBy].localeCompare(b[sortBy]);
+      return a[sortBy].localeCompare(b[sortBy])
     }),
     payload.search
-  );
+  )
 }
 
 export default function TableSort({ data }: TableSortProps) {
-  const [search, setSearch] = useState('');
-  const [sortedData, setSortedData] = useState(data);
-  const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
-  const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const [search, setSearch] = useState('')
+  const [sortedData, setSortedData] = useState(data)
+  const [sortBy, setSortBy] = useState<keyof RowData | null>(null)
+  const [reverseSortDirection, setReverseSortDirection] = useState(false)
 
   const setSorting = (field: keyof RowData) => {
-    const reversed = field === sortBy ? !reverseSortDirection : false;
-    setReverseSortDirection(reversed);
-    setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
-  };
+    const reversed = field === sortBy ? !reverseSortDirection : false
+    setReverseSortDirection(reversed)
+    setSortBy(field)
+    setSortedData(sortData(data, { sortBy: field, reversed, search }))
+  }
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
-  };
+    const { value } = event.currentTarget
+    setSearch(value)
+    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }))
+  }
 
-  const rows = sortedData.map((row) => (
-    <tr key={row.agencia}>
+  const verifyPayload = (payload: any) => {
+    switch (typeof payload) {
+      case 'string':
+        return <Text>{payload}</Text>
+      case 'number':
+        return <Text>{payload}</Text>
+      case 'boolean':
+        if (payload === true) {
+          return <Text>Si</Text>
+        } else {
+          return <Text>No</Text>
+        }
+      case 'object':
+        if (payload === null) {
+          return <Text>N/A</Text>
+        }
+        if (Array.isArray(payload)) {
+          return <Text>{payload.join(', ')}</Text>
+        }
+        if (payload instanceof Date) {
+          return <Text>{payload.toLocaleDateString()}</Text>
+        }
+        return <Text>{JSON.stringify(payload)}</Text>
+      case 'undefined': 
+        return <Text>N/A</Text>
+      default:
+        return <Text>{payload}</Text>  
+    }
+  }
+
+  const rows = sortedData.map((row, index) => (
+    <tr key={index}>
       {
         keys(row).map((key) => (
           <td key={key}>
-            <Text>{row[key]}</Text>
+            {
+              verifyPayload(row[key])
+            }
           </td>
         ))
       }
     </tr>
-  ));
+  ))
 
   return (
     <ScrollArea>
@@ -190,5 +216,5 @@ export default function TableSort({ data }: TableSortProps) {
         </tbody>
       </Table>
     </ScrollArea>
-  );
+  )
 }

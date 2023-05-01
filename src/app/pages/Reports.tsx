@@ -4,6 +4,7 @@ import Navbar from '../components/navbar'
 import axios from 'axios'
 import { Card, Title, Text } from '@mantine/core'
 import Table from '../components/table'
+import moment from 'moment'
 
 /*
 {
@@ -83,6 +84,7 @@ interface IReports {
   awardSign: string,
   price: number
   money: string,
+  rifDate: Date
 }
 
 interface ITable {
@@ -92,7 +94,7 @@ interface ITable {
   premio: string,
   precio: string,
   precio_final: string,
-  premiacion: string,
+  premiacion: string
 }
 
 function Reports() {
@@ -144,7 +146,7 @@ function Reports() {
           <Title order={2} fw={500} mb={20}>
             Reportes
             <Text fw={300} fz={20} mb={-7}>
-              Reportes semanal y mensual de las rifas
+              Reportes diarios de las rifas del {moment().format('DD/MM/YYYY')}
             </Text>
           </Title>
           {
