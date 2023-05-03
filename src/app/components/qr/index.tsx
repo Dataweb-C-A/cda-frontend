@@ -8,12 +8,10 @@ type IQRCode = {
 }
 
 function QRCodegenerator({ value, type, style }: IQRCode) {
-  // Generar el codigo QR con la libreria qrcode-generator
   const qr = QRCode(0, 'H');
   qr.addData(value);
   qr.make();
 
-  // Construir el SVG a partir del codigo QR
   const size = qr.getModuleCount() * 4;
   const cellSize = size / qr.getModuleCount();
   let path = '';
