@@ -8,9 +8,11 @@ import {
   Text,
   Center,
   TextInput,
+  Badge,
 } from '@mantine/core'
 import { keys } from '@mantine/utils'
 import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react'
+import { IconCheck, IconX } from '@tabler/icons'
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -123,9 +125,31 @@ export default function TableSort({ data }: TableSortProps) {
         return <Text>{payload}</Text>
       case 'boolean':
         if (payload === true) {
-          return <Text>Si</Text>
+          return (
+            <div style={{ display: 'flex', width: '100%'}}>
+              <div style={{ margin: 'auto' }}>
+                <Badge color="green">
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <IconCheck size="1rem" stroke={2} style={{ marginLeft: '-0.24rem' }} />
+                    <Text ml=".2rem" mt="-.1rem">Si</Text>
+                  </div>
+                </Badge>
+              </div>
+            </div>
+          )
         } else {
-          return <Text>No</Text>
+          return (
+            <div style={{ display: 'flex', width: '100%'}}>
+              <div style={{ margin: 'auto' }}>
+                <Badge color="red">
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <IconX size="1rem" stroke={2} style={{ marginLeft: '-0.24rem' }} />
+                    <Text ml=".2rem" mt="-.1rem">No</Text>
+                  </div>
+                </Badge>
+              </div>
+            </div>
+          )
         }
       case 'object':
         if (payload === null) {
