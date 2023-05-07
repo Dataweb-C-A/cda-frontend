@@ -6,13 +6,14 @@ import {
   Title,
   Chip,
   Loader,
-  Kbd
+  Kbd,
+  TextInput
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
 import HelpModalBody from "./HelpModal";
-import { Zzz } from 'tabler-icons-react';
+import { Search, Zzz } from 'tabler-icons-react';
 import axios from "axios";
 import { useUser } from "../../hooks/useUser";
 import moment from "moment";
@@ -23,6 +24,7 @@ function Dashboard() {
   const [openFilter, setOpenFilter] = useState(false);
   const [tickets, setTickets] = useState([]);
   const [openForm, setOpenForm] = useState(false);
+  const [filterRifas, setFilterRifas] = useState([]);
 
   function compararPorId(a: any, b: any) {
     return b.id - a.id;
@@ -76,6 +78,7 @@ function Dashboard() {
       }
     }).then((response) => {
       setTickets(response.data);
+      setFilterRifas(response.data);
     }).catch((error) => {
       console.log(error);
     });
@@ -92,7 +95,6 @@ function Dashboard() {
           <Title order={2} fw={500} mb={20} onClick={() => filterTickets('all')}>
             Filtrar
           </Title>
-          
           <div
             style={{
               alignItems: "center",
@@ -132,12 +134,17 @@ function Dashboard() {
       }
       <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
         <Grid>
-          <Grid.Col md={6} sm={12}>
+          <Grid.Col md={5} sm={12}>
             <Title order={2} fw={500} mb={20}>
               Rifas
               <Text fw={300} fz={20}>
                 Estado de las Rifas mensuales
               </Text>
+              <TextInput 
+                placeholder="Buscar rifas"
+                icon={<Search size={20} />}
+                mt={6}
+              />
               {/* <Card>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "5px" }}
@@ -158,7 +165,7 @@ function Dashboard() {
             </Title>
             {/* {openFilter && <FilterBody />} */}
           </Grid.Col>
-          <Grid.Col md={6} sm={12}>
+          <Grid.Col md={7} sm={12}>
             <FormModal
               variant="filled"
               color="blue"
@@ -184,7 +191,7 @@ function Dashboard() {
           </div>
         }
         {
-          tickets.sort(compararPorId).map((ticket: any) => {
+          filterRifas.sort(compararPorId).map((ticket: any) => {
             return (
               <AccordionList
                 repeat={{
