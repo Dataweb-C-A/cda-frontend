@@ -113,6 +113,7 @@ function Reports() {
     .catch(err => {
       console.log(err)
     })
+
     axios.get<IReports[] | []>('https://rifa-max.com/api/v1/reports', {
       headers: {
         ContentType: 'application/json',
@@ -132,6 +133,7 @@ function Reports() {
       })])
     }).catch((error) => {
       console.log(error)
+      setReports([])
     })
   }, [])
 
