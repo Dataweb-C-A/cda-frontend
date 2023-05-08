@@ -3,14 +3,6 @@ import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 import Moment from "moment";
 import TicketsModal from "../ticketsModal";
 
-interface RiferosProps {
-  phone: string;
-}
-
-interface UserProps {
-  name: string;
-}
-
 type TicketProps = {
   ticket: {
     id: number;
