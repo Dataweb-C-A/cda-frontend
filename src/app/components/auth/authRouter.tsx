@@ -16,7 +16,7 @@ const AuthRouter: React.FC<AuthRouterProps> = ({ component: Component, path, isP
   const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') || '{}') : useUser();
 
   const permissions: PermissionMap = {
-    Admin: ['/', '/users', '/reports'],
+    Admin: ['/', '/users', '/reports', '/operadora'],
     Rifero: ['/'],
     Taquilla: ['/', '/riferos', '/operadora'],
     Agencia: ['/'],
