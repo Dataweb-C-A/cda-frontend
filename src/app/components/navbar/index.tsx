@@ -71,7 +71,7 @@ interface current {
   }
 }
 
-const currnetRifasInitialValues = {
+const currentRifasInitialValues = {
   message: '',
   rifa: {
     id: 0,
@@ -107,7 +107,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
   const [lastsRifasModal, setLastsRifasModal] = useState<lastRifas>({ open: false, user: initialValues })
   const [communityOpen, setCommunityOpen] = useState(false)
   const [search, setSearch] = useState({ query: "", value: "" })
-  const [currentRifa, setCurrentRifa] = useState<current>(currnetRifasInitialValues)
+  const [currentRifa, setCurrentRifa] = useState<current>(currentRifasInitialValues)
 
   const { user, destroy } = useUser();
 
@@ -120,7 +120,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
       .then((response) => {
         setCurrentRifa({ message: '', rifa: response.data })
       }).catch(() => {
-        setCurrentRifa({ message: "Rifa couldn't load", rifa: currnetRifasInitialValues.rifa })
+        setCurrentRifa({ message: "Rifa couldn't load", rifa: currentRifasInitialValues.rifa })
       })
   }, [lastsRifasModal.open])
 

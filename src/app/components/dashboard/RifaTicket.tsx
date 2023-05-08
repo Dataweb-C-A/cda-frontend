@@ -14,21 +14,62 @@ interface UserProps {
 type TicketProps = {
   ticket: {
     id: number;
-    numbers: string;
     awardSign: string;
-    awardNoSign?: string | null;
-    plate?: string | null;
-    year?: string | number | null;
-    is_send: boolean | false;
+    awardNoSign?: string;
+    year: string | '';
+    plate?: string;
+    rifDate: Date;
     price: number;
+    loteria: string;
+    numbers: number;
     serial: string;
-    money: string;
-    loteria?: string;
-    rifDate: string;
+    withSigns: any;
     expired: string;
-    rifero: RiferosProps;
-    user: UserProps;
+    is_send: boolean;
+    rifero_id: number;
     created_at: string;
+    updated_at: string;
+    money: string;
+    pin: any;
+    verify: boolean;
+    tickets_are_sold: boolean;
+    rifero: {
+      id: number;
+      phone: string;
+      created_at: string;
+      updated_at: string;
+    };
+    user: {
+      id: number;
+      name: string;
+      username: string;
+      email: string;
+      cedula: string;
+      password_digest: string;
+      role: string;
+      status: boolean;
+      created_at: string;
+      updated_at: string;
+    };
+    taquilla: {
+      id: number;
+      phone: string;
+      agency_id: number;
+      created_at: string;
+      updated_at: string;
+      user: {
+        id: number;
+        name: string;
+        username: string;
+        email: string;
+        cedula: string;
+        password_digest: string;
+        role: string;
+        status: boolean;
+        created_at: string;
+        updated_at: string;
+      };
+    };
   }
 }
 

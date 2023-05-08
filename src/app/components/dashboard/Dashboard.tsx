@@ -4,63 +4,87 @@ import {
   Card,
   Text,
   Title,
-  Chip,
   Loader,
-  Kbd,
-  TextInput
+  Input,
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
 import HelpModalBody from "./HelpModal";
-import { Search, Zzz } from 'tabler-icons-react';
+import { Search } from 'tabler-icons-react';
 import axios from "axios";
-import { useUser } from "../../hooks/useUser";
 import moment from "moment";
-import useTimer from "../../hooks/useTimer";
+
+interface IRifas {
+  id: number;
+  awardSign: string;
+  awardNoSign?: string;
+  year: string | '';
+  plate?: string;
+  rifDate: Date;
+  price: number;
+  loteria: string;
+  numbers: number;
+  serial: string;
+  withSigns: any;
+  expired: string;
+  is_send: boolean;
+  rifero_id: number;
+  created_at: string;
+  updated_at: string;
+  money: string;
+  pin: any;
+  verify: boolean;
+  tickets_are_sold: boolean;
+  rifero: {
+    id: number;
+    phone: string;
+    created_at: string;
+    updated_at: string;
+  };
+  user: {
+    id: number;
+    name: string;
+    username: string;
+    email: string;
+    cedula: string;
+    password_digest: string;
+    role: string;
+    status: boolean;
+    created_at: string;
+    updated_at: string;
+  };
+  taquilla: {
+    id: number;
+    phone: string;
+    agency_id: number;
+    created_at: string;
+    updated_at: string;
+    user: {
+      id: number;
+      name: string;
+      username: string;
+      email: string;
+      cedula: string;
+      password_digest: string;
+      role: string;
+      status: boolean;
+      created_at: string;
+      updated_at: string;
+    };
+  };
+}
 
 function Dashboard() {
   const [helpModal, setHelpModal] = useState(false);
-  const [openFilter, setOpenFilter] = useState(false);
-  const [tickets, setTickets] = useState([]);
+  const [tickets, setTickets] = useState<IRifas[]>([]);
+  const [loading, setLoading] = useState(true);
   const [openForm, setOpenForm] = useState(false);
-  const [filterRifas, setFilterRifas] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
 
-  function compararPorId(a: any, b: any) {
+  function compareById(a: any, b: any) {
     return b.id - a.id;
   }
-
-  // const [isTime, setIsTime] = useState(false);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const time = moment().format('HH:mm:ss');
-  //     if (time >= '19:00:00' && time <= '23:59:59') {
-  //       setIsTime(true);
-  //     } else {
-  //       setIsTime(false);
-  //     }
-  //   }, 100);
-
-  //   return () => clearInterval(interval);
-  // }, []);
-
-  // const { time } = useTimer('23:59:59');
-
-  const filterTickets = (type: string | 'all') => {
-    switch (type) {
-      case "normal":
-        return tickets.filter((ticket: any) => ticket.numbers >= 100);
-      case "triples":
-        return setTickets(tickets.filter((ticket: any) => ticket.numbers <=  99));
-      case "terminales":
-        return setTickets(tickets.filter((ticket: any) => ticket.numbers <= 9));
-      default:
-        return tickets;
-    }
-  }
-
-  const { user } = useUser();
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -77,8 +101,8 @@ function Dashboard() {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((response) => {
+      setLoading(false);
       setTickets(response.data);
-      setFilterRifas(response.data);
     }).catch((error) => {
       console.log(error);
     });
@@ -88,160 +112,134 @@ function Dashboard() {
     }
   }, [openForm])
 
-  const FilterBody = () => {
-    return (
-      <>
-        <Card mt={-20}>
-          <Title order={2} fw={500} mb={20} onClick={() => filterTickets('all')}>
-            Filtrar
-          </Title>
-          <div
-            style={{
-              alignItems: "center",
-              gap: "5px",
-              marginTop: "-15px",
-              marginBottom: "10px",
-            }}
-          >
-            <Text fw={300} fz={20} mt={5}>
-              Categorias:
-            </Text>
-            <div style={{ display: "flex", gap: "7px" }}>
-              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('normal')} onAbort={() => filterTickets('all')}>
-                Normal
-              </Chip>
-              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('triples')} onAbort={() => filterTickets('all')}>
-                Triples
-              </Chip>
-              <Chip color="blue" variant="outline" size="sm" mt={10} onClick={() => filterTickets('terminales')} onAbort={() => filterTickets('all')}>
-                Terminales
-              </Chip>
-            </div>
-          </div>
-        </Card>
-      </>
-    )
-  }
-
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+  
+  // filtra las rifas según el valor de búsqueda
+  const filteredTickets = tickets.filter((ticket) => {
+    // si el valor de búsqueda es vacío, muestra todas las rifas
+    if (!searchValue) {
+      return true;
+    }
+    // convierte los atributos a buscar a minúsculas para realizar una comparación insensible a mayúsculas
+    const searchString = searchValue.toLowerCase();
+    const awardSign = ticket.awardSign?.toLowerCase() || "";
+    const riferoName = ticket.user.name.toLowerCase() || "";
+    const awardNoSign = ticket.awardNoSign?.toLowerCase() || "";
+    // retorna verdadero si el valor de búsqueda se encuentra en al menos uno de los atributos
+    return awardSign.includes(searchString) || riferoName.includes(searchString) || awardNoSign.includes(searchString);
+  });
+  
   return (
     <>
       {
-        helpModal && 
-        <HelpModalBody 
-          open={helpModal}
-          onClose={() => setHelpModal(false)}
-        />
-      }
-      <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
-        <Grid>
-          <Grid.Col md={5} sm={12}>
-            <Title order={2} fw={500} mb={20}>
-              Rifas
-              <Text fw={300} fz={20}>
-                Estado de las Rifas mensuales
-              </Text>
-              <TextInput 
-                placeholder="Buscar rifas"
-                icon={<Search size={20} />}
-                mt={6}
+        loading ? (
+          <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+              <Loader />
+              <Text style={{ marginLeft: "10px" }}>Cargando Rifas...</Text>
+            </div>
+          </Card>
+        ) : (
+          <>
+            {
+              helpModal && 
+              <HelpModalBody 
+                open={helpModal}
+                onClose={() => setHelpModal(false)}
               />
-              {/* <Card>
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "5px" }}
-                >
-                  <Chip
+            }
+            <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+              <Grid>
+                <Grid.Col md={5} sm={12}>
+                  <Title order={2} fw={500} mb={20}>
+                    Rifas
+                    <Text fw={300} fz={20}>
+                      Estado de las Rifas mensuales
+                    </Text>
+                  </Title>
+                  <Input
+                    icon={<Search />}
+                    variant="filled"
+                    placeholder="Buscar por premio, rifero o número de premiado"
+                    radius="sm"
+                    size="sm"
+                    mt={-15}
+                    mb={20}
+                    value={searchValue}
+                    onChange={handleSearchChange}
+                  />
+                </Grid.Col>
+                <Grid.Col md={7} sm={12}>
+                  <FormModal
+                    variant="filled"
                     color="blue"
-                    my={-10}
-                    onClick={() => setOpenFilter(!openFilter)}
-                    checked={openFilter}
+                    style={{ float: "right" }}
+                      className="btn-rifa"
+                    onClick={() => setOpenForm(!openForm)}
+                    onClose={() => setOpenForm(false)}
+                    open={openForm}
                   >
-                    {openFilter === true ? "Filtrar" : "Todas"}
-                  </Chip>
-                  <Kbd ml={10}mt={10} onClick={() => setHelpModal(true)} className="kbd">
-                    Ctrl + M
-                  </Kbd>
+                    Agregar Rifa
+                  </FormModal>
+                </Grid.Col>
+              </Grid>
+              {
+                tickets.length === 0 &&
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+                  <Loader size="lg" />
                 </div>
-              </Card> */}
-            </Title>
-            {/* {openFilter && <FilterBody />} */}
-          </Grid.Col>
-          <Grid.Col md={7} sm={12}>
-            <FormModal
-              variant="filled"
-              color="blue"
-              style={{ float: "right" }}
-              className="btn-rifa"
-              onClick={() => setOpenForm(!openForm)}
-              onClose={() => setOpenForm(false)}
-              open={openForm}
-              // leftIcon={isTime && <Zzz size={20} />}
-              // disabled={isTime}
-            >
-              {/* {
-                isTime ? time : "Agregar Rifa"
-              } */}
-              Agregar Rifa
-            </FormModal>
-          </Grid.Col>
-        </Grid>
-        {
-          tickets.length === 0 &&
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
-            <Loader size="lg" />
-          </div>
-        }
-        {
-          filterRifas.sort(compararPorId).map((ticket: any) => {
-            return (
-              <AccordionList
-                repeat={{
-                  rifDate: ticket.rifDate,
-                  id: ticket.id,
-                  awardSign: ticket.awardSign,
-                  awardNoSign: ticket.awardNoSign,
-                  plate: ticket.plate,
-                  year: ticket.year,
-                  price: ticket.price,
-                  money: ticket.money,
-                  loteria: ticket.loteria,
-                  numbers: ticket.numbers,
-                  rifero_id: ticket.rifero.id,
-                }}
-                data={{
-                  id: ticket.id,
-                  rifero: ticket.user.name,
-                  prize: ticket.awardSign,
-                  status: ticket.is_send,
-                  pin: ticket.pin ? true : false,
-                  pinNumber: ticket.pin ? ticket.pin : null,
-                  verify: ticket.verify
-                }}
-                dataPDF={{
-                  agency: ticket.user.name,
-                  serie: ticket.id,
-                  rifDate: moment(ticket.rifDate).format("DD/MM/YYYY"),
-                  hour: moment(new Date()).format("hh:mm A"),
-                  lotery: 'ZULIA 7A 7:05PM',
-                  phone: ticket.rifero.phone,
-                  awardNoSign: ticket.awardNoSign,
-                  numbers: ticket.numbers,
-                  money: ticket.money,
-                  price: ticket.price,
-                  awardSign: ticket.awardSign,
-                  serial: ticket.serial,
-                  plate: ticket.plate,
-                  year: ticket.year,
-                  rifero: ticket.user.name,
-                }}
-              >
-                <RifaTicket
-                  ticket={ticket}
-                />
-              </AccordionList>
-            )
-          })
-        }
-      </Card>
+              }
+              {
+                tickets.length > 0 ? (
+                  filteredTickets.sort(compareById).map((ticket: IRifas) => {
+                    return (
+                      <AccordionList
+                        repeat={ticket}
+                        data={{
+                          id: ticket.id,
+                          rifero: ticket.user.name,
+                          prize: ticket.awardSign,
+                          status: ticket.is_send,
+                          pin: ticket.pin ? true : false,
+                          pinNumber: ticket.pin ? ticket.pin : null,
+                          verify: ticket.verify
+                        }}
+                        dataPDF={{
+                          agency: ticket.user.name,
+                          serie: ticket.id,
+                          rifDate: moment(ticket.rifDate).format("DD/MM/YYYY"),
+                          hour: moment(new Date()).format("hh:mm A"),
+                          lotery: 'ZULIA 7A 7:05PM',
+                          phone: ticket.rifero.phone,
+                          awardNoSign: ticket.awardNoSign,
+                          numbers: ticket.numbers.toString(),
+                          money: ticket.money,
+                          price: ticket.price.toString(),
+                          awardSign: ticket.awardSign,
+                          serial: ticket.serial,
+                          plate: ticket.plate,
+                          year: ticket.year,
+                          rifero: ticket.user.name,
+                        }}
+                      >
+                        <RifaTicket
+                          ticket={ticket}
+                        />
+                      </AccordionList>
+                    )
+                  })
+                ) : (
+                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+                    <Text size="xl">No hay resultados</Text>
+                  </div>
+                )
+              }
+            </Card>
+          </>
+        )
+      }
     </>
   )
 }
