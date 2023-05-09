@@ -7,6 +7,7 @@ import '../assets/scss/operadora.scss'
 import TicketModal from "../components/operadora/TicketModal";
 import tickets from '../assets/data/tickets.json'
 import axios from "axios";
+import Lobby from "../components/operadora/Lobby";
 
 type Props = {}
 
@@ -40,7 +41,6 @@ function Operadora({}: Props) {
       <Drawer
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
-        
         size="100%"
         position="left"
       >
@@ -84,7 +84,6 @@ function Operadora({}: Props) {
 
   return (
     <>
-      <ModalSell />
       <Navbar
         profiles={profiles}
         links={links}
@@ -378,6 +377,13 @@ function Operadora({}: Props) {
                   </Avatar.Group>
                 </Group> */}
               </Card>
+            </Grid.Col>
+            <Grid.Col span={12}>
+              {
+                modalOpened && (
+                  <Lobby/>
+                )
+              }
             </Grid.Col>
           </Grid>
       {/* </Card> */}

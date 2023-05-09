@@ -131,9 +131,7 @@ function TicketModal({ tickets }: modalProps) {
 
   return (
     <Card shadow={'0 0 7px 0 #5f5f5f3d'} my={20} mx={10} ref={elementRef}>
-      <Operadora />
       <br />
-      
       <div className={classes.container}>
         <div className={classes.ticketsFlex}>
           <Group key={counter}>
