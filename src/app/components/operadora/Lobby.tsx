@@ -57,8 +57,8 @@ function Lobby() {
       background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1],
       cursor: 'pointer',
       height: '50px',
-      margin: '0.3rem',
-      marginRight: '2rem',
+      margin: '0rem',
+      marginRight: '1rem',
       userSelect: 'none',
       '&:hover': {
         background: theme.colors.blue[5],
@@ -68,7 +68,7 @@ function Lobby() {
       position: 'absolute',
       width: '50%',
       bottom: '93%',
-      height: '7px',
+      height: '8px',
       left: '25%',
       borderRadius: '0 0 3px 3px',
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
@@ -89,7 +89,7 @@ function Lobby() {
       width: '100%',
     },
     ticketsFlex: {
-      width: '100%'
+      width: '70%'
     },
     taquillaFlex: {
       width: '30%',
@@ -148,6 +148,50 @@ function Lobby() {
             ))}
           </Group>
           </div>
+          <div className={classes.taquillaFlex}>
+          <nav
+            className={classes.stickyNav}
+          >
+            
+              {
+                active.length % 1 || active.length === 0 ? (
+                  <Text>Debe seleccionar boletos</Text>
+                ) : (
+                  <>
+                    <Button fullWidth mb={10} variant="filled" color="blue">
+                      Limpiar
+                    </Button>
+                    <Grid>
+                      <Grid.Col xl={12} sm={12}>
+                        <Paper shadow="sm" mb={10}>
+                          <Card shadow="sm" mb={10}>
+                            <Text>Arreglo 1</Text>
+                            {
+                              active.map((item, index) => (
+                                <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
+                              ))
+                            }
+                          </Card>
+                        </Paper>
+                      </Grid.Col>
+                      {/* <Grid.Col xl={6} sm={12}>
+                        <Paper shadow="sm" mb={10}>
+                        <Card shadow="sm" mb={10}>
+                            <Text>Arreglo 1</Text>
+                            {
+                              active.map((item, index) => (
+                                <Text key={index}>{formatPlace(item)}</Text>
+                              ))
+                            }
+                          </Card>
+                        </Paper>
+                      </Grid.Col> */}
+                    </Grid>                         
+                  </>
+                )
+              }
+          </nav>
+        </div>
         </div>
       </Card>
     </>

@@ -36,6 +36,18 @@ function Operadora({}: Props) {
       })
   }, [])
 
+  useEffect(() => {
+    const handleEsc = (event: any) => {
+      if (event.keyCode === 27) { 
+        setModalOpened(false)
+      }
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => {
+      window.removeEventListener('keydown', handleEsc)
+    }
+  }, [])
+
   const ModalSell = () => {
     return (
       <Drawer
@@ -95,7 +107,7 @@ function Operadora({}: Props) {
         <Text mt={-3} fw={300} fz={20}>
           Sorteos disponibles para participar:
         </Text> */}
-          <Grid mt={20} gutter={10} mx={10}>
+          <Grid mt={10} gutter={10} mx={10}>
             <Grid.Col xs={6} lg={2}>
               <Card 
                 shadow={"0 0 7px 0 #5f5f5f3d"}
@@ -105,21 +117,14 @@ function Operadora({}: Props) {
                     theme.colors.gray[0]
                 }
               >
-                <BadgeStatus status={"Activo"} color={"green"} />
+                <BadgeStatus status={"Comprar"} color={"green"} />
                 <Text mt={-3} fw={500} fz={20}>
-                  Sorteo 001
+                  Rifa de una moto
                 </Text>
-                <Text mt={-3} fw={500} fz={15}>
-                  Operadora
+                <Text mt={-3} fw={300} fz={12}>
+                  Inicio: 08/03/2023 - Cierre:  10/03/2023
                 </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Inicio: 08/03/2023 <br/>
-                  Cierre: 10/03/2023
-                </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Una moto
-                </Text>
-                <Text mt={10} fw={300} fz={15}>
+                <Text mt={0} fw={300} fz={15}>
                   Progreso:
                 </Text>
                 <Progress
@@ -127,7 +132,7 @@ function Operadora({}: Props) {
                   color="blue"
                   label="34%"
                   size={25}
-                  mt={10}
+                  mt={5}
                   mb={10}
                 />
                 {/* <Group>
@@ -152,29 +157,22 @@ function Operadora({}: Props) {
                     theme.colors.gray[0]
                 }
               >
-                <BadgeStatus status={"Finalizado"} color={"red"} />
+                <BadgeStatus status={"Cerrado"} color={"red"} />
                 <Text mt={-3} fw={500} fz={20}>
-                  Sorteo 002
+                  Rifa de una moto
                 </Text>
-                <Text mt={-3} fw={500} fz={15}>
-                  Operadora
+                <Text mt={-3} fw={300} fz={12}>
+                  Inicio: 08/03/2023 - Cierre:  10/03/2023
                 </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Inicio: 08/03/2023 <br/>
-                  Cierre: 10/03/2023
-                </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Una moto
-                </Text>
-                <Text mt={10} fw={300} fz={15}>
+                <Text mt={0} fw={300} fz={15}>
                   Progreso:
                 </Text>
                 <Progress
-                  value={95}
+                  value={34}
                   color="blue"
-                  label="93%"
+                  label="34%"
                   size={25}
-                  mt={10}
+                  mt={5}
                   mb={10}
                 />
                 {/* <Group>
@@ -199,29 +197,22 @@ function Operadora({}: Props) {
                     theme.colors.gray[0]
                 }
               >
-                <BadgeStatus status={"Finalizado"} color={"red"} />
+                <BadgeStatus status={"Cerrado"} color={"red"} />
                 <Text mt={-3} fw={500} fz={20}>
-                  Sorteo 002
+                  Rifa de una moto
                 </Text>
-                <Text mt={-3} fw={500} fz={15}>
-                  Operadora
+                <Text mt={-3} fw={300} fz={12}>
+                  Inicio: 08/03/2023 - Cierre:  10/03/2023
                 </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Inicio: 08/03/2023 <br/>
-                  Cierre: 10/03/2023
-                </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Una moto
-                </Text>
-                <Text mt={10} fw={300} fz={15}>
+                <Text mt={0} fw={300} fz={15}>
                   Progreso:
                 </Text>
                 <Progress
-                  value={95}
+                  value={34}
                   color="blue"
-                  label="93%"
+                  label="34%"
                   size={25}
-                  mt={10}
+                  mt={5}
                   mb={10}
                 />
                 {/* <Group>
@@ -246,29 +237,22 @@ function Operadora({}: Props) {
                     theme.colors.gray[0]
                 }
               >
-                <BadgeStatus status={"Finalizado"} color={"red"} />
+                <BadgeStatus status={"Cerrado"} color={"red"} />
                 <Text mt={-3} fw={500} fz={20}>
-                  Sorteo 002
+                  Rifa de una moto
                 </Text>
-                <Text mt={-3} fw={500} fz={15}>
-                  Operadora
+                <Text mt={-3} fw={300} fz={12}>
+                  Inicio: 08/03/2023 - Cierre:  10/03/2023
                 </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Inicio: 08/03/2023 <br/>
-                  Cierre: 10/03/2023
-                </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Una moto
-                </Text>
-                <Text mt={10} fw={300} fz={15}>
+                <Text mt={0} fw={300} fz={15}>
                   Progreso:
                 </Text>
                 <Progress
-                  value={95}
+                  value={34}
                   color="blue"
-                  label="93%"
+                  label="34%"
                   size={25}
-                  mt={10}
+                  mt={5}
                   mb={10}
                 />
                 {/* <Group>
@@ -293,29 +277,22 @@ function Operadora({}: Props) {
                     theme.colors.gray[0]
                 }
               >
-                <BadgeStatus status={"Finalizado"} color={"red"} />
+                <BadgeStatus status={"Cerrado"} color={"red"} />
                 <Text mt={-3} fw={500} fz={20}>
-                  Sorteo 002
+                  Rifa de una moto
                 </Text>
-                <Text mt={-3} fw={500} fz={15}>
-                  Operadora
+                <Text mt={-3} fw={300} fz={12}>
+                  Inicio: 08/03/2023 - Cierre:  10/03/2023
                 </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Inicio: 08/03/2023 <br/>
-                  Cierre: 10/03/2023
-                </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Una moto
-                </Text>
-                <Text mt={10} fw={300} fz={15}>
+                <Text mt={0} fw={300} fz={15}>
                   Progreso:
                 </Text>
                 <Progress
-                  value={95}
+                  value={34}
                   color="blue"
-                  label="93%"
+                  label="34%"
                   size={25}
-                  mt={10}
+                  mt={5}
                   mb={10}
                 />
                 {/* <Group>
@@ -340,29 +317,22 @@ function Operadora({}: Props) {
                     theme.colors.gray[0]
                 }
               >
-                <BadgeStatus status={"Finalizado"} color={"red"} />
+                <BadgeStatus status={"Cerrado"} color={"red"} />
                 <Text mt={-3} fw={500} fz={20}>
-                  Sorteo 002
+                  Rifa de una moto
                 </Text>
-                <Text mt={-3} fw={500} fz={15}>
-                  Operadora
+                <Text mt={-3} fw={300} fz={12}>
+                  Inicio: 08/03/2023 - Cierre:  10/03/2023
                 </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Inicio: 08/03/2023 <br/>
-                  Cierre: 10/03/2023
-                </Text>
-                <Text mt={-3} fw={300} fz={15}>
-                  Una moto
-                </Text>
-                <Text mt={10} fw={300} fz={15}>
+                <Text mt={0} fw={300} fz={15}>
                   Progreso:
                 </Text>
                 <Progress
-                  value={95}
+                  value={34}
                   color="blue"
-                  label="93%"
+                  label="34%"
                   size={25}
-                  mt={10}
+                  mt={5}
                   mb={10}
                 />
                 {/* <Group>
