@@ -42,7 +42,11 @@ function Operadora() {
   useEffect(() => {
     const handleEsc = (event: any) => {
       if (event.keyCode === 27) {
-        setModalOpened(false)
+        setLobbyState({
+          lobby_id: 0,
+          lobby_state: false,
+          lobby_connection: new Date()
+        })
       }
     }
     window.addEventListener('keydown', handleEsc)
@@ -61,7 +65,7 @@ function Operadora() {
     )
   }
 
-  const BadgeStatus = ({ status, color }: { status: string, color: string }) => {
+  const BadgeStatus = ({ status, color, lobby_id }: { status: string, color: string, lobby_id: number }) => {
 
     const useStyles = createStyles((theme) => ({
       trigger: {
@@ -77,7 +81,7 @@ function Operadora() {
     const { classes, cx } = useStyles()
 
     return (
-      <Paper className={cx(classes.trigger)} onClick={() => setModalOpened(true)}>
+      <Paper className={cx(classes.trigger)} onClick={() => handleLobby(lobby_id, new Date())}>
         <div style={{ float: "right", top: '100px' }}>
           <ChevronIcon style={{ rotate: '-90deg', marginTop: '6px', marginLeft: '10px' }} />
         </div>
@@ -111,7 +115,7 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Comprar"} color={"green"} />
+            <BadgeStatus status={"Comprar"} color={"green"} lobby_id={1} />
             <Text mt={2} fw={500} fz={14} mb={4}>
               Rifa de una moto
             </Text>
@@ -140,7 +144,7 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Cerrado"} color={"red"} />
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
             <Text mt={2} fw={500} fz={14} mb={4}>
               Rifa de una moto
             </Text>
@@ -169,7 +173,7 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Cerrado"} color={"red"} />
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={3} />
             <Text mt={2} fw={500} fz={14} mb={4}>
               Rifa de una moto
             </Text>
@@ -198,7 +202,7 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Cerrado"} color={"red"} />
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={4} />
             <Text mt={2} fw={500} fz={14} mb={4}>
               Rifa de una moto
             </Text>
@@ -227,7 +231,7 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Cerrado"} color={"red"} />
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={5} />
             <Text mt={2} fw={500} fz={14} mb={4}>
               Rifa de una moto
             </Text>
@@ -256,7 +260,7 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Cerrado"} color={"red"} />
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={6} />
             <Text mt={2} fw={500} fz={14} mb={4}>
               Rifa de una moto
             </Text>
@@ -278,8 +282,14 @@ function Operadora() {
         </Grid.Col>
         <Grid.Col span={12}>
           {
-            modalOpened && (
-              <Lobby tickets={tickets} />
+            lobbyState.lobby_state && (
+              <Lobby 
+                tickets={tickets} 
+                lobby={{
+                  id: lobbyState.lobby_id,
+                  connection: lobbyState.lobby_connection,
+                }}
+              />
             )
           }
         </Grid.Col>

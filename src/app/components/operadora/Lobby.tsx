@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { Card, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title } from '@mantine/core'
-import { useScrollPosition } from '../../hooks/useScroll'
 
 type ILobby= {
   tickets: {
@@ -41,14 +40,6 @@ function formatPlace(place: number): string {
 function Lobby({tickets, lobby, user}: ILobby) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
-  const elementRef = useRef<HTMLDivElement>(null)
-
-  const handleScroll = ({ prevPos, currPos }: { prevPos: any; currPos: any }) => {
-    console.log('prevPos:', prevPos)
-    console.log('currPos:', currPos)
-  }
-
-  useScrollPosition(handleScroll, [], elementRef, false, 200)
 
   const bounce = keyframes({
     'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
