@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { Card, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
-import tickets from '../../assets/data/tickets.json'
 
 type ILobby= {
   tickets: {
-    id: number,
+    id?: number,
     place: number,
     isSold: boolean,
     soldTo?: {
@@ -15,6 +14,15 @@ type ILobby= {
       cedula: string
       phone: string
     }
+  }[],
+  lobby?: {
+    id: number,
+    connection: Date,
+  },
+  user?: {
+    id: number,
+    name: string,
+    role: string,
   }
 }
 
@@ -30,7 +38,7 @@ function formatPlace(place: number): string {
   }
 }
 
-function Lobby() {
+function Lobby({tickets, lobby, user}: ILobby) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
   const elementRef = useRef<HTMLDivElement>(null)
@@ -123,8 +131,9 @@ function Lobby() {
   }
 
   useEffect(() => {
-    setCounter(0)
-  }, [active])
+    console.log('You enter to lobby:\n\n', lobby)
+  }, [])
+
   return (
     <>
       <Card>
