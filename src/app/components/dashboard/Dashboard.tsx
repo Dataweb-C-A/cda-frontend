@@ -6,6 +6,8 @@ import {
   Title,
   Loader,
   Input,
+  Group,
+  Button,
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 import FormModal from "../formModal";
@@ -14,6 +16,7 @@ import HelpModalBody from "./HelpModal";
 import { Search } from 'tabler-icons-react';
 import axios from "axios";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 interface IRifas {
   id: number;
@@ -81,6 +84,8 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+
+  const history = useHistory();
 
   function compareById(a: any, b: any) {
     return b.id - a.id;
@@ -151,6 +156,23 @@ function Dashboard() {
               />
             }
             <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+              <Group position="left" mb={20} spacing={0}>
+                <Button size="xs" variant="filled" color="blue" disabled style={{
+                  borderRadius: "5px 0 0 5px",
+                  border: '1px solid #228BE6',
+                  cursor: 'not-allowed'
+                }}>
+                  Rifas
+                </Button>
+                <Button size="xs" variant="filled" color="blue" onClick={() => {
+                  history.push('/lobby');
+                }} style={{
+                  borderRadius: "0 5px 5px 0",
+                  border: '1px solid #228BE6'
+                }}>
+                  Rifas de moto
+                </Button>
+              </Group>
               <Grid>
                 <Grid.Col md={5} sm={12}>
                   <Title order={2} fw={500} mb={20}>
