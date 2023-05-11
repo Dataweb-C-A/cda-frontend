@@ -161,6 +161,7 @@ export default function RiferosModal({
             cedula: "V" + form.values.cedula,
             password: form.values.password,
             password_confirmation: form.values.passwordConfirmation,
+            role: 'Rifero',
             status: true,
           },
           {
