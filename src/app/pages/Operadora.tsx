@@ -10,8 +10,10 @@ import axios from "axios";
 import Lobby from "../components/operadora/Lobby";
 import logor from "../assets/images/rifamax-logo.png" ;
  const styles = {
-      width: '250px',
-      height: '115px',
+      width: '50%',
+      marginLeft: '20%',
+      aspectRatio: "2/1",
+      height: 'auto',
       borderRadius: '50%'
     };
 interface ILobbyState {
@@ -107,7 +109,7 @@ function Operadora() {
         links={links}
       />
       <Grid mt={10} gutter={10} mx={10}>
-        <Grid.Col xs={6} lg={2}>
+        <Grid.Col xs={4} lg={2}>
         <Card
           shadow={"0 0 7px 0 #5f5f5f3d"}
           bg={
@@ -133,7 +135,135 @@ function Operadora() {
               Rifa de una moto
             </Text>
             <Text mt={-3} fw={300} fz={7}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
+            </Text>
+            <Text mt={0} fw={300} fz={8}>
+              Progreso:
+            </Text>
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='red'
+                size='xs'
+                radius={4}
+              >
+                Cerrado
+              </Badge>
+            </Grid.Col>
+            </Grid>
+          </Card>
+        </Grid.Col>
+        
+        <Grid.Col xs={6} lg={2}>
+        <Card
+            shadow={"0 0 7px 0 #5f5f5f3d"}
+            bg={
+              theme.colorScheme === "dark" ?
+                theme.colors.dark[6] :
+                theme.colors.gray[0]
+            }
+          >
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+            <Text mt={2} fw={500} fz={10} mb={4}>
+              Rifa de una moto
+            </Text>
+            <Text mt={-3} fw={300} fz={7}>
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
+            </Text>
+            <Text mt={0} fw={300} fz={8}>
+              Progreso:
+            </Text>
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='red'
+                size='xs'
+                radius={4}
+              >
+                Cerrado
+              </Badge>
+            </Grid.Col>
+            </Grid>
+          </Card>
+        </Grid.Col>
+        <Grid.Col xs={6} lg={2}>
+        <Card
+            shadow={"0 0 7px 0 #5f5f5f3d"}
+            bg={
+              theme.colorScheme === "dark" ?
+                theme.colors.dark[6] :
+                theme.colors.gray[0]
+            }
+          >
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+            <Text mt={2} fw={500} fz={10} mb={4}>
+              Rifa de una moto
+            </Text>
+            <Text mt={-3} fw={300} fz={7}>
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
+            </Text>
+            <Text mt={0} fw={300} fz={8}>
+              Progreso:
+            </Text>
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='red'
+                size='xs'
+                radius={4}
+              >
+                Cerrado
+              </Badge>
+            </Grid.Col>
+            </Grid>
+          </Card>
+        </Grid.Col>
+        <Grid.Col xs={6} lg={2}>
+        <Card
+            shadow={"0 0 7px 0 #5f5f5f3d"}
+            bg={
+              theme.colorScheme === "dark" ?
+                theme.colors.dark[6] :
+                theme.colors.gray[0]
+            }
+          >
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+            <Text mt={2} fw={500} fz={10} mb={4}>
+              Rifa de una moto
+            </Text>
+            <Text mt={-3} fw={300} fz={7}>
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
             </Text>
             <Text mt={0} fw={300} fz={8}>
               Progreso:
@@ -170,113 +300,40 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={3} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+            <Text mt={2} fw={500} fz={10} mb={4}>
               Rifa de una moto
             </Text>
-            <Text mt={-3} fw={300} fz={12}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
+            <Text mt={-3} fw={300} fz={7}>
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
             </Text>
-            <Text mt={0} fw={300} fz={15}>
+            <Text mt={0} fw={300} fz={8}>
               Progreso:
             </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='red'
+                size='xs'
+                radius={4}
+              >
+                Cerrado
+              </Badge>
+            </Grid.Col>
+            </Grid>
           </Card>
         </Grid.Col>
-        <Grid.Col xs={6} lg={2}>
-          <Card
-            shadow={"0 0 7px 0 #5f5f5f3d"}
-            bg={
-              theme.colorScheme === "dark" ?
-                theme.colors.dark[6] :
-                theme.colors.gray[0]
-            }
-          >
-            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={4} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
-              Rifa de una moto
-            </Text>
-            <Text mt={-3} fw={300} fz={12}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
-            </Text>
-            <Text mt={0} fw={300} fz={15}>
-              Progreso:
-            </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
-          </Card>
-        </Grid.Col>
-        <Grid.Col xs={6} lg={2}>
-          <Card
-            shadow={"0 0 7px 0 #5f5f5f3d"}
-            bg={
-              theme.colorScheme === "dark" ?
-                theme.colors.dark[6] :
-                theme.colors.gray[0]
-            }
-          >
-            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={5} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
-              Rifa de una moto
-            </Text>
-            <Text mt={-3} fw={300} fz={12}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
-            </Text>
-            <Text mt={0} fw={300} fz={15}>
-              Progreso:
-            </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
-          </Card>
-        </Grid.Col>
-        <Grid.Col xs={6} lg={2}>
-          <Card
-            shadow={"0 0 7px 0 #5f5f5f3d"}
-            bg={
-              theme.colorScheme === "dark" ?
-                theme.colors.dark[6] :
-                theme.colors.gray[0]
-            }
-          >
-            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={6} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
-              Rifa de una moto
-            </Text>
-            <Text mt={-3} fw={300} fz={12}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
-            </Text>
-            <Text mt={0} fw={300} fz={15}>
-              Progreso:
-            </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
-          </Card>
-        </Grid.Col>
+        
         <Grid.Col span={12}>
           {
             lobbyState.lobby_state && (
@@ -295,7 +352,7 @@ function Operadora() {
         <Grid.Col xs={6} lg={2} order={2}>
         </Grid.Col>
         <Grid.Col xs={6} lg={2} order={1}>
-          <Card
+        <Card
             shadow={"0 0 7px 0 #5f5f5f3d"}
             bg={
               theme.colorScheme === "dark" ?
@@ -303,24 +360,37 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Comprar"} color={"green"} lobby_id={1} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+            <Text mt={2} fw={500} fz={10} mb={4}>
               Rifa de una moto
             </Text>
-            <Text mt={-3} fw={300} fz={12}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
+            <Text mt={-3} fw={300} fz={7}>
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
             </Text>
-            <Text mt={0} fw={300} fz={15}>
+            <Text mt={0} fw={300} fz={8}>
               Progreso:
             </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='green'
+                size='xs'
+                radius={4}
+              >
+                Abierto
+              </Badge>
+            </Grid.Col>
+            </Grid>
           </Card>
         </Grid.Col>
       </Grid>
@@ -328,7 +398,7 @@ function Operadora() {
         <Grid.Col xs={6} lg={2} order={2}>
         </Grid.Col>
         <Grid.Col xs={6} lg={2} order={1}>
-          <Card
+        <Card
             shadow={"0 0 7px 0 #5f5f5f3d"}
             bg={
               theme.colorScheme === "dark" ?
@@ -336,24 +406,37 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Comprar"} color={"green"} lobby_id={1} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+            <Text mt={2} fw={500} fz={10} mb={4}>
               Rifa de una moto
             </Text>
-            <Text mt={-3} fw={300} fz={12}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
+            <Text mt={-3} fw={300} fz={7}>
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
             </Text>
-            <Text mt={0} fw={300} fz={15}>
+            <Text mt={0} fw={300} fz={8}>
               Progreso:
             </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='green'
+                size='xs'
+                radius={4}
+              >
+                Abierto
+              </Badge>
+            </Grid.Col>
+            </Grid>
           </Card>
         </Grid.Col>
       </Grid>
@@ -361,7 +444,7 @@ function Operadora() {
         <Grid.Col xs={6} lg={2} order={2}>
         </Grid.Col>
         <Grid.Col xs={6} lg={2} order={1}>
-          <Card
+        <Card
             shadow={"0 0 7px 0 #5f5f5f3d"}
             bg={
               theme.colorScheme === "dark" ?
@@ -369,24 +452,37 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Comprar"} color={"green"} lobby_id={1} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+            <Text mt={2} fw={500} fz={10} mb={4}>
               Rifa de una moto
             </Text>
-            <Text mt={-3} fw={300} fz={12}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
+            <Text mt={-3} fw={300} fz={7}>
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
             </Text>
-            <Text mt={0} fw={300} fz={15}>
+            <Text mt={0} fw={300} fz={8}>
               Progreso:
             </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='green'
+                size='xs'
+                radius={4}
+              >
+                Abierto
+              </Badge>
+            </Grid.Col>
+            </Grid>
           </Card>
         </Grid.Col>
       </Grid>
@@ -394,7 +490,7 @@ function Operadora() {
         <Grid.Col xs={6} lg={2} order={2}>
         </Grid.Col>
         <Grid.Col xs={6} lg={2} order={1}>
-          <Card
+        <Card
             shadow={"0 0 7px 0 #5f5f5f3d"}
             bg={
               theme.colorScheme === "dark" ?
@@ -402,24 +498,37 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Comprar"} color={"green"} lobby_id={1} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+            <Text mt={2} fw={500} fz={10} mb={4}>
               Rifa de una moto
             </Text>
-            <Text mt={-3} fw={300} fz={12}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
+            <Text mt={-3} fw={300} fz={7}>
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
             </Text>
-            <Text mt={0} fw={300} fz={15}>
+            <Text mt={0} fw={300} fz={8}>
               Progreso:
             </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='green'
+                size='xs'
+                radius={4}
+              >
+                Abierto
+              </Badge>
+            </Grid.Col>
+            </Grid>
           </Card>
         </Grid.Col>
       </Grid>
@@ -428,7 +537,7 @@ function Operadora() {
         <Grid.Col xs={6} lg={2} order={2}>
         </Grid.Col>
         <Grid.Col xs={6} lg={2} order={1}>
-          <Card
+        <Card
             shadow={"0 0 7px 0 #5f5f5f3d"}
             bg={
               theme.colorScheme === "dark" ?
@@ -436,28 +545,44 @@ function Operadora() {
                 theme.colors.gray[0]
             }
           >
-            <BadgeStatus status={"Comprar"} color={"green"} lobby_id={1} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
-              Rifa de una moto 2
+            <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+            <Text mt={2} fw={500} fz={10} mb={4}>
+              Rifa de una moto
             </Text>
-            <Text mt={-3} fw={300} fz={12}>
-              Inicio: 08/03/2023 - Cierre:  10/03/2023
+            <Text mt={-3} fw={300} fz={7}>
+              Inicio: 08/03/2023 - Cierre:  10/03/2023 
             </Text>
-            <Text mt={0} fw={300} fz={15}>
+            <Text mt={0} fw={300} fz={8}>
               Progreso:
             </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='green'
+                size='xs'
+                radius={4}
+              >
+                Abierto
+              </Badge>
+            </Grid.Col>
+            </Grid>
           </Card>
         </Grid.Col>
+        
       </Grid>
+      
     </>
+    
   )
 }
 export default Operadora;
