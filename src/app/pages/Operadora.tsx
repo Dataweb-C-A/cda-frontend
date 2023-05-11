@@ -88,18 +88,13 @@ function Operadora() {
     return (
       
       <Paper className={cx(classes.trigger)} onClick={() => handleLobby(lobby_id, new Date())}>
-        <div style={{ float: "right", top: '100px' }}>
-          <ChevronIcon style={{ rotate: '-90deg', marginTop: '6px', marginLeft: '10px' }} />
+        <div style={{ float: "right", top: '0px' }}>
+          <Button size="xs" style={{ marginTop: '-10px', marginLeft: '10px' }}>
+            Ver mas
+          </Button>
         </div>
         <div style={{ float: "right" }}>
-          <Badge
-            variant="filled"
-            color={color}
-            size="xs"
-            mt={2}
-          >
-            {status}
-          </Badge>
+          
         </div>
       </Paper>
     )
@@ -134,23 +129,36 @@ function Operadora() {
             }
           >
             <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
-            <Text mt={2} fw={500} fz={14} mb={4}>
+            <Text mt={2} fw={500} fz={10} mb={4}>
               Rifa de una moto
             </Text>
-            <Text mt={-3} fw={300} fz={12}>
+            <Text mt={-3} fw={300} fz={7}>
               Inicio: 08/03/2023 - Cierre:  10/03/2023
             </Text>
-            <Text mt={0} fw={300} fz={15}>
+            <Text mt={0} fw={300} fz={8}>
               Progreso:
             </Text>
-            <Progress
-              value={34}
-              color="blue"
-              label="34%"
-              size={25}
-              mt={5}
-              mb={10}
-            />
+            <Grid>
+              <Grid.Col span={8}>
+                <Progress
+                  value={34}
+                  color="blue"
+                  label="34%"
+                  size='xl'
+                  mt={7}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Badge
+                variant="filled"
+                color='red'
+                size='xs'
+                radius={4}
+              >
+                Cerrado
+              </Badge>
+            </Grid.Col>
+            </Grid>
           </Card>
         </Grid.Col>
         <Grid.Col xs={6} lg={2}>
