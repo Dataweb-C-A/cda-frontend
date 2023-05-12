@@ -109,6 +109,11 @@ function Operadora() {
         links={links}
       />
       <Grid mt={10} gutter={10} mx={10}>
+
+
+        {/** imagen logo */}
+
+
         <Grid.Col xs={4} lg={2}>
         <Card
           shadow={"0 0 7px 0 #5f5f5f3d"}
@@ -121,6 +126,11 @@ function Operadora() {
           <img src={logor} alt="" style={styles}/>
         </Card>
       </Grid.Col>
+
+
+      {/** rifas cerradas */}
+
+
         <Grid.Col xs={6} lg={2}>
           <Card
             shadow={"0 0 7px 0 #5f5f5f3d"}
@@ -348,6 +358,11 @@ function Operadora() {
           }
         </Grid.Col>
       </Grid>
+
+
+      {/* rifas abiertas ---------------------------------------------------------------------------- */}
+
+      
       <Grid mt={0} gutter={10} mx={10}>
         <Grid.Col xs={6} lg={2} order={2}>
         </Grid.Col>
