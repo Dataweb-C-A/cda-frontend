@@ -94,9 +94,11 @@ function Login() {
   }
   
   return (
-    <section className="login" style={{
-      height: '100vh',
-      background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
+    <Paper style={{
+      position: 'absolute',
+      width: '100vw',
+      borderRadius: 0,
+      height: '100vh'
     }}>
       <ThemeSwitcher style={{
         position: 'absolute',
@@ -105,7 +107,7 @@ function Login() {
       }}/>
       <Container size={420} mt='20vh'>
         <Paper withBorder shadow='md' p={30} mt={30} radius='md' bg={
-          theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white
+          theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.blue[0]
         }>
           <Image
             src={RifamaxLogo}
@@ -185,7 +187,7 @@ function Login() {
           }
         </Paper>
       </Container>
-    </section>
+    </Paper>
   )
 }
 
