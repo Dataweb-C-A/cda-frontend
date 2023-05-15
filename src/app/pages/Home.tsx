@@ -1,6 +1,6 @@
 import React, { useEffect, useState, lazy } from 'react'
 import Navbar from '../components/navbar'
-import { Grid } from '@mantine/core'
+import { Grid, Paper } from '@mantine/core'
 import Cards from '../components/cards'
 import { profiles } from '../assets/data/profiles'
 import { links } from '../assets/data/links'
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   }, [])
 
   return (
-    <section className='home' style={{ display: 'flex' }}>
+    <Paper className='home' style={{ display: 'flex' }}>
       <div style={{ flex: 1 }}>
         <Navbar
           profiles={users}
@@ -74,7 +74,7 @@ const Home: React.FC = () => {
         </Grid>
         <Dashboard />
       </div>
-    </section>
+    </Paper>
   )
 }
 
