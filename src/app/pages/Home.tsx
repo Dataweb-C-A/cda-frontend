@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   }, [])
 
   return (
-    <Paper className='home' style={{ display: 'flex' }}>
+    <Paper className='home' style={{ display: 'flex', height: '100vh' }}>
       <div style={{ flex: 1 }}>
         <Navbar
           profiles={users}
