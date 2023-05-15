@@ -163,24 +163,9 @@
 }
 
 @media (max-width: 575px) {
-  .navbar-expandScreen { 
-    width: 150vw;
-  }
   .logo {
     display: flex;
     margin-right: calc(100% - 5em);
-  }
-  .button-theme-expandScreen {
-    left: calc(150vw - 13.2em);
-  }
-  .button-user-repsonsive {
-    left: calc(150vw - 8.9em);
-  }
-  .button-users-expandScreen {
-    left: calc(150vw - 13em);
-  }
-  .menu-expandScreen {
-    left: calc(150% - 4em);
   }
 }
 

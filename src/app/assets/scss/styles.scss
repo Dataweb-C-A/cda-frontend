@@ -147,18 +147,6 @@ select option:checked {
   }
 }
 
-@media (max-width: 991px) {
-  .btn-rifa {
-    width: 100%;
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-  .search-riferos {
-    margin-bottom: 0;
-    width: 100%
-  }
-}
-
 @media (prefers-color-scheme: 'light') {
   body {
     background-color: #eef5f9!important;
