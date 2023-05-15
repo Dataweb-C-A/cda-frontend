@@ -84,10 +84,48 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
 
+  const getData = () => {
+    axios.get(`https://rifa-max.com/api/v1/rifas/actives_pagy?page=${pageNumber}`, {
+      headers: {
+        ContentType: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((response) => {
+      setLoading(false);
+      setTickets((prev) => [...prev, ...response.data.records]);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const closeForm = () => {
+    setPageNumber(1)
+    setOpenForm(false)
+  }
+const handleScrollEvent = async () =>{
+  const totalHeight = document.documentElement.scrollHeight;
+  const innerHeight = window.innerHeight;
+  const scrollTop = document.documentElement.scrollTop;
+
+  try{
+    if (innerHeight + scrollTop + 1 >= totalHeight){
+      setPageNumber((prev) => prev + 1)
+    }
+  } catch (err) {
+
+console. log(err)
+  }
+} 
+useEffect(() => {
+window.addEventListener("scroll", handleScrollEvent)
+
+return () => window.removeEventListener("scroll", handleScrollEvent)
+},[])
   const history = useHistory();
 
-  function compareById(a: any, b: any) {
+  function compareById(a: IRifas, b: IRifas) {
     return b.id - a.id;
   }
 
@@ -100,22 +138,14 @@ function Dashboard() {
 
     document.addEventListener("keydown", keyDownHandler);
 
-    axios.get('https://rifa-max.com/api/v1/rifas/actives_no_tickets', {
-      headers: {
-        ContentType: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    }).then((response) => {
-      setLoading(false);
-      setTickets(response.data);
-    }).catch((error) => {
-      console.log(error);
-    });
-
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     }
-  }, [openForm])
+  }, [])
+
+  useEffect(() => {
+    getData()
+  }, [pageNumber, openForm])
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -200,7 +230,7 @@ function Dashboard() {
                     style={{ float: "right" }}
                       className="btn-rifa"
                     onClick={() => setOpenForm(!openForm)}
-                    onClose={() => setOpenForm(false)}
+                    onClose={() => closeForm()}
                     open={openForm}
                   >
                     Agregar Rifa
@@ -215,43 +245,49 @@ function Dashboard() {
               }
               {
                 tickets.length > 0 ? (
-                  filteredTickets.sort(compareById).map((ticket: IRifas) => {
-                    return (
-                      <AccordionList
-                        repeat={ticket}
-                        data={{
-                          id: ticket.id,
-                          rifero: ticket.user.name,
-                          prize: ticket.awardSign,
-                          status: ticket.is_send,
-                          pin: ticket.pin ? true : false,
-                          pinNumber: ticket.pin ? ticket.pin : null,
-                          verify: ticket.verify
-                        }}
-                        dataPDF={{
-                          agency: ticket.user.name,
-                          serie: ticket.id,
-                          rifDate: moment(ticket.rifDate).format("DD/MM/YYYY"),
-                          hour: moment(new Date()).format("hh:mm A"),
-                          lotery: 'ZULIA 7A 7:05PM',
-                          phone: ticket.rifero.phone,
-                          awardNoSign: ticket.awardNoSign,
-                          numbers: ticket.numbers.toString(),
-                          money: ticket.money,
-                          price: ticket.price.toString(),
-                          awardSign: ticket.awardSign,
-                          serial: ticket.serial,
-                          plate: ticket.plate,
-                          year: ticket.year,
-                          rifero: ticket.user.name,
-                        }}
-                      >
-                        <RifaTicket
-                          ticket={ticket}
-                        />
-                      </AccordionList>
-                    )
-                  })
+                  <>
+                    {filteredTickets.sort(compareById).map((ticket: IRifas) => {
+                      return (
+                        <AccordionList
+                          repeat={ticket}
+                          data={{
+                            id: ticket.id,
+                            rifero: ticket.user.name,
+                            prize: ticket.awardSign,
+                            status: ticket.is_send,
+                            pin: ticket.pin ? true : false,
+                            pinNumber: ticket.pin ? ticket.pin : null,
+                            verify: ticket.verify
+                          }}
+                          dataPDF={{
+                            agency: ticket.user.name,
+                            serie: ticket.id,
+                            rifDate: moment(ticket.rifDate).format("DD/MM/YYYY"),
+                            hour: moment(new Date()).format("hh:mm A"),
+                            lotery: 'ZULIA 7A 7:05PM',
+                            phone: ticket.rifero.phone,
+                            awardNoSign: ticket.awardNoSign,
+                            numbers: ticket.numbers.toString(),
+                            money: ticket.money,
+                            price: ticket.price.toString(),
+                            awardSign: ticket.awardSign,
+                            serial: ticket.serial,
+                            plate: ticket.plate,
+                            year: ticket.year,
+                            rifero: ticket.user.name,
+                          }}
+                        >
+                          <RifaTicket
+                            ticket={ticket}
+                          />
+                          
+                        </AccordionList>
+                      )
+                    })}
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80px" }}>
+                      <Loader size="lg" />
+                    </div>
+                  </>
                 ) : (
                   <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
                     <Text size="xl">No hay resultados</Text>

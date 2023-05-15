@@ -162,7 +162,7 @@ function Operadora() {
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <Badge variant="filled" color='red' size='xs' radius={4}>
-                    Cerrado
+                  {rifa.status}
                   </Badge>
                 </Grid.Col>
               </Grid>
