@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles } from "@mantine/core";
+import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -11,8 +11,8 @@ import data from "./card.json"
 import Lobby from "../components/operadora/Lobby";
 import logor from "../assets/images/rifamax-logo.png";
 const styles = {
-  width: '50%',
-  marginLeft: '20%',
+  width: '100%',
+  marginLeft: '0%',
   aspectRatio: "2/1",
   height: 'auto',
   borderRadius: '50%'
@@ -112,14 +112,10 @@ function Operadora() {
         profiles={profiles}
         links={links}
       />
-      <Grid mt={10} gutter={10} mx={10}>
-
-
-        {/** imagen logo */}
-
-
-        <Grid.Col xs={4} lg={2} >
+      <Group mt={10} mx={15} mb={10}>
           <Card
+          w={235}
+          h={120}
             shadow={"0 0 7px 0 #5f5f5f3d"}
             bg={
               theme.colorScheme === "dark"
@@ -127,49 +123,51 @@ function Operadora() {
                 : theme.colors.gray[0]
             }
           >
-            <img src={logor} alt="" style={styles} />
+            <img src={logor} alt="Rifamax Logo" style={styles} />
           </Card>
-        </Grid.Col>
 
 
         {/** rifas cerradas */}
 
-
-        {soldRifas.map(rifa => (
-          <Grid.Col xs={6} lg={2}>
-            <Card
-              key={rifa.id}
-              shadow={"0 0 7px 0 #5f5f5f3d"}
-              bg={
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[6]
-                  : theme.colors.gray[0]
-              }
-            >
-              <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
-              <Text mt={2} fw={500} fz={10} mb={4}>
-                {rifa.prize}
-              </Text>
-              <Text mt={-3} fw={300} fz={7}>
-                Inicio: {rifa.open} - Cierre: {rifa.close}
-              </Text>
-              <Text mt={0} fw={300} fz={8}>
-                Progreso:
-              </Text>
-              <Grid>
-                <Grid.Col span={8}>
-                  <Progress value={rifa.Progreso} color="blue" label={`${rifa.Progreso}%`} size='xl' mt={7} />
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <Badge variant="filled" color='red' size='xs' radius={4}>
-                  {rifa.status}
-                  </Badge>
-                </Grid.Col>
-              </Grid>
-            </Card>
-          </Grid.Col>
-        ))}
-      </Grid>
+        <div className="slider-container" style={{ display: 'flex', maxWidth: '100vw',  overflowX: 'scroll', flexWrap: 'nowrap'}}>
+          <div className="slider" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', position: 'relative'}}>
+            {soldRifas.map(rifa => (
+              <Card
+                key={rifa.id}
+                w={235}
+                h={120}
+                shadow={"0 0 7px 0 #5f5f5f3d"}
+                bg={
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[6]
+                    : theme.colors.gray[0]
+                }
+              >
+                <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+                <Text mt={2} fw={500} fz={10} mb={4}>
+                  {rifa.prize}
+                </Text>
+                <Text mt={-3} fw={300} fz={7}>
+                  Inicio: {rifa.open} - Cierre: {rifa.close}
+                </Text>
+                <Text mt={0} fw={300} fz={8}>
+                  Progreso:
+                </Text>
+                <Grid>
+                  <Grid.Col span={8}>
+                    <Progress value={rifa.Progreso} color="blue" label={`${rifa.Progreso}%`} size='xl' mt={7} />
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Badge variant="filled" color='red' size='xs' radius={4}>
+                    {rifa.status}
+                    </Badge>
+                  </Grid.Col>
+                </Grid>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </Group>
 
 
       {/* rifas abiertas ---------------------------------------------------------------------------- */}
