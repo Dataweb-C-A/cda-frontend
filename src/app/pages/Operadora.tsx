@@ -112,26 +112,62 @@ function Operadora() {
         profiles={profiles}
         links={links}
       />
-      <Group mt={10} mx={15} mb={10}>
-          <Card
-          w={235}
-          h={120}
-            shadow={"0 0 7px 0 #5f5f5f3d"}
-            bg={
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[6]
-                : theme.colors.gray[0]
-            }
-          >
-            <img src={logor} alt="Rifamax Logo" style={styles} />
-          </Card>
+      
+      
 
+      {/* rifas abiertas ---------------------------------------------------------------------------- */}
+            <div style={{  marginLeft: '250px' }} >
 
-        {/** rifas cerradas */}
+            {openCards.map(card => (
+       <Grid mt={10} gutter={10} mx={10}>
+        <Grid.Col xs={6} lg={2} order={2}>
+        </Grid.Col>
+        <Grid.Col xs={6} lg={2} order={1}>
+              <Card
+                key={card.id}
+                w={235}
+                h={120}
+                shadow={"0 0 7px 0 #5f5f5f3d"}
+                bg={
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[6]
+                    : theme.colors.gray[0]
+                }
+              >
+                <BadgeStatus status={"Cerrado"} color={"green"} lobby_id={2} />
+                <Text mt={2} fw={500} fz={10} mb={4}>
+                  {card.prize}
+                </Text>
+                <Text mt={-3} fw={300} fz={7}>
+                  Inicio: {card.open} - Cierre: {card.close}
+                </Text>
+                <Text mt={0} fw={300} fz={8}>
+                  Progreso:
+                </Text>
+                <Grid>
+                  <Grid.Col span={8}>
+                    <Progress value={card.Progreso} color="blue" label={`${card.Progreso}%`} size='xl' mt={7} />
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Badge variant="filled" color='green' size='xs' radius={4}>
+                    {card.status}
 
-        <div className="slider-container" style={{ display: 'flex', maxWidth: '100vw',  overflowX: 'scroll', flexWrap: 'nowrap'}}>
-          <div className="slider" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', position: 'relative'}}>
-            {soldRifas.map(rifa => (
+                  </Badge>
+                    </Grid.Col>
+              </Grid>
+            </Card>
+          </Grid.Col>
+        </Grid>
+            ))}
+            </div>
+{/* rifas cerrado ---------------------------------------------------------------------------- */}
+<div style={{  marginTop: '-950px' }}>
+
+       {soldRifas.map(rifa => (
+       <Grid mt={10} gutter={10} mx={10}>
+        <Grid.Col xs={6} lg={2} order={2}>
+        </Grid.Col>
+        <Grid.Col xs={6} lg={2} order={1}>
               <Card
                 key={rifa.id}
                 w={235}
@@ -160,67 +196,21 @@ function Operadora() {
                   <Grid.Col span={4}>
                     <Badge variant="filled" color='red' size='xs' radius={4}>
                     {rifa.status}
-                    </Badge>
-                  </Grid.Col>
-                </Grid>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </Group>
 
-
-      {/* rifas abiertas ---------------------------------------------------------------------------- */}
-
-      {openCards.map((card, index) => (
-        <Grid mt={10} gutter={10} mx={10} key={index}>
-          <Grid.Col xs={6} lg={2} order={2}>
-          </Grid.Col>
-          <Grid.Col xs={6} lg={2} order={1}>
-            <Card
-              shadow={"0 0 7px 0 #5f5f5f3d"}
-              bg={
-                theme.colorScheme === "dark" ?
-                  theme.colors.dark[6] :
-                  theme.colors.gray[0]
-              }
-            >
-              <BadgeStatus status={card.status} color={"red"} lobby_id={2} />
-              <Text mt={2} fw={500} fz={10} mb={4}>
-                {card.prize}
-              </Text>
-              <Text mt={-3} fw={300} fz={7}>
-                Inicio: {card.open} - Cierre: {card.close}
-              </Text>
-              <Text mt={0} fw={300} fz={8}>
-                Progreso:
-              </Text>
-              <Grid>
-                <Grid.Col span={8}>
-                  <Progress
-                    value={card.Progreso}
-                    color="blue"
-                    label={`${card.Progreso}%`}
-                    size='xl'
-                    mt={7}
-                  />
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <Badge
-                    variant="filled"
-                    color='green'
-                    size='xs'
-                    radius={4}
-                  >
-                    {card.status}
                   </Badge>
-                </Grid.Col>
+                    </Grid.Col>
               </Grid>
             </Card>
           </Grid.Col>
         </Grid>
-      ))}
+            ))}
+            <div style={{  marginLeft: '500px', marginTop: '-820px'  }} >
 
+        <TicketModal 
+          tickets={tickets}
+        />
+            </div>
+      </div>
 
     </>
 

@@ -152,34 +152,73 @@ function TicketModal({ tickets }: modalProps) {
             ))}
           </Group>
         </div>
+
         <Divider orientation="vertical" label="Sorteos" variant="dashed" mr={37} />
         <div className={classes.taquillaFlex}>
           <nav
             className={classes.stickyNav}
           >
-            
-              {
-                active.length % 1 || active.length === 0 ? (
-                  <Text>Debe seleccionar boletos</Text>
-                ) : (
-                  <>
-                    <Button fullWidth mb={10} variant="filled" color="blue">
-                      Limpiar
-                    </Button>
-                    <Grid>
-                      <Grid.Col xl={12} sm={12}>
-                        <Paper shadow="sm" mb={10}>
-                          <Card shadow="sm" mb={10}>
-                            <Text>Arreglo 1</Text>
-                            {
-                              active.map((item, index) => (
-                                <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
-                              ))
-                            }
-                          </Card>
-                        </Paper>
-                      </Grid.Col>
-                      {/* <Grid.Col xl={6} sm={12}>
+
+            {
+              active.length % 1 || active.length === 0 ? (
+                <Text>Debe seleccionar boletos</Text>
+              ) : (
+                <>
+                  <Button fullWidth mb={10} variant="filled" color="blue">
+                    Limpiar
+                  </Button>
+                  <Grid>
+                    <Grid.Col xl={12} sm={12}>
+                      <Paper shadow="sm" mb={10}>
+                        <Card shadow="sm" mb={10}>
+                          <Text>Arreglo 1</Text>
+                          {
+                            active.map((item, index) => (
+                              <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
+                            ))
+                          }
+                          <br />
+                          <div style={{ top: '500%', right: '-6%' }}>
+                            <Group style={{ gap: "120px" }}>
+                              <Text mb={5}>Total Jugadas</Text>
+                              <Text mb={5} >Monto</Text>
+                            </Group>
+                            <Group mt={5} mb={20} align='center'>
+                              <div>
+                                {
+                                  active.length % 1 || active.length === 0 ? (
+                                    <Title ml={20}>0</Title>
+                                  ) : (
+                                    <>
+                                      <Title>{active.length}</Title>
+                                    </>
+                                  )
+                                }
+                              </div>
+                              <div style={{  marginLeft: '180px',}}>
+                                {
+                                  active.length % 1 || active.length === 0 ? (
+                                    <Title>0$</Title>
+                                  ) : (
+                                    <>
+                                      <Title>{2.5 * active.length}$</Title>
+                                    </>
+                                  )
+                                }
+                              </div>
+                            </Group>
+                            <Button variant="filled" color="blue" style={{
+                              width: '100%'
+                            }} onClick={() => {
+                              setActive([])
+                            }}>
+                              Comprar
+                            </Button>
+                          </div>
+                        </Card>
+                      </Paper>
+                    </Grid.Col>
+                    {/* <Grid.Col xl={6} sm={12}>
                         <Paper shadow="sm" mb={10}>
                         <Card shadow="sm" mb={10}>
                             <Text>Arreglo 1</Text>
@@ -191,34 +230,13 @@ function TicketModal({ tickets }: modalProps) {
                           </Card>
                         </Paper>
                       </Grid.Col> */}
-                    </Grid>                         
-                  </>
-                )
-              }
+                  </Grid>
+                </>
+              )
+            }
           </nav>
         </div>
-        <div style={{ position: 'absolute', top: '88%', right: '11.4%'}}>
-          <Group style={{ gap: "200px"}}>
-          <Text mb={20}>Total Jugadas</Text>
-          <Text mb={20}>Monto</Text>
-          </Group>
-          <Button variant="filled" color="blue" onClick={() => {
-          setActive([])
-        }}>
-          Comprar
-        </Button>
-        <div style={{ position: 'absolute', top: '40%', right: '-5%'}}>
-          {
-            active.length % 1 || active.length === 0 ? (
-              <Title>0$</Title>
-            ) : (
-              <>
-                <Title>{2.5*active.length}$</Title>
-              </>
-            )
-          }
-          </div>
-        </div>
+
       </div>
     </Card>
   )
