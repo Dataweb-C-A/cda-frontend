@@ -186,23 +186,6 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
               />
             }
             <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
-              <Group position="left" mb={20} spacing={0}>
-                <Button size="sm" variant="filled" color="blue" disabled style={{
-                  borderRadius: "5px 0 0 5px",
-                  cursor: 'not-allowed',
-                  boxShadow: '0 0 7px 0 #5f5f5f3d'
-                }}>
-                  Rifas
-                </Button>
-                <Button size="sm" variant="filled" color="blue" onClick={() => {
-                  history.push('/lobby');
-                }} style={{
-                  borderRadius: "0 5px 5px 0",
-                  boxShadow: '0 0 7px 0 #5f5f5f3d'
-                }}>
-                  Rifas de moto
-                </Button>
-              </Group>
               <Grid>
                 <Grid.Col md={5} sm={12}>
                   <Title order={2} fw={500} mb={20}>

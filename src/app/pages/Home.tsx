@@ -1,15 +1,18 @@
 import React, { useEffect, useState, lazy } from 'react'
 import Navbar from '../components/navbar'
-import { Grid, Paper } from '@mantine/core'
+import { Grid, Paper, Group, Button } from '@mantine/core'
 import Cards from '../components/cards'
 import { profiles } from '../assets/data/profiles'
 import { links } from '../assets/data/links'
+import { useHistory } from "react-router-dom";
 import axios from 'axios'
 import Dashboard from '../components/dashboard/Dashboard'
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<any>([])
   const [stats, setStats] = useState<any>({})
+
+  const history = useHistory();
   
   useEffect(() => {
     axios.get('https://rifa-max.com/api/v1/rifas/stats', {
@@ -43,6 +46,23 @@ const Home: React.FC = () => {
           links={links}
           expandScreen={true}
         />
+        <Group position="left" mb={10} mx={12} mt={10} spacing={0}>
+                  <Button size="sm" variant="filled" color="blue" disabled style={{
+                    borderRadius: "5px 0 0 5px",
+                    cursor: 'not-allowed',
+                    boxShadow: '0 0 7px 0 #5f5f5f3d'
+                  }}>
+                    Rifas
+                  </Button>
+                  <Button size="sm" variant="filled" color="blue" onClick={() => {
+                    history.push('/lobby');
+                  }} style={{
+                    borderRadius: "0 5px 5px 0",
+                    boxShadow: '0 0 7px 0 #5f5f5f3d'
+                  }}>
+                    Rifas de moto
+                  </Button>
+                </Group>
         <Grid gutter={20} m={5}>
           <Grid.Col xs={6} lg={4} span={12}>
             <Cards
