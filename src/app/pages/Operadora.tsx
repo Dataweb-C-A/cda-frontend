@@ -121,7 +121,7 @@ function Operadora() {
           shadow={"0 0 7px 0 #5f5f5f3d"}
           bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
         >
-          <Title order={3} style={{ textAlign: "center", marginTop: "117.5" }}>
+          <Title order={3} style={{ textAlign: "center", marginTop: "30px" }}>
             Abiertas
           </Title>
 
@@ -150,7 +150,7 @@ function Operadora() {
             <Text mt={-3} fw={300} fz={7}>
               Inicio: {card.open} - Cierre: {card.close}
             </Text>
-            <Text mt={0} fw={300} fz={8}>v
+            <Text mt={0} fw={300} fz={8}>
               Progreso:
             </Text>
             <Grid>
