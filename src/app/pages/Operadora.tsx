@@ -119,7 +119,7 @@ function Operadora() {
           w={235}
           h={120}
           shadow={"0 0 7px 0 #5f5f5f3d"}
-          bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
+          bg={theme.colors.green[7]}
         >
           <Title order={3} style={{ textAlign: "center", marginTop: "30px" }}>
             Abiertas
@@ -180,11 +180,7 @@ function Operadora() {
               w={235}
               h={120}
               shadow={"0 0 7px 0 #5f5f5f3d"}
-              bg={
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[6]
-                  : theme.colors.gray[0]
-              }
+              bg={theme.colors.red[7]}
             >
               <Title order={3} style={{ textAlign: "center", marginTop: "31px" }}>
                 Cerradas
