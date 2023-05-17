@@ -121,9 +121,9 @@ function Operadora() {
           shadow={"0 0 7px 0 #5f5f5f3d"}
           bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
         >
-          <Text mt={2} fw={500} fz={10} mb={4}>
-            cerrado nose, a no es abierto xdxd
-          </Text>
+          <Title order={3} style={{ textAlign: "center", marginTop: "117.5" }}>
+            Abiertas
+          </Title>
 
           <Grid>
             <Grid.Col span={8}></Grid.Col>
@@ -150,7 +150,7 @@ function Operadora() {
             <Text mt={-3} fw={300} fz={7}>
               Inicio: {card.open} - Cierre: {card.close}
             </Text>
-            <Text mt={0} fw={300} fz={8}>
+            <Text mt={0} fw={300} fz={8}>v
               Progreso:
             </Text>
             <Grid>
@@ -186,9 +186,9 @@ function Operadora() {
                   : theme.colors.gray[0]
               }
             >
-              <Text mt={2} fw={500} fz={10} mb={4}>
-                cerrado
-              </Text>
+              <Title order={3} style={{ textAlign: "center", marginTop: "31px" }}>
+                Cerradas
+              </Title>
 
               <Grid>
                 <Grid.Col span={8}>
