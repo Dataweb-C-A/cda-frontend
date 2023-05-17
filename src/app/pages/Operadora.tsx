@@ -111,27 +111,8 @@ function Operadora() {
   <Navbar profiles={profiles} links={links} />
 
   {/* rifas abiertas ---------------------------------------------------------------------------- */}
-  <div style={{ marginLeft: '250px' }}>
-    <Grid mt={10} gutter={10} mx={10}>
-      <Grid.Col xs={6} lg={2} order={2}></Grid.Col>
-      <Grid.Col xs={6} lg={2} order={1}>
-        <Card
-          w={235}
-          h={120}
-          shadow={"0 0 7px 0 #5f5f5f3d"}
-          bg={theme.colors.green[7]}
-        >
-          <Title order={3} style={{ textAlign: "center", marginTop: "30px" }}>
-            Abiertas
-          </Title>
-
-          <Grid>
-            <Grid.Col span={8}></Grid.Col>
-            <Grid.Col span={4}></Grid.Col>
-          </Grid>
-        </Card>
-      </Grid.Col>
-    </Grid>
+  <div>
+   
     {openCards.map(card => (
       <Grid mt={10} gutter={10} mx={10}>
         <Grid.Col xs={6} lg={2} order={2}></Grid.Col>
@@ -169,78 +150,9 @@ function Operadora() {
     ))}
   </div>
 
-      {/* rifas cerradas ---------------------------------------------------------------------------- */}
-      <div style={{ marginTop: '-1085px' }}>
-        <Grid mt={10} gutter={10} mx={10}>
-          <Grid.Col xs={6} lg={2} order={2}>
-          </Grid.Col>
-          <Grid.Col xs={6} lg={2} order={1}>
-            <Card
-
-              w={235}
-              h={120}
-              shadow={"0 0 7px 0 #5f5f5f3d"}
-              bg={theme.colors.red[7]}
-            >
-              <Title order={3} style={{ textAlign: "center", marginTop: "31px" }}>
-                Cerradas
-              </Title>
-
-              <Grid>
-                <Grid.Col span={8}>
-                </Grid.Col>
-                <Grid.Col span={4}>
-
-                </Grid.Col>
-              </Grid>
-            </Card>
-          </Grid.Col>
-        </Grid>
-        {soldRifas.map(rifa => (
-          <Grid mt={10} gutter={10} mx={10}>
-            <Grid.Col xs={6} lg={2} order={2}>
-            </Grid.Col>
-            <Grid.Col xs={6} lg={2} order={1}>
-              <Card
-                key={rifa.id}
-                w={235}
-                h={120}
-                shadow={"0 0 7px 0 #5f5f5f3d"}
-                bg={
-                  theme.colorScheme === "dark"
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[0]
-                }
-              >
-                <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
-                <Text mt={2} fw={500} fz={10} mb={4}>
-                  {rifa.prize}
-                </Text>
-                <Text mt={-3} fw={300} fz={7}>
-                  Inicio: {rifa.open} - Cierre: {rifa.close}
-                </Text>
-                <Text mt={0} fw={300} fz={8}>
-                  Progreso:
-                </Text>
-                <Grid>
-                  <Grid.Col span={8}>
-                    <Progress value={rifa.Progreso} color="red" label={`${rifa.Progreso}%`} size='xl' mt={7} />
-                  </Grid.Col>
-                  <Grid.Col span={4}>
-                    <Badge variant="filled" color='red' size='xs' radius={4}>
-                      {rifa.status}
-
-                    </Badge>
-                  </Grid.Col>
-                </Grid>
-              </Card>
-            </Grid.Col>
-          </Grid>
-        ))}
-
-      </div>
+     
         {/* cuadro ---------------------------------------------------------------------------- */}
-        <div style={{ marginLeft: '500px', marginTop: '-955px' }} >
+        <div style={{ marginLeft: '250px', marginTop: '-820px' }} >
 
           <TicketModal
             tickets={tickets}

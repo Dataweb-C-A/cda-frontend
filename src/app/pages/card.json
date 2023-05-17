@@ -199,22 +199,6 @@
         "open":"08/03/2023",
         "close":"10/03/2023",
         "Progreso":34
-    },
-    {
-        "id": 2,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "open",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"10/03/2023",
-        "Progreso":34
     }
+    
 ]

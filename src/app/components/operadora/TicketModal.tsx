@@ -137,7 +137,7 @@ function TicketModal({ tickets }: modalProps) {
           <Group key={counter}>
             {tickets.map((item, index) => (
               <Card
-                px={20}
+                px={10}
                 className={cx(classes.ticket, {
                   [classes.selected]: active.includes(item.place),
                   [classes.sold]: item.isSold,

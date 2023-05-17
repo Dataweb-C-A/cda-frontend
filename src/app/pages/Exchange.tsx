@@ -22,7 +22,11 @@ function Exchange({}: IExchange) {
       })
   }, [])
   return (
-    <Navbar profiles={profiles} links={links} />
+    <div>
+      <Navbar profiles={profiles} links={links} />
+
+    </div>
+
   )
 }
 
