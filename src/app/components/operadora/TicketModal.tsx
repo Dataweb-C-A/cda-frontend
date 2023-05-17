@@ -37,13 +37,6 @@ function TicketModal({ tickets }: modalProps) {
   const [counter, setCounter] = useState<number>(0)
   const elementRef = useRef<HTMLDivElement>(null)
 
-  const handleScroll = ({ prevPos, currPos }: { prevPos: any; currPos: any }) => {
-    console.log('prevPos:', prevPos)
-    console.log('currPos:', currPos)
-  }
-
-  useScrollPosition(handleScroll, [], elementRef, false, 200)
-
   const bounce = keyframes({
     'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
     '40%, 43%': { transform: 'translate3d(0, -0.455rem, 0)' },
@@ -130,7 +123,7 @@ function TicketModal({ tickets }: modalProps) {
   }, [active])
 
   return (
-    <Card shadow={'0 0 7px 0 #5f5f5f3d'} my={20} mx={10} ref={elementRef}>
+    <Card shadow={'0 0 7px 0 #5f5f5f3d'} my={20} mx={5} ref={elementRef}>
       <br />
       <div className={classes.container}>
         <div className={classes.ticketsFlex}>
@@ -149,11 +142,31 @@ function TicketModal({ tickets }: modalProps) {
                 <Text ta="center" mt='0%'>{formatPlace(item.place)}</Text>
                 <div className={classes.ticketsBottom}></div>
               </Card>
+              
             ))}
+
+             {/*  boton  Al azar */}
+             <Button
+              style={{}}
+              variant="filled"
+              color="blue"
+              onClick={() => {
+                const availableTickets = tickets.filter((ticket) => !ticket.isSold);
+                let randomNumber = Math.floor(Math.random() * availableTickets.length);
+
+                while (active.includes(availableTickets[randomNumber].place)) {
+                  randomNumber = Math.floor(Math.random() * availableTickets.length);
+                }
+
+                setActive([...active, availableTickets[randomNumber].place]);
+              }}
+            >
+              Al azar
+            </Button>
           </Group>
         </div>
 
-        <Divider orientation="vertical" label="Sorteos" variant="dashed" mr={37} />
+        <Divider orientation="vertical" label="Sorteos" variant="dashed" mr={20} />
         <div className={classes.taquillaFlex}>
           <nav
             className={classes.stickyNav}
@@ -164,7 +177,7 @@ function TicketModal({ tickets }: modalProps) {
                 <Text>Debe seleccionar boletos</Text>
               ) : (
                 <>
-                  <Button fullWidth mb={10} variant="filled" color="blue">
+                  <Button fullWidth mb={10} variant="filled" color="blue"> 
                     Limpiar
                   </Button>
                   <Grid>
