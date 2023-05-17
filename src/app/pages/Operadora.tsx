@@ -196,7 +196,6 @@ function Operadora() {
             </Card>
           </Grid.Col>
         </Grid>
-
         {soldRifas.map(rifa => (
           <Grid mt={10} gutter={10} mx={10}>
             <Grid.Col xs={6} lg={2} order={2}>
