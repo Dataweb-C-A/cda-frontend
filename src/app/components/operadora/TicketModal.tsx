@@ -22,9 +22,9 @@ type modalProps = {
 
 function formatPlace(place: number): string {
   if (place <= 9) {
-    return '00' + place;
+    return '' + place;
   } else if (place <= 99) {
-    return '0' + place;
+    return '' + place;
   } else if (place === 1000) {
     return '000';
   } else {
@@ -128,25 +128,36 @@ function TicketModal({ tickets }: modalProps) {
       <div className={classes.container}>
         <div className={classes.ticketsFlex}>
           <Group key={counter}>
-            {tickets.map((item, index) => (
-              <Card
-                px={10}
-                className={cx(classes.ticket, {
-                  [classes.selected]: active.includes(item.place),
-                  [classes.sold]: item.isSold,
-                })}
-                key={index}
-                onClick={() => item.isSold ? null : handleTickets(item.place)}
-              >
-                <div className={classes.ticketsTop}></div>
-                <Text ta="center" mt='0%'>{formatPlace(item.place)}</Text>
-                <div className={classes.ticketsBottom}></div>
-              </Card>
-              
-            ))}
+            {/** card  ticket*/}
+            {tickets.map((item, index) => {
+              const row = Math.floor(index / 10); // Número de fila
+              const column = index % 10; // Número de columna
 
-             {/*  boton  Al azar */}
-             <Button
+              const cardStyle = {
+                width: `${70 / 10}%`, // Ancho ajustado para la cuadrícula de 10x10
+                margin: '4px' // Margen ajustado para la cuadrícula
+              };
+
+              return (
+                <Card
+                  px={8}
+                  className={cx(classes.ticket, {
+                    [classes.selected]: active.includes(item.place),
+                    [classes.sold]: item.isSold,
+                  })}
+                  key={index}
+                  onClick={() => item.isSold ? null : handleTickets(item.place)}
+                  style={cardStyle}
+                >
+                  <div className={classes.ticketsTop}></div>
+                  <Text ta="center" mt='0%'>{formatPlace(item.place)}</Text>
+                  <div className={classes.ticketsBottom}></div>
+                </Card>
+              );
+            })}
+
+            {/*  boton  Al azar */}
+            <Button
               style={{}}
               variant="filled"
               color="blue"
@@ -177,7 +188,7 @@ function TicketModal({ tickets }: modalProps) {
                 <Text>Debe seleccionar boletos</Text>
               ) : (
                 <>
-                  <Button fullWidth mb={10} variant="filled" color="blue"> 
+                  <Button fullWidth mb={10} variant="filled" color="blue">
                     Limpiar
                   </Button>
                   <Grid>
@@ -208,7 +219,7 @@ function TicketModal({ tickets }: modalProps) {
                                   )
                                 }
                               </div>
-                              <div style={{  marginLeft: '180px',}}>
+                              <div style={{ marginLeft: '180px', }}>
                                 {
                                   active.length % 1 || active.length === 0 ? (
                                     <Title>0$</Title>
