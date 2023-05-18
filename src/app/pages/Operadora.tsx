@@ -8,16 +8,10 @@ import TicketModal from "../components/operadora/TicketModal";
 import tickets from '../assets/data/tickets.json'
 import axios from "axios";
 import data from "./card.json"
-import Lobby from "../components/operadora/Lobby";
-import logor from "../assets/images/rifamax-logo.png";
-const styles = {
-  width: '100%',
-  marginLeft: '0%',
-  aspectRatio: "2/1",
-  height: 'auto',
-  borderRadius: '50%'
-};
+import { TbZoomQuestion } from 'react-icons/tb'
+
 interface ILobbyState {
+  open: boolean
   lobby_id: number | 0,
   lobby_state: boolean | false
   lobby_connection: Date
@@ -26,11 +20,12 @@ interface ILobbyState {
 function Operadora() {
   const theme = useMantineTheme()
   const [lobbyState, setLobbyState] = useState<ILobbyState>({
+    open: false,
     lobby_id: 0,
     lobby_state: false,
     lobby_connection: new Date()
   })
-  const [modalOpened, setModalOpened] = useState(false)
+
   const [profiles, setProfiles] = useState([])
 
   useEffect(() => {
@@ -51,6 +46,7 @@ function Operadora() {
     const handleEsc = (event: any) => {
       if (event.keyCode === 27) {
         setLobbyState({
+          open: false,
           lobby_id: 0,
           lobby_state: false,
           lobby_connection: new Date()
@@ -66,6 +62,7 @@ function Operadora() {
   const handleLobby = (id: number, connection: Date) => {
     return (
       setLobbyState({
+        open: true,
         lobby_id: id,
         lobby_state: true,
         lobby_connection: connection
@@ -112,7 +109,6 @@ function Operadora() {
 
   {/* rifas abiertas ---------------------------------------------------------------------------- */}
   <div>
-   
     {openCards.map(card => (
       <Grid mt={10} gutter={10} mx={10}>
         <Grid.Col xs={6} lg={2} order={2}></Grid.Col>
@@ -153,10 +149,44 @@ function Operadora() {
      
         {/* cuadro ---------------------------------------------------------------------------- */}
         <div style={{ marginLeft: '250px', marginTop: '-820px' }} >
-
-          <TicketModal
-            tickets={tickets}
-          />
+          {
+            lobbyState.open ? (
+              <TicketModal
+                tickets={tickets}
+              />
+            ) : (
+              <Card
+                shadow="sm" 
+                radius="sm" 
+                mt={20}
+                mx={7}
+                h="100vh"
+                bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
+              >
+                <div 
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div 
+                    style={{
+                      width: '100%',
+                      margin: 'auto auto'
+                    }}
+                  >
+                    <Title order={1} ta="center" mt='18%'>
+                    <TbZoomQuestion size="200px" strokeWidth="1.2px"/> <br/>
+                      Selecciona un sorteo
+                    </Title>
+                  </div>
+                </div>
+              </Card>
+            )
+          }
         </div>
 
     </>
