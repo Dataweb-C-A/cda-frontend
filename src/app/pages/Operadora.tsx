@@ -105,89 +105,97 @@ function Operadora() {
   const soldRifas = data.filter(rifa => rifa.status === "sold")
   return (
     <>
-  <Navbar profiles={profiles} links={links} />
+      <Navbar profiles={profiles} links={links} />
 
-  {/* rifas abiertas ---------------------------------------------------------------------------- */}
-  <div>
-    {openCards.map(card => (
-      <Grid mt={10} gutter={10} mx={10}>
-        <Grid.Col xs={6} lg={2} order={2}></Grid.Col>
-        <Grid.Col xs={6} lg={2} order={1}>
-          <Card
-            key={card.id}
-            w={235}
-            h={120}
-            shadow={"0 0 7px 0 #5f5f5f3d"}
-            bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
-          >
-            <BadgeStatus status={"Cerrado"} color={"green"} lobby_id={2} />
-            <Text mt={2} fw={500} fz={10} mb={4}>
-              {card.prize}
-            </Text>
-            <Text mt={-3} fw={300} fz={7}>
-              Inicio: {card.open} - Cierre: {card.close}
-            </Text>
-            <Text mt={0} fw={300} fz={8}>
-              Progreso:
-            </Text>
-            <Grid>
-              <Grid.Col span={8}>
-                <Progress value={card.Progreso} color="green" label={`${card.Progreso}%`} size="xl" mt={7} />
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Badge variant="filled" color="green" size="xs" radius={4}>
-                  {card.status}
-                </Badge>
-              </Grid.Col>
-            </Grid>
-          </Card>
-        </Grid.Col>
-      </Grid>
-    ))}
-  </div>
-
-     
-        {/* cuadro ---------------------------------------------------------------------------- */}
-        <div style={{ marginLeft: '250px', marginTop: '-820px' }} >
-          {
-            lobbyState.open ? (
-              <TicketModal
-                tickets={tickets}
-              />
-            ) : (
+      {/* rifas abiertas ---------------------------------------------------------------------------- */}
+      <div>
+      <Button
+        bg="red"
+        ml="md"
+        mt='md'
+        w={235}
+      >
+        Ver resultados anteriores
+      </Button>
+        {openCards.map(card => (
+          <Grid mt={10} gutter={10} mx={10}>
+            <Grid.Col xs={6} lg={2} order={2}></Grid.Col>
+            <Grid.Col xs={6} lg={2} order={1}>
               <Card
-                shadow="sm" 
-                radius="sm" 
-                mt={20}
-                mx={7}
-                h="100vh"
-                bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
+                key={card.id}
+                w={235}
+                h={120}
+                shadow={"0 0 7px 0 #5f5f5f3d"}
+                bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
               >
-                <div 
+                <BadgeStatus status={"Cerrado"} color={"green"} lobby_id={2} />
+                <Text mt={2} fw={500} fz={10} mb={4}>
+                  {card.prize}
+                </Text>
+                <Text mt={-3} fw={300} fz={7}>
+                  Inicio: {card.open} - Cierre: {card.close}
+                </Text>
+                <Text mt={0} fw={300} fz={8}>
+                  Progreso:
+                </Text>
+                <Grid>
+                  <Grid.Col span={8}>
+                    <Progress value={card.Progreso} color="green" label={`${card.Progreso}%`} size="xl" mt={7} />
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Badge variant="filled" color="green" size="xs" radius={4}>
+                      {card.status}
+                    </Badge>
+                  </Grid.Col>
+                </Grid>
+              </Card>
+            </Grid.Col>
+          </Grid>
+        ))}
+      </div>
+
+
+      {/* cuadro ---------------------------------------------------------------------------- */}
+      <div style={{ marginLeft: '250px', marginTop: '-820px' }} >
+        {
+          lobbyState.open ? (
+            <TicketModal
+              tickets={tickets}
+            />
+          ) : (
+            <Card
+              shadow="sm"
+              radius="sm"
+              mt={20}
+              mx={7}
+              h="100vh"
+              bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <div
                   style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
                     width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center'
+                    margin: 'auto auto'
                   }}
                 >
-                  <div 
-                    style={{
-                      width: '100%',
-                      margin: 'auto auto'
-                    }}
-                  >
-                    <Title order={1} ta="center" mt='18%'>
-                    <TbZoomQuestion size="200px" strokeWidth="1.2px"/> <br/>
-                      Selecciona un sorteo
-                    </Title>
-                  </div>
+                  <Title order={1} ta="center" mt='18%'>
+                    <TbZoomQuestion size="200px" strokeWidth="1.2px" /> <br />
+                    Selecciona un sorteo
+                  </Title>
                 </div>
-              </Card>
-            )
-          }
-        </div>
+              </div>
+            </Card>
+          )
+        }
+      </div>
 
     </>
 

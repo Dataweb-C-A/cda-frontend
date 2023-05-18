@@ -11,7 +11,7 @@ function TicketsModal({serial}: TicketsModalProps) {
   const [opened, { open, close }] = useDisclosure(false);
   const [tickets, setTickets] = useState([])
   const theme = useMantineTheme();
-
+  
   // useEffect(() => {
   //   fetch(`https://rifa-max.com/api/v1/rifas/tickets/${serial}`)
   //     .then((response) => response.json())

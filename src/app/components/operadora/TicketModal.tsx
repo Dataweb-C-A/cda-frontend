@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title } from '@mantine/core'
+import { Card, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import Operadora from '../../pages/Operadora'
 
@@ -22,11 +22,11 @@ type modalProps = {
 
 function formatPlace(place: number): string {
   if (place <= 9) {
-    return '' + place;
+    return '0' + place;
   } else if (place <= 99) {
     return '' + place;
-  } else if (place === 1000) {
-    return '000';
+  } else if (place === 100) {
+    return '00';
   } else {
     return place.toString();
   }
@@ -123,7 +123,11 @@ function TicketModal({ tickets }: modalProps) {
   }, [active])
 
   return (
-    <Card shadow={'0 0 7px 0 #5f5f5f3d'} my={20} mx={5} ref={elementRef}>
+    <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} mx={5} ref={elementRef} style={{
+      position: 'absolute',
+      top: 80,
+
+    }}>
       <br />
       <div className={classes.container}>
         <div className={classes.ticketsFlex}>
@@ -157,23 +161,7 @@ function TicketModal({ tickets }: modalProps) {
             })}
 
             {/*  boton  Al azar */}
-            <Button
-              style={{}}
-              variant="filled"
-              color="blue"
-              onClick={() => {
-                const availableTickets = tickets.filter((ticket) => !ticket.isSold);
-                let randomNumber = Math.floor(Math.random() * availableTickets.length);
-
-                while (active.includes(availableTickets[randomNumber].place)) {
-                  randomNumber = Math.floor(Math.random() * availableTickets.length);
-                }
-
-                setActive([...active, availableTickets[randomNumber].place]);
-              }}
-            >
-              Al azar
-            </Button>
+            
           </Group>
         </div>
 
@@ -188,26 +176,48 @@ function TicketModal({ tickets }: modalProps) {
                 <Text>Debe seleccionar boletos</Text>
               ) : (
                 <>
-                  <Button fullWidth mb={10} variant="filled" color="blue">
-                    Limpiar
+                <Group>
+                  <Button
+                    mb={10}
+                    style={{}}
+                    variant="filled"
+                    color="blue"
+                    onClick={() => {
+                      const availableTickets = tickets.filter((ticket) => !ticket.isSold);
+                      let randomNumber = Math.floor(Math.random() * availableTickets.length);
+
+                      while (active.includes(availableTickets[randomNumber].place)) {
+                        randomNumber = Math.floor(Math.random() * availableTickets.length);
+                      }
+
+                      setActive([...active, availableTickets[randomNumber].place]);
+                    }}
+                  >
+                    Numeros al azar
                   </Button>
+                  <Button mb={10} variant="filled" color="blue">
+                    Limpiar Jugada
+                  </Button>
+                </Group>
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
                       <Paper shadow="sm" mb={10}>
                         <Card shadow="sm" mb={10}>
+                          <Paper shadow="sm" mb={10} style={{
+                            maxHeight: '40vh',
+                            overflowY: 'scroll'
+                          }}>
                           <Text>Arreglo 1</Text>
                           {
                             active.map((item, index) => (
                               <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
                             ))
                           }
+                          </Paper>
                           <br />
                           <div style={{ top: '500%', right: '-6%' }}>
-                            <Group style={{ gap: "120px" }}>
-                              <Text mb={5}>Total Jugadas</Text>
-                              <Text mb={5} >Monto</Text>
-                            </Group>
-                            <Group mt={5} mb={20} align='center'>
+                              <Text mb={5} ta="center">Monto por moneda</Text>
+                            {/* <Group mt={5} mb={20} align='center'>
                               <div>
                                 {
                                   active.length % 1 || active.length === 0 ? (
@@ -218,25 +228,40 @@ function TicketModal({ tickets }: modalProps) {
                                     </>
                                   )
                                 }
-                              </div>
+                              </div> */}
                               <div style={{ marginLeft: '180px', }}>
                                 {
                                   active.length % 1 || active.length === 0 ? (
                                     <Title>0$</Title>
                                   ) : (
                                     <>
-                                      <Title>{2.5 * active.length}$</Title>
                                     </>
                                   )
                                 }
                               </div>
+                            {/* </Group> */}
+                            <Group position='apart'>
+                              <Title ta="end">${2.5 * active.length}</Title>
+                              <Checkbox />
                             </Group>
-                            <Button variant="filled" color="blue" style={{
+                            <Group position='apart'>
+                              <Title ta="end">
+                                Bs.D {((2.5 * active.length) * 25.75).toFixed(2)}
+                              </Title>
+                              <Checkbox />
+                            </Group>
+                            <Group position='apart'>
+                              <Title ta="end">
+                                COP {((2.5 * active.length) * 4500).toFixed(2)}
+                              </Title>
+                              <Checkbox />
+                            </Group> 
+                            <Button variant="filled" color="blue" mt={10} style={{
                               width: '100%'
                             }} onClick={() => {
                               setActive([])
                             }}>
-                              Comprar
+                              Selecciona moneda y compra
                             </Button>
                           </div>
                         </Card>
