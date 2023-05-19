@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox } from '@mantine/core'
+import { Card, Modal, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import Operadora from '../../pages/Operadora'
 
@@ -112,6 +112,7 @@ function TicketModal({ tickets }: modalProps) {
   }))
 
   const { classes, cx } = useStyles()
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleTickets = (register: number) => {
     setActive(active.includes(register) ? active.filter((item) => item !== register) : active.concat(register))
@@ -134,12 +135,12 @@ function TicketModal({ tickets }: modalProps) {
           <Group key={counter}>
             {/** card  ticket*/}
             {tickets.map((item, index) => {
-              const row = Math.floor(index / 10); // Número de fila
-              const column = index % 10; // Número de columna
+              const row = Math.floor(index / 10);
+              const column = index % 10;
 
               const cardStyle = {
-                width: `${70 / 10}%`, // Ancho ajustado para la cuadrícula de 10x10
-                margin: '4px' // Margen ajustado para la cuadrícula
+                width: `${70 / 10}%`,
+                margin: '4px'
               };
 
               return (
@@ -161,7 +162,7 @@ function TicketModal({ tickets }: modalProps) {
             })}
 
             {/*  boton  Al azar */}
-            
+
           </Group>
         </div>
 
@@ -176,29 +177,29 @@ function TicketModal({ tickets }: modalProps) {
                 <Text>Debe seleccionar boletos</Text>
               ) : (
                 <>
-                <Group>
-                  <Button
-                    mb={10}
-                    style={{}}
-                    variant="filled"
-                    color="blue"
-                    onClick={() => {
-                      const availableTickets = tickets.filter((ticket) => !ticket.isSold);
-                      let randomNumber = Math.floor(Math.random() * availableTickets.length);
+                  <Group>
+                    <Button
+                      mb={10}
+                      style={{}}
+                      variant="filled"
+                      color="blue"
+                      onClick={() => {
+                        const availableTickets = tickets.filter((ticket) => !ticket.isSold);
+                        let randomNumber = Math.floor(Math.random() * availableTickets.length);
 
-                      while (active.includes(availableTickets[randomNumber].place)) {
-                        randomNumber = Math.floor(Math.random() * availableTickets.length);
-                      }
+                        while (active.includes(availableTickets[randomNumber].place)) {
+                          randomNumber = Math.floor(Math.random() * availableTickets.length);
+                        }
 
-                      setActive([...active, availableTickets[randomNumber].place]);
-                    }}
-                  >
-                    Numeros al azar
-                  </Button>
-                  <Button mb={10} variant="filled" color="blue">
-                    Limpiar Jugada
-                  </Button>
-                </Group>
+                        setActive([...active, availableTickets[randomNumber].place]);
+                      }}
+                    >
+                      Numeros al azar
+                    </Button>
+                    <Button mb={10} variant="filled" color="blue">
+                      Limpiar Jugada
+                    </Button>
+                  </Group>
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
                       <Paper shadow="sm" mb={10}>
@@ -207,62 +208,70 @@ function TicketModal({ tickets }: modalProps) {
                             maxHeight: '40vh',
                             overflowY: 'scroll'
                           }}>
-                          <Text>Arreglo 1</Text>
-                          {
-                            active.map((item, index) => (
-                              <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
-                            ))
-                          }
+                            <Text>Arreglo 1</Text>
+                            {
+                              active.map((item, index) => (
+                                <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
+                              ))
+                            }
                           </Paper>
                           <br />
                           <div style={{ top: '500%', right: '-6%' }}>
-                              <Text mb={5} ta="center">Monto por moneda</Text>
                             {/* <Group mt={5} mb={20} align='center'>
                               <div>
-                                {
-                                  active.length % 1 || active.length === 0 ? (
-                                    <Title ml={20}>0</Title>
+                              {
+                                active.length % 1 || active.length === 0 ? (
+                                  <Title ml={20}>0</Title>
                                   ) : (
                                     <>
-                                      <Title>{active.length}</Title>
+                                    <Title>{active.length}</Title>
                                     </>
-                                  )
-                                }
-                              </div> */}
-                              <div style={{ marginLeft: '180px', }}>
-                                {
-                                  active.length % 1 || active.length === 0 ? (
-                                    <Title>0$</Title>
+                                    )
+                                  }
+                                </div> */}
+                            <div style={{ marginLeft: '180px', }}>
+                              {
+                                active.length % 1 || active.length === 0 ? (
+                                  <Title>0$</Title>
                                   ) : (
                                     <>
-                                    </>
-                                  )
-                                }
-                              </div>
-                            {/* </Group> */}
-                            <Group position='apart'>
-                              <Title ta="end">${2.5 * active.length}</Title>
-                              <Checkbox />
-                            </Group>
-                            <Group position='apart'>
-                              <Title ta="end">
-                                Bs.D {((2.5 * active.length) * 25.75).toFixed(2)}
-                              </Title>
-                              <Checkbox />
-                            </Group>
-                            <Group position='apart'>
-                              <Title ta="end">
-                                COP {((2.5 * active.length) * 4500).toFixed(2)}
-                              </Title>
-                              <Checkbox />
-                            </Group> 
-                            <Button variant="filled" color="blue" mt={10} style={{
-                              width: '100%'
-                            }} onClick={() => {
-                              setActive([])
-                            }}>
+                                  </>
+                                )
+                              }
+                            </div>
+
+
+                            {/*  boton  compra*/}
+                            <Button
+                              variant="filled"
+                              color="blue"
+                              mt={10}
+                              style={{ width: '100%' }}
+                              onClick={() => setModalOpen(true)}
+                            >
                               Selecciona moneda y compra
                             </Button>
+
+                            <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
+                              {/* </Group> */}
+                                    <Text mb={5} ta="center">Monto por moneda</Text>
+                              <Group position='apart'>
+                                <Title ta="end">${2.5 * active.length}</Title>
+                                <Checkbox />
+                              </Group>
+                              <Group position='apart'>
+                                <Title ta="end">
+                                  Bs.D {((2.5 * active.length) * 25.75).toFixed(2)}
+                                </Title>
+                                <Checkbox />
+                              </Group>
+                              <Group position='apart'>
+                                <Title ta="end">
+                                  COP {((2.5 * active.length) * 4500).toFixed(2)}
+                                </Title>
+                                <Checkbox />
+                              </Group>
+                            </Modal>
                           </div>
                         </Card>
                       </Paper>
