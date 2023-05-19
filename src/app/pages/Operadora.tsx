@@ -106,20 +106,58 @@ function Operadora() {
   return (
     <>
       <Navbar profiles={profiles} links={links} />
-
-      {/* rifas abiertas ---------------------------------------------------------------------------- */}
-      <div>
-      <Button
-        bg="red"
-        ml="md"
-        mt='md'
-        w={235}
+      <Paper
+        w="100%"
+        h={120}
       >
-        Ver resultados anteriores
-      </Button>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '10px', marginLeft: '15px', overflowX: 'scroll', overflowY: 'hidden'}}>
+        {soldRifas.map(card => (
+          <Grid mt={10}>
+            <Grid.Col xs={6} lg={2} order={1}>
+              <Card
+                key={card.id}
+                w={235}
+                h={120}
+                shadow={"0 0 7px 0 #5f5f5f3d"}
+                bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
+              >
+                <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
+                <Text mt={2} fw={500} fz={10} mb={4}>
+                  {card.prize}
+                </Text>
+                <Text mt={-3} fw={300} fz={7}>
+                  Inicio: {card.open} - Cierre: {card.close}
+                </Text>
+                <Text mt={0} fw={300} fz={8}>
+                  Progreso:
+                </Text>
+                <Grid>
+                  <Grid.Col span={8}>
+                    <Progress value={card.Progreso} color="red" label={`${card.Progreso}%`} size="xl" mt={7} />
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Badge variant="filled" color="red" size="xs" radius={4}>
+                      {card.status}
+                    </Badge>
+                  </Grid.Col>
+                </Grid>
+              </Card>
+            </Grid.Col>
+          </Grid>
+        ))}
+        </div>
+      </Paper>
+      <div>
+        <Paper
+          mt={20}
+          h="100%"
+          style={{
+            overflowY: "auto",
+            maxHeight: "calc(100vh - 200px)",
+          }}
+        >
         {openCards.map(card => (
           <Grid mt={10} gutter={10} mx={10}>
-            <Grid.Col xs={6} lg={2} order={2}></Grid.Col>
             <Grid.Col xs={6} lg={2} order={1}>
               <Card
                 key={card.id}
@@ -152,10 +190,8 @@ function Operadora() {
             </Grid.Col>
           </Grid>
         ))}
+        </Paper>
       </div>
-
-
-      {/* cuadro ---------------------------------------------------------------------------- */}
       <div style={{ marginLeft: '250px', marginTop: '-820px' }} >
         {
           lobbyState.open ? (
@@ -168,12 +204,12 @@ function Operadora() {
               radius="sm"
               mt={20}
               mx={7}
-              h="100vh"
+              h="87.5vh"
               w="82.1%"
               bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
               style={{
                 position: 'absolute',
-                top: 60,
+                top: 189,
               }}
             >
               <div
@@ -201,7 +237,6 @@ function Operadora() {
           )
         }
       </div>
-
     </>
 
   )
