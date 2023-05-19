@@ -169,7 +169,12 @@ function Operadora() {
               mt={20}
               mx={7}
               h="100vh"
+              w="82.1%"
               bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
+              style={{
+                position: 'absolute',
+                top: 60,
+              }}
             >
               <div
                 style={{
