@@ -192,7 +192,7 @@ function Operadora() {
         ))}
         </Paper>
       </div>
-      <div style={{ marginLeft: '250px', marginTop: '-820px' }} >
+      <div style={{ marginLeft: '250px', marginTop: '-870px' }} >
         {
           lobbyState.open ? (
             <TicketModal
@@ -202,10 +202,10 @@ function Operadora() {
             <Card
               shadow="sm"
               radius="sm"
-              mt={20}
+              mt={28}
               mx={7}
-              h="87.5vh"
-              w="82.1%"
+              h="77.5vh"
+              w="84.1%"
               bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
               style={{
                 position: 'absolute',
@@ -227,6 +227,7 @@ function Operadora() {
                     margin: 'auto auto'
                   }}
                 >
+                  
                   <Title order={1} ta="center" mt='18%'>
                     <TbZoomQuestion size="200px" strokeWidth="1.2px" /> <br />
                     Selecciona un sorteo

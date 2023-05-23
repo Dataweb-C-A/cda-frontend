@@ -126,6 +126,7 @@ function TicketModal({ tickets }: modalProps) {
   return (
     <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} mx={5} ref={elementRef} style={{
       position: 'absolute',
+      height:"91vh",
       top: 80,
     }}>
       <br />
