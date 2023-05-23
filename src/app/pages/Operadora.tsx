@@ -110,6 +110,7 @@ function Operadora() {
         w="100%"
         h={120}
       >
+        {/** rifas cerradas */}
         <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '10px', marginLeft: '15px', overflowX: 'scroll', overflowY: 'hidden'}}>
         {soldRifas.map(card => (
           <Grid mt={10}>
@@ -156,6 +157,8 @@ function Operadora() {
             maxHeight: "calc(100vh - 200px)",
           }}
         >
+
+        {/** rifas abiertas */}
         {openCards.map(card => (
           <Grid mt={10} gutter={10} mx={10}>
             <Grid.Col xs={6} lg={2} order={1}>

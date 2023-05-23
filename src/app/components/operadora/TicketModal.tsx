@@ -200,6 +200,7 @@ function TicketModal({ tickets }: modalProps) {
                       Limpiar Jugada
                     </Button>
                   </Group>
+                  
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
                       <Paper shadow="sm" mb={10}>
@@ -211,6 +212,7 @@ function TicketModal({ tickets }: modalProps) {
                             <Text>Arreglo 1</Text>
                             {
                               active.map((item, index) => (
+                                
                                 <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
                               ))
                             }
