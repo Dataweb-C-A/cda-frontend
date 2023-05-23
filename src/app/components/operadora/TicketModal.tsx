@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Modal, Text, Group, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox } from '@mantine/core'
+import { Card, Modal, Text, Group, createStyles,TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox ,Box } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import Operadora from '../../pages/Operadora'
 
@@ -200,7 +200,6 @@ function TicketModal({ tickets }: modalProps) {
                       Limpiar Jugada
                     </Button>
                   </Group>
-                  
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
                       <Paper shadow="sm" mb={10}>
@@ -258,7 +257,7 @@ function TicketModal({ tickets }: modalProps) {
                               {/* </Group> */}
                                     <Text mb={5} ta="center">Monto por moneda</Text>
                               <Group position='apart'>
-                                <Title ta="end">${2.5 * active.length}</Title>
+                                <Title ta="end">$ {2.5 * active.length}</Title>
                                 <Checkbox />
                               </Group>
                               <Group position='apart'>
@@ -273,6 +272,27 @@ function TicketModal({ tickets }: modalProps) {
                                 </Title>
                                 <Checkbox />
                               </Group>
+
+                              <Text mt={8} mb={5} ta="center">Personalizar compra (Opcional)</Text>
+                              <Group grow>
+
+                                <TextInput  label="Nombre" placeholder="Nombre" value={"anonimo"}/>
+                                <TextInput  label="Appellido" placeholder="Appellido" />    
+                              </Group>
+                              <Group grow>
+
+                                <TextInput mt={10} label="Cedula" placeholder="Cedula" />
+                                <TextInput mt={10}  label="Telefono" placeholder="Telefono" />    
+                              </Group>
+                              <Button
+                              variant="filled"
+                              color="blue"
+                              mt={10}
+                              style={{ width: '100%' }}
+                              onClick={() => setModalOpen(true)}
+                            >
+                              Comprar
+                            </Button>
                             </Modal>
                           </div>
                         </Card>
