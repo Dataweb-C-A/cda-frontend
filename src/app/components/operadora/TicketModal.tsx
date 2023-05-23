@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Modal, Text, Group, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
+import { Card, Modal, Text,Image, Group,Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import Operadora from '../../pages/Operadora'
 
@@ -310,6 +310,15 @@ function TicketModal({ tickets }: modalProps) {
                             }}
                             py={10}
                           />
+                    <Image maw={260} mx="auto" radius="md" src="https://th.bing.com/th/id/R.4c88729e698c2feafdaaa14307cec741?rik=cCbzccOJMhwPyg&riu=http%3a%2f%2f2.bp.blogspot.com%2f-4-fESEVBNrg%2fUNw05n4XKrI%2fAAAAAAAAo3I%2fTysxMVbUSCA%2fs1600%2fIMAGEN-12308979-2.jpg&ehk=EoeTwAHRzooRItsKlaMOuJs9g3pIH7aUuaGjpgmmMYc%3d&risl=&pid=ImgRaw&r=0" alt="moto image" />
+                          <Text fw={700}>Sorteo</Text>
+                          <Text mb={11}>Rifa de una moto</Text>
+                          <Text fw={700}>Inicio</Text>
+                          <Text  mb={11} >08/03/2023</Text>
+                          <Text fw={700}>Cierre</Text>
+                          <Text   mb={11} >08/03/2023</Text>
+                          <Text fw={700}>Progreso</Text>
+                          <Progress value={34} color="green" label={`34`} size="xl" mt={7} />
                         </Card>
 
 
