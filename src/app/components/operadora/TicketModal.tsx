@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Modal, Text, Group, createStyles,TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox ,Box } from '@mantine/core'
+import { Card, Modal, Text, Group, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import Operadora from '../../pages/Operadora'
 
@@ -36,6 +36,8 @@ function TicketModal({ tickets }: modalProps) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
   const elementRef = useRef<HTMLDivElement>(null)
+
+  const theme = useMantineTheme()
 
   const bounce = keyframes({
     'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
@@ -126,7 +128,7 @@ function TicketModal({ tickets }: modalProps) {
   return (
     <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} mx={5} ref={elementRef} style={{
       position: 'absolute',
-      height:"91vh",
+      height: "91vh",
       top: 80,
     }}>
       <br />
@@ -205,13 +207,13 @@ function TicketModal({ tickets }: modalProps) {
                       <Paper shadow="sm" mb={10}>
                         <Card shadow="sm" mb={10}>
                           <Paper shadow="sm" mb={10} style={{
-                            maxHeight: '40vh',
+                            maxHeight: '16vh',
                             overflowY: 'scroll'
                           }}>
                             <Text>Arreglo 1</Text>
                             {
                               active.map((item, index) => (
-                                
+
                                 <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
                               ))
                             }
@@ -234,8 +236,8 @@ function TicketModal({ tickets }: modalProps) {
                               {
                                 active.length % 1 || active.length === 0 ? (
                                   <Title>0$</Title>
-                                  ) : (
-                                    <>
+                                ) : (
+                                  <>
                                   </>
                                 )
                               }
@@ -255,7 +257,7 @@ function TicketModal({ tickets }: modalProps) {
 
                             <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
                               {/* </Group> */}
-                                    <Text mb={5} ta="center">Monto por moneda</Text>
+                              <Text mb={5} ta="center">Monto por moneda</Text>
                               <Group position='apart'>
                                 <Title ta="end">$ {2.5 * active.length}</Title>
                                 <Checkbox />
@@ -276,26 +278,41 @@ function TicketModal({ tickets }: modalProps) {
                               <Text mt={8} mb={5} ta="center">Personalizar compra (Opcional)</Text>
                               <Group grow>
 
-                                <TextInput  label="Nombre" placeholder="Nombre" value={"anonimo"}/>
-                                <TextInput  label="Appellido" placeholder="Appellido" />    
+                                <TextInput label="Nombre" placeholder="Nombre" />
+                                <TextInput label="Appellido" placeholder="Appellido" />
                               </Group>
                               <Group grow>
 
                                 <TextInput mt={10} label="Cedula" placeholder="Cedula" />
-                                <TextInput mt={10}  label="Telefono" placeholder="Telefono" />    
+                                <TextInput mt={10} label="Telefono" placeholder="Telefono" />
                               </Group>
                               <Button
-                              variant="filled"
-                              color="blue"
-                              mt={10}
-                              style={{ width: '100%' }}
-                              onClick={() => setModalOpen(true)}
-                            >
-                              Comprar
-                            </Button>
+                                variant="filled"
+                                color="blue"
+                                mt={10}
+                                style={{ width: '100%' }}
+                                onClick={() => setModalOpen(true)}
+                              >
+                                Comprar
+                              </Button>
                             </Modal>
+
                           </div>
+
+                          <Divider
+                            label={'Detalles'}
+                            dir='horizontal'
+                            labelPosition='center'
+                            variant='dashed'
+                            mt={20}
+                            style={{
+                              zIndex: 9999999
+                            }}
+                            py={10}
+                          />
                         </Card>
+
+
                       </Paper>
                     </Grid.Col>
                     {/* <Grid.Col xl={6} sm={12}>
