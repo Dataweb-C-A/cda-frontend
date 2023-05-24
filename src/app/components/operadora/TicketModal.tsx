@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Alert, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
+import { Card, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
+import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
 
-import { IconAlertCircle } from '@tabler/icons-react';
+import { IconAlertCircle, IconArrowRight, IconArrowLeft } from '@tabler/icons-react';
 
 type clientProps = {
   name: string
@@ -320,7 +321,19 @@ function TicketModal({ tickets }: modalProps) {
                             }}
                             py={10}
                           />
-                          <Image maw={260} mx="auto" radius="md" src="https://th.bing.com/th/id/R.4c88729e698c2feafdaaa14307cec741?rik=cCbzccOJMhwPyg&riu=http%3a%2f%2f2.bp.blogspot.com%2f-4-fESEVBNrg%2fUNw05n4XKrI%2fAAAAAAAAo3I%2fTysxMVbUSCA%2fs1600%2fIMAGEN-12308979-2.jpg&ehk=EoeTwAHRzooRItsKlaMOuJs9g3pIH7aUuaGjpgmmMYc%3d&risl=&pid=ImgRaw&r=0" alt="moto image" />
+
+
+
+                          <Carousel slideSize="70%" height={200} slideGap="md" controlsOffset="xs" controlSize={28} loop withControls={false}>
+
+                            <Carousel.Slide>                          <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                            </Carousel.Slide>
+                            <Carousel.Slide>                          <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                            </Carousel.Slide>
+                            <Carousel.Slide>                          <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                            </Carousel.Slide>
+
+                          </Carousel>
                           <Text fw={700}>Sorteo</Text>
                           <Text mb={11}>Rifa de una moto</Text>
                           <Text fw={700}>Inicio</Text>
