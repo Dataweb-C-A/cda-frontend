@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Modal, Text,Image, Group,Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
+import { Card, Alert, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import Operadora from '../../pages/Operadora'
+
+import { IconAlertCircle } from '@tabler/icons-react';
 
 type clientProps = {
   name: string
@@ -125,6 +127,8 @@ function TicketModal({ tickets }: modalProps) {
     setCounter(0)
   }, [active])
 
+  const [checkedIndex, setCheckedIndex] = useState(-1);
+  const [isChecked, setIsChecked] = useState(false);
   return (
     <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} mx={5} ref={elementRef} style={{
       position: 'absolute',
@@ -220,18 +224,6 @@ function TicketModal({ tickets }: modalProps) {
                           </Paper>
                           <br />
                           <div style={{ top: '500%', right: '-6%' }}>
-                            {/* <Group mt={5} mb={20} align='center'>
-                              <div>
-                              {
-                                active.length % 1 || active.length === 0 ? (
-                                  <Title ml={20}>0</Title>
-                                  ) : (
-                                    <>
-                                    <Title>{active.length}</Title>
-                                    </>
-                                    )
-                                  }
-                                </div> */}
                             <div style={{ marginLeft: '180px', }}>
                               {
                                 active.length % 1 || active.length === 0 ? (
@@ -242,8 +234,6 @@ function TicketModal({ tickets }: modalProps) {
                                 )
                               }
                             </div>
-
-
                             {/*  boton  compra*/}
                             <Button
                               variant="filled"
@@ -254,44 +244,64 @@ function TicketModal({ tickets }: modalProps) {
                             >
                               Selecciona moneda y compra
                             </Button>
-
+                            {/** modal compra */}
                             <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
-                              {/* </Group> */}
-                              <Text mb={5} ta="center">Monto por moneda</Text>
                               <Group position='apart'>
                                 <Title ta="end">$ {2.5 * active.length}</Title>
-                                <Checkbox />
+                                <Checkbox
+                                  checked={checkedIndex === 0}
+                                  onChange={() => {
+                                    setCheckedIndex(0);
+                                    setIsChecked(true);
+                                  }}
+                                />
                               </Group>
                               <Group position='apart'>
                                 <Title ta="end">
                                   Bs.D {((2.5 * active.length) * 25.75).toFixed(2)}
                                 </Title>
-                                <Checkbox />
+                                <Checkbox
+                                  checked={checkedIndex === 1}
+                                  onChange={() => {
+                                    setCheckedIndex(1);
+                                    setIsChecked(true);
+                                  }}
+                                />
                               </Group>
                               <Group position='apart'>
                                 <Title ta="end">
                                   COP {((2.5 * active.length) * 4500).toFixed(2)}
                                 </Title>
-                                <Checkbox />
+                                <Checkbox
+                                  checked={checkedIndex === 2}
+                                  onChange={() => {
+                                    setCheckedIndex(2);
+                                    setIsChecked(true);
+                                  }}
+                                />
                               </Group>
-
                               <Text mt={8} mb={5} ta="center">Personalizar compra (Opcional)</Text>
                               <Group grow>
-
                                 <TextInput label="Nombre" placeholder="Nombre" />
-                                <TextInput label="Appellido" placeholder="Appellido" />
+                                <TextInput label="Apellido" placeholder="Apellido" />
                               </Group>
                               <Group grow>
-
-                                <TextInput mt={10} label="Cedula" placeholder="Cedula" />
-                                <TextInput mt={10} label="Telefono" placeholder="Telefono" />
+                                <TextInput mt={10} label="Cédula" placeholder="Cédula" />
+                                <TextInput mt={10} label="Teléfono" placeholder="Teléfono" />
                               </Group>
                               <Button
                                 variant="filled"
                                 color="blue"
-                                mt={10}
+                                mt={30}
                                 style={{ width: '100%' }}
-                                onClick={() => setModalOpen(true)}
+                                onClick={() => {
+                                  if (isChecked) {
+                                    setModalOpen(true);
+                                  } else {
+                                    alert("Selecciona un monto");
+                                  }
+                                }}
+                                disabled={!isChecked}
                               >
                                 Comprar
                               </Button>
@@ -310,13 +320,13 @@ function TicketModal({ tickets }: modalProps) {
                             }}
                             py={10}
                           />
-                    <Image maw={260} mx="auto" radius="md" src="https://th.bing.com/th/id/R.4c88729e698c2feafdaaa14307cec741?rik=cCbzccOJMhwPyg&riu=http%3a%2f%2f2.bp.blogspot.com%2f-4-fESEVBNrg%2fUNw05n4XKrI%2fAAAAAAAAo3I%2fTysxMVbUSCA%2fs1600%2fIMAGEN-12308979-2.jpg&ehk=EoeTwAHRzooRItsKlaMOuJs9g3pIH7aUuaGjpgmmMYc%3d&risl=&pid=ImgRaw&r=0" alt="moto image" />
+                          <Image maw={260} mx="auto" radius="md" src="https://th.bing.com/th/id/R.4c88729e698c2feafdaaa14307cec741?rik=cCbzccOJMhwPyg&riu=http%3a%2f%2f2.bp.blogspot.com%2f-4-fESEVBNrg%2fUNw05n4XKrI%2fAAAAAAAAo3I%2fTysxMVbUSCA%2fs1600%2fIMAGEN-12308979-2.jpg&ehk=EoeTwAHRzooRItsKlaMOuJs9g3pIH7aUuaGjpgmmMYc%3d&risl=&pid=ImgRaw&r=0" alt="moto image" />
                           <Text fw={700}>Sorteo</Text>
                           <Text mb={11}>Rifa de una moto</Text>
                           <Text fw={700}>Inicio</Text>
-                          <Text  mb={11} >08/03/2023</Text>
+                          <Text mb={11} >08/03/2023</Text>
                           <Text fw={700}>Cierre</Text>
-                          <Text   mb={11} >08/03/2023</Text>
+                          <Text mb={11} >08/03/2023</Text>
                           <Text fw={700}>Progreso</Text>
                           <Progress value={34} color="green" label={`34`} size="xl" mt={7} />
                         </Card>
@@ -324,18 +334,6 @@ function TicketModal({ tickets }: modalProps) {
 
                       </Paper>
                     </Grid.Col>
-                    {/* <Grid.Col xl={6} sm={12}>
-                        <Paper shadow="sm" mb={10}>
-                        <Card shadow="sm" mb={10}>
-                            <Text>Arreglo 1</Text>
-                            {
-                              active.map((item, index) => (
-                                <Text key={index}>{formatPlace(item)}</Text>
-                              ))
-                            }
-                          </Card>
-                        </Paper>
-                      </Grid.Col> */}
                   </Grid>
                 </>
               )
