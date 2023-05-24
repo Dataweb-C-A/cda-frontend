@@ -26,7 +26,7 @@ function Operadora() {
     lobby_state: false,
     lobby_connection: new Date()
   })
-  const [lobbyData, setLobbyData] = useState<any>([])
+  const [draws, setDraws] = useState<any>([])
 
   const [profiles, setProfiles] = useState([])
 
@@ -43,19 +43,16 @@ function Operadora() {
         console.log(err)
       })
 
-    axios.get('http://localhost:3000/draws', {})
-
-    const channel = cable.subscriptions.create('DrawChannel', {
-      received: (data: any) => {
-        setLobbyData(data)
-        console.log(data)
-      },
-    });
-
-
-    return () => {
-      channel.unsubscribe();
-    };
+      const drawChannel = cable.subscriptions.create('draw_channel', {
+        received(data) {
+          const parsedData = JSON.parse(data.draws);
+          setDraws(parsedData);
+        },
+      });
+  
+      return () => {
+        drawChannel.unsubscribe();
+      };
   }, [])
 
   useEffect(() => {
@@ -250,6 +247,11 @@ function Operadora() {
                   <Title order={1} ta="center" mt='18%'>
                     <TbZoomQuestion size="200px" strokeWidth="1.2px" /> <br />
                     Selecciona un sorteo
+                    <ul>
+                      {draws.map((draw: any) => (
+                        <li key={draw.id}>pene</li>
+                      ))}
+                    </ul>
                   </Title>
                 </div>
               </div>
