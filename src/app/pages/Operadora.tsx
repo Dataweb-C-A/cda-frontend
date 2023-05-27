@@ -43,16 +43,19 @@ function Operadora() {
         console.log(err)
       })
 
-      const drawChannel = cable.subscriptions.create('draw_channel', {
-        received(data) {
-          const parsedData = JSON.parse(data.draws);
-          setDraws(parsedData);
+      const drawChannel = cable.subscriptions.create('DrawChannel', {
+        connected() {
+          console.log('Conexión establecida');
+        },
+      
+        disconnected() {
+          console.log('Desconectado');
+        },
+      
+        received(data: any) {
+          console.log(data)
         },
       });
-  
-      return () => {
-        drawChannel.unsubscribe();
-      };
   }, [])
 
   useEffect(() => {
