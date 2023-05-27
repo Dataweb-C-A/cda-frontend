@@ -18,7 +18,6 @@ import {
 } from "@mantine/core";
 import { useForm, isNotEmpty, matches as Match } from "@mantine/form";
 import axios from "axios";
-import { useUser } from "../../hooks/useUser";
 import {
   IconAt,
   IconCheck,
@@ -65,6 +64,7 @@ type RiferosProps = {
   username: string;
   email: string;
   cedula: string;
+  role: string;
   phone: string;
   password: string;
   passwordConfirmation: string;
@@ -92,6 +92,7 @@ export default function RiferosModal({
       username: "",
       cedula: "",
       phone: "",
+      role: "Rifero",
       password: "",
       passwordConfirmation: "",
       status: true,
