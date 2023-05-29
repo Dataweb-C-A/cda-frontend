@@ -326,11 +326,14 @@ function TicketModal({ tickets }: modalProps) {
 
                           <Carousel slideSize="70%" height={200} slideGap="md" controlsOffset="xs" controlSize={28} loop withControls={false}>
 
-                            <Carousel.Slide>                          <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                            <Carousel.Slide>
+                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
                             </Carousel.Slide>
-                            <Carousel.Slide>                          <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                            <Carousel.Slide> 
+                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
                             </Carousel.Slide>
-                            <Carousel.Slide>                          <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                            <Carousel.Slide>
+                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
                             </Carousel.Slide>
 
                           </Carousel>
