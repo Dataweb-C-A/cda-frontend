@@ -24,6 +24,7 @@ import { useUser } from '../hooks/useUser'
 import AvatarCard from '../components/avatarCard'
 
 type User = {
+  id: string | number,
   name: string,
   role: string,
   email: string,
@@ -66,6 +67,7 @@ function Login() {
         },
       )
       dispatch(setUser({
+        id: data.user.id,
         name: data.user.name,
         role: data.user.role,
         email: email,

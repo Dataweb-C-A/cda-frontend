@@ -42,39 +42,43 @@ function Operadora() {
       .catch(err => {
         console.log(err)
       })
-
-      const drawChannel = cable.subscriptions.create('DrawChannel', {
-        connected() {
-          console.log('Conexión establecida');
-        },
-      
-        disconnected() {
-          console.log('Desconectado');
-        },
-      
-        received(data: any) {
-          console.log(data)
-        },
-      });
+      const handleEsc = (event: any) => {
+        if (event.keyCode === 27) {
+          setLobbyState({
+            open: false,
+            lobby_id: 0,
+            lobby_state: false,
+            lobby_connection: new Date()
+          })
+        }
+      }
+      window.addEventListener('keydown', handleEsc)
+      return () => {
+        window.removeEventListener('keydown', handleEsc)
+      }
   }, [])
 
   useEffect(() => {
-    const handleEsc = (event: any) => {
-      if (event.keyCode === 27) {
-        setLobbyState({
-          open: false,
-          lobby_id: 0,
-          lobby_state: false,
-          lobby_connection: new Date()
-        })
+    setTimeout(() => {
+      axios.post('http://localhost:3000/api/public/draws', {
+        user_id: localStorage.getItem('user_id') || 1,
+      }, 
+      {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
       }
-    }
-    window.addEventListener('keydown', handleEsc)
-    return () => {
-      window.removeEventListener('keydown', handleEsc)
-    }
-  }, [])
-
+    )}, 3000)
+  }, [setDraws])
+  
   const handleLobby = (id: number, connection: Date) => {
     return (
       setLobbyState({
