@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Stepper, Modal, Button } from '@mantine/core'
+import { Stepper, Switch, NumberInput, Modal, Button, TextInput, Checkbox, Card, Text, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex } from '@mantine/core'
 import moment from 'moment'
+import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
 import axios from 'axios'
 import { useUser } from '../../hooks/useUser'
-import { 
-  useForm,
-  isNotEmpty,
-} from '@mantine/form'
+import { Calendar } from 'tabler-icons-react'
+import { DatePicker } from "@mantine/dates"
 
 type IDrawsModal = {
   variant?: "filled" | "outline" | "light" | "gradient" | "white" | "default" | "subtle";
@@ -56,7 +55,7 @@ function DrawsModal({
   const { user } = useUser();
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-  
+
   if (active === 2) {
     setTimeout(() => {
       setActive(0)
@@ -72,56 +71,27 @@ function DrawsModal({
     return () => clearInterval(interval)
   }, [actualDate])
 
+
+
   const form = useForm({
     initialValues: {
-      rifDate: null,
-      awardSign: null,
-      awardNoSign: null,
-      plate: null,
-      year: null,
-      loteria: 'ZULIA 7A',
-      money: '$',
-      numbers: null,
-      price: null,
-      rifero_id: null,
+      name: '',
+      job: '',
+      email: '',
+      favoriteColor: '',
+      age: 18,
     },
+
     validate: {
-      rifDate: (value: Date | string) => {
-        if (!value) return 'Fecha requerida'
-        isNotEmpty('La fecha de la rifa es requerida')
-        if (new Date(value) < new Date(moment().format('YYYY-MM-DD'))) return 'Fecha invalida'
-      },
-      awardSign: (value: string) => {
-        if (!value) return 'Premio requerido'
-        isNotEmpty('El premio de la rifa es requerido')
-        if (value.length < 3) return 'El premio debe tener mas de 3 caracteres'
-      },
-      year: (value: string | number) => {
-        if (!value && !money) return 'Año requerido'
-        if (value !== null) {
-          if (Number(value) < 1949) return 'El año debe ser mayor a 1950'
-        }
-      },
-      numbers: (value: string | number) => {
-        if (!value) return 'Numero requeridos'
-        isNotEmpty('Los numeros de la rifa son requeridos')
-        if (Number(value) > 999) return 'Los numeros no pueden tener mas de 3 caracteres'
-      },
-      price: (value: number) => {
-        if (!value) return 'Precio requerido'
-        if (value <= 0) return 'El precio no puede ser negativo o cero'
-      },
-      plate: (value: string) => {
-        if (!value && !money) return 'Placa requerida'
-        isNotEmpty('La placa del premio es requerida')
-      },
-      rifero_id: (value: string | number) => {
-        isNotEmpty('El rifero es requerido')
-        if (!Number(value)) return 'Rifero invalido'
-      },
-      loteria: isNotEmpty('La loteria es requerida')
-    }
-  })
+      name: hasLength({ min: 2, max: 10 }, 'Name must be 2-10 characters long'),
+      job: isNotEmpty('Enter your current job'),
+      email: isEmail('Invalid email'),
+      favoriteColor: matches(/^#([0-9a-f]{3}){1,2}$/, 'Enter a valid hex color'),
+      age: isInRange({ min: 18, max: 99 }, 'You must be 18-99 years old to register'),
+    },
+  });
+
+
 
   const closeModal = () => {
     setActive(0)
@@ -169,8 +139,95 @@ function DrawsModal({
         <>
           <Stepper size="md" active={active}>
             <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
+
+
+
+              <TextInput label="Titulo" placeholder="Titulo " size='md' withAsterisk {...form.getInputProps('name')} />
+              <Title order={4} mt={25} mb={6} ml={195}>
+                Elige su tipo de rifa
+              </Title>
+              <Group mt={15} mb={15} position="center">
+                <Checkbox value="Fecha limite" label="Fecha limite" />
+                <Checkbox value="Progressive" label="Progresivo" />
+                <Checkbox value="Infinito" label="Infinito" />
+              </Group>
+
+              <Grid>
+                <Grid.Col span={6}>
+                  <TextInput
+                    size='md'
+                    label="Primer premio"
+                    placeholder="Primer premio"
+                    withAsterisk
+                    mt="md"
+                    {...form.getInputProps('job')}
+                  />
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <TextInput
+                    size="md"
+                    label="Segundo premio"
+                    placeholder="Segundo premio"
+                    disabled
+                    mt="md"
+                    {...form.getInputProps('email')}
+
+                  />
+
+
+                </Grid.Col>
+
+              </Grid>
+              <Switch mt={15} mb={15} ml={295}
+                label="Segundo premio"
+              />
+              <Grid>
+                <Grid.Col span={6}>
+                  <DatePicker
+                    label='Fecha de la rifa'
+                    placeholder='Fecha de la rifa'
+                    withAsterisk
+                    size='md'
+                    fullWidth
+                    rightSection={
+                      <Calendar
+                        opacity={0.8}
+                      />
+                    }
+                    minDate={validateDate()}
+                    maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
+                  />
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <DatePicker
+                    label='Fecha de expiracion  '
+                    placeholder='Fecha de expiracion'
+                    withAsterisk
+                    size='md'
+                    fullWidth
+                    rightSection={
+                      <Calendar
+                        opacity={0.8}
+                      />
+                    }
+                    minDate={validateDate()}
+                    maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
+                  />
+                </Grid.Col>
+              </Grid>
+              <NumberInput
+                label="Your age"
+                placeholder="Your age"
+                withAsterisk
+                mt="md"
+                {...form.getInputProps('age')}
+              />
+
+              <Group position="right" mt="md">
+                <Button type="submit">Submit</Button>
+              </Group>
             </Stepper.Step>
-          
+
             <Stepper.Step label="Verificar los datos" description="Verifica que los datos de la rifa sean correctos" >
             </Stepper.Step>
           </Stepper>
