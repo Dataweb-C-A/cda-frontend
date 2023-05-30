@@ -211,7 +211,7 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
                     variant="filled"
                     color="blue"
                     style={{ float: "right" }}
-                      className="btn-rifa"
+                    className="btn-rifa"
                     onClick={() => setOpenForm(!openForm)}
                     onClose={() => closeForm()}
                     open={openForm}

@@ -10,6 +10,7 @@ import axios from "axios";
 import data from "./card.json"
 import { TbZoomQuestion } from 'react-icons/tb'
 import cable from "../components/cable";
+import logo from "../assets/images/rifamax-logo.png"
 
 interface ILobbyState {
   open: boolean
@@ -42,43 +43,44 @@ function Operadora() {
       .catch(err => {
         console.log(err)
       })
-      const handleEsc = (event: any) => {
-        if (event.keyCode === 27) {
-          setLobbyState({
-            open: false,
-            lobby_id: 0,
-            lobby_state: false,
-            lobby_connection: new Date()
-          })
-        }
+    const handleEsc = (event: any) => {
+      if (event.keyCode === 27) {
+        setLobbyState({
+          open: false,
+          lobby_id: 0,
+          lobby_state: false,
+          lobby_connection: new Date()
+        })
       }
-      window.addEventListener('keydown', handleEsc)
-      return () => {
-        window.removeEventListener('keydown', handleEsc)
-      }
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => {
+      window.removeEventListener('keydown', handleEsc)
+    }
   }, [])
 
   useEffect(() => {
     setTimeout(() => {
       axios.post('http://localhost:3000/api/public/draws', {
         user_id: localStorage.getItem('user_id') || 1,
-      }, 
-      {
-        headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      })
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      }
-    )}, 3000)
+      },
+        {
+          headers: {
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        })
+        .then((res) => {
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        }
+        )
+    }, 3000)
   }, [setDraws])
-  
+
   const handleLobby = (id: number, connection: Date) => {
     return (
       setLobbyState({
@@ -126,12 +128,29 @@ function Operadora() {
   return (
     <>
       <Navbar profiles={profiles} links={links} />
+
       <Paper
         w="100%"
         h={120}
       >
         {/** rifas cerradas */}
         <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '10px', marginLeft: '15px', overflowX: 'scroll', overflowY: 'hidden' }}>
+          
+        <Grid mt={10}>
+              <Grid.Col xs={6} lg={2} order={1}>
+                <Card
+                  w={235}
+                  h={120}
+                  p={0}
+                  withBorder={false}
+                  shadow={"0 0 7px 0 #5f5f5f3d"}
+                  bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
+                >
+            <img width={"100%"} height={"100%"} src="https://th.bing.com/th/id/R.4c88729e698c2feafdaaa14307cec741?rik=cCbzccOJMhwPyg&riu=http%3a%2f%2f2.bp.blogspot.com%2f-4-fESEVBNrg%2fUNw05n4XKrI%2fAAAAAAAAo3I%2fTysxMVbUSCA%2fs1600%2fIMAGEN-12308979-2.jpg&ehk=EoeTwAHRzooRItsKlaMOuJs9g3pIH7aUuaGjpgmmMYc%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                  
+                </Card>
+              </Grid.Col>
+            </Grid>
           {soldRifas.map(card => (
             <Grid mt={10}>
               <Grid.Col xs={6} lg={2} order={1}>
