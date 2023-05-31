@@ -51,15 +51,31 @@ function DrawsModal({
   const [actualDate, setActualDate] = useState<Date>(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))
 
   const validate = new Date(moment().format('YYYY-MM-DD 19:30:00'))
-
+  const [checkedIndex, setCheckedIndex] = useState(-1);
+  const [isChecked, setIsChecked] = useState(false);
   const { user } = useUser();
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isSecondPrizeEnabled, setSecondPrizeEnabled] = useState(false);
 
+  const handleSecondPrizeSwitchChange = () => {
+    setSecondPrizeEnabled(!isSecondPrizeEnabled);
+  };
+  const form = useForm({
+    initialValues: {
+      tipo: '',
+      termsOfService: false,
+    },
+
+    validate: {
+      tipo: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+    },
+  });
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   if (active === 2) {
     setTimeout(() => {
       setActive(0)
-      form.reset()
+
       setFormModal(false)
     }, 10000)
   }
@@ -71,31 +87,9 @@ function DrawsModal({
     return () => clearInterval(interval)
   }, [actualDate])
 
-
-
-  const form = useForm({
-    initialValues: {
-      name: '',
-      job: '',
-      email: '',
-      favoriteColor: '',
-      age: 18,
-    },
-
-    validate: {
-      name: hasLength({ min: 2, max: 10 }, 'Name must be 2-10 characters long'),
-      job: isNotEmpty('Enter your current job'),
-      email: isEmail('Invalid email'),
-      favoriteColor: matches(/^#([0-9a-f]{3}){1,2}$/, 'Enter a valid hex color'),
-      age: isInRange({ min: 18, max: 99 }, 'You must be 18-99 years old to register'),
-    },
-  });
-
-
-
   const closeModal = () => {
     setActive(0)
-    form.reset()
+
     onClose()
   }
 
@@ -140,16 +134,26 @@ function DrawsModal({
           <Stepper size="md" active={active}>
             <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
 
-
-
-              <TextInput label="Titulo" placeholder="Titulo " size='md' withAsterisk {...form.getInputProps('name')} />
+              <TextInput label="Titulo" placeholder="Titulo " size='md' withAsterisk />
               <Title order={4} mt={25} mb={6} ml={195}>
                 Elige su tipo de rifa
               </Title>
               <Group mt={15} mb={15} position="center">
-                <Checkbox value="Fecha limite" label="Fecha limite" />
-                <Checkbox value="Progressive" label="Progresivo" />
-                <Checkbox value="Infinito" label="Infinito" />
+                <Checkbox checked={checkedIndex === 0}
+                  onChange={() => {
+                    setCheckedIndex(0);
+                    setIsChecked(true);
+                  }} value="Fecha limite" label="Fecha limite" />
+                <Checkbox checked={checkedIndex === 1}
+                  onChange={() => {
+                    setCheckedIndex(1);
+                    setIsChecked(true);
+                  }} value="Progressive" label="Progresivo" />
+                <Checkbox checked={checkedIndex === 2}
+                  onChange={() => {
+                    setCheckedIndex(2);
+                    setIsChecked(true);
+                  }} value="Infinito" label="Infinito" />
               </Group>
 
               <Grid>
@@ -160,27 +164,26 @@ function DrawsModal({
                     placeholder="Primer premio"
                     withAsterisk
                     mt="md"
-                    {...form.getInputProps('job')}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
-                  <TextInput
-                    size="md"
-                    label="Segundo premio"
-                    placeholder="Segundo premio"
-                    disabled
-                    mt="md"
-                    {...form.getInputProps('email')}
-
-                  />
-
-
-                </Grid.Col>
-
-              </Grid>
-              <Switch mt={15} mb={15} ml={295}
-                label="Segundo premio"
-              />
+        <TextInput
+          size="md"
+          label="Segundo premio"
+          placeholder="Segundo premio"
+          disabled={!isSecondPrizeEnabled}
+          mt="md"
+        />
+      </Grid.Col>
+    </Grid>
+    <Switch
+      mt={15}
+      mb={15}
+      ml={295}
+      label="Segundo premio"
+      checked={isSecondPrizeEnabled}
+      onChange={handleSecondPrizeSwitchChange}
+    />
               <Grid>
                 <Grid.Col span={6}>
                   <DatePicker
@@ -210,17 +213,17 @@ function DrawsModal({
                         opacity={0.8}
                       />
                     }
-                    minDate={validateDate()}
-                    maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
                   />
                 </Grid.Col>
               </Grid>
               <NumberInput
-                label="Your age"
-                placeholder="Your age"
+                label="Cantidad de tickets "
+
+                defaultValue={1}
+                placeholder="Cantidad de tickets "
                 withAsterisk
                 mt="md"
-                {...form.getInputProps('age')}
+                hideControls
               />
 
               <Group position="right" mt="md">
@@ -241,8 +244,10 @@ function DrawsModal({
         leftIcon={leftIcon}
         disabled={disabled}
         onClick={onClick}
+
       >
         {children}
+
       </Button>
     </>
   )
