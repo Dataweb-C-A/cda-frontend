@@ -6,6 +6,8 @@ import axios from 'axios'
 import { useUser } from '../../hooks/useUser'
 import { Calendar } from 'tabler-icons-react'
 import { DatePicker } from "@mantine/dates"
+import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
+import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
 type IDrawsModal = {
   variant?: "filled" | "outline" | "light" | "gradient" | "white" | "default" | "subtle";
@@ -122,6 +124,7 @@ function DrawsModal({
     nextStep(values)
   }
 
+
   return (
     <>
       <Modal
@@ -167,23 +170,23 @@ function DrawsModal({
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
-        <TextInput
-          size="md"
-          label="Segundo premio"
-          placeholder="Segundo premio"
-          disabled={!isSecondPrizeEnabled}
-          mt="md"
-        />
-      </Grid.Col>
-    </Grid>
-    <Switch
-      mt={15}
-      mb={15}
-      ml={295}
-      label="Segundo premio"
-      checked={isSecondPrizeEnabled}
-      onChange={handleSecondPrizeSwitchChange}
-    />
+                  <TextInput
+                    size="md"
+                    label="Segundo premio"
+                    placeholder="Segundo premio"
+                    disabled={!isSecondPrizeEnabled}
+                    mt="md"
+                  />
+                </Grid.Col>
+              </Grid>
+              <Switch
+                mt={15}
+                mb={15}
+                ml={295}
+                label="Segundo premio"
+                checked={isSecondPrizeEnabled}
+                onChange={handleSecondPrizeSwitchChange}
+              />
               <Grid>
                 <Grid.Col span={6}>
                   <DatePicker
@@ -223,9 +226,83 @@ function DrawsModal({
                 placeholder="Cantidad de tickets "
                 withAsterisk
                 mt="md"
+                mb={15}
                 hideControls
               />
+              <Text size="xl" mb={15} inline>
+              Imagenes del premio
+                    </Text>
+              <Dropzone
+                onDrop={(files) => console.log('accepted files', files)}
+                onReject={(files) => console.log('rejected files', files)}
+                maxSize={3 * 1024 ** 2}
+                accept={IMAGE_MIME_TYPE}
+              >
+                <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
+                  <Dropzone.Accept>
+                    <IconUpload
+                      size="3.2rem"
+                      stroke={1.5}
+                    />
+                  </Dropzone.Accept>
+                  <Dropzone.Reject>
+                    <IconX
+                      size="3.2rem"
+                      stroke={1.5}
+                    />
+                  </Dropzone.Reject>
+                  <Dropzone.Idle>
+                    <IconPhoto size="3.2rem" stroke={1.5} />
+                  </Dropzone.Idle>
 
+                  <div>
+                    <Text size="xl" inline>
+                      Inserte las imagenes del premio
+                    </Text>
+                    <Text size="sm" color="dimmed" inline mt={7}>
+                    presione o arrastre las imagenes a publicar a este area para publicar
+                    </Text>
+                  </div>
+                </Group>
+              </Dropzone>
+
+
+              <Text size="xl" mt={15} mb={15} inline>
+                    Imagen de publicidad
+                    </Text>
+              <Dropzone
+                onDrop={(files) => console.log('accepted files', files)}
+                onReject={(files) => console.log('rejected files', files)}
+                maxSize={3 * 1024 ** 2}
+                accept={IMAGE_MIME_TYPE}
+              >
+                <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
+                  <Dropzone.Accept>
+                    <IconUpload
+                      size="3.2rem"
+                      stroke={1.5}
+                    />
+                  </Dropzone.Accept>
+                  <Dropzone.Reject>
+                    <IconX
+                      size="3.2rem"
+                      stroke={1.5}
+                    />
+                  </Dropzone.Reject>
+                  <Dropzone.Idle>
+                    <IconPhoto size="3.2rem" stroke={1.5} />
+                  </Dropzone.Idle>
+
+                  <div>
+                    <Text size="xl" inline>
+                    Imagen de publicidad
+                    </Text>
+                    <Text size="sm" color="dimmed" inline mt={7}>
+                    presione o arrastre la imagen a publicar a este area para publicar
+                    </Text>
+                  </div>
+                </Group>
+              </Dropzone>
               <Group position="right" mt="md">
                 <Button type="submit">Submit</Button>
               </Group>
