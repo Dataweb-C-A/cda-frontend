@@ -9,6 +9,7 @@ import { DatePicker } from "@mantine/dates"
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
+
 type IDrawsModal = {
   variant?: "filled" | "outline" | "light" | "gradient" | "white" | "default" | "subtle";
   color: 'blue' | 'red' | 'green' | 'yellow' | 'teal' | 'pink' | 'gray' | 'violet' | 'indigo' | 'cyan' | 'orange';
@@ -58,6 +59,7 @@ function DrawsModal({
   const { user } = useUser();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [isSecondPrizeEnabled, setSecondPrizeEnabled] = useState(false);
+  const [isDatePickerDisabled, setIsDatePickerDisabled] = useState(false);
 
   const handleSecondPrizeSwitchChange = () => {
     setSecondPrizeEnabled(!isSecondPrizeEnabled);
@@ -142,21 +144,38 @@ function DrawsModal({
                 Elige su tipo de rifa
               </Title>
               <Group mt={15} mb={15} position="center">
-                <Checkbox checked={checkedIndex === 0}
+                <Checkbox
+                  checked={checkedIndex === 0}
                   onChange={() => {
                     setCheckedIndex(0);
                     setIsChecked(true);
-                  }} value="Fecha limite" label="Fecha limite" />
-                <Checkbox checked={checkedIndex === 1}
+                    setIsDatePickerDisabled(false); 
+                  }}
+                  value="Fecha limite"
+                  label="Fecha limite"
+                />
+
+                <Checkbox
+                  checked={checkedIndex === 1}
                   onChange={() => {
                     setCheckedIndex(1);
                     setIsChecked(true);
-                  }} value="Progressive" label="Progresivo" />
-                <Checkbox checked={checkedIndex === 2}
+                    setIsDatePickerDisabled(true); 
+                  }}
+                  value="Progressive"
+                  label="Progresivo"
+                />
+
+                <Checkbox
+                  checked={checkedIndex === 2}
                   onChange={() => {
                     setCheckedIndex(2);
                     setIsChecked(true);
-                  }} value="Infinito" label="Infinito" />
+                    setIsDatePickerDisabled(true); 
+                  }}
+                  value="Infinito"
+                  label="Infinito"
+                />
               </Group>
 
               <Grid>
@@ -208,14 +227,10 @@ function DrawsModal({
                   <DatePicker
                     label='Fecha de expiracion  '
                     placeholder='Fecha de expiracion'
-                    withAsterisk
                     size='md'
                     fullWidth
-                    rightSection={
-                      <Calendar
-                        opacity={0.8}
-                      />
-                    }
+                    disabled={isDatePickerDisabled} 
+                    rightSection={<Calendar opacity={0.8} />}
                   />
                 </Grid.Col>
               </Grid>
@@ -230,8 +245,8 @@ function DrawsModal({
                 hideControls
               />
               <Text size="xl" mb={15} inline>
-              Imagenes del premio
-                    </Text>
+                Imagenes del premio
+              </Text>
               <Dropzone
                 onDrop={(files) => console.log('accepted files', files)}
                 onReject={(files) => console.log('rejected files', files)}
@@ -260,7 +275,7 @@ function DrawsModal({
                       Inserte las imagenes del premio
                     </Text>
                     <Text size="sm" color="dimmed" inline mt={7}>
-                    presione o arrastre las imagenes a publicar a este area para publicar
+                      presione o arrastre las imagenes a publicar a este area para publicar
                     </Text>
                   </div>
                 </Group>
@@ -268,8 +283,8 @@ function DrawsModal({
 
 
               <Text size="xl" mt={15} mb={15} inline>
-                    Imagen de publicidad
-                    </Text>
+                Imagen de publicidad
+              </Text>
               <Dropzone
                 onDrop={(files) => console.log('accepted files', files)}
                 onReject={(files) => console.log('rejected files', files)}
@@ -295,10 +310,10 @@ function DrawsModal({
 
                   <div>
                     <Text size="xl" inline>
-                    Imagen de publicidad
+                      Imagen de publicidad
                     </Text>
                     <Text size="sm" color="dimmed" inline mt={7}>
-                    presione o arrastre la imagen a publicar a este area para publicar
+                      presione o arrastre la imagen a publicar a este area para publicar
                     </Text>
                   </div>
                 </Group>
