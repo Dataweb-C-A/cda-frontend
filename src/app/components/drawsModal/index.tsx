@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Stepper, Switch, NumberInput, Modal, Button, TextInput, Checkbox, Card, Text, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex } from '@mantine/core'
+import { Stepper, Switch, Select, NumberInput, Modal, Button, Slider, TextInput, Checkbox, Card, Text, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex } from '@mantine/core'
 import moment from 'moment'
 import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
 import axios from 'axios'
@@ -63,12 +63,12 @@ function DrawsModal({
 
   const form = useForm({
     initialValues: {
-      titulo: '',
+      title: '',
       termsOfService: true,
     },
 
     validate: {
-      titulo: (value) => (value.length < 2 ? 'titulo requerido' : null),
+      title: (value) => (value.length < 2 ? 'Titulo requerido' : null),
     },
   });
   const handleSecondPrizeSwitchChange = () => {
@@ -133,194 +133,251 @@ function DrawsModal({
         opened={open}
         onClose={() => onClose()}
         title="Crear rifas de moto"
-        size="lg"
+        size="xl"
       >
         <>
           <Stepper size="md" active={active}>
             <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <TextInput label="Titulo" placeholder="Titulo " size='md' withAsterisk  {...form.getInputProps('titulo')}/>
-              <Title order={4} mt={25} mb={6} ml={195}>
-                Elige su tipo de rifa
-              </Title>
-              <Group mt={15} mb={15} position="center">
-                <Checkbox
-                  checked={checkedIndex === 0}
-                  onChange={() => {
-                    setCheckedIndex(0);
-                    setIsChecked(true);
-                    setIsDatePickerDisabled(false); 
-                  }}
-                  value="Fecha limite"
-                  label="Fecha limite"
-                />
+              <form onSubmit={form.onSubmit((values) => console.log(values))}>
+                <TextInput label="Titulo" placeholder="Titulo " size='md' withAsterisk  {...form.getInputProps('title')} />
 
-                <Checkbox
-                  checked={checkedIndex === 1}
-                  onChange={() => {
-                    setCheckedIndex(1);
-                    setIsChecked(true);
-                    setIsDatePickerDisabled(true); 
-                  }}
-                  value="Progressive"
-                  label="Progresivo"
-                />
+                <Text size="xl" fz="lg" mb={15} inline mt={25} ml="39%">
+                  Elige su tipo de rifa
+                </Text>
 
-                <Checkbox
-                  checked={checkedIndex === 2}
-                  onChange={() => {
-                    setCheckedIndex(2);
-                    setIsChecked(true);
-                    setIsDatePickerDisabled(true); 
-                  }}
-                  value="Infinito"
-                  label="Infinito"
-                />
-              </Group>
-
-              <Grid>
-                <Grid.Col span={6}>
-                  <TextInput
-                    size='md'
-                    label="Primer premio"
-                    placeholder="Primer premio"
-                    withAsterisk
-                    mt="md"
+                <Group mt={15} mb={15} position="center">
+                  <Checkbox
+                    checked={checkedIndex === 0}
+                    onChange={() => {
+                      setCheckedIndex(0);
+                      setIsChecked(true);
+                      setIsDatePickerDisabled(false);
+                    }}
+                    value="Fecha limite"
+                    label="Fecha limite"
                   />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <TextInput
-                    size="md"
-                    label="Segundo premio"
-                    placeholder="Segundo premio"
-                    disabled={!isSecondPrizeEnabled}
-                    mt="md"
-                  />
-                </Grid.Col>
-              </Grid>
-              <Switch
-                mt={15}
-                mb={15}
-                ml={295}
-                label="Segundo premio"
-                checked={isSecondPrizeEnabled}
-                onChange={handleSecondPrizeSwitchChange}
-              />
-              <Grid>
-                <Grid.Col span={6}>
-                  <DatePicker
-                    label='Fecha de la rifa'
-                    placeholder='Fecha de la rifa'
-                    withAsterisk
-                    size='md'
-                    fullWidth
-                    rightSection={
-                      <Calendar
-                        opacity={0.8}
-                      />
-                    }
-                    minDate={validateDate()}
-                    maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
-                  />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <DatePicker
-                    label='Fecha de expiracion  '
-                    placeholder='Fecha de expiracion'
-                    size='md'
-                    fullWidth
-                    disabled={isDatePickerDisabled} 
-                    rightSection={<Calendar opacity={0.8} />}
-                  />
-                </Grid.Col>
-              </Grid>
-              <NumberInput
-                label="Cantidad de tickets "
 
-                defaultValue={1}
-                placeholder="Cantidad de tickets "
-                withAsterisk
-                mt="md"
-                mb={15}
-                hideControls
-              />
-              <Text size="xl" mb={15} inline>
-                Imagenes del premio
-              </Text>
-              <Dropzone
-                onDrop={(files) => console.log('accepted files', files)}
-                onReject={(files) => console.log('rejected files', files)}
-                maxSize={3 * 1024 ** 2}
-                accept={IMAGE_MIME_TYPE}
-              >
-                <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
-                  <Dropzone.Accept>
-                    <IconUpload
-                      size="3.2rem"
-                      stroke={1.5}
-                    />
-                  </Dropzone.Accept>
-                  <Dropzone.Reject>
-                    <IconX
-                      size="3.2rem"
-                      stroke={1.5}
-                    />
-                  </Dropzone.Reject>
-                  <Dropzone.Idle>
-                    <IconPhoto size="3.2rem" stroke={1.5} />
-                  </Dropzone.Idle>
+                  <Checkbox
+                    checked={checkedIndex === 1}
+                    onChange={() => {
+                      setCheckedIndex(1);
+                      setIsChecked(true);
+                      setIsDatePickerDisabled(true);
+                    }}
+                    value="Progressive"
+                    label="Progresivo"
+                  />
 
-                  <div>
-                    <Text size="xl" inline>
-                      Inserte las imagenes del premio
-                    </Text>
-                    <Text size="sm" color="dimmed" inline mt={7}>
-                      presione o arrastre las imagenes a publicar a este area para publicar
-                    </Text>
-                  </div>
+                  <Checkbox
+                    checked={checkedIndex === 2}
+                    onChange={() => {
+                      setCheckedIndex(2);
+                      setIsChecked(true);
+                      setIsDatePickerDisabled(true);
+                    }}
+                    value="Infinito"
+                    label="Infinito"
+                  />
                 </Group>
-              </Dropzone>
 
-
-              <Text size="xl" mt={15} mb={15} inline>
-                Imagen de publicidad
-              </Text>
-              <Dropzone
-                onDrop={(files) => console.log('accepted files', files)}
-                onReject={(files) => console.log('rejected files', files)}
-                maxSize={3 * 1024 ** 2}
-                accept={IMAGE_MIME_TYPE}
-              >
-                <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
-                  <Dropzone.Accept>
-                    <IconUpload
-                      size="3.2rem"
-                      stroke={1.5}
+                <Grid>
+                  <Grid.Col span={6}>
+                    <TextInput
+                      size='md'
+                      label="Primer premio"
+                      placeholder="Primer premio"
+                      withAsterisk
+                      mt="md"
                     />
-                  </Dropzone.Accept>
-                  <Dropzone.Reject>
-                    <IconX
-                      size="3.2rem"
-                      stroke={1.5}
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <TextInput
+                      size="md"
+                      label="Segundo premio"
+                      placeholder="Segundo premio"
+                      disabled={!isSecondPrizeEnabled}
+                      mt="md"
                     />
-                  </Dropzone.Reject>
-                  <Dropzone.Idle>
-                    <IconPhoto size="3.2rem" stroke={1.5} />
-                  </Dropzone.Idle>
+                  </Grid.Col>
+                </Grid>
+                <Switch
+                  mt={15}
+                  mb={15}
+                  ml="51%"
+                  label="Segundo premio"
+                  checked={isSecondPrizeEnabled}
+                  onChange={handleSecondPrizeSwitchChange}
+                />
+                <Grid>
+                  <Grid.Col span={6}>
+                    <DatePicker
+                      label='Fecha de la rifa'
+                      placeholder='Fecha de la rifa'
+                      withAsterisk
+                      size='md'
+                      fullWidth
+                      rightSection={
+                        <Calendar
+                          opacity={0.8}
+                        />
+                      }
+                      minDate={validateDate()}
+                      maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <DatePicker
+                      label='Fecha de expiracion  '
+                      placeholder='Fecha de expiracion'
+                      size='md'
+                      fullWidth
+                      disabled={isDatePickerDisabled}
+                      rightSection={<Calendar opacity={0.8} />}
+                    />
+                  </Grid.Col>
+                </Grid>
+                <NumberInput
+                  label="Cantidad de tickets "
+                  defaultValue={1}
+                  placeholder="Cantidad de tickets "
+                  withAsterisk
+                  size='md'
+                  mt="md"
+                  mb={15}
+                  hideControls
+                />
+                <Text mb={15} fz="md" inline>
+                  Limite para cerrar la rifa (solo para las rifas progresivas)
+                </Text>
+                <Slider mb={35}
+                  marks={[
+                    { value: 0, label: '0%' },
+                    { value: 50, label: '50%' },
+                    { value: 100, label: '100%' },
+                  ]}
+                />
 
-                  <div>
-                    <Text size="xl" inline>
+
+                <Grid 
+                  mb={15}>
+                  <Grid.Col span={6}>
+                    <NumberInput
+                      label="Precio unitario"
+                      placeholder="Precio unitario"
+                      withAsterisk
+                      size='md'
+                      mt="md"
+                      
+                      hideControls
+                    />
+
+                  </Grid.Col>
+
+
+                  <Grid.Col span={6}>
+                    <Select
+                    size='md'
+                    mt="md"
+                      label="Moneda"
+                      placeholder="Elige una moneda"
+                      data={[
+                        { value: 'BsF', label: 'Bolivares' },
+                        { value: '$', label: 'Dolares Estadounidenses' },
+                        { value: 'COP', label: 'Pesos Colombianos' }
+                      ]}
+                    />
+
+                  </Grid.Col>
+                </Grid>
+
+
+
+
+                <Grid>
+                  <Grid.Col span={6}>
+                    <Text size="xl" fz="md" mb={15} inline>
+                      Imagenes del premio
+                    </Text>
+                    <Dropzone
+                      onDrop={(files) => console.log('accepted files', files)}
+                      onReject={(files) => console.log('rejected files', files)}
+                      maxSize={3 * 1024 ** 2}
+                      accept={IMAGE_MIME_TYPE}
+                    >
+                      <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
+                        <Dropzone.Accept>
+                          <IconUpload
+                            size="3.2rem"
+                            stroke={1.5}
+                          />
+                        </Dropzone.Accept>
+                        <Dropzone.Reject>
+                          <IconX
+                            size="3.2rem"
+                            stroke={1.5}
+                          />
+                        </Dropzone.Reject>
+                        <Dropzone.Idle>
+                          <IconPhoto size="3.2rem" stroke={1.5} />
+                        </Dropzone.Idle>
+
+                        <div>
+                          <Text size="xl" inline>
+                            Inserte las imagenes del premio
+                          </Text>
+                          <Text size="sm" color="dimmed" inline mt={7}>
+                            presione o arrastre las imagenes a publicar a este area para publicar
+                          </Text>
+                        </div>
+                      </Group>
+                    </Dropzone>
+
+                  </Grid.Col>
+
+
+                  <Grid.Col span={6}>
+                    <Text size="xl" fz="md" mb={15} inline>
                       Imagen de publicidad
                     </Text>
-                    <Text size="sm" color="dimmed" inline mt={7}>
-                      presione o arrastre la imagen a publicar a este area para publicar
-                    </Text>
-                  </div>
+                    <Dropzone
+                      onDrop={(files) => console.log('accepted files', files)}
+                      onReject={(files) => console.log('rejected files', files)}
+                      maxSize={3 * 1024 ** 2}
+                      accept={IMAGE_MIME_TYPE}
+                    >
+                      <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
+                        <Dropzone.Accept>
+                          <IconUpload
+                            size="3.2rem"
+                            stroke={1.5}
+                          />
+                        </Dropzone.Accept>
+                        <Dropzone.Reject>
+                          <IconX
+                            size="3.2rem"
+                            stroke={1.5}
+                          />
+                        </Dropzone.Reject>
+                        <Dropzone.Idle>
+                          <IconPhoto size="3.2rem" stroke={1.5} />
+                        </Dropzone.Idle>
+
+                        <div>
+                          <Text size="xl" inline>
+                            Imagen de publicidad
+                          </Text>
+                          <Text size="sm" color="dimmed" inline mt={7}>
+                            presione o arrastre la imagen a publicar a este area para publicar
+                          </Text>
+                        </div>
+                      </Group>
+                    </Dropzone>
+
+                  </Grid.Col>
+                </Grid>
+                <Group position="right" mt="md">
+                  <Button type="submit">Submit</Button>
                 </Group>
-              </Dropzone>
-              <Group position="right" mt="md">
-                <Button type="submit">Submit</Button>
-              </Group>
               </form>
             </Stepper.Step>
 
