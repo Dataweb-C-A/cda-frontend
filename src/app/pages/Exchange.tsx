@@ -2,15 +2,27 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
-import { Card, Grid, Title, Text, Group } from '@mantine/core'
+import { Card, Grid, TextInput, Title, Text, Group, Modal, Button } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks';
 import moment from 'moment'
 import TableSort from '../components/table'
+import { useForm } from '@mantine/form';
 
-interface IExchange {}
+interface IExchange { }
 
-function Exchange({}: IExchange) {
+function Exchange({ }: IExchange) {
+  const [opened, { open, close }] = useDisclosure(false);
   const [profiles, setProfiles] = useState([])
+  const form = useForm({
+    initialValues: {
+      email: '',
+      termsOfService: false,
+    },
 
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+    },
+  });
   useEffect(() => {
     axios.get('https://rifa-max.com/api/v1/riferos', {
       headers: {
@@ -43,15 +55,32 @@ function Exchange({}: IExchange) {
           </Card>
         </Grid.Col>
       </Grid>
+
       <Card shadow="sm" radius="sm" mx={10} mt={15} h="100vh">
-        <Group position="left" mb={10} mt={10} spacing={0}>
-          <Title order={2} fw={500} mb={20}>
-            Centro de monedas
-            <Text fw={300} fz={20} mb={-7}>
-              Manejo de divisas y monedas al instante
-            </Text>
-          </Title>
-        </Group>
+
+
+        <Grid>
+          <Grid.Col span={6}>
+            <Title order={2} fw={500} mb={20}>
+              Centro de monedas
+              <Text fw={300} fz={20} mb={-7}>
+                Manejo de divisas y monedas al instante
+              </Text>
+            </Title>
+          </Grid.Col>
+
+          <Grid.Col span={6}>
+            <Button
+              style={{ float: "right" }}
+              className="btn-rifa"
+              onClick={open}
+            >
+              Open Modal
+            </Button>
+          </Grid.Col>
+        </Grid>
+
+
         <TableSort data={
           [{
             COP: Intl.NumberFormat().format(6000),
@@ -64,6 +93,20 @@ function Exchange({}: IExchange) {
           }]
         } />
       </Card>
+      <Modal opened={opened} onClose={close} withCloseButton={false}>
+        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <TextInput
+            placeholder="Variacion BsF"
+            label="Variacion BsF"
+            withAsterisk
+          />
+          <TextInput
+            placeholder="Variacion COP"
+            label="Variacion COP"
+            withAsterisk
+          />
+        </form>
+      </Modal>
     </>
   )
 }
