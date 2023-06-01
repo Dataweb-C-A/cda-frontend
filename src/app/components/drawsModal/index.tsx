@@ -61,19 +61,19 @@ function DrawsModal({
   const [isSecondPrizeEnabled, setSecondPrizeEnabled] = useState(false);
   const [isDatePickerDisabled, setIsDatePickerDisabled] = useState(false);
 
-  const handleSecondPrizeSwitchChange = () => {
-    setSecondPrizeEnabled(!isSecondPrizeEnabled);
-  };
   const form = useForm({
     initialValues: {
-      tipo: '',
-      termsOfService: false,
+      titulo: '',
+      termsOfService: true,
     },
 
     validate: {
-      tipo: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      titulo: (value) => (value.length < 2 ? 'titulo requerido' : null),
     },
   });
+  const handleSecondPrizeSwitchChange = () => {
+    setSecondPrizeEnabled(!isSecondPrizeEnabled);
+  };
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   if (active === 2) {
@@ -138,8 +138,8 @@ function DrawsModal({
         <>
           <Stepper size="md" active={active}>
             <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
-
-              <TextInput label="Titulo" placeholder="Titulo " size='md' withAsterisk />
+            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+              <TextInput label="Titulo" placeholder="Titulo " size='md' withAsterisk  {...form.getInputProps('titulo')}/>
               <Title order={4} mt={25} mb={6} ml={195}>
                 Elige su tipo de rifa
               </Title>
@@ -321,6 +321,7 @@ function DrawsModal({
               <Group position="right" mt="md">
                 <Button type="submit">Submit</Button>
               </Group>
+              </form>
             </Stepper.Step>
 
             <Stepper.Step label="Verificar los datos" description="Verifica que los datos de la rifa sean correctos" >
