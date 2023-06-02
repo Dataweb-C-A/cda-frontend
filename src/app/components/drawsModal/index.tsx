@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Stepper, Switch, Select, NumberInput, Modal, Button, Slider, TextInput, Checkbox, Card, Text, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex } from '@mantine/core'
+import { Stepper, Switch, Select, NumberInput, Modal, Button, Slider, TextInput, Checkbox, Card, Text, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Divider } from '@mantine/core'
 import moment from 'moment'
 import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
 import axios from 'axios'
@@ -25,20 +25,20 @@ type IDrawsModal = {
 }
 
 type FormProps = {
-  title: string;
-  draw_type: 'End-To-Date' | 'To-Infinity' | 'Progressive';
-  limit: number;
-  price_unit: number;
+  title: null | string;
+  draw_type: string | 'End-To-Date' | 'To-Infinity' | 'Progressive';
+  limit: null | number;
+  price_unit: null | number;
   loteria: string;
   tickets_count: number;
   first_prize: string;
-  numbers: number | string;
-  second_prize: string | null;
-  init_date: Date | string;
+  numbers: null | number | string;
+  second_prize: null | string | null;
+  init_date: null | Date | string;
   expired_date: Date | string | null;
-  money: string;
-  ads: string;
-  award: string;
+  money: null | string;
+  ads: null | string;
+  award: null | string[];
   owner_id: number;
 }
 
@@ -77,7 +77,7 @@ function DrawsModal({
       limit: null,
       price_unit: null,
       loteria: 'ZULIA 7A',
-      tickets_count: null,
+      tickets_count: 0,
       first_prize: '',
       numbers: null,
       second_prize: null,
@@ -85,7 +85,7 @@ function DrawsModal({
       expired_date: null,
       money: '$',
       ads: null,
-      award: null,
+      award: [],
       owner_id: 1,
     },
     validate: {
@@ -95,8 +95,12 @@ function DrawsModal({
         if (value.length > 50) return 'El titulo debe tener menos de 50 caracteres'
       },
       limit: (value: number) => {
-        if (value < 1) return 'El limite debe ser mayor a 0'
-        if (value > 1000) return 'El limite debe ser menor a 1000'
+        if (form.values.draw_type === 'Progressive') {
+          form.setFieldValue('limit', null)
+        } else {
+          if (value < 1) return 'El limite debe ser mayor a 0'
+          if (value > 100) return 'El limite debe ser menor a 100'
+        }
       },
       first_prize: (value: string) => {
         if (!value) return 'Premio requerido'
@@ -115,7 +119,24 @@ function DrawsModal({
         if (!value) return 'Fecha de inicio requerida'
         if (value < actualDate) return 'La fecha de inicio debe ser mayor a la fecha actual'
       },
-    }
+      expired_date: (value: Date) => {
+        if (checkedIndex === 2) {
+          form.setFieldValue('expired_date', null)
+        } else {
+          if (!value) return 'Fecha de finalización requerida'
+          if (value < actualDate) return 'La fecha de finalización debe ser mayor a la fecha actual'
+        }
+      },
+      draw_type: (value: string) => {
+        if (!value) return 'Tipo de rifa requerido'
+      },
+      tickets_count: (value: number) => {
+        if (form.values.draw_type === 'To-Infinity') {} else {
+          if (!value) return 'Cantidad de tickets requerida'
+          if (value < 100 || value > 1000) return 'La cantidad de tickets debe ser mayor o igual a 100 y menor o igual a 1000'
+        }
+      }
+    },
   });
 
   const closeModal = () => {
@@ -153,6 +174,7 @@ function DrawsModal({
 
   const onSubmit = (values?: FormProps) => {
     nextStep(values)
+    console.log(values)
   }
 
   const handleSecondPrizeSwitchChange = () => {
@@ -186,7 +208,7 @@ function DrawsModal({
       >
         <Stepper size="md" active={active}>
           <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
-            <form onSubmit={form.onSubmit(() => onSubmit())}>
+            <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
               <TextInput
                 label="Titulo"
                 placeholder="Titulo"
@@ -275,9 +297,6 @@ function DrawsModal({
                         opacity={0.8}
                       />
                     }
-                    onFocus={() => {
-                      form.getInputProps('expired_date').value = null
-                    }}
                     minDate={validateDate()}
                     maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
                     error={form.errors.init_date}
@@ -305,7 +324,7 @@ function DrawsModal({
                   />
                 </Grid.Col>
               </Grid>
-              <Text size="xl" fz="lg" mb={15} inline mt={25} ml="39%">
+              <Text size="xl" fz="lg" mb={15} inline mt={25} ta="center">
                 Elija el conteo de tickets
               </Text>
               <Group mb={30} position="center">
@@ -334,6 +353,19 @@ function DrawsModal({
                   {...form.getInputProps('tickets_count').value === 1000 && { checked: true }}
                 />
               </Group>
+              <Divider 
+                mb={15}
+                mt={-20}
+                fz="xs"
+                ta="center"
+                c='red'
+                labelPosition='center'
+                label={
+                  <Text fz="sm" ta="center" c='red' inline>
+                    {form.errors.tickets_count}
+                  </Text>
+                }
+              />  
               <Text mb={15} fz="md" inline>
                 Limite para cerrar la rifa (solo para las rifas progresivas)
               </Text>
@@ -460,7 +492,6 @@ function DrawsModal({
             </form>
           </Stepper.Step>
           <Stepper.Step label="Verificar los datos" description="Verifica que los datos de la rifa sean correctos" >
-            <SecondStep />
           </Stepper.Step>
         </Stepper>
       </Modal>
