@@ -245,7 +245,6 @@ export default function FormModal({
                   </Grid.Col>
                   <Grid.Col span={12}>
                     <Divider label='▼&nbsp;&nbsp;  Opciones de la Rifa  &nbsp;&nbsp;▼' labelPosition='center' mt={-20}/>
-                    
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                       <Switch
                         checked={money}
