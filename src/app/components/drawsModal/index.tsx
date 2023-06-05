@@ -96,10 +96,10 @@ function DrawsModal({
       },
       limit: (value: number) => {
         if (form.values.draw_type === 'Progressive') {
-          form.setFieldValue('limit', null)
-        } else {
           if (value < 1) return 'El limite debe ser mayor a 0'
           if (value > 100) return 'El limite debe ser menor a 100'
+        } else {
+          form.setFieldValue('limit', null)
         }
       },
       first_prize: (value: string) => {
@@ -135,6 +135,20 @@ function DrawsModal({
           if (!value) return 'Cantidad de tickets requerida'
           if (value < 100 || value > 1000) return 'La cantidad de tickets debe ser mayor o igual a 100 y menor o igual a 1000'
         }
+      },
+      price_unit: (value: number) => {
+        if (!value) return 'Precio unitario requerido'
+        if (value <= 0) return 'El precio unitario debe ser mayor a 0'
+      },
+      numbers: (value: number) => {
+        if (!value) return 'Cantidad de números requerida'
+        if (value < 100 || value >= 1000) return 'La cantidad de números debe ser mayor o igual a 100 y menor o igual a 1000'
+      },
+      money: (value: string) => {
+        if (!value) return 'Moneda requerida'
+      },
+      award: (value: string[]) => {
+        if (!value) return 'Premio requerido'
       }
     },
   });
@@ -209,14 +223,29 @@ function DrawsModal({
         <Stepper size="md" active={active}>
           <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
             <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
-              <TextInput
-                label="Titulo"
-                placeholder="Titulo"
-                size='md'
-                withAsterisk
-                error={form.errors.title}
-                {...form.getInputProps('title')}
-              />
+              <Grid>
+                <Grid.Col span={6}>
+                  <TextInput
+                    label="Titulo"
+                    placeholder="Titulo"
+                    size='md'
+                    withAsterisk
+                    error={form.errors.title}
+                    {...form.getInputProps('title')}
+                  />
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <NumberInput
+                    label="Numeros de la rifa"
+                    placeholder="Numeros de la rifa"
+                    size='md'
+                    withAsterisk
+                    hideControls
+                    error={form.errors.numbers}
+                    {...form.getInputProps('numbers')}
+                  />
+                </Grid.Col>
+              </Grid>
               <Text size="xl" fz="lg" mb={15} inline mt={25} ml="39%">
                 Elija el tipo de rifa
               </Text>
@@ -317,6 +346,9 @@ function DrawsModal({
                     disabled={
                       form.getInputProps('draw_type').value === 'Progressive'
                     }
+                    withAsterisk={
+                      form.getInputProps('draw_type').value === 'To-Infinity' || form.getInputProps('draw_type').value === 'End-To-Date'
+                    }
                     rightSection={<Calendar opacity={0.8} />}
                     {...form.getInputProps('expired_date')}
                     error={form.errors.expired_date}
@@ -324,9 +356,18 @@ function DrawsModal({
                   />
                 </Grid.Col>
               </Grid>
-              <Text size="xl" fz="lg" mb={15} inline mt={25} ta="center">
-                Elija el conteo de tickets
-              </Text>
+              <Group position='center'>
+                <Text size="xl" fz="lg" mb={15} inline mt={25} ta="center">
+                  Elija el conteo de tickets
+                </Text>
+                {
+                  form.getInputProps('draw_type').value === 'Progressive' || form.getInputProps('draw_type').value === 'End-To-Date' ? (
+                    <Text size="md" fz="md" c="red" mb={18} inline mt={25} ml={-12}>
+                      *
+                    </Text>
+                  ) : null
+                }
+              </Group>
               <Group mb={30} position="center">
                 <Checkbox
                   label="100 tickets terminales"
@@ -353,22 +394,33 @@ function DrawsModal({
                   {...form.getInputProps('tickets_count').value === 1000 && { checked: true }}
                 />
               </Group>
-              <Divider 
-                mb={15}
-                mt={-20}
-                fz="xs"
-                ta="center"
-                c='red'
-                labelPosition='center'
-                label={
-                  <Text fz="sm" ta="center" c='red' inline>
-                    {form.errors.tickets_count}
-                  </Text>
+              {
+                form.errors.tickets_count && (
+                  <Divider 
+                    mb={15}
+                    mt={-20}
+                    fz="xs"
+                    ta="center"
+                    c='red'
+                    labelPosition='center'
+                    label={
+                      <Text fz="sm" ta="center" c='red' inline>
+                        {form.errors.tickets_count}
+                      </Text>
+                    }
+                  />  
+                )
+              }
+              <Group>
+                <Text mb={15} fz="md" inline>
+                  Limite para cerrar la rifa (solo para las rifas progresivas)
+                </Text>
+                {
+                  form.getInputProps('draw_type').value === 'Progressive' && (
+                    <Text inline c='red' mt={-17} ml={-12}>*</Text>
+                  )
                 }
-              />  
-              <Text mb={15} fz="md" inline>
-                Limite para cerrar la rifa (solo para las rifas progresivas)
-              </Text>
+              </Group>
               <Slider mb={35}
                 disabled={form.getInputProps('draw_type').value !== 'Progressive'}
                 marks={[
@@ -376,9 +428,11 @@ function DrawsModal({
                   { value: 50, label: '50%' },
                   { value: 100, label: '100%' },
                 ]}
-                error={form.errors.limit}
                 {...form.getInputProps('limit')}
               />
+              <Text fz="sm" ta="center" c='red' inline>
+                {form.errors.limit}
+              </Text>
               <Grid
                 mb={15}>
                 <Grid.Col span={6}>
@@ -388,7 +442,9 @@ function DrawsModal({
                     withAsterisk
                     size='md'
                     mt="md"
+                    error={form.errors.price_unit}
                     hideControls
+                    {...form.getInputProps('price_unit')}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
@@ -397,11 +453,14 @@ function DrawsModal({
                     mt="md"
                     label="Moneda"
                     placeholder="Elige una moneda"
+                    withAsterisk
+                    error={form.errors.money}
                     data={[
                       { value: 'BsF', label: 'Bolivares' },
                       { value: '$', label: 'Dolares Estadounidenses' },
                       { value: 'COP', label: 'Pesos Colombianos' }
                     ]}
+                    {...form.getInputProps('money')}
                   />
                 </Grid.Col>
               </Grid>
@@ -503,7 +562,6 @@ function DrawsModal({
         leftIcon={leftIcon}
         disabled={disabled}
         onClick={onClick}
-
       >
         {children}
       </Button>
