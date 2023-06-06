@@ -75,7 +75,7 @@ function Exchange({ }: IExchange) {
               className="btn-rifa"
               onClick={open}
             >
-              Open Modal
+              Ver montos  
             </Button>
           </Grid.Col>
         </Grid>

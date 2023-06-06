@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Stepper, Switch, Select, NumberInput, Modal, Button, Slider, TextInput, Checkbox, Text, Grid, useMantineTheme, Group, Divider } from '@mantine/core'
+import { Stepper, Switch, Select, CloseButton, NumberInput, Image, SimpleGrid, Modal, Button, Slider, TextInput, Checkbox, Text, Grid, useMantineTheme, Group, Divider } from '@mantine/core'
 import moment from 'moment'
 import { useForm } from '@mantine/form';
 import axios from 'axios'
@@ -7,7 +7,7 @@ import { useUser } from '../../hooks/useUser'
 import { Calendar } from 'tabler-icons-react'
 import { DatePicker } from "@mantine/dates"
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 
 
 type IDrawsModal = {
@@ -72,92 +72,92 @@ function DrawsModal({
     return () => clearInterval(interval)
   }, [actualDate])
 
-  const form = useForm({
-    initialValues: {
-      title: '',
-      draw_type: 'End-To-Date',
-      limit: null,
-      price_unit: null,
-      loteria: 'ZULIA 7A',
-      tickets_count: 0,
-      first_prize: '',
-      numbers: null,
-      second_prize: null,
-      init_date: null,
-      expired_date: null,
-      money: '$',
-      ads: null,
-      award: [],
-      owner_id: 1,
-      user_id: 1
+const form = useForm({
+  initialValues: {
+    title: '',
+    draw_type: 'End-To-Date',
+    limit: null,
+    price_unit: null,
+    loteria: 'ZULIA 7A',
+    tickets_count: 0,
+    first_prize: '',
+    numbers: null,
+    second_prize: null,
+    init_date: null,
+    expired_date: null,
+    money: '$',
+    ads: null,
+    award: [],
+    owner_id: 1,
+    user_id: 1
+  },
+  validate: {
+    title: (value: string) => {
+      if (!value) return 'Titulo de rifa requerido';
+      if (value.length < 5) return 'El titulo debe tener al menos 5 caracteres';
+      if (value.length > 50) return 'El titulo debe tener menos de 50 caracteres';
     },
-    validate: {
-      title: (value: string) => {
-        if (!value) return 'Titulo de rifa requerido'
-        if (value.length < 5) return 'El titulo debe tener al menos 5 caracteres'
-        if (value.length > 50) return 'El titulo debe tener menos de 50 caracteres'
-      },
-      limit: (value: number) => {
-        if (form.values.draw_type === 'Progressive') {
-          if (value < 1) return 'El limite debe ser mayor a 0'
-          if (value > 100) return 'El limite debe ser menor a 100'
-        } else {
-          form.setFieldValue('limit', null)
-        }
-      },
-      first_prize: (value: string) => {
-        if (!value) return 'Premio requerido'
-        if (value.length < 5) return 'El premio debe tener al menos 5 caracteres'
-        if (value.length > 50) return 'El premio debe tener menos de 50 caracteres'
-      },
-      second_prize: (value: string) => {
-        if (!value) {
-          if (isSecondPrizeEnabled) return 'Premio requerido'
-        } else {
-          if (value.length < 5) return 'El premio debe tener al menos 5 caracteres'
-          if (value.length > 50) return 'El premio debe tener menos de 50 caracteres'
-        }
-      },
-      init_date: (value: Date) => {
-        if (!value) return 'Fecha de inicio requerida'
-        if (value < actualDate) return 'La fecha de inicio debe ser mayor a la fecha actual'
-      },
-      expired_date: (value: Date) => {
-        if (checkedIndex === 2) {
-          form.setFieldValue('expired_date', null)
-        } else {
-          if (!value) return 'Fecha de finalización requerida'
-          if (value < actualDate) return 'La fecha de finalización debe ser mayor a la fecha actual'
-        }
-      },
-      draw_type: (value: string) => {
-        if (!value) return 'Tipo de rifa requerido'
-      },
-      tickets_count: (value: number) => {
-        if (form.values.draw_type === 'To-Infinity') {} else {
-          if (!value) return 'Cantidad de tickets requerida'
-          if (value < 100 || value > 1000) return 'La cantidad de tickets debe ser mayor o igual a 100 y menor o igual a 1000'
-        }
-      },
-      price_unit: (value: number) => {
-        if (!value) return 'Precio unitario requerido'
-        if (value <= 0) return 'El precio unitario debe ser mayor a 0'
-      },
-      numbers: (value: number) => {
-        if (!value) return 'Cantidad de números requerida'
-        if (value < 100 || value >= 1000) return 'La cantidad de números debe ser mayor o igual a 100 y menor o igual a 1000'
-      },
-      money: (value: string) => {
-        if (!value) return 'Moneda requerida'
-      },
-      // award: (value: string[]) => {
-      //   if (value.length === 0) return 'Premios requerido'
-      // },
-      // ads: (value: string) => {
-      //   if (!value) return 'Anuncio requerido'
-      // }
+    limit: (value: number) => {
+      if (form.values.draw_type === 'Progressive') {
+        if (value < 1) return 'El limite debe ser mayor a 0';
+        if (value > 100) return 'El limite debe ser menor a 100';
+      } else {
+        form.setFieldValue('limit', null);
+      }
     },
-  });
+    first_prize: (value: string) => {
+      if (!value) return 'Premio requerido';
+      if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
+      if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
+    },
+    second_prize: (value: string) => {
+      if (!value) {
+        if (isSecondPrizeEnabled) return 'Premio requerido';
+      } else {
+        if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
+        if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
+      }
+    },
+    init_date: (value: Date) => {
+      if (!value) return 'Fecha de inicio requerida';
+      if (value < actualDate) return 'La fecha de inicio debe ser mayor a la fecha actual';
+    },
+    expired_date: (value: Date) => {
+      if (checkedIndex === 2) {
+        form.setFieldValue('expired_date', null);
+      } else {
+        if (!value) return 'Fecha de finalización requerida';
+        if (value < actualDate) return 'La fecha de finalización debe ser mayor a la fecha actual';
+      }
+    },
+    draw_type: (value: string) => {
+      if (!value) return 'Tipo de rifa requerido';
+    },
+    tickets_count: (value: number) => {
+      if (form.values.draw_type === 'To-Infinity') { } else {
+        if (!value) return 'Cantidad de tickets requerida';
+        if (value < 100 || value > 1000) return 'La cantidad de tickets debe ser mayor o igual a 100 y menor o igual a 1000';
+      }
+    },
+    price_unit: (value: number) => {
+      if (!value) return 'Precio unitario requerido';
+      if (value <= 0) return 'El precio unitario debe ser mayor a 0';
+    },
+    numbers: (value: number) => {
+      if (!value) return 'Cantidad de números requerida';
+      if (value < 100 || value >= 1000) return 'La cantidad de números debe ser mayor o igual a 100 y menor o igual a 1000';
+    },
+    money: (value: string) => {
+      if (!value) return 'Moneda requerida';
+    },
+    award: (value: string[]) => {
+      if (value.length === 0) return 'Premios requeridos';
+    },
+    ads: (value: string) => {
+      if (!value) return 'Anuncio requerido';
+    }
+  },
+});
 
   const closeModal = () => {
     setActive(0)
@@ -169,7 +169,7 @@ function DrawsModal({
 
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
-    
+
     axios.post('http://localhost:3000/draws', values, {
       headers: {
         "Content-Type": "application/json",
@@ -216,7 +216,45 @@ function DrawsModal({
       </div>
     )
   }
+  const [files, setFiles] = useState<FileWithPath[]>([]);
 
+  const [files2, setFiles2] = useState<FileWithPath[]>([]);
+
+
+  const removeFile = (index: number, dropzone: number) => {
+    if (dropzone === 1) {
+      const updatedFiles = [...files];
+      updatedFiles.splice(index, 1);
+      setFiles(updatedFiles);
+    } else if (dropzone === 2) {
+      const updatedFiles2 = [...files2];
+      updatedFiles2.splice(index, 1);
+      setFiles2(updatedFiles2);
+    }
+  };
+
+  const handleDrop2 = (acceptedFiles: FileWithPath[]) => {
+    if (acceptedFiles.length > 0) {
+      setFiles2([acceptedFiles[0]]);
+    }
+  };
+
+
+  const previews = (fileList: FileWithPath[], dropzone: number) => {
+    return fileList.map((file, index) => {
+      const imageUrl = URL.createObjectURL(file);
+      return (
+        <div key={index} style={{ position: 'relative' }}>
+
+          <Image
+            src={imageUrl}
+            imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
+          />
+          <CloseButton aria-label="Close modal" onClick={() => removeFile(index, dropzone)} />
+        </div>
+      );
+    });
+  };
   return (
     <>
       <Modal
@@ -401,7 +439,7 @@ function DrawsModal({
               </Group>
               {
                 form.errors.tickets_count && (
-                  <Divider 
+                  <Divider
                     mb={15}
                     mt={-20}
                     fz="xs"
@@ -413,7 +451,7 @@ function DrawsModal({
                         {form.errors.tickets_count}
                       </Text>
                     }
-                  />  
+                  />
                 )
               }
               <Group>
@@ -475,39 +513,27 @@ function DrawsModal({
                     Imagenes del premio
                   </Text>
                   <Dropzone
-                    onDrop={(files) => console.log('accepted files', files)}
-                    onReject={(files) => console.log('rejected files', files)}
-                    maxSize={3 * 1024 ** 2}
-                    c={form.errors.award ? theme.colors.red[7] : theme.colors.dark[0]}
                     accept={IMAGE_MIME_TYPE}
-                    {...form.getInputProps('award')}
+                    onDrop={(files) => setFiles(files)}
+                    color={form.errors.ads ? 'red' : ''}
                   >
-                    <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
-                      <Dropzone.Accept>
-                        <IconUpload
-                          size="3.2rem"
-                          stroke={1.5}
-                        />
-                      </Dropzone.Accept>
-                      <Dropzone.Reject>
-                        <IconX
-                          size="3.2rem"
-                          stroke={1.5}
-                        />
-                      </Dropzone.Reject>
-                      <Dropzone.Idle>
-                        <IconPhoto size="3.2rem" stroke={1.5} />
-                      </Dropzone.Idle>
-                      <div>
-                        <Text size="xl" inline>
-                          Inserte las imagenes del premio
-                        </Text>
-                        <Text size="sm" color="dimmed" inline mt={7}>
-                          presione o arrastre las imagenes a publicar a este area para publicar
-                        </Text>
-                      </div>
-                    </Group>
+                    <IconPhoto size="3.2rem" stroke={1.5} />
+                    <Text size="xl" inline>
+                      Imagen de premio
+                    </Text>
+                    <Text size="sm" color="dimmed" inline mt={7}>
+                      presione o arrastre la imagen a publicar a este area
+                    </Text>
                   </Dropzone>
+
+                  <SimpleGrid
+                    cols={4}
+                    breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
+                    mt={previews.length > 0 ? 'xl' : 0}
+                  >
+                    {previews(files, 1)}
+                  </SimpleGrid>
+
                   <Text fz="sm" ta="center" c='red' mt={10} inline>
                     {form.errors.award}
                   </Text>
@@ -519,42 +545,24 @@ function DrawsModal({
                     </Text>
                     <Text inline c='red' mt={-17} ml={-12}>*</Text>
                   </Group>
-                  <Dropzone
-                    onDrop={(files) => console.log('accepted files', files)}
-                    onReject={(files) => console.log('rejected files', files)}
-                    c={form.errors.ads ? theme.colors.red[7] : theme.colors.dark[0]}
-                    maxSize={3 * 1024 ** 2}
-                    accept={IMAGE_MIME_TYPE}
-                    {...form.getInputProps('ads')}
-                  >
-                    <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
-                      <Dropzone.Accept>
-                        <IconUpload
-                          size="3.2rem"
-                          stroke={1.5}
-                        />
-                      </Dropzone.Accept>
-                      <Dropzone.Reject>
-                        <IconX
-                          size="3.2rem"
-                          stroke={1.5}
-                        />
-                      </Dropzone.Reject>
-                      <Dropzone.Idle>
-                        <IconPhoto size="3.2rem" stroke={1.5} />
-                      </Dropzone.Idle>
-                      <div>
-                        <Text size="xl" inline>
-                          Imagen de publicidad
-                        </Text>
-                        <Text size="sm" color="dimmed" inline mt={7}>
-                          presione o arrastre la imagen a publicar a este area para publicar
-                        </Text>
-                      </div>
-                    </Group>
+                  <Dropzone accept={IMAGE_MIME_TYPE} onDrop={handleDrop2} maxFiles={1} color={form.errors.award ? 'red' : ''}>
+                    <IconPhoto size="3.2rem" stroke={1.5} />
+                    <Text size="xl" inline>
+                      Imagen de premio
+                    </Text>
+                    <Text size="sm" color="dimmed" inline mt={7}>
+                      presione o arrastre la imagen a publicar a este area
+                    </Text>
                   </Dropzone>
-                  <Text fz="sm" ta="center" mt={10} c='red' inline>
-                    {form.errors.ads}
+                  <SimpleGrid
+                    cols={4}
+                    breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
+                    mt={files2.length > 0 ? 'xl' : 0}
+                  >
+                    {previews(files2, 2)}
+                  </SimpleGrid>
+                  <Text fz="sm" ta="center" c='red' mt={10} inline>
+                    {form.errors.award}
                   </Text>
                 </Grid.Col>
               </Grid>
