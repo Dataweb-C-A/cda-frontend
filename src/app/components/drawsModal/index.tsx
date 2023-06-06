@@ -226,16 +226,19 @@ const form = useForm({
       const updatedFiles = [...files];
       updatedFiles.splice(index, 1);
       setFiles(updatedFiles);
+      form.setFieldValue('award', [])
     } else if (dropzone === 2) {
       const updatedFiles2 = [...files2];
       updatedFiles2.splice(index, 1);
       setFiles2(updatedFiles2);
+      form.setFieldValue('ads', null)
     }
   };
 
   const handleDrop2 = (acceptedFiles: FileWithPath[]) => {
     if (acceptedFiles.length > 0) {
       setFiles2([acceptedFiles[0]]);
+      acceptedFiles ?? form.setFieldValue('ads', acceptedFiles[0])
     }
   };
 
@@ -514,18 +517,24 @@ const form = useForm({
                   </Text>
                   <Dropzone
                     accept={IMAGE_MIME_TYPE}
-                    onDrop={(files) => setFiles(files)}
-                    color={form.errors.ads ? 'red' : ''}
+                    onDrop={(files) => { 
+                      form.getInputProps('award').onChange(files)
+                      setFiles(files)
+                    }}
+                    color={form.errors.award ? 'red' : ''}
+                    {...form.getInputProps('award')}
                   >
                     <IconPhoto size="3.2rem" stroke={1.5} />
                     <Text size="xl" inline>
                       Imagen de premio
                     </Text>
                     <Text size="sm" color="dimmed" inline mt={7}>
-                      presione o arrastre la imagen a publicar a este area
+                      presione o arrastre las imagenes en este area
                     </Text>
                   </Dropzone>
-
+                  <Text fz="sm" ta="center" c='red' mt={10} inline>
+                    {form.errors.award}
+                  </Text>
                   <SimpleGrid
                     cols={4}
                     breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
@@ -534,9 +543,6 @@ const form = useForm({
                     {previews(files, 1)}
                   </SimpleGrid>
 
-                  <Text fz="sm" ta="center" c='red' mt={10} inline>
-                    {form.errors.award}
-                  </Text>
                 </Grid.Col>
                 <Grid.Col span={6}>
                   <Group>
@@ -545,15 +551,27 @@ const form = useForm({
                     </Text>
                     <Text inline c='red' mt={-17} ml={-12}>*</Text>
                   </Group>
-                  <Dropzone accept={IMAGE_MIME_TYPE} onDrop={handleDrop2} maxFiles={1} color={form.errors.award ? 'red' : ''}>
+                  <Dropzone 
+                    accept={IMAGE_MIME_TYPE} 
+                    onDrop={(files) => {
+                      handleDrop2(files)
+                      form.getInputProps('ads').onChange(files)
+                    }}
+                    maxFiles={1} 
+                    color={form.errors.ads ? 'red' : ''}
+                    {...form.getInputProps('ads')}
+                  >
                     <IconPhoto size="3.2rem" stroke={1.5} />
                     <Text size="xl" inline>
-                      Imagen de premio
+                      Imagen de publicidad
                     </Text>
                     <Text size="sm" color="dimmed" inline mt={7}>
-                      presione o arrastre la imagen a publicar a este area
+                      presione la imagen a publicar en este area
                     </Text>
                   </Dropzone>
+                  <Text fz="sm" ta="center" c='red' mt={10} inline>
+                    {form.errors.ads}
+                  </Text>
                   <SimpleGrid
                     cols={4}
                     breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
@@ -561,9 +579,6 @@ const form = useForm({
                   >
                     {previews(files2, 2)}
                   </SimpleGrid>
-                  <Text fz="sm" ta="center" c='red' mt={10} inline>
-                    {form.errors.award}
-                  </Text>
                 </Grid.Col>
               </Grid>
               <Group position="center" mt="xl">
