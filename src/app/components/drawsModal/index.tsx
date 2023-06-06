@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Stepper, Switch, Select, NumberInput, Modal, Button, Slider, TextInput, Checkbox, Card, Text, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Divider } from '@mantine/core'
+import { Stepper, Switch, Select, NumberInput, Modal, Button, Slider, TextInput, Checkbox, Text, Grid, useMantineTheme, Group, Divider } from '@mantine/core'
 import moment from 'moment'
-import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import axios from 'axios'
 import { useUser } from '../../hooks/useUser'
 import { Calendar } from 'tabler-icons-react'
 import { DatePicker } from "@mantine/dates"
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
-import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { MdCheckBoxOutlineBlank } from 'react-icons/md';
+import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
 
 type IDrawsModal = {
@@ -40,6 +39,7 @@ type FormProps = {
   ads: null | string;
   award: null | string[];
   owner_id: number;
+  user_id: number;
 }
 
 function DrawsModal({
@@ -62,6 +62,8 @@ function DrawsModal({
   const [checkedIndex, setCheckedIndex] = useState(0);
   const { user } = useUser();
   const [isSecondPrizeEnabled, setSecondPrizeEnabled] = useState(false);
+
+  const theme = useMantineTheme();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -87,6 +89,7 @@ function DrawsModal({
       ads: null,
       award: [],
       owner_id: 1,
+      user_id: 1
     },
     validate: {
       title: (value: string) => {
@@ -147,9 +150,12 @@ function DrawsModal({
       money: (value: string) => {
         if (!value) return 'Moneda requerida'
       },
-      award: (value: string[]) => {
-        if (!value) return 'Premio requerido'
-      }
+      // award: (value: string[]) => {
+      //   if (value.length === 0) return 'Premios requerido'
+      // },
+      // ads: (value: string) => {
+      //   if (!value) return 'Anuncio requerido'
+      // }
     },
   });
 
@@ -163,19 +169,18 @@ function DrawsModal({
 
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
-    active === 2 && (
-      axios.post('http://localhost:3000/draws', values, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.token}`
-        }
-      }).then((res) => {
-        console.log(res)
-        closeModal()
-      }).catch((err) => {
-        console.log(err)
-      })
-    )
+    
+    axios.post('http://localhost:3000/draws', values, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
+      }
+    }).then((res) => {
+      console.log(res)
+      closeModal()
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   const validateDate = () => {
@@ -473,7 +478,9 @@ function DrawsModal({
                     onDrop={(files) => console.log('accepted files', files)}
                     onReject={(files) => console.log('rejected files', files)}
                     maxSize={3 * 1024 ** 2}
+                    c={form.errors.award ? theme.colors.red[7] : theme.colors.dark[0]}
                     accept={IMAGE_MIME_TYPE}
+                    {...form.getInputProps('award')}
                   >
                     <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
                       <Dropzone.Accept>
@@ -501,16 +508,24 @@ function DrawsModal({
                       </div>
                     </Group>
                   </Dropzone>
+                  <Text fz="sm" ta="center" c='red' mt={10} inline>
+                    {form.errors.award}
+                  </Text>
                 </Grid.Col>
                 <Grid.Col span={6}>
-                  <Text size="xl" fz="md" mb={15} inline>
-                    Imagen de publicidad
-                  </Text>
+                  <Group>
+                    <Text size="xl" fz="md" mb={15} inline>
+                      Imagen de publicidad
+                    </Text>
+                    <Text inline c='red' mt={-17} ml={-12}>*</Text>
+                  </Group>
                   <Dropzone
                     onDrop={(files) => console.log('accepted files', files)}
                     onReject={(files) => console.log('rejected files', files)}
+                    c={form.errors.ads ? theme.colors.red[7] : theme.colors.dark[0]}
                     maxSize={3 * 1024 ** 2}
                     accept={IMAGE_MIME_TYPE}
+                    {...form.getInputProps('ads')}
                   >
                     <Group position="center" spacing="xl" style={{ pointerEvents: 'none' }}>
                       <Dropzone.Accept>
@@ -538,6 +553,9 @@ function DrawsModal({
                       </div>
                     </Group>
                   </Dropzone>
+                  <Text fz="sm" ta="center" mt={10} c='red' inline>
+                    {form.errors.ads}
+                  </Text>
                 </Grid.Col>
               </Grid>
               <Group position="center" mt="xl">
