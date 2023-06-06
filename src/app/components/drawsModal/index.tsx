@@ -23,6 +23,15 @@ type IDrawsModal = {
   open: boolean;
 }
 
+type IFile = {
+  poth: string | string[];
+  lastModified: number | number[];
+  lastModifiedDate: Date | Date[];
+  size: number | number[];
+  type: string | string[];
+  webkitRelativePath: string | string[]
+}
+
 type FormProps = {
   title: null | string;
   draw_type: string | 'End-To-Date' | 'To-Infinity' | 'Progressive';
@@ -36,8 +45,8 @@ type FormProps = {
   init_date: null | Date | string;
   expired_date: Date | string | null;
   money: null | string;
-  ads: null | string;
-  award: null | string[];
+  ads: IFile | null;
+  award: IFile[] | null;
   owner_id: number;
   user_id: number;
 }
@@ -555,7 +564,8 @@ const form = useForm({
                     accept={IMAGE_MIME_TYPE} 
                     onDrop={(files) => {
                       handleDrop2(files)
-                      form.getInputProps('ads').onChange(files)
+                      form.getInputProps('ads').onChange(files[0])
+                      console.log(files)
                     }}
                     maxFiles={1} 
                     color={form.errors.ads ? 'red' : ''}
