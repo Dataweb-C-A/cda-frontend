@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card,Pagination, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
+import { Card, Pagination, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
@@ -132,12 +132,12 @@ function TicketModal({ tickets }: modalProps) {
   const [checkedIndex, setCheckedIndex] = useState(-1);
   const [isChecked, setIsChecked] = useState(false);
 
-  const [apiData, setApiData] = useState([]);
+  const [apiData, setApiData] = useState<ticketProps[] | []>([]);
   useEffect(() => {
     fetch('http://localhost:3000/places?id=1&page=1')
       .then((response) => response.json())
       .then((data) => {
-        setApiData(data);
+        setApiData(data.places);
       })
       .catch((error) => {
         console.error('Error fetching API data:', error);
@@ -149,39 +149,41 @@ function TicketModal({ tickets }: modalProps) {
       height: "91vh",
       top: 100,
     }}>
-      <Pagination total={10} color="indigo" />
+      {/* <Pagination total={10} color="indigo" /> */}
       <br />
 
       <div className={classes.container}>
         <div className={classes.ticketsFlex}>
           <Group key={counter}>
             {/** card  ticket*/}
-            {tickets.map((item, index) => {
-              const row = Math.floor(index / 10);
-              const column = index % 10;
-
-              const cardStyle = {
-                width: `${70 / 10}%`,
-                margin: '4px'
-              };
-
-              return (
-                <Card
-                  px={8}
-                  className={cx(classes.ticket, {
-                    [classes.selected]: active.includes(item.place_number),
-                    [classes.sold]: item.isSold,
-                  })}
-                  key={index}
-                  onClick={() => item.isSold ? null : handleTickets(item.place_number)}
-                  style={cardStyle}
-                >
-                  <div className={classes.ticketsTop}></div>
-                  <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
-                  <div className={classes.ticketsBottom}></div>
-                </Card>
-              );
-            })}
+            {apiData.length > 0 ? (
+              apiData.map((item, index) => {
+                const row = Math.floor(index / 10);
+                const column = index % 10;
+  
+                const cardStyle = {
+                  width: `${70 / 10}%`,
+                  margin: '4px'
+                };
+  
+                return (
+                  <Card
+                    px={8}
+                    className={cx(classes.ticket, {
+                      [classes.selected]: active.includes(item.place_number),
+                      [classes.sold]: item.isSold,
+                    })}
+                    key={index}
+                    onClick={() => item.isSold ? null : handleTickets(item.place_number)}
+                    style={cardStyle}
+                  >
+                    <div className={classes.ticketsTop}></div>
+                    <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
+                    <div className={classes.ticketsBottom}></div>
+                  </Card>
+                );
+              })
+            ): null}
 
             {/*  boton  Al azar */}
 
@@ -339,27 +341,28 @@ function TicketModal({ tickets }: modalProps) {
 
 
 
-                          <Carousel slideSize="70%" height={200} slideGap="md" controlsOffset="xs" controlSize={28} loop >
+                          {/* <Carousel slideSize="70%" height={200} slideGap="md" controlsOffset="xs" controlSize={28} loop >
 
                             <Carousel.Slide>
                               <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
                             </Carousel.Slide>
-                            <Carousel.Slide> 
+                            <Carousel.Slide>
                               <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
                             </Carousel.Slide>
                             <Carousel.Slide>
                               <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
                             </Carousel.Slide>
 
-                          </Carousel>
-                          <Text fw={700}>Sorteo</Text>
-                          <Text mb={11}>Rifa de una moto</Text>
+                          </Carousel> */}
+                          
+                          <Text fw={700}>Sorteo</Text> 
+                          <Text mb={11}>Rifa de una moto</Text> {/*prize*/}
                           <Text fw={700}>Inicio</Text>
-                          <Text mb={11} >08/03/2023</Text>
+                          <Text mb={11} >08/03/2023</Text> {/*open*/}
                           <Text fw={700}>Cierre</Text>
-                          <Text mb={11} >08/03/2023</Text>
+                          <Text mb={11} >08/03/2023</Text> {/*close*/} 
                           <Text fw={700}>Progreso</Text>
-                          <Progress value={34} color="green" label={`34`} size="xl" mt={7} />
+                          <Progress value={34} color="green" label={`34`} size="xl" mt={7} /> {/*Progreso*/}
                         </Card>
 
 

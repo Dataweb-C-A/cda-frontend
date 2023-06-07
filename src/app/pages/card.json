@@ -1,9 +1,10 @@
 [
+   
     {
-        "id": 1,
-        "prize": "Rifa de una moto",
+        "id": 2,
+        "prize": "Rifa de una moto 1",
         "tickets_count": 1000,
-        "status": "sold",
+        "status": "open",
         "taquilla": {
             "user": {
                 "id": 2,
@@ -18,7 +19,24 @@
     },
     {
         "id": 2,
-        "prize": "Rifa de una moto",
+        "prize": "Rifa de una moto 2",
+        "tickets_count": 1000,
+        "status": "open",
+        "taquilla": {
+            "user": {
+                "id": 2,
+                "name": "4 Bocas"
+            }
+        },
+        "created_at": "2023-05-12T092400Z0400",
+        "updated_at": "2023-05-12T092400Z0400",
+        "open":"08/03/2023",
+        "close":"10/03/2023",
+        "Progreso":34
+    },
+    {
+        "id": 2,
+        "prize": "Rifa de una moto 3",
         "tickets_count": 1000,
         "status": "open",
         "taquilla": {
@@ -38,106 +56,6 @@
         "prize": "Rifa de una moto",
         "tickets_count": 1000,
         "status": "open",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"10/03/2023",
-        "Progreso":34
-    },{
-        "id": 4,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "sold",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"10/03/2023",
-        "Progreso":34
-    },
-    {
-        "id": 1,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "sold",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"10/03/2023",
-        "Progreso":34
-    },
-    {
-        "id": 2,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "open",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"10/03/2023",
-        "Progreso":34
-    },
-    {
-        "id": 2,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "open",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"10/03/2023",
-        "Progreso":34
-    },{
-        "id": 4,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "sold",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"10/03/2023",
-        "Progreso":34
-    },
-    {
-        "id": 1,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "sold",
         "taquilla": {
             "user": {
                 "id": 2,
@@ -220,54 +138,6 @@
         "prize": "Rifa de una moto",
         "tickets_count": 1000,
         "status": "open",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"10/03/2023",
-        "Progreso":34
-    },{
-        "id": 4,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "sold",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"108/03/2023",
-        "Progreso":34
-    }, {
-        "id": 4,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "sold",
-        "taquilla": {
-            "user": {
-                "id": 2,
-                "name": "4 Bocas"
-            }
-        },
-        "created_at": "2023-05-12T092400Z0400",
-        "updated_at": "2023-05-12T092400Z0400",
-        "open":"08/03/2023",
-        "close":"10/03/2023",
-        "Progreso":34
-    }, {
-        "id": 4,
-        "prize": "Rifa de una moto",
-        "tickets_count": 1000,
-        "status": "sold",
         "taquilla": {
             "user": {
                 "id": 2,

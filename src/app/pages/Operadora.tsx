@@ -29,6 +29,7 @@ function Operadora() {
   })
   const [draws, setDraws] = useState<any>([])
 
+  const [selectedCard, setSelectedCard] = useState(null);
   const [profiles, setProfiles] = useState([])
 
   useEffect(() => {
@@ -123,12 +124,9 @@ function Operadora() {
   }
 
   const openCards = data.filter(card => card.status === "open")
-
-  const soldRifas = data.filter(rifa => rifa.status === "sold")
   return (
     <>
       <Navbar profiles={profiles} links={links} />
-
       
       <div>
         <Paper
@@ -139,7 +137,6 @@ function Operadora() {
             maxHeight: "calc(100vh - 200px)",
           }}
         >
-
           {/** rifas abiertas */}
           {openCards.map(card => (
             <Grid mt={10} gutter={10} mx={10}>

@@ -521,7 +521,7 @@ const form = useForm({
                   />
                 </Grid.Col>
               </Grid>
-              <Grid>
+              {/* <Grid>
                 <Grid.Col span={6}>
                   <Text size="xl" fz="md" mb={15} inline>
                     Imagenes del premio
@@ -592,7 +592,7 @@ const form = useForm({
                     {previews(files2, 2)}
                   </SimpleGrid>
                 </Grid.Col>
-              </Grid>
+              </Grid> */}
               <Group position="center" mt="xl">
                 <Button variant="default" onClick={prevStep} disabled={
                   active === 2 ? true : false
