@@ -15,7 +15,7 @@ type clientProps = {
 
 type ticketProps = {
   place_number: number
-  isSold: boolean
+  is_sold: boolean
   soldTo?: clientProps | undefined
 }
 
@@ -38,6 +38,8 @@ function formatPlace(place: number): string {
 function TicketModal({ tickets }: modalProps) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
+  const [pages, setPages] = useState<number>(0)
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const elementRef = useRef<HTMLDivElement>(null)
 
   const theme = useMantineTheme()
@@ -124,32 +126,40 @@ function TicketModal({ tickets }: modalProps) {
     setCounter(counter + 1)
   }
 
-
   useEffect(() => {
     setCounter(0)
   }, [active])
 
   const [checkedIndex, setCheckedIndex] = useState(-1);
   const [isChecked, setIsChecked] = useState(false);
-
   const [apiData, setApiData] = useState<ticketProps[] | []>([]);
+
   useEffect(() => {
-    fetch('http://localhost:3000/places?id=1&page=1')
+    fetch(`http://localhost:3000/places?id=1&page=${currentPage}`)
       .then((response) => response.json())
       .then((data) => {
         setApiData(data.places);
+        setPages(data.metadata.pages);
       })
       .catch((error) => {
         console.error('Error fetching API data:', error);
       });
-  }, []);
+  }, [currentPage]);
+
   return (
-    <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} mx={5} ref={elementRef} style={{
+    <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} ml={10} ref={elementRef} style={{
       position: 'absolute',
-      height: "91vh",
-      top: 100,
+      width: 'calc(100vw - 18rem)',
+      scrollBehavior: 'smooth',
+      height: "calc(100vh - 7.2em)",
+      top: 90,
+      scrollbarWidth: 'none',
     }}>
-      {/* <Pagination total={10} color="indigo" /> */}
+      <Pagination 
+        total={pages}
+        page={currentPage}
+        onChange={(e) => setCurrentPage(e)}
+      />
       <br />
 
       <div className={classes.container}>
@@ -158,9 +168,6 @@ function TicketModal({ tickets }: modalProps) {
             {/** card  ticket*/}
             {apiData.length > 0 ? (
               apiData.map((item, index) => {
-                const row = Math.floor(index / 10);
-                const column = index % 10;
-  
                 const cardStyle = {
                   width: `${70 / 10}%`,
                   margin: '4px'
@@ -171,22 +178,21 @@ function TicketModal({ tickets }: modalProps) {
                     px={8}
                     className={cx(classes.ticket, {
                       [classes.selected]: active.includes(item.place_number),
-                      [classes.sold]: item.isSold,
+                      [classes.sold]: item.is_sold,
                     })}
                     key={index}
-                    onClick={() => item.isSold ? null : handleTickets(item.place_number)}
+                    onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
                     style={cardStyle}
                   >
                     <div className={classes.ticketsTop}></div>
-                    <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
+                      <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
                     <div className={classes.ticketsBottom}></div>
                   </Card>
                 );
               })
-            ): null}
-
-            {/*  boton  Al azar */}
-
+            ): (
+              <Text>loading...</Text>
+            )}
           </Group>
         </div>
 

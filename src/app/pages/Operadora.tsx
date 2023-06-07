@@ -28,7 +28,6 @@ function Operadora() {
     lobby_connection: new Date()
   })
   const [draws, setDraws] = useState<any>([])
-
   const [selectedCard, setSelectedCard] = useState(null);
   const [profiles, setProfiles] = useState([])
 
@@ -109,16 +108,13 @@ function Operadora() {
     const { classes, cx } = useStyles()
 
     return (
-
       <Paper className={cx(classes.trigger)} onClick={() => handleLobby(lobby_id, new Date())}>
         <div style={{ float: "right", top: '0px' }}>
           <Button size="xs" style={{ marginTop: '-10px', marginLeft: '10px' }}>
             Ver mas
           </Button>
         </div>
-        <div style={{ float: "right" }}>
-
-        </div>
+        <div style={{ float: "right" }}></div>
       </Paper>
     )
   }
@@ -127,14 +123,14 @@ function Operadora() {
   return (
     <>
       <Navbar profiles={profiles} links={links} />
-      
       <div>
         <Paper
-          mt={20}
+          mt={10}
+          mr={10}
           h="100%"
           style={{
             overflowY: "auto",
-            maxHeight: "calc(100vh - 200px)",
+            height: "calc(100vh - 6.3em)"
           }}
         >
           {/** rifas abiertas */}
@@ -180,18 +176,19 @@ function Operadora() {
             <TicketModal
               tickets={tickets}
             />
+            // <></>
           ) : (
             <Card
               shadow="sm"
               radius="sm"
-              mt={28}
+              mt={18}
               mx={7}
-              h="77.5vh"
               w="84.1%"
               bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
               style={{
                 position: 'absolute',
                 top: 70,
+                height: "calc(100vh - 7em)"
               }}
             >
               <div
