@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Pagination, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
+import { Card, Pagination, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
-
 import { IconAlertCircle, IconArrowRight, IconArrowLeft } from '@tabler/icons-react';
+import { useDispatch } from 'react-redux';
+import { setLobbyMode } from '../../config/reducers/lobbySlice';
 
 type clientProps = {
   name: string
@@ -43,6 +44,8 @@ function TicketModal({ tickets }: modalProps) {
   const elementRef = useRef<HTMLDivElement>(null)
 
   const theme = useMantineTheme()
+
+  const dispatch = useDispatch()
 
   const bounce = keyframes({
     'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
@@ -155,11 +158,18 @@ function TicketModal({ tickets }: modalProps) {
       top: 90,
       scrollbarWidth: 'none',
     }}>
-      <Pagination 
-        total={pages}
-        page={currentPage}
-        onChange={(e) => setCurrentPage(e)}
-      />
+      <Group>
+        <CloseButton 
+          onClick={() => dispatch(
+            setLobbyMode(false)
+          )} 
+        />
+        <Pagination 
+          total={pages}
+          page={currentPage}
+          onChange={(e) => setCurrentPage(e)}
+        />
+      </Group>
       <br />
 
       <div className={classes.container}>
@@ -214,7 +224,7 @@ function TicketModal({ tickets }: modalProps) {
                       variant="filled"
                       color="blue"
                       onClick={() => {
-                        const availableTickets = tickets.filter((ticket) => !ticket.isSold);
+                        const availableTickets = tickets.filter((ticket) => !ticket.is_sold);
                         let randomNumber = Math.floor(Math.random() * availableTickets.length);
 
                         while (active.includes(availableTickets[randomNumber].place_number)) {

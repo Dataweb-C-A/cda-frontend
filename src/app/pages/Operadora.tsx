@@ -9,8 +9,8 @@ import tickets from '../assets/data/tickets.json'
 import axios from "axios";
 import data from "./card.json"
 import { TbZoomQuestion } from 'react-icons/tb'
-import cable from "../components/cable";
-import logo from "../assets/images/rifamax-logo.png"
+import { useDispatch, useSelector } from "react-redux";
+import { setLobbyMode } from "../config/reducers/lobbySlice";
 
 interface ILobbyState {
   open: boolean
@@ -30,6 +30,10 @@ function Operadora() {
   const [draws, setDraws] = useState<any>([])
   const [selectedCard, setSelectedCard] = useState(null);
   const [profiles, setProfiles] = useState([])
+
+  const selector = useSelector((state: any) => state.lobby.open)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     axios.get('https://rifa-max.com/api/v1/riferos', {
@@ -110,7 +114,20 @@ function Operadora() {
     return (
       <Paper className={cx(classes.trigger)} onClick={() => handleLobby(lobby_id, new Date())}>
         <div style={{ float: "right", top: '0px' }}>
-          <Button size="xs" style={{ marginTop: '-10px', marginLeft: '10px' }}>
+          <Button 
+            size="xs" 
+            style={{ marginTop: '-10px', marginLeft: '10px', paddingLeft: 5 }}
+            onClick={() => dispatch(
+              setLobbyMode(true)
+            )}
+          >
+
+            <ChevronIcon
+              style={{
+                rotate: '-90deg',
+                marginRight: '5px'
+              }}
+            />
             Ver mas
           </Button>
         </div>
@@ -172,7 +189,7 @@ function Operadora() {
       </div>
       <div style={{ marginLeft: '250px', marginTop: '-870px' }} >
         {
-          lobbyState.open ? (
+          selector ? (
             <TicketModal
               tickets={tickets}
             />
