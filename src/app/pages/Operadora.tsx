@@ -129,64 +129,7 @@ function Operadora() {
     <>
       <Navbar profiles={profiles} links={links} />
 
-      <Paper
-        w="100%"
-        h={120}
-      >
-        {/** rifas cerradas */}
-        <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '10px', marginLeft: '15px', overflowX: 'scroll', overflowY: 'hidden' }}>
-          
-        <Grid mt={10}>
-              <Grid.Col xs={6} lg={2} order={1}>
-                <Card
-                  w={235}
-                  h={120}
-                  p={0}
-                  withBorder={false}
-                  shadow={"0 0 7px 0 #5f5f5f3d"}
-                  bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
-                >
-            <img width={"100%"} height={"100%"} src="https://th.bing.com/th/id/R.4c88729e698c2feafdaaa14307cec741?rik=cCbzccOJMhwPyg&riu=http%3a%2f%2f2.bp.blogspot.com%2f-4-fESEVBNrg%2fUNw05n4XKrI%2fAAAAAAAAo3I%2fTysxMVbUSCA%2fs1600%2fIMAGEN-12308979-2.jpg&ehk=EoeTwAHRzooRItsKlaMOuJs9g3pIH7aUuaGjpgmmMYc%3d&risl=&pid=ImgRaw&r=0" alt="" />
-                  
-                </Card>
-              </Grid.Col>
-            </Grid>
-          {soldRifas.map(card => (
-            <Grid mt={10}>
-              <Grid.Col xs={6} lg={2} order={1}>
-                <Card
-                  key={card.id}
-                  w={235}
-                  h={120}
-                  shadow={"0 0 7px 0 #5f5f5f3d"}
-                  bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
-                >
-                  <BadgeStatus status={"Cerrado"} color={"red"} lobby_id={2} />
-                  <Text mt={2} fw={500} fz={10} mb={4}>
-                    {card.prize}
-                  </Text>
-                  <Text mt={-3} fw={300} fz={7}>
-                    Inicio: {card.open} - Cierre: {card.close}
-                  </Text>
-                  <Text mt={0} fw={300} fz={8}>
-                    Progreso:
-                  </Text>
-                  <Grid>
-                    <Grid.Col span={8}>
-                      <Progress value={card.Progreso} color="red" label={`${card.Progreso}%`} size="xl" mt={7} />
-                    </Grid.Col>
-                    <Grid.Col span={4}>
-                      <Badge variant="filled" color="red" size="xs" radius={4}>
-                        {card.status}
-                      </Badge>
-                    </Grid.Col>
-                  </Grid>
-                </Card>
-              </Grid.Col>
-            </Grid>
-          ))}
-        </div>
-      </Paper>
+      
       <div>
         <Paper
           mt={20}
@@ -251,7 +194,7 @@ function Operadora() {
               bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
               style={{
                 position: 'absolute',
-                top: 189,
+                top: 70,
               }}
             >
               <div
@@ -275,7 +218,7 @@ function Operadora() {
                     Selecciona un sorteo
                     <ul>
                       {draws.map((draw: any) => (
-                        <li key={draw.id}>pene</li>
+                        <li key={draw.id}>dx</li>
                       ))}
                     </ul>
                   </Title>

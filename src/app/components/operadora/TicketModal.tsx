@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
+import { Card,Pagination, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
@@ -14,7 +14,7 @@ type clientProps = {
 }
 
 type ticketProps = {
-  place: number
+  place_number: number
   isSold: boolean
   soldTo?: clientProps | undefined
 }
@@ -124,19 +124,34 @@ function TicketModal({ tickets }: modalProps) {
     setCounter(counter + 1)
   }
 
+
   useEffect(() => {
     setCounter(0)
   }, [active])
 
   const [checkedIndex, setCheckedIndex] = useState(-1);
   const [isChecked, setIsChecked] = useState(false);
+
+  const [apiData, setApiData] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:3000/places?id=1&page=1')
+      .then((response) => response.json())
+      .then((data) => {
+        setApiData(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching API data:', error);
+      });
+  }, []);
   return (
     <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} mx={5} ref={elementRef} style={{
       position: 'absolute',
       height: "91vh",
-      top: 80,
+      top: 100,
     }}>
+      <Pagination total={10} color="indigo" />
       <br />
+
       <div className={classes.container}>
         <div className={classes.ticketsFlex}>
           <Group key={counter}>
@@ -154,15 +169,15 @@ function TicketModal({ tickets }: modalProps) {
                 <Card
                   px={8}
                   className={cx(classes.ticket, {
-                    [classes.selected]: active.includes(item.place),
+                    [classes.selected]: active.includes(item.place_number),
                     [classes.sold]: item.isSold,
                   })}
                   key={index}
-                  onClick={() => item.isSold ? null : handleTickets(item.place)}
+                  onClick={() => item.isSold ? null : handleTickets(item.place_number)}
                   style={cardStyle}
                 >
                   <div className={classes.ticketsTop}></div>
-                  <Text ta="center" mt='0%'>{formatPlace(item.place)}</Text>
+                  <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
                   <div className={classes.ticketsBottom}></div>
                 </Card>
               );
@@ -194,11 +209,11 @@ function TicketModal({ tickets }: modalProps) {
                         const availableTickets = tickets.filter((ticket) => !ticket.isSold);
                         let randomNumber = Math.floor(Math.random() * availableTickets.length);
 
-                        while (active.includes(availableTickets[randomNumber].place)) {
+                        while (active.includes(availableTickets[randomNumber].place_number)) {
                           randomNumber = Math.floor(Math.random() * availableTickets.length);
                         }
 
-                        setActive([...active, availableTickets[randomNumber].place]);
+                        setActive([...active, availableTickets[randomNumber].place_number]);
                       }}
                     >
                       Numeros al azar
