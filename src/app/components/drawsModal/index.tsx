@@ -329,6 +329,7 @@ const form = useForm({
                   value="To-Infinity"
                   label="Infinito"
                   checked={checkedIndex === 3}
+                  disabled
                   onChange={() => {
                     form.getInputProps('draw_type').onChange('To-Infinity')
                     setCheckedIndex(3)
@@ -441,7 +442,8 @@ const form = useForm({
                     checkedIndex === 3 ? 1000 : 0
                   }
                   label="1000 tickets triples"
-                  disabled={checkedIndex === 3}
+                  disabled
+                  // disabled={checkedIndex === 3}
                   onChange={() => {
                     form.getInputProps('tickets_count').onChange(1000)
                     setTicketsCountState(1000)
