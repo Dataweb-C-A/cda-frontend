@@ -211,35 +211,41 @@ function TicketModal({ tickets }: modalProps) {
           <nav
             className={classes.stickyNav}
           >
+            <Group>
+              <Button
+                mb={10}
+                style={{}}
+                variant="filled"
+                color="blue"
+                onClick={() => {
+                  const availableTickets = tickets.filter((ticket) => !ticket.is_sold);
+                  let randomNumber = Math.floor(Math.random() * availableTickets.length);
 
+                  while (active.includes(availableTickets[randomNumber].place_number)) {
+                    randomNumber = Math.floor(Math.random() * availableTickets.length);
+                  }
+
+                  setActive([...active, availableTickets[randomNumber].place_number]);
+                }}
+              >
+                Numeros al azar
+              </Button>
+              <Button 
+                mb={10} 
+                variant="filled" 
+                color="blue"
+                onClick={() => {
+                  setActive([]);
+                }}
+              >
+                Limpiar Jugada
+              </Button>
+            </Group>
             {
               active.length % 1 || active.length === 0 ? (
                 <Text>Debe seleccionar boletos</Text>
               ) : (
                 <>
-                  <Group>
-                    <Button
-                      mb={10}
-                      style={{}}
-                      variant="filled"
-                      color="blue"
-                      onClick={() => {
-                        const availableTickets = tickets.filter((ticket) => !ticket.is_sold);
-                        let randomNumber = Math.floor(Math.random() * availableTickets.length);
-
-                        while (active.includes(availableTickets[randomNumber].place_number)) {
-                          randomNumber = Math.floor(Math.random() * availableTickets.length);
-                        }
-
-                        setActive([...active, availableTickets[randomNumber].place_number]);
-                      }}
-                    >
-                      Numeros al azar
-                    </Button>
-                    <Button mb={10} variant="filled" color="blue">
-                      Limpiar Jugada
-                    </Button>
-                  </Group>
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
                       <Paper shadow="sm" mb={10}>
