@@ -40,7 +40,6 @@ function TicketModal({ tickets }: modalProps) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
   const [pages, setPages] = useState<number>(0)
-  const [currentPage, setCurrentPage] = useState<number>(1)
   const elementRef = useRef<HTMLDivElement>(null)
 
   const theme = useMantineTheme()
@@ -136,18 +135,30 @@ function TicketModal({ tickets }: modalProps) {
   const [checkedIndex, setCheckedIndex] = useState(-1);
   const [isChecked, setIsChecked] = useState(false);
   const [apiData, setApiData] = useState<ticketProps[] | []>([]);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(() => {
     fetch(`http://localhost:3000/places?id=1&page=${currentPage}`)
       .then((response) => response.json())
       .then((data) => {
         setApiData(data.places);
-        setPages(data.metadata.pages);
+        setTotalPages(data.metadata.pages);
       })
       .catch((error) => {
         console.error('Error fetching API data:', error);
       });
   }, [currentPage]);
+
+  const getRandomTicket = async () => {
+    const randomPage = Math.floor(Math.random() * totalPages) + 1;
+    const response = await fetch(`http://localhost:3000/places?id=1&page=${randomPage}`);
+    const data = await response.json();
+    const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
+    const randomTicketIndex = Math.floor(Math.random() * availableTickets.length);
+    const randomTicket = availableTickets[randomTicketIndex];
+    setActive([...active, randomTicket.place_number]);
+  };
 
   return (
     <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} ml={10} ref={elementRef} style={{
@@ -159,15 +170,15 @@ function TicketModal({ tickets }: modalProps) {
       scrollbarWidth: 'none',
     }}>
       <Group>
-        <CloseButton 
+        <CloseButton
           onClick={() => dispatch(
             setLobbyMode(false)
-          )} 
+          )}
         />
-        <Pagination 
-          total={pages}
+        <Pagination
+          total={totalPages}
           page={currentPage}
-          onChange={(e) => setCurrentPage(e)}
+          onChange={(newPage) => setCurrentPage(newPage)}
         />
       </Group>
       <br />
@@ -182,7 +193,7 @@ function TicketModal({ tickets }: modalProps) {
                   width: `${70 / 10}%`,
                   margin: '4px'
                 };
-  
+
                 return (
                   <Card
                     px={8}
@@ -195,12 +206,12 @@ function TicketModal({ tickets }: modalProps) {
                     style={cardStyle}
                   >
                     <div className={classes.ticketsTop}></div>
-                      <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
+                    <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
                     <div className={classes.ticketsBottom}></div>
                   </Card>
                 );
               })
-            ): (
+            ) : (
               <Text>loading...</Text>
             )}
           </Group>
@@ -211,41 +222,26 @@ function TicketModal({ tickets }: modalProps) {
           <nav
             className={classes.stickyNav}
           >
-            <Group>
-              <Button
-                mb={10}
-                style={{}}
-                variant="filled"
-                color="blue"
-                onClick={() => {
-                  const availableTickets = tickets.filter((ticket) => !ticket.is_sold);
-                  let randomNumber = Math.floor(Math.random() * availableTickets.length);
 
-                  while (active.includes(availableTickets[randomNumber].place_number)) {
-                    randomNumber = Math.floor(Math.random() * availableTickets.length);
-                  }
-
-                  setActive([...active, availableTickets[randomNumber].place_number]);
-                }}
-              >
-                Numeros al azar
-              </Button>
-              <Button 
-                mb={10} 
-                variant="filled" 
-                color="blue"
-                onClick={() => {
-                  setActive([]);
-                }}
-              >
-                Limpiar Jugada
-              </Button>
-            </Group>
             {
               active.length % 1 || active.length === 0 ? (
                 <Text>Debe seleccionar boletos</Text>
               ) : (
                 <>
+                  <Group>
+                    <Button
+                      mb={10}
+                      style={{}}
+                      variant="filled"
+                      color="blue"
+                      onClick={getRandomTicket}
+                    >
+                      Numeros al azar
+                    </Button>
+                    <Button mb={10} variant="filled" color="blue">
+                      Limpiar Jugada
+                    </Button>
+                  </Group>
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
                       <Paper shadow="sm" mb={10}>
@@ -376,13 +372,13 @@ function TicketModal({ tickets }: modalProps) {
                             </Carousel.Slide>
 
                           </Carousel> */}
-                          
-                          <Text fw={700}>Sorteo</Text> 
+
+                          <Text fw={700}>Sorteo</Text>
                           <Text mb={11}>Rifa de una moto</Text> {/*prize*/}
                           <Text fw={700}>Inicio</Text>
                           <Text mb={11} >08/03/2023</Text> {/*open*/}
                           <Text fw={700}>Cierre</Text>
-                          <Text mb={11} >08/03/2023</Text> {/*close*/} 
+                          <Text mb={11} >08/03/2023</Text> {/*close*/}
                           <Text fw={700}>Progreso</Text>
                           <Progress value={34} color="green" label={`34`} size="xl" mt={7} /> {/*Progreso*/}
                         </Card>
