@@ -55,6 +55,9 @@ function Operadora() {
           lobby_state: false,
           lobby_connection: new Date()
         })
+        dispatch(
+          setLobbyMode(false)
+        )
       }
     }
     window.addEventListener('keydown', handleEsc)
