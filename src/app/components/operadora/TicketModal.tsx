@@ -259,9 +259,17 @@ function TicketModal({ tickets }: modalProps) {
                         <Card shadow="sm" mb={10}>
                           <Paper shadow="sm" mb={10} style={{
                             maxHeight: '16vh',
-                            overflowY: 'scroll'
+                            overflowY: 'scroll',
+                            scrollbarWidth: 'none',
+                            scrollbarColor: 'transparent transparent',
                           }}>
-                            <Text>Arreglo 1</Text>
+                            <Text
+                              fz={20}
+                              ta="center"
+                              fw={600}
+                            >
+                              Tickets seleccionados
+                            </Text>
                             {
                              active.map((item, index) => (
                               <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
