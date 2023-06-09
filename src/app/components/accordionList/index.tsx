@@ -512,7 +512,7 @@ export default function AccordionList({
         </Modal>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Accordion.Control {...props} />
-          {/* <ActionIcon size="lg">
+          <ActionIcon size="lg">
             <Menu
               position="top"
               trigger="hover"
@@ -568,7 +568,7 @@ export default function AccordionList({
                 )}
               </Menu.Dropdown>
             </Menu>
-          </ActionIcon> */}
+          </ActionIcon>
           {!status || !Pin ? (
             <Chip
               mr={10}

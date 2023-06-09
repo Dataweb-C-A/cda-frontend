@@ -46,23 +46,23 @@ const Home: React.FC = () => {
           links={links}
           expandScreen={true}
         />
-        <Group position="left" mb={10} mx={12} mt={10} spacing={0}>
-                  <Button size="sm" variant="filled" color="blue" disabled style={{
-                    borderRadius: "5px 0 0 5px",
-                    cursor: 'not-allowed',
-                    boxShadow: '0 0 7px 0 #5f5f5f3d'
-                  }}>
-                    Rifas
-                  </Button>
-                  <Button size="sm" variant="filled" color="blue" onClick={() => {
-                    history.push('/lobby');
-                  }} style={{
-                    borderRadius: "0 5px 5px 0",
-                    boxShadow: '0 0 7px 0 #5f5f5f3d'
-                  }}>
-                    Rifas de moto
-                  </Button>
-                </Group>
+        {/* <Group position="left" mb={10} mx={12} mt={10} spacing={0}>
+          <Button size="sm" variant="filled" color="blue" disabled style={{
+            borderRadius: "5px 0 0 5px",
+            cursor: 'not-allowed',
+            boxShadow: '0 0 7px 0 #5f5f5f3d'
+          }}>
+            Rifas
+          </Button>
+          <Button size="sm" variant="filled" color="blue" onClick={() => {
+            history.push('/lobby');
+          }} style={{
+            borderRadius: "0 5px 5px 0",
+            boxShadow: '0 0 7px 0 #5f5f5f3d'
+          }}>
+            Rifas de moto
+          </Button>
+        </Group> */}
         <Grid gutter={20} m={5}>
           <Grid.Col xs={6} lg={4} span={12}>
             <Cards
