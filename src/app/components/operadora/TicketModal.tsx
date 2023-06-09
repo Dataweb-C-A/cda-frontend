@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Pagination, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
+import { Card, Pagination, ActionIcon, Input, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
-import { IconAlertCircle, IconArrowRight, IconArrowLeft, IconSearch } from '@tabler/icons-react';
+import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import { useDispatch } from 'react-redux';
 import { setLobbyMode } from '../../config/reducers/lobbySlice';
 
@@ -119,14 +119,26 @@ function TicketModal({ tickets }: modalProps) {
       },
     },
   }))
+  const [searchTicket, setSearchTicket] = useState("");
 
   const { classes, cx } = useStyles()
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleTickets = (register: number) => {
-    setActive(active.includes(register) ? active.filter((item) => item !== register) : active.concat(register))
-    setCounter(counter + 1)
-  }
+    setActive(
+      active.includes(register)
+        ? active.filter((item) => item !== register)
+        : active.concat(register)
+    );
+    setCounter(counter + 1);
+  };
+  const searchTicketByNumber = () => {
+    const ticket = apiData.find((item) => item.place_number === parseInt(searchTicket));
+    if (ticket) {
+      handleTickets(ticket.place_number);
+    }
+  };
+  
 
   useEffect(() => {
     setCounter(0)
@@ -183,13 +195,19 @@ function TicketModal({ tickets }: modalProps) {
                 page={currentPage}
                 onChange={(newPage) => setCurrentPage(newPage)}
               />
-
-              <TextInput
+              {/* buscar ticket */}
+              <Input
                 placeholder="Buscar Ticket"
                 radius="xs"
+                rightSection={
+                  <ActionIcon>
+                    <IconTicket size="1.125rem" />
+                  </ActionIcon>
+                }
                 type='number'
               />
             </>
+
           )
         }
       </Group>
