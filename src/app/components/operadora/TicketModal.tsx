@@ -3,7 +3,7 @@ import { Card, Pagination, Modal, Text, Image, Group, Progress, createStyles, Te
 import { useScrollPosition } from '../../hooks/useScroll'
 import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
-import { IconAlertCircle, IconArrowRight, IconArrowLeft } from '@tabler/icons-react';
+import { IconAlertCircle, IconArrowRight, IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import { useDispatch } from 'react-redux';
 import { setLobbyMode } from '../../config/reducers/lobbySlice';
 
@@ -226,7 +226,7 @@ function TicketModal({ tickets }: modalProps) {
           <nav
             className={classes.stickyNav}
           >
-            <Group>
+            <Group mb={20}>
               <Button
                 mb={10}
                 style={{}}
@@ -250,15 +250,24 @@ function TicketModal({ tickets }: modalProps) {
             </Group>
             {
               active.length % 1 || active.length === 0 ? (
-                <Text>Debe seleccionar boletos</Text>
+                <>
+                  <Title order={3} mt="50%" ta="center">Debe seleccionar tickets para jugar</Title>
+                  <IconSearch style={{
+                    margin: '20px 0 0 37%',
+                  }} size={100} />
+                </>
               ) : (
                 <>
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
                       <Paper shadow="sm" mb={10}>
-                        <Card shadow="sm" mb={10}>
-                          <Paper shadow="sm" mb={10} style={{
-                            maxHeight: '16vh',
+                        <Card shadow="sm" mb={10} bg={
+                          theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[1]
+                        }
+                          withBorder
+                        >
+                          <Paper shadow="sm" mb={0} style={{
+                            maxHeight: '21.5vh',
                             overflowY: 'scroll',
                             scrollbarWidth: 'none',
                             scrollbarColor: 'transparent transparent',
@@ -270,9 +279,10 @@ function TicketModal({ tickets }: modalProps) {
                             >
                               Tickets seleccionados
                             </Text>
+                            <Divider my={7} label="Jugadas" labelPosition='center'/>
                             {
                              active.map((item, index) => (
-                              <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
+                              <Title order={5} ta="center" key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
                             )).reverse()
                             }
                           </Paper>
@@ -292,7 +302,7 @@ function TicketModal({ tickets }: modalProps) {
                             <Button
                               variant="filled"
                               color="blue"
-                              mt={10}
+                              mt={0}
                               style={{ width: '100%' }}
                               onClick={() => setModalOpen(true)}
                             >
