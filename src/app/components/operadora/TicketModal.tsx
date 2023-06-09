@@ -177,11 +177,19 @@ function TicketModal({ tickets }: modalProps) {
         />
         {
           totalPages > 1 && (
-            <Pagination
-              total={totalPages}
-              page={currentPage}
-              onChange={(newPage) => setCurrentPage(newPage)}
-            />
+            <>
+              <Pagination
+                total={totalPages}
+                page={currentPage}
+                onChange={(newPage) => setCurrentPage(newPage)}
+              />
+
+              <TextInput
+                placeholder="Buscar Ticket"
+                radius="xs"
+                type='number'
+              />
+            </>
           )
         }
       </Group>
@@ -236,9 +244,9 @@ function TicketModal({ tickets }: modalProps) {
               >
                 Numeros al azar
               </Button>
-              <Button 
-                mb={10} 
-                variant="filled" 
+              <Button
+                mb={10}
+                variant="filled"
                 color="blue"
                 onClick={() => {
                   console.log('active', active)
@@ -279,11 +287,11 @@ function TicketModal({ tickets }: modalProps) {
                             >
                               Tickets seleccionados
                             </Text>
-                            <Divider my={7} label="Jugadas" labelPosition='center'/>
+                            <Divider my={7} label="Jugadas" labelPosition='center' />
                             {
-                             active.map((item, index) => (
-                              <Title order={5} ta="center" key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
-                            )).reverse()
+                              active.map((item, index) => (
+                                <Title order={5} ta="center" key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
+                              )).reverse()
                             }
                           </Paper>
                           <br />
@@ -370,7 +378,6 @@ function TicketModal({ tickets }: modalProps) {
                                 Comprar
                               </Button>
                             </Modal>
-
                           </div>
 
                           <Divider
@@ -384,22 +391,29 @@ function TicketModal({ tickets }: modalProps) {
                             }}
                             py={10}
                           />
-
-
-
-                          {/* <Carousel slideSize="70%" height={200} slideGap="md" controlsOffset="xs" controlSize={28} loop >
+                          <Carousel slideSize="30%" height={100} slideGap="md" controlsOffset="xs" controlSize={28} loop >
 
                             <Carousel.Slide>
                               <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
                             </Carousel.Slide>
-                            <Carousel.Slide>
-                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
-                            </Carousel.Slide>
+
                             <Carousel.Slide>
                               <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
                             </Carousel.Slide>
 
-                          </Carousel> */}
+                            <Carousel.Slide>
+                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                            </Carousel.Slide>
+
+                            <Carousel.Slide>
+                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                            </Carousel.Slide>
+
+                            <Carousel.Slide>
+                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                            </Carousel.Slide>
+
+                          </Carousel>
 
                           <Text fw={700}>Sorteo</Text>
                           <Text mb={11}>Rifa de una moto</Text> {/*prize*/}
