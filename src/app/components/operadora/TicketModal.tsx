@@ -175,11 +175,15 @@ function TicketModal({ tickets }: modalProps) {
             setLobbyMode(false)
           )}
         />
-        <Pagination
-          total={totalPages}
-          page={currentPage}
-          onChange={(newPage) => setCurrentPage(newPage)}
-        />
+        {
+          totalPages > 1 && (
+            <Pagination
+              total={totalPages}
+              page={currentPage}
+              onChange={(newPage) => setCurrentPage(newPage)}
+            />
+          )
+        }
       </Group>
       <br />
 
@@ -237,6 +241,7 @@ function TicketModal({ tickets }: modalProps) {
                 variant="filled" 
                 color="blue"
                 onClick={() => {
+                  console.log('active', active)
                   setActive([])
                 }}
               >
