@@ -26,7 +26,7 @@ type modalProps = {
 
 function formatPlace(place: number): string {
   if (place <= 9) {
-    return '0' + place;
+    return '00' + place;
   } else if (place <= 99) {
     return '' + place;
   } else if (place === 100) {
@@ -258,10 +258,9 @@ function TicketModal({ tickets }: modalProps) {
                           }}>
                             <Text>Arreglo 1</Text>
                             {
-                              active.map((item, index) => (
-
-                                <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
-                              ))
+                             active.map((item, index) => (
+                              <Title order={4} key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
+                            )).reverse()
                             }
                           </Paper>
                           <br />
