@@ -26,7 +26,7 @@ type modalProps = {
 
 function formatPlace(place: number): string {
   if (place <= 9) {
-    return '00' + place;
+    return '0' + place;
   } else if (place <= 99) {
     return '' + place;
   } else if (place === 100) {
