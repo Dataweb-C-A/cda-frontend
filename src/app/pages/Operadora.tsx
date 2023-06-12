@@ -164,10 +164,10 @@ function Operadora() {
             style={{ marginTop: '-10px', marginLeft: '10px', paddingLeft: 5 }}
             onClick={() => {
               dispatch(
-                setLobbyMode(true)
+                setLobbyMode(!selector)
               )
               setLobbyState({
-                open: true,
+                open: !lobbyState.open,
                 lobby_id: lobby_id,
                 lobby_state: true,
                 lobby_connection: new Date()

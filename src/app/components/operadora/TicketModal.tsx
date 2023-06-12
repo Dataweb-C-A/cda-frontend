@@ -199,7 +199,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
           )}
         />
         {
-          totalPages >= 1 && (
+          totalPages > 1 && (
             <>
               <Pagination
                 total={totalPages}
