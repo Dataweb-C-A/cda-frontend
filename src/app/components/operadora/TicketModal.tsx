@@ -21,6 +21,7 @@ type ticketProps = {
 }
 
 type modalProps = {
+  draw_id: number
   tickets: ticketProps[]
 }
 
@@ -36,7 +37,7 @@ function formatPlace(place: number): string {
   }
 }
 
-function TicketModal({ tickets }: modalProps) {
+function TicketModal({ tickets, draw_id }: modalProps) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
   const [pages, setPages] = useState<number>(0)
@@ -124,6 +125,11 @@ function TicketModal({ tickets }: modalProps) {
   const { classes, cx } = useStyles()
   const [modalOpen, setModalOpen] = useState(false);
 
+  const limpiarJugada = () => {
+    setActive([]);
+    setSelectedTicket(null);
+  };
+
   const handleTickets = (register: number) => {
     setActive(
       active.includes(register)
@@ -131,14 +137,19 @@ function TicketModal({ tickets }: modalProps) {
         : active.concat(register)
     );
     setCounter(counter + 1);
+
+    const ticket = apiData.find((item) => item.place_number === register);
+    setSelectedTicket(ticket || null);
   };
+
   const searchTicketByNumber = () => {
     const ticket = apiData.find((item) => item.place_number === parseInt(searchTicket));
     if (ticket) {
       handleTickets(ticket.place_number);
+      setSearchTicket("");
     }
   };
-  
+
 
   useEffect(() => {
     setCounter(0)
@@ -148,10 +159,11 @@ function TicketModal({ tickets }: modalProps) {
   const [isChecked, setIsChecked] = useState(false);
   const [apiData, setApiData] = useState<ticketProps[] | []>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(() => {
-    fetch(`http://localhost:3000/places?id=1&page=${currentPage}`)
+    fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
       .then((response) => response.json())
       .then((data) => {
         setApiData(data.places);
@@ -164,7 +176,7 @@ function TicketModal({ tickets }: modalProps) {
 
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
-    const response = await fetch(`http://localhost:3000/places?id=1&page=${randomPage}`);
+    const response = await fetch(`http://localhost:3000/places?id=${draw_id}&page=${randomPage}`);
     const data = await response.json();
     const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
     const randomTicketIndex = Math.floor(Math.random() * availableTickets.length);
@@ -188,7 +200,7 @@ function TicketModal({ tickets }: modalProps) {
           )}
         />
         {
-          totalPages > 1 && (
+          totalPages >= 1 && (
             <>
               <Pagination
                 total={totalPages}
@@ -200,12 +212,18 @@ function TicketModal({ tickets }: modalProps) {
                 placeholder="Buscar Ticket"
                 radius="xs"
                 rightSection={
-                  <ActionIcon>
+                  <ActionIcon onClick={() => searchTicketByNumber()}>
                     <IconTicket size="1.125rem" />
                   </ActionIcon>
                 }
-                type='number'
+                type="number"
+                value={searchTicket}
+                onChange={(event) => {
+                  setSearchTicket(event.currentTarget.value);
+                  setSelectedTicket(null);
+                }}
               />
+
             </>
 
           )
@@ -228,9 +246,10 @@ function TicketModal({ tickets }: modalProps) {
                   <Card
                     px={8}
                     className={cx(classes.ticket, {
-                      [classes.selected]: active.includes(item.place_number),
+                      [classes.selected]: active.includes(item.place_number) || (selectedTicket && selectedTicket.place_number === item.place_number),
                       [classes.sold]: item.is_sold,
                     })}
+
                     key={index}
                     onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
                     style={cardStyle}
@@ -266,10 +285,7 @@ function TicketModal({ tickets }: modalProps) {
                 mb={10}
                 variant="filled"
                 color="blue"
-                onClick={() => {
-                  console.log('active', active)
-                  setActive([])
-                }}
+                onClick={limpiarJugada}
               >
                 Limpiar Jugada
               </Button>

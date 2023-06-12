@@ -162,9 +162,17 @@ function Operadora() {
           <Button
             size="xs" 
             style={{ marginTop: '-10px', marginLeft: '10px', paddingLeft: 5 }}
-            onClick={() => dispatch(
-              setLobbyMode(true)
-            )}
+            onClick={() => {
+              dispatch(
+                setLobbyMode(true)
+              )
+              setLobbyState({
+                open: true,
+                lobby_id: lobby_id,
+                lobby_state: true,
+                lobby_connection: new Date()
+              })
+            }}
           >
             <ChevronIcon
               style={{
@@ -214,6 +222,14 @@ function Operadora() {
                 </Skeleton>
                 <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
                 </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
               </>
             )
           }
@@ -228,7 +244,7 @@ function Operadora() {
                   shadow={"0 0 7px 0 #5f5f5f3d"}
                   bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
                 >
-                  <BadgeStatus status={"Cerrado"} color={"green"} lobby_id={2} />
+                  <BadgeStatus status={"Cerrado"} color={"green"} lobby_id={card.id} />
                   <Text mt={2} fw={500} fz={10} mb={4}>
                     {card.first_prize}
                   </Text>
@@ -245,8 +261,8 @@ function Operadora() {
                       <Progress value={Number(card.progress.current)} color="green" label={`${card.progress.current}%`} size="xl" mt={7} />
                     </Grid.Col>
                     <Grid.Col span={4}>
-                      <Badge variant="filled" color="green" size="xs" radius={4}>
-                        {card.is_active}
+                      <Badge variant="filled" color={card.is_active ? 'green' : 'red'} size="xs" radius={4}>
+                        {card.is_active ? 'Activo' : 'Inactivo'}
                       </Badge>
                     </Grid.Col>
                   </Grid>
@@ -260,7 +276,6 @@ function Operadora() {
         {
           loading === true ? (
             <Skeleton
-              radius="sm"
               mt={18}
               mx={7}
               w="84.1%"
@@ -277,6 +292,7 @@ function Operadora() {
             selector ? (
               <TicketModal
                 tickets={tickets}
+                draw_id={lobbyState.lobby_id}
               />
               // <></>
             ) : (
