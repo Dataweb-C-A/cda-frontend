@@ -150,7 +150,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
     }
   };
 
-
   useEffect(() => {
     setCounter(0)
   }, [active])
@@ -160,8 +159,8 @@ function TicketModal({ tickets, draw_id }: modalProps) {
   const [apiData, setApiData] = useState<ticketProps[] | []>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
-
   const [currentPage, setCurrentPage] = useState<number>(1);
+
   useEffect(() => {
     fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
       .then((response) => response.json())

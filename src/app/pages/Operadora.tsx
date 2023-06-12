@@ -160,7 +160,7 @@ function Operadora() {
       <Paper className={cx(classes.trigger)} onClick={() => handleLobby(lobby_id, new Date())}>
         <div style={{ float: "right", top: '0px' }}>
           <Button
-            size="xs" 
+            size="xs"
             style={{ marginTop: '-10px', marginLeft: '10px', paddingLeft: 5 }}
             onClick={() => {
               dispatch(
@@ -284,7 +284,7 @@ function Operadora() {
                 position: 'absolute',
                 top: 70,
                 height: "calc(100vh - 7.1em)"
-              }} 
+              }}
               visible={loading}
             >
             </Skeleton>
@@ -324,7 +324,7 @@ function Operadora() {
                       margin: 'auto auto'
                     }}
                   >
-  
+
                     <Title order={1} ta="center" mt='18%'>
                       <TbZoomQuestion size="200px" strokeWidth="1.2px" /> <br />
                       Selecciona un sorteo
