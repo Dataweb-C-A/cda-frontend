@@ -131,24 +131,48 @@ function TicketModal({ tickets, draw_id }: modalProps) {
   };
 
   const handleTickets = (register: number) => {
-    setActive(
-      active.includes(register)
-        ? active.filter((item) => item !== register)
-        : active.concat(register)
-    );
+    if (active.includes(register)) {
+      setActive(active.filter((item) => item !== register));
+    } else {
+      setActive(active.concat(register));
+    }
     setCounter(counter + 1);
-
+  
     const ticket = apiData.find((item) => item.place_number === register);
     setSelectedTicket(ticket || null);
+  
+    const currentPageContainsTicket = Math.ceil(register / 100) === currentPage;
+    if (!currentPageContainsTicket) {
+      setCurrentPage(Math.ceil(register / 100));
+    }
   };
+  
+
 
   const searchTicketByNumber = () => {
+    if (searchTicket.trim() === "") {
+      return; 
+    }
+  
     const ticket = apiData.find((item) => item.place_number === parseInt(searchTicket));
     if (ticket) {
       handleTickets(ticket.place_number);
       setSearchTicket("");
+    } else {
+      const targetPage = Math.ceil(parseInt(searchTicket) / 100);
+      if (targetPage !== currentPage) {
+        setCurrentPage(targetPage);
+        setTimeout(() => {
+          handleTickets(parseInt(searchTicket));
+          setSearchTicket("");
+        }, 500);
+      }
     }
   };
+  
+  
+  
+  
 
   useEffect(() => {
     setCounter(0)
@@ -245,10 +269,9 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                   <Card
                     px={8}
                     className={cx(classes.ticket, {
-                      [classes.selected]: active.includes(item.place_number) || (selectedTicket && selectedTicket.place_number === item.place_number),
+                      [classes.selected]: active.includes(item.place_number),
                       [classes.sold]: item.is_sold,
                     })}
-
                     key={index}
                     onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
                     style={cardStyle}
@@ -258,6 +281,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                     <div className={classes.ticketsBottom}></div>
                   </Card>
                 );
+
               })
             ) : (
               <Text>loading...</Text>
