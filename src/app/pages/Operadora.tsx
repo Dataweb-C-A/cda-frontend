@@ -67,7 +67,7 @@ function Operadora() {
     lobby_state: false,
     lobby_connection: new Date()
   })
-  const [draws, setDraws] = useState<IDraws[]>([])
+  const [draws, setDraws] = useState<IDraws[] | []>([])
   const [profiles, setProfiles] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -199,6 +199,10 @@ function Operadora() {
             loading === true && (
               <>
                 <Skeleton w={240} mt={15} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
                 </Skeleton>
                 <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
                 </Skeleton>
