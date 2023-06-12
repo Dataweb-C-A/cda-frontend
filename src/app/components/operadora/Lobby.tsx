@@ -17,11 +17,6 @@ type ILobby= {
   lobby?: {
     id: number,
     connection: Date,
-  },
-  user?: {
-    id: number,
-    name: string,
-    role: string,
   }
 }
 
@@ -37,7 +32,7 @@ function formatPlace(place: number): string {
   }
 }
 
-function Lobby({tickets, lobby, user}: ILobby) {
+function Lobby({tickets, lobby}: ILobby) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
 

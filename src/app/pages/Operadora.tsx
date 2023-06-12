@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex } from "@mantine/core";
+import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -19,6 +19,46 @@ interface ILobbyState {
   lobby_connection: Date
 }
 
+interface IDraws {
+  id: number;
+  title: string;
+  first_prize: string;
+  second_prize: null | string;
+  adnoucement: string;
+  award_images: string[];
+  uniq: null;
+  init_date: string;
+  expired_date: string;
+  numbers: number;
+  tickets_count: number;
+  loteria: string;
+  has_winners: boolean;
+  progress: {
+    sold: number;
+    available: number;
+    current: number;
+  };
+  is_active: boolean;
+  first_winner: null | string;
+  second_winner: null | string;
+  draw_type: string;
+  limit: number;
+  price_unit: number;
+  money: string;
+  owner: {
+    id: number;
+    user_id: number;
+    name: string;
+    role: string;
+    email: string;
+    created_at: string;
+    updated_at: string;
+  };
+  created_at: string;
+  updated_at: string;
+}
+
+
 function Operadora() {
   const theme = useMantineTheme()
   const [lobbyState, setLobbyState] = useState<ILobbyState>({
@@ -27,9 +67,9 @@ function Operadora() {
     lobby_state: false,
     lobby_connection: new Date()
   })
-  const [draws, setDraws] = useState<any>([])
-  const [selectedCard, setSelectedCard] = useState(null);
+  const [draws, setDraws] = useState<IDraws[]>([])
   const [profiles, setProfiles] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const selector = useSelector((state: any) => state.lobby.open)
 
@@ -80,6 +120,8 @@ function Operadora() {
         })
         .then((res) => {
           console.log(res.data)
+          setDraws(res.data)
+          setLoading(false)
         })
         .catch((err) => {
           console.log(err)
@@ -117,14 +159,13 @@ function Operadora() {
     return (
       <Paper className={cx(classes.trigger)} onClick={() => handleLobby(lobby_id, new Date())}>
         <div style={{ float: "right", top: '0px' }}>
-          <Button 
+          <Button
             size="xs" 
             style={{ marginTop: '-10px', marginLeft: '10px', paddingLeft: 5 }}
             onClick={() => dispatch(
               setLobbyMode(true)
             )}
           >
-
             <ChevronIcon
               style={{
                 rotate: '-90deg',
@@ -139,7 +180,6 @@ function Operadora() {
     )
   }
 
-  const openCards = data.filter(card => card.status === "open")
   return (
     <>
       <Navbar profiles={profiles} links={links} />
@@ -154,7 +194,27 @@ function Operadora() {
           }}
         >
           {/** rifas abiertas */}
-          {openCards.map(card => (
+
+          {
+            loading === true && (
+              <>
+                <Skeleton w={240} mt={15} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
+                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
+                </Skeleton>
+              </>
+            )
+          }
+
+          {draws.map(card => (
             <Grid mt={10} gutter={10} mx={10}>
               <Grid.Col xs={6} lg={2} order={1}>
                 <Card
@@ -166,21 +226,23 @@ function Operadora() {
                 >
                   <BadgeStatus status={"Cerrado"} color={"green"} lobby_id={2} />
                   <Text mt={2} fw={500} fz={10} mb={4}>
-                    {card.prize}
+                    {card.first_prize}
                   </Text>
                   <Text mt={-3} fw={300} fz={7}>
-                    Inicio: {card.open} - Cierre: {card.close}
+                    Inicio: {card.init_date} - {
+                      card.expired_date ? `Cierre: ${card.expired_date}` : 'Alcanzar progreso'
+                    }
                   </Text>
                   <Text mt={0} fw={300} fz={8}>
                     Progreso:
                   </Text>
                   <Grid>
                     <Grid.Col span={8}>
-                      <Progress value={card.Progreso} color="green" label={`${card.Progreso}%`} size="xl" mt={7} />
+                      <Progress value={Number(card.progress.current)} color="green" label={`${card.progress.current}%`} size="xl" mt={7} />
                     </Grid.Col>
                     <Grid.Col span={4}>
                       <Badge variant="filled" color="green" size="xs" radius={4}>
-                        {card.status}
+                        {card.is_active}
                       </Badge>
                     </Grid.Col>
                   </Grid>
@@ -192,14 +254,8 @@ function Operadora() {
       </div>
       <div style={{ marginLeft: '250px', marginTop: '-870px' }} >
         {
-          selector ? (
-            <TicketModal
-              tickets={tickets}
-            />
-            // <></>
-          ) : (
-            <Card
-              shadow="sm"
+          loading === true ? (
+            <Skeleton
               radius="sm"
               mt={18}
               mx={7}
@@ -208,37 +264,55 @@ function Operadora() {
               style={{
                 position: 'absolute',
                 top: 70,
-                height: "calc(100vh - 7em)"
-              }}
+                height: "calc(100vh - 7.1em)"
+              }} 
+              visible={loading}
             >
-              <div
+            </Skeleton>
+          ) : (
+            selector ? (
+              <TicketModal
+                tickets={tickets}
+              />
+              // <></>
+            ) : (
+              <Card
+                shadow="sm"
+                radius="sm"
+                mt={18}
+                mx={7}
+                w="84.1%"
+                bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
                 style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  position: 'absolute',
+                  top: 70,
+                  height: "calc(100vh - 7em)"
                 }}
               >
                 <div
                   style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
                     width: '100%',
-                    margin: 'auto auto'
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
-
-                  <Title order={1} ta="center" mt='18%'>
-                    <TbZoomQuestion size="200px" strokeWidth="1.2px" /> <br />
-                    Selecciona un sorteo
-                    <ul>
-                      {draws.map((draw: any) => (
-                        <li key={draw.id}>dx</li>
-                      ))}
-                    </ul>
-                  </Title>
+                  <div
+                    style={{
+                      width: '100%',
+                      margin: 'auto auto'
+                    }}
+                  >
+  
+                    <Title order={1} ta="center" mt='18%'>
+                      <TbZoomQuestion size="200px" strokeWidth="1.2px" /> <br />
+                      Selecciona un sorteo
+                    </Title>
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            )
           )
         }
       </div>

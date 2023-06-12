@@ -577,7 +577,7 @@ const form = useForm({
                   >
                     <IconPhoto size="3.2rem" stroke={1.5} />
                     <Text size="xl" inline>
-                      Imagen de publicidad
+                      Imagen de publicidadvb
                     </Text>
                     <Text size="sm" color="dimmed" inline mt={7}>
                       presione la imagen a publicar en este area
