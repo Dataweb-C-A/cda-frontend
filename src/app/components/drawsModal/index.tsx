@@ -179,9 +179,9 @@ const form = useForm({
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
 
-    axios.post('http://localhost:3000/draws', values, {
+    axios.post('http://localhost:3000/draws', {draw: values}, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": ["application/json", "multipart/form-data"],
         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
       }
     }).then((res) => {
@@ -528,6 +528,7 @@ const form = useForm({
                   </Text>
                   <Dropzone
                     accept={IMAGE_MIME_TYPE}
+                    multiple={true}
                     onDrop={(files) => { 
                       form.getInputProps('award').onChange(files)
                       setFiles(files)
@@ -570,6 +571,7 @@ const form = useForm({
                       console.log(files)
                     }}
                     maxFiles={1} 
+                    multiple={true}
                     color={form.errors.ads ? 'red' : ''}
                     {...form.getInputProps('ads')}
                   >
