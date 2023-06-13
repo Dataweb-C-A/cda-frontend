@@ -131,6 +131,12 @@ function TicketModal({ tickets, draw_id }: modalProps) {
   };
 
   const handleTickets = (register: number) => {
+    const ticket = apiData.find((item) => item.place_number === register);
+  
+    if (ticket && ticket.is_sold) {
+      return; 
+    }
+  
     if (active.includes(register)) {
       setActive(active.filter((item) => item !== register));
     } else {
@@ -138,7 +144,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
     }
     setCounter(counter + 1);
   
-    const ticket = apiData.find((item) => item.place_number === register);
     setSelectedTicket(ticket || null);
   
     const currentPageContainsTicket = Math.ceil(register / 100) === currentPage;
@@ -151,24 +156,31 @@ function TicketModal({ tickets, draw_id }: modalProps) {
 
   const searchTicketByNumber = () => {
     if (searchTicket.trim() === "") {
-      return; 
+      return;
     }
   
-    const ticket = apiData.find((item) => item.place_number === parseInt(searchTicket));
+    const ticketNumber = parseInt(searchTicket);
+    if (isNaN(ticketNumber) || ticketNumber < 1 || ticketNumber > 1000) {
+      setSearchTicket("");
+      return;
+    }
+  
+    const ticket = apiData.find((item) => item.place_number === ticketNumber);
     if (ticket) {
       handleTickets(ticket.place_number);
       setSearchTicket("");
     } else {
-      const targetPage = Math.ceil(parseInt(searchTicket) / 100);
+      const targetPage = Math.ceil(ticketNumber / 100);
       if (targetPage !== currentPage) {
         setCurrentPage(targetPage);
         setTimeout(() => {
-          handleTickets(parseInt(searchTicket));
+          handleTickets(ticketNumber);
           setSearchTicket("");
         }, 500);
       }
     }
   };
+  
   
   useEffect(() => {
     setCounter(0)
@@ -195,6 +207,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
 
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
+    setCurrentPage(randomPage); 
     const response = await fetch(`http://localhost:3000/places?id=${draw_id}&page=${randomPage}`);
     const data = await response.json();
     const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
@@ -202,7 +215,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
     const randomTicket = availableTickets[randomTicketIndex];
     setActive([...active, randomTicket.place_number]);
   };
-
+  
   return (
     <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} ml={10} ref={elementRef} style={{
       position: 'absolute',
@@ -226,9 +239,9 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                 page={currentPage}
                 onChange={(newPage) => setCurrentPage(newPage)}
               />
-              {/* buscar ticket */}
+              {/* buscar numero */}
               <Input
-                placeholder="Buscar Ticket"
+                placeholder="Buscar Numero"
                 radius="xs"
                 rightSection={
                   <ActionIcon onClick={() => searchTicketByNumber()}>
@@ -236,7 +249,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                   </ActionIcon>
                 }
                 type="number"
-                min={1}
                 max={totalPages * 100}
                 value={searchTicket}
                 onChange={(event) => {
@@ -314,7 +326,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
             {
               active.length % 1 || active.length === 0 ? (
                 <>
-                  <Title order={3} mt="50%" ta="center">Debe seleccionar tickets para jugar</Title>
+                  <Title order={3} mt="50%" ta="center">Debe seleccionar Numero para jugar</Title>
                   <IconSearch style={{
                     margin: '20px 0 0 37%',
                   }} size={100} />
