@@ -58,7 +58,6 @@ interface IDraws {
   updated_at: string;
 }
 
-
 function Operadora() {
   const theme = useMantineTheme()
   const [lobbyState, setLobbyState] = useState<ILobbyState>({
@@ -190,7 +189,43 @@ function Operadora() {
 
   return (
     <>
-      <Navbar profiles={profiles} links={links} />
+    {
+      loading ? (
+        <Card w="100vw" h={60} py={0} mb={0} bg={theme.colors.dark[4]}>
+          <div 
+            style={{
+              height: '100%',
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row'
+            }}
+          >
+            <div style={{
+              width: '50%',
+              display: 'flex',
+              justifyContent: 'flex-end'
+            }}>
+              <Skeleton height={40} circle />
+            </div>
+            <div style={{
+              width: '50%',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              flexDirection: 'row',
+              gap: '10px'
+            }}>
+              <Skeleton height={40} circle />
+              <Skeleton height={40} circle />
+              <Skeleton height={40} circle />
+              <Skeleton height={40} circle />
+            </div>
+          </div>
+        </Card>
+      ) : (
+        <Navbar profiles={profiles} links={links} />
+      )
+    }
       <div>
         <Paper
           mt={10}
@@ -198,7 +233,7 @@ function Operadora() {
           h="100%"
           style={{
             overflowY: "auto",
-            height: "calc(100vh - 6.3em)"
+            height: "calc(100vh - 4.9em)"
           }}
         >
           {/** rifas abiertas */}
@@ -206,36 +241,156 @@ function Operadora() {
           {
             loading === true && (
               <>
-                <Skeleton w={240} mt={15} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
-                <Skeleton w={240} mt={10} ml={10} py={60} visible={loading}>
-                </Skeleton>
+                <Card w={240} mt={8} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
+                <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
+                  <Grid mt={5}>
+                    <Grid.Col span={3}>
+                      <Skeleton height={40} circle />
+                    </Grid.Col>
+                    <Grid.Col span={9}>
+                      <Skeleton w="100%" h={40} />
+                    </Grid.Col>
+                    <Skeleton w="100%" h={25} mx={7} />
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                  </Grid>
+                </Card>
               </>
             )
           }
 
           {draws.map(card => (
-            <Grid mt={10} gutter={10} mx={10}>
+            <Grid mt={0} gutter={10} mx={10}>
               <Grid.Col xs={6} lg={2} order={1}>
                 <Card
                   key={card.id}
@@ -275,19 +430,35 @@ function Operadora() {
       <div style={{ marginLeft: '250px', marginTop: '-870px' }} >
         {
           loading === true ? (
-            <Skeleton
-              mt={18}
-              mx={7}
-              w="84.1%"
-              bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
-              style={{
-                position: 'absolute',
-                top: 70,
-                height: "calc(100vh - 7.1em)"
-              }}
-              visible={loading}
-            >
-            </Skeleton>
+            <>
+              <Card 
+                mt={8}
+                mx={7}
+                w="84.1%"
+                bg={theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[0]}
+                style={{
+                  position: 'absolute',
+                  top: 70,
+                  height: "calc(100vh - 5.4em)",
+                  flexWrap: 'wrap'
+                }}
+              >
+                <div 
+                  style={{
+                    height: '100%',
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column'
+                  }}
+                >
+                  <Skeleton width={250} height={250} circle />
+                  <Skeleton width={450} mt={30} height={30} />
+                  <Skeleton width={600} mt={10} height={30} />
+                </div>
+              </Card>
+            </>
           ) : (
             selector ? (
               <TicketModal
@@ -299,14 +470,14 @@ function Operadora() {
               <Card
                 shadow="sm"
                 radius="sm"
-                mt={18}
+                mt={8}
                 mx={7}
                 w="84.1%"
                 bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
                 style={{
                   position: 'absolute',
                   top: 70,
-                  height: "calc(100vh - 7em)"
+                  height: "calc(100vh - 5.4em)"
                 }}
               >
                 <div
