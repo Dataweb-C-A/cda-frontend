@@ -170,10 +170,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
     }
   };
   
-  
-  
-  
-
   useEffect(() => {
     setCounter(0)
   }, [active])
@@ -240,6 +236,8 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                   </ActionIcon>
                 }
                 type="number"
+                min={1}
+                max={totalPages * 100}
                 value={searchTicket}
                 onChange={(event) => {
                   setSearchTicket(event.currentTarget.value);
