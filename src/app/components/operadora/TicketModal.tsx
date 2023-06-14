@@ -129,7 +129,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
     setActive([]);
     setSelectedTicket(null);
   };
-
+  
   const handleTickets = (register: number) => {
     const ticket = apiData.find((item) => item.place_number === register);
   
@@ -342,7 +342,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                           withBorder
                         >
                           <Paper shadow="sm" mb={0} style={{
-                            maxHeight: '21.5vh',
+                            maxHeight: '18.5vh',
                             overflowY: 'scroll',
                             scrollbarWidth: 'none',
                             scrollbarColor: 'transparent transparent',
@@ -458,32 +458,13 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                             }}
                             py={10}
                           />
-                          <Carousel slideSize="30%" height={100} slideGap="md" controlsOffset="xs" controlSize={28} loop >
-
-                            <Carousel.Slide>
-                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
-                            </Carousel.Slide>
-
-                            <Carousel.Slide>
-                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
-                            </Carousel.Slide>
-
-                            <Carousel.Slide>
-                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
-                            </Carousel.Slide>
-
-                            <Carousel.Slide>
-                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
-                            </Carousel.Slide>
-
-                            <Carousel.Slide>
-                              <Image maw={260} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
-                            </Carousel.Slide>
-
-                          </Carousel>
-
+                              <Image maw={110}  mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+              
+                            {/** info de rifas */}
                           <Text fw={700}>Sorteo</Text>
                           <Text mb={11}>Rifa de una moto</Text> {/*prize*/}
+                          <Text fw={700}>Tipo Sorteo</Text>
+                          <Text mb={11}>Terminal</Text> {/*prize*/}
                           <Text fw={700}>Inicio</Text>
                           <Text mb={11} >08/03/2023</Text> {/*open*/}
                           <Text fw={700}>Cierre</Text>

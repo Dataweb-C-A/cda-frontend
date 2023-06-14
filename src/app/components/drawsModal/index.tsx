@@ -529,6 +529,7 @@ const form = useForm({
                   <Dropzone
                     accept={IMAGE_MIME_TYPE}
                     multiple={true}
+                    maxFiles={1} 
                     onDrop={(files) => { 
                       form.getInputProps('award').onChange(files)
                       setFiles(files)
