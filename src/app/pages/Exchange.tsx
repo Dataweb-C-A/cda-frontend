@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
-import { Card, Grid, TextInput, Title, Text, Group, Modal, Button } from '@mantine/core'
+import { Card, Grid, NumberInput, Input, Title, Text, Group, Switch, Modal, Button } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
 import moment from 'moment'
 import TableSort from '../components/table'
@@ -15,12 +15,46 @@ function Exchange({ }: IExchange) {
   const [profiles, setProfiles] = useState([])
   const form = useForm({
     initialValues: {
-      email: '',
+      BS: '',
       termsOfService: false,
+      COP: '',
+      DOLLAR: '',
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      BS: (value) => {
+        if (!form.values.termsOfService) {
+          if (!value) {
+            return 'Variacion es requerida';
+          }
+          if (parseFloat(value) < 0) {
+            return 'La variacion no puede ser menor que 0';
+          }
+        }
+        return null;
+      },
+      COP: (value) => {
+        if (!form.values.termsOfService) {
+          if (!value) {
+            return 'Variacion es requerida';
+          }
+          if (parseFloat(value) < 0) {
+            return 'La variacion no puede ser menor que 0';
+          }
+        }
+        return null;
+      },
+      DOLLAR: (value) => {
+        if (!form.values.termsOfService) {
+          if (!value) {
+            return 'Variacion es requerida';
+          }
+          if (parseFloat(value) < 0) {
+            return 'La variacion no puede ser menor que 0';
+          }
+        }
+        return null;
+      },
     },
   });
   useEffect(() => {
@@ -75,7 +109,7 @@ function Exchange({ }: IExchange) {
               className="btn-rifa"
               onClick={open}
             >
-              Ver montos  
+              Ver montos
             </Button>
           </Grid.Col>
         </Grid>
@@ -94,18 +128,40 @@ function Exchange({ }: IExchange) {
         } />
       </Card>
       <Modal opened={opened} onClose={close} withCloseButton={false}>
-        <form onSubmit={form.onSubmit((values) => console.log(values))}>
-          <TextInput
-            placeholder="Variacion BsF"
-            label="Variacion BsF"
-            withAsterisk
-          />
-          <TextInput
-            placeholder="Variacion COP"
-            label="Variacion COP"
-            withAsterisk
-          />
-        </form>
+      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+  <Switch ml={250} label="Automatico" {...form.getInputProps('termsOfService')} />
+  <NumberInput
+    placeholder="Variacion BsF"
+    label="Variacion BsF"
+    withAsterisk
+    {...form.getInputProps('BS')}
+    hideControls
+    disabled={form.values.termsOfService}
+    value={form.values.termsOfService ? 5 : form.values.BS ? Number(form.values.BS) : undefined}
+  />
+  <NumberInput
+    placeholder="Variacion COP"
+    label="Variacion COP"
+    withAsterisk
+    hideControls
+    {...form.getInputProps('COP')}
+    disabled={form.values.termsOfService}
+    value={form.values.termsOfService ? 5 : form.values.COP ? Number(form.values.COP) : undefined}
+  />
+  <NumberInput
+    placeholder="Precio Dolar"
+    label="Precio Dolar"
+    withAsterisk
+    hideControls
+    {...form.getInputProps('DOLLAR')}
+    disabled={form.values.termsOfService}
+    value={form.values.termsOfService ? 5 : form.values.DOLLAR ? Number(form.values.DOLLAR) : undefined}
+  />
+
+  <Button mt={10} ml={150} type="submit">Submit</Button>
+</form>
+
+
       </Modal>
     </>
   )
