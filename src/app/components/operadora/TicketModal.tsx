@@ -190,6 +190,13 @@ function TicketModal({ tickets, draw_id }: modalProps) {
   const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
+  const deselectSoldTickets = () => {
+    setActive((prevActive) => prevActive.filter((item) => {
+      const ticket = apiData.find((apiItem) => apiItem.place_number === item);
+      return !ticket?.is_sold;
+    }));
+  };  
+  
   useEffect(() => {
     setTimeout(() => {
       fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
@@ -197,6 +204,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
         .then((data) => {
           setApiData(data.places);
           setTotalPages(data.metadata.pages);
+          deselectSoldTickets();
         })
         .catch((error) => {
           console.error('Error fetching API data:', error);
