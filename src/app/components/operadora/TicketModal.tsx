@@ -152,8 +152,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
     }
   };
   
-
-
   const searchTicketByNumber = () => {
     if (searchTicket.trim() === "") {
       return;
@@ -180,7 +178,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
       }
     }
   };
-  
   
   useEffect(() => {
     setCounter(0)
