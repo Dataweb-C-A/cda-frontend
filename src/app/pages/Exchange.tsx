@@ -128,38 +128,41 @@ function Exchange({ }: IExchange) {
         } />
       </Card>
       <Modal opened={opened} onClose={close} withCloseButton={false}>
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
-  <Switch ml={250} label="Automatico" {...form.getInputProps('termsOfService')} />
-  <NumberInput
-    placeholder="Variacion BsF"
-    label="Variacion BsF"
-    withAsterisk
-    {...form.getInputProps('BS')}
-    hideControls
-    disabled={form.values.termsOfService}
-    value={form.values.termsOfService ? 5 : form.values.BS ? Number(form.values.BS) : undefined}
-  />
-  <NumberInput
-    placeholder="Variacion COP"
-    label="Variacion COP"
-    withAsterisk
-    hideControls
-    {...form.getInputProps('COP')}
-    disabled={form.values.termsOfService}
-    value={form.values.termsOfService ? 5 : form.values.COP ? Number(form.values.COP) : undefined}
-  />
-  <NumberInput
-    placeholder="Precio Dolar"
-    label="Precio Dolar"
-    withAsterisk
-    hideControls
-    {...form.getInputProps('DOLLAR')}
-    disabled={form.values.termsOfService}
-    value={form.values.termsOfService ? 5 : form.values.DOLLAR ? Number(form.values.DOLLAR) : undefined}
-  />
+        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <Switch ml={250} label="Automatico" {...form.getInputProps('termsOfService')} />
+          <Title order={1} style={{ marginBottom: 0 }} ta="center">
+          Variacion 
+            </Title>
+          <NumberInput
+            placeholder="Variacion BsF"
+            label="Variacion BsF"
+            withAsterisk
+            {...form.getInputProps('BS')}
+            hideControls
+            disabled={form.values.termsOfService}
+            value={form.values.termsOfService ? 5 : form.values.BS ? Number(form.values.BS) : undefined}
+          />
+          <NumberInput
+            placeholder="Variacion COP"
+            label="Variacion COP"
+            withAsterisk
+            hideControls
+            {...form.getInputProps('COP')}
+            disabled={form.values.termsOfService}
+            value={form.values.termsOfService ? 5 : form.values.COP ? Number(form.values.COP) : undefined}
+          />
+          <NumberInput
+            placeholder="Precio Dolar"
+            label="Precio Dolar"
+            withAsterisk
+            hideControls
+            {...form.getInputProps('DOLLAR')}
+            disabled={form.values.termsOfService}
+            value={form.values.termsOfService ? 5 : form.values.DOLLAR ? Number(form.values.DOLLAR) : undefined}
+          />
 
-  <Button mt={10} ml={150} type="submit">Submit</Button>
-</form>
+          <Button mt={10} ml={150} type="submit">Submit</Button>
+        </form>
 
 
       </Modal>
