@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { BsFillPersonFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
-import { Button, Menu, Text, Input, Card, Grid,Spoiler, useMantineTheme, Modal, Title, ActionIcon, Group } from "@mantine/core"
+import { Button, Menu, Text, Input, Card, Grid, Spoiler, useMantineTheme, Modal, Title, ActionIcon, Group } from "@mantine/core"
 import { Sidebar } from "../sidebar"
 import "../../assets/scss/navbar.scss"
 import AvatarCard from "../avatarCard"
@@ -293,7 +293,6 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
             Taquilla Automatica - Jugadas
           </Text>
           <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
-
             fz="xs "
             fw={400}>
             Monto: 45$
@@ -304,8 +303,24 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
             1 , 2 ,5
           </Text>
           <Spoiler maxHeight={0} showLabel="ver mas" hideLabel="Ocultar" transitionDuration={0}>
-            
-    </Spoiler>
+
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Premio:   	  Moto Bera
+            </Text>
+
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Tipo:	          Terminal(00-99)
+            </Text>
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Agencia:    	  4 Bocas
+            </Text>
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Tipo sorteo:	  Progresivo
+            </Text><Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Fecha sorteo: 	  Por anunciar
+            </Text>
+
+          </Spoiler>
           <Group mt={10} grow spacing={3}>
             <Button size="xs" color="green">
               Imprimir <IconPrinter />
@@ -313,12 +328,162 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
             <Button size="xs" color="red">
               Eliminar <IconFileX />
             </Button>
-            <Button size="xs" color="yellow">
-              Ver
-            </Button>
+
           </Group>
         </Card>
 
+
+        <Card
+          mt={15  }
+          shadow="sm"
+          component="a"
+          target="_blank"
+        >
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+            fz="xl"
+            fw={700}>
+            Numero de Rifa #321
+          </Text>
+          <Grid>
+            <Grid.Col span={6} >
+              <Text
+                ta="center"
+                fz="xl"
+                fw={700}>
+                06/6/2023
+              </Text>
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <Text ta="center"
+                fz="xl"
+                fw={700}>
+                12:40pm
+              </Text>
+            </Grid.Col>
+          </Grid>
+
+
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+
+            fz="xs "
+            fw={400}>
+            Taquilla Automatica - Jugadas
+          </Text>
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+            fz="xs "
+            fw={400}>
+            Monto: 45$
+          </Text>
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+            fz="xs"
+            fw={700}>
+            1 , 2 ,5
+          </Text>
+          <Spoiler maxHeight={0} showLabel="ver mas" hideLabel="Ocultar" transitionDuration={0}>
+
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Premio:   	  Moto Bera
+            </Text>
+
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Tipo:	          Terminal(00-99)
+            </Text>
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Agencia:    	  4 Bocas
+            </Text>
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Tipo sorteo:	  Progresivo
+            </Text><Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Fecha sorteo: 	  Por anunciar
+            </Text>
+
+          </Spoiler>
+          <Group mt={10} grow spacing={3}>
+            <Button size="xs" color="green">
+              Imprimir <IconPrinter />
+            </Button>
+            <Button size="xs" color="red">
+              Eliminar <IconFileX />
+            </Button>
+
+          </Group>
+        </Card>
+
+        <Card
+          mt={15  }
+          shadow="sm"
+          component="a"
+          target="_blank"
+        >
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+            fz="xl"
+            fw={700}>
+            Numero de Rifa #321
+          </Text>
+          <Grid>
+            <Grid.Col span={6} >
+              <Text
+                ta="center"
+                fz="xl"
+                fw={700}>
+                06/6/2023
+              </Text>
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <Text ta="center"
+                fz="xl"
+                fw={700}>
+                12:40pm
+              </Text>
+            </Grid.Col>
+          </Grid>
+
+
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+
+            fz="xs "
+            fw={400}>
+            Taquilla Automatica - Jugadas
+          </Text>
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+            fz="xs "
+            fw={400}>
+            Monto: 45$
+          </Text>
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+            fz="xs"
+            fw={700}>
+            1 , 2 ,5
+          </Text>
+          <Spoiler maxHeight={0} showLabel="ver mas" hideLabel="Ocultar" transitionDuration={0}>
+
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Premio:   	  Moto Bera
+            </Text>
+
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Tipo:	          Terminal(00-99)
+            </Text>
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Agencia:    	  4 Bocas
+            </Text>
+            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Tipo sorteo:	  Progresivo
+            </Text><Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+              Fecha sorteo: 	  Por anunciar
+            </Text>
+
+          </Spoiler>
+          <Group mt={10} grow spacing={3}>
+            <Button size="xs" color="green">
+              Imprimir <IconPrinter />
+            </Button>
+            <Button size="xs" color="red">
+              Eliminar <IconFileX />
+            </Button>
+
+          </Group>
+        </Card>
       </Sidebar>
 
 
