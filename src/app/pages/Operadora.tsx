@@ -127,7 +127,7 @@ function Operadora() {
         }
         )
     }, 3000)
-  }, [setDraws])
+  }, [draws])
 
   const handleLobby = (id: number, connection: Date) => {
     return (

@@ -194,16 +194,18 @@ function TicketModal({ tickets, draw_id }: modalProps) {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setApiData(data.places);
-        setTotalPages(data.metadata.pages);
-      })
-      .catch((error) => {
-        console.error('Error fetching API data:', error);
+    setTimeout(() => {
+      fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setApiData(data.places);
+          setTotalPages(data.metadata.pages);
+        })
+        .catch((error) => {
+          console.error('Error fetching API data:', error);
       });
-  }, [currentPage]);
+    }, 500)
+  }, [currentPage, apiData]);
 
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
