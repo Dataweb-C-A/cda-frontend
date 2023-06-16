@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { BsFillPersonFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
-import { Button, Menu, Text, Input, Card, Grid, useMantineTheme, Modal, Title, ActionIcon } from "@mantine/core"
+import { Button, Menu, Text, Input, Card, Grid,Spoiler, useMantineTheme, Modal, Title, ActionIcon, Group } from "@mantine/core"
 import { Sidebar } from "../sidebar"
 import "../../assets/scss/navbar.scss"
 import AvatarCard from "../avatarCard"
@@ -256,21 +256,68 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
         }
         size="md"
       >
+        <Card
 
-        <Grid>
-          <Grid.Col span={6} >
-            <Button color="green">
-              Imprimir <IconPrinter/>
+          shadow="sm"
+          component="a"
+          target="_blank"
+        >
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+            fz="xl"
+            fw={700}>
+            Numero de Rifa #321
+          </Text>
+          <Grid>
+            <Grid.Col span={6} >
+              <Text
+                ta="center"
+                fz="xl"
+                fw={700}>
+                06/6/2023
+              </Text>
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <Text ta="center"
+                fz="xl"
+                fw={700}>
+                12:40pm
+              </Text>
+            </Grid.Col>
+          </Grid>
+
+
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+
+            fz="xs "
+            fw={400}>
+            Taquilla Automatica - Jugadas
+          </Text>
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+
+            fz="xs "
+            fw={400}>
+            Monto: 45$
+          </Text>
+          <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+            fz="xs"
+            fw={700}>
+            1 , 2 ,5
+          </Text>
+          <Spoiler maxHeight={0} showLabel="ver mas" hideLabel="Ocultar" transitionDuration={0}>
+            
+    </Spoiler>
+          <Group mt={10} grow spacing={3}>
+            <Button size="xs" color="green">
+              Imprimir <IconPrinter />
             </Button>
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Button color="red">
-              Borrar <IconFileX/>
+            <Button size="xs" color="red">
+              Eliminar <IconFileX />
             </Button>
-          </Grid.Col>
-        </Grid>
-
-
+            <Button size="xs" color="yellow">
+              Ver
+            </Button>
+          </Group>
+        </Card>
 
       </Sidebar>
 
