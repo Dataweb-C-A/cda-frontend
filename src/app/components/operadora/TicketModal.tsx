@@ -229,7 +229,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
       width: 'calc(100vw - 18rem)',
       scrollBehavior: 'smooth',
       height: "calc(100vh - 7.2em)",
-      top: 90,
+      top: 80,
       scrollbarWidth: 'none',
     }}>
       <Group>

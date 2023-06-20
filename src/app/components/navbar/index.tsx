@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { BsFillPersonFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
-import { Button, Menu, Text, Input, Card, Grid, Spoiler, useMantineTheme, Modal, Title, ActionIcon, Group } from "@mantine/core"
+import { Button, Menu, Text, Input, Card, Grid, Indicator, Spoiler, useMantineTheme, Modal, Title, ActionIcon, Group } from "@mantine/core"
 import { Sidebar } from "../sidebar"
 import "../../assets/scss/navbar.scss"
 import AvatarCard from "../avatarCard"
@@ -161,10 +161,14 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
           />
         </Button>
         <Button className={`button-inbox ${expandScreen ? "button-users-expandScreen" : ""}`} onClick={() => setDrawer(true)}>
-          <IconBellRingingFilled className="user-icon"
-            style={{
-              color: theme.colorScheme === "dark" ? '#fff' : '#202020'
-            }} />
+
+          <Indicator inline size={11} processing offset={4} position="bottom-end" color="blue" withBorder>
+
+            <IconBellRingingFilled className="user-icon"
+              style={{
+                color: theme.colorScheme === "dark" ? '#fff' : '#202020'
+              }} />
+          </Indicator>
         </Button>
 
 
@@ -334,7 +338,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
 
 
         <Card
-          mt={15  }
+          mt={15}
           shadow="sm"
           component="a"
           target="_blank"
@@ -410,7 +414,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
         </Card>
 
         <Card
-          mt={15  }
+          mt={15}
           shadow="sm"
           component="a"
           target="_blank"
