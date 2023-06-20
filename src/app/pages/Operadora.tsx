@@ -413,7 +413,7 @@ function Operadora() {
                   </Text>
                   <Grid>
                     <Grid.Col span={8}>
-                      <Progress value={Number(card.progress.current)} color="green" label={`${card.progress.current}%`} size="xl" mt={7} />
+                      <Progress value={Number(card.progress.current)} color="green" label={`${card.progress.current.toFixed(0)}%`} size="xl" mt={7} />
                     </Grid.Col>
                     <Grid.Col span={4}>
                       <Badge variant="filled" color={card.is_active ? 'green' : 'red'} size="xs" radius={4}>
