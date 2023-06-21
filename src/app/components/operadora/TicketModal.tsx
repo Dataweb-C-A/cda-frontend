@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Pagination, ActionIcon, Input, Modal, Text, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
+import { Card, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
@@ -7,6 +7,7 @@ import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch 
 import { useDispatch } from 'react-redux';
 import { setLobbyMode } from '../../config/reducers/lobbySlice';
 
+import { useForm } from '@mantine/form';
 type clientProps = {
   name: string
   lastname: string
@@ -38,11 +39,50 @@ function formatPlace(place: number): string {
 }
 
 function TicketModal({ tickets, draw_id }: modalProps) {
+
+  const [activex, setActivex] = useState(0);
+  const nextStep = () => setActivex((current) => (current < 3 ? current + 1 : current));
+  const prevStep = () => setActivex((current) => (current > 0 ? current - 1 : current));
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
   const [pages, setPages] = useState<number>(0)
   const elementRef = useRef<HTMLDivElement>(null)
 
+  const form = useForm({
+    initialValues: {
+      name: '',
+      lastn: '',
+      cedula: '',
+      phone: ''
+    },
+
+    validate: {
+      name: (value) => {
+        if (!value.trim()) {
+          return 'El nombre es requerido';
+        }
+        return null;
+      },
+      lastn: (value) => {
+        if (!value.trim()) {
+          return 'El apellido es requerido';
+        }
+        return null;
+      },
+      cedula: (value) => {
+        if (!value.trim()) {
+          return 'La cédula es requerida';
+        }
+        return null;
+      },
+      phone: (value) => {
+        if (!value.trim()) {
+          return 'El número de teléfono es requerido';
+        }
+        return null;
+      },
+    },
+  });
   const theme = useMantineTheme()
 
   const dispatch = useDispatch()
@@ -121,7 +161,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
     },
   }))
   const [searchTicket, setSearchTicket] = useState("");
-
   const { classes, cx } = useStyles()
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -129,40 +168,40 @@ function TicketModal({ tickets, draw_id }: modalProps) {
     setActive([]);
     setSelectedTicket(null);
   };
-  
+
   const handleTickets = (register: number) => {
     const ticket = apiData.find((item) => item.place_number === register);
-  
+
     if (ticket && ticket.is_sold) {
-      return; 
+      return;
     }
-  
+
     if (active.includes(register)) {
       setActive(active.filter((item) => item !== register));
     } else {
       setActive(active.concat(register));
     }
     setCounter(counter + 1);
-  
+
     setSelectedTicket(ticket || null);
-  
+
     const currentPageContainsTicket = Math.ceil(register / 100) === currentPage;
     if (!currentPageContainsTicket) {
       setCurrentPage(Math.ceil(register / 100));
     }
   };
-  
+
   const searchTicketByNumber = () => {
     if (searchTicket.trim() === "") {
       return;
     }
-  
+
     const ticketNumber = parseInt(searchTicket);
     if (isNaN(ticketNumber) || ticketNumber < 1 || ticketNumber > 1000) {
       setSearchTicket("");
       return;
     }
-  
+
     const ticket = apiData.find((item) => item.place_number === ticketNumber);
     if (ticket) {
       handleTickets(ticket.place_number);
@@ -178,7 +217,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
       }
     }
   };
-  
+
   useEffect(() => {
     setCounter(0)
   }, [active])
@@ -195,8 +234,8 @@ function TicketModal({ tickets, draw_id }: modalProps) {
       const ticket = apiData.find((apiItem) => apiItem.place_number === item);
       return !ticket?.is_sold;
     }));
-  };  
-  
+  };
+
   useEffect(() => {
     setTimeout(() => {
       fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
@@ -208,13 +247,13 @@ function TicketModal({ tickets, draw_id }: modalProps) {
         })
         .catch((error) => {
           console.error('Error fetching API data:', error);
-      });
+        });
     }, 500)
   }, [currentPage, apiData]);
 
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
-    setCurrentPage(randomPage); 
+    setCurrentPage(randomPage);
     const response = await fetch(`http://localhost:3000/places?id=${draw_id}&page=${randomPage}`);
     const data = await response.json();
     const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
@@ -222,7 +261,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
     const randomTicket = availableTickets[randomTicketIndex];
     setActive([...active, randomTicket.place_number]);
   };
-  
+
   return (
     <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} ml={10} ref={elementRef} style={{
       position: 'absolute',
@@ -390,67 +429,113 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                             >
                               Selecciona moneda y compra
                             </Button>
+
+
                             {/** modal compra */}
+
+
                             <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
-                              <Group position='apart'>
-                                <Title ta="end">$ {2.5 * active.length}</Title>
-                                <Checkbox
-                                  checked={checkedIndex === 0}
-                                  onChange={() => {
-                                    setCheckedIndex(0);
-                                    setIsChecked(true);
-                                  }}
-                                />
-                              </Group>
-                              <Group position='apart'>
-                                <Title ta="end">
-                                  Bs.D {((2.5 * active.length) * 25.75).toFixed(2)}
-                                </Title>
-                                <Checkbox
-                                  checked={checkedIndex === 1}
-                                  onChange={() => {
-                                    setCheckedIndex(1);
-                                    setIsChecked(true);
-                                  }}
-                                />
-                              </Group>
-                              <Group position='apart'>
-                                <Title ta="end">
-                                  COP {((2.5 * active.length) * 4500).toFixed(2)}
-                                </Title>
-                                <Checkbox
-                                  checked={checkedIndex === 2}
-                                  onChange={() => {
-                                    setCheckedIndex(2);
-                                    setIsChecked(true);
-                                  }}
-                                />
-                              </Group>
-                              <Text mt={8} mb={5} ta="center">Personalizar compra (Opcional)</Text>
-                              <Group grow>
-                                <TextInput label="Nombre" placeholder="Nombre" />
-                                <TextInput label="Apellido" placeholder="Apellido" />
-                              </Group>
-                              <Group grow>
-                                <TextInput mt={10} label="Cédula" placeholder="Cédula" />
-                                <TextInput mt={10} label="Teléfono" placeholder="Teléfono" />
-                              </Group>
-                              <Button
-                                variant="filled"
-                                color="blue"
-                                mt={30}
-                                style={{ width: '100%' }}
-                                onClick={() => {
-                                  if (isChecked) {
-                                    setModalOpen(true);
-                                  } else {
-                                    alert("Selecciona un monto");
-                                  }
-                                }}
-                                disabled={!isChecked}
-                              >
-                                Comprar
-                              </Button>
+
+                              <Stepper active={activex} onStepClick={setActivex} breakpoint="sm">
+                                <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
+                                  <Group grow>
+                                    <TextInput
+                                      label="Nombre"
+                                      placeholder="Nombre"
+                                      {...form.getInputProps('name')}
+                                    />
+                                    <TextInput
+                                      label="Apellido"
+                                      placeholder="Apellido"
+                                      {...form.getInputProps('lastn')}
+                                    />
+                                  </Group>
+                                  <Group grow>
+                                    <TextInput
+                                      mt={10}
+                                      label="Cédula"
+                                      placeholder="Cédula"
+                                      {...form.getInputProps('cedula')}
+                                    />
+                                    <TextInput
+                                      mt={10}
+                                      label="Teléfono"
+                                      placeholder="Teléfono"
+                                      {...form.getInputProps('phone')}
+                                    />
+                                  </Group>
+                                  <Group position="center" mt="xl">
+                                    <Button variant="default" onClick={prevStep}>
+                                      Back
+                                    </Button>
+                                    <Button type="submit">Next step</Button>
+                                  </Group>
+                                </Stepper.Step>
+
+                                <Stepper.Step label="Moneda" description="Elija el tipo de moneda">
+                                  <Group position='apart'>
+                                    <Title ta="end">$ {2.5 * active.length}</Title>
+                                    <Checkbox
+                                      checked={checkedIndex === 0}
+                                      onChange={() => {
+                                        setCheckedIndex(0);
+                                        setIsChecked(true);
+                                      }}
+                                    />
+                                  </Group>
+                                  <Group position='apart'>
+                                    <Title ta="end">
+                                      Bs.D {((2.5 * active.length) * 25.75).toFixed(2)}
+                                    </Title>
+                                    <Checkbox
+                                      checked={checkedIndex === 1}
+                                      onChange={() => {
+                                        setCheckedIndex(1);
+                                        setIsChecked(true);
+                                      }}
+                                    />
+                                  </Group>
+                                  <Group position='apart'>
+                                    <Title ta="end">
+                                      COP {((2.5 * active.length) * 4500).toFixed(2)}
+                                    </Title>
+                                    <Checkbox
+                                      checked={checkedIndex === 2}
+                                      onChange={() => {
+                                        setCheckedIndex(2);
+                                        setIsChecked(true);
+                                      }}
+                                    />
+                                  </Group>
+
+                                  <Group position="center" mt="xl">
+                                    <Button variant="default" onClick={prevStep}>Back</Button>
+                                    <Button onClick={nextStep}>Next step</Button>
+                                  </Group>
+                                </Stepper.Step>
+
+                                <Stepper.Completed>
+                                  <Button
+                                    variant="filled"
+                                    color="blue"
+                                    mt={30}
+                                    style={{ width: '100%' }}
+                                    onClick={() => {
+                                      if (isChecked) {
+                                        setModalOpen(true);
+                                      } else {
+                                        alert("Selecciona un monto");
+                                      }
+                                    }}
+                                    disabled={!isChecked}
+                                  >
+                                    Comprar
+                                  </Button>
+                                </Stepper.Completed>
+                              </Stepper>
+
+
+
                             </Modal>
                           </div>
 
@@ -465,9 +550,9 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                             }}
                             py={10}
                           />
-                              <Image maw={110}  mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
-              
-                            {/** info de rifas */}
+                          <Image maw={110} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+
+                          {/** info de rifas */}
                           <Text fw={700}>Sorteo</Text>
                           <Text mb={11}>Rifa de una moto</Text> {/*prize*/}
                           <Text fw={700}>Tipo Sorteo</Text>
