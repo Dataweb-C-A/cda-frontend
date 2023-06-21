@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { BsFillPersonFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
-import { Button, Menu, Text, Input, Card, Grid, Indicator, Spoiler, useMantineTheme, Modal, Title, ActionIcon, Group } from "@mantine/core"
+import { Button, Menu, Text, Input, Card, Grid, Indicator,ScrollArea, Spoiler, useMantineTheme, Modal, Title, ActionIcon, Group } from "@mantine/core"
 import { Sidebar } from "../sidebar"
 import "../../assets/scss/navbar.scss"
 import AvatarCard from "../avatarCard"
@@ -259,7 +259,10 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
           </Text>
         }
         size="md"
-      >
+      > 
+      
+      <ScrollArea h={800} type="never">
+
         <Card
 
           shadow="sm"
@@ -488,6 +491,10 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
 
           </Group>
         </Card>
+        </ScrollArea>
+        <Button mt={10} size="xs" fullWidth color="green" >
+          Imprimir <IconPrinter />
+        </Button>
       </Sidebar>
 
 
