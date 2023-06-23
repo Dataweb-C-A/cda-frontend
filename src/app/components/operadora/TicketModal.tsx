@@ -269,7 +269,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
 
   useEffect(() => {
     setTimeout(() => {
-      fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
+      fetch(`http://137.184.93.36/places?id=${draw_id}&page=${currentPage}`)
         .then((response) => response.json())
         .then((data) => {
           setApiData(data.places);
@@ -285,7 +285,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
     setCurrentPage(randomPage);
-    const response = await fetch(`http://localhost:3000/places?id=${draw_id}&page=${randomPage}`);
+    const response = await fetch(`http://137.184.93.36/places?id=${draw_id}&page=${randomPage}`);
     const data = await response.json();
     const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
     const randomTicketIndex = Math.floor(Math.random() * availableTickets.length);
