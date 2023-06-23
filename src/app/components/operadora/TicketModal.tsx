@@ -469,9 +469,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
 
                               <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
                                 <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
-                                <form onSubmit={onSubmit}>
-
-
+                                <form onSubmit={form.onSubmit(onSubmit)}>
                                     <Group grow>
                                       <TextInput
                                         label="Nombre"
