@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
+import { Card, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
@@ -40,13 +40,42 @@ function formatPlace(place: number): string {
 
 function TicketModal({ tickets, draw_id }: modalProps) {
 
-  const [activex, setActivex] = useState(0);
-  const nextStep = () => setActivex((current) => (current < 3 ? current + 1 : current));
-  const prevStep = () => setActivex((current) => (current > 0 ? current - 1 : current));
+
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
   const [pages, setPages] = useState<number>(0)
   const elementRef = useRef<HTMLDivElement>(null)
+
+  const [activex, setActivex] = useState(0);
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const nextStep = () => {
+    if (form.isValid()) {
+      setActivex((current) => (current < 3 ? current + 1 : current));
+    }
+  };
+  const [formValues, setFormValues] = useState({});
+
+
+  const prevStep = () => setActivex((current) => (current > 0 ? current - 1 : current));
+  type FormValues = {
+    name: string;
+    lastn: string;
+    cedula: string;
+    phone: string;
+  };
+
+  const onSubmit = (values: FormValues) => {
+    const isFormValid = Object.values(form.errors).every((error) => error === null);
+    setIsFormValid(isFormValid);
+
+    if (isFormValid) {
+      setFormValues(values);
+      console.log(values);
+    }
+  };
+
+
 
   const form = useForm({
     initialValues: {
@@ -55,7 +84,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
       cedula: '',
       phone: ''
     },
-
     validate: {
       name: (value) => {
         if (!value.trim()) {
@@ -76,13 +104,15 @@ function TicketModal({ tickets, draw_id }: modalProps) {
         return null;
       },
       phone: (value) => {
-        if (!value.trim()) {
+        const phoneNumber = parseInt(value, 10);
+        if (isNaN(phoneNumber)) {
           return 'El número de teléfono es requerido';
         }
         return null;
       },
     },
   });
+
   const theme = useMantineTheme()
 
   const dispatch = useDispatch()
@@ -219,8 +249,9 @@ function TicketModal({ tickets, draw_id }: modalProps) {
   };
 
   useEffect(() => {
-    setCounter(0)
-  }, [active])
+    setCounter(0);
+  }, [active, formValues]);
+
 
   const [checkedIndex, setCheckedIndex] = useState(-1);
   const [isChecked, setIsChecked] = useState(false);
@@ -436,40 +467,45 @@ function TicketModal({ tickets, draw_id }: modalProps) {
 
                             <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
 
-                              <Stepper active={activex} onStepClick={setActivex} breakpoint="sm">
+                              <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
                                 <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
-                                  <Group grow>
-                                    <TextInput
-                                      label="Nombre"
-                                      placeholder="Nombre"
-                                      {...form.getInputProps('name')}
-                                    />
-                                    <TextInput
-                                      label="Apellido"
-                                      placeholder="Apellido"
-                                      {...form.getInputProps('lastn')}
-                                    />
-                                  </Group>
-                                  <Group grow>
-                                    <TextInput
-                                      mt={10}
-                                      label="Cédula"
-                                      placeholder="Cédula"
-                                      {...form.getInputProps('cedula')}
-                                    />
-                                    <TextInput
-                                      mt={10}
-                                      label="Teléfono"
-                                      placeholder="Teléfono"
-                                      {...form.getInputProps('phone')}
-                                    />
-                                  </Group>
-                                  <Group position="center" mt="xl">
-                                    <Button variant="default" onClick={prevStep}>
-                                      Back
-                                    </Button>
-                                    <Button type="submit">Next step</Button>
-                                  </Group>
+                                <form onSubmit={onSubmit}>
+
+
+                                    <Group grow>
+                                      <TextInput
+                                        label="Nombre"
+                                        placeholder="Nombre"
+                                        {...form.getInputProps('name')}
+                                      />
+                                      <TextInput
+                                        label="Apellido"
+                                        placeholder="Apellido"
+                                        {...form.getInputProps('lastn')}
+                                      />
+                                    </Group>
+                                    <Group grow>
+                                      <TextInput
+                                        mt={10}
+                                        label="Cédula"
+                                        placeholder="Cédula"
+                                        {...form.getInputProps('cedula')}
+                                      />
+                                      <NumberInput
+                                        mt={10}
+                                        label="Teléfono"
+                                        placeholder="Teléfono"
+                                        {...form.getInputProps('phone')}
+                                        hideControls
+                                      />
+                                    </Group>
+                                    <Group position="center" mt="xl">
+                                      <Button variant="default" onClick={prevStep}>
+                                        Back
+                                      </Button>
+                                      <Button onClick={nextStep} type="submit">Next step</Button>
+                                    </Group>
+                                  </form>
                                 </Stepper.Step>
 
                                 <Stepper.Step label="Moneda" description="Elija el tipo de moneda">
@@ -510,7 +546,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
 
                                   <Group position="center" mt="xl">
                                     <Button variant="default" onClick={prevStep}>Back</Button>
-                                    <Button onClick={nextStep}>Next step</Button>
+                                    <Button onClick={nextStep} type="submit">Next step</Button>
                                   </Group>
                                 </Stepper.Step>
 
@@ -533,8 +569,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                                   </Button>
                                 </Stepper.Completed>
                               </Stepper>
-
-
 
                             </Modal>
                           </div>
