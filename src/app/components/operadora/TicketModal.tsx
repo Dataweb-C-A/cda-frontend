@@ -85,34 +85,32 @@ function TicketModal({ tickets, draw_id }: modalProps) {
       phone: ''
     },
     validate: {
-      name: (value) => {
-        if (!value.trim()) {
+      name: (value, values) => {
+        if (Object.values(values).some(val => val.trim()) && !value.trim()) {
           return 'El nombre es requerido';
         }
         return null;
       },
-      lastn: (value) => {
-        if (!value.trim()) {
+      lastn: (value, values) => {
+        if (Object.values(values).some(val => val.trim()) && !value.trim()) {
           return 'El apellido es requerido';
         }
         return null;
       },
-      cedula: (value) => {
-        if (!value.trim()) {
+      cedula: (value, values) => {
+        if (Object.values(values).some(val => val.trim()) && !value.trim()) {
           return 'La cédula es requerida';
         }
         return null;
       },
-      phone: (value) => {
-        const phoneNumber = parseInt(value, 10);
-        if (isNaN(phoneNumber)) {
+      phone: (value, values) => {
+        if (Object.values(values).some(val => val.trim()) && isNaN(parseInt(value, 10))) {
           return 'El número de teléfono es requerido';
         }
         return null;
       },
     },
   });
-
   const theme = useMantineTheme()
 
   const dispatch = useDispatch()
@@ -469,7 +467,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
 
                               <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
                                 <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
-                                <form onSubmit={form.onSubmit(onSubmit)}>
+                                  <form onSubmit={form.onSubmit(onSubmit)}>
                                     <Group grow>
                                       <TextInput
                                         label="Nombre"
