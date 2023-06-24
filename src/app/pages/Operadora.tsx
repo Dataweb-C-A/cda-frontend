@@ -223,7 +223,7 @@ function Operadora() {
           </div>
         </Card>
       ) : (
-        <Navbar profiles={profiles} links={links} />
+        JSON.parse(localStorage.user).role === 'Auto' ? null : (<Navbar profiles={profiles} links={links} />)
       )
     }
       <div>
