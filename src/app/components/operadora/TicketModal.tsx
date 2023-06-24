@@ -463,7 +463,12 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                             {/** modal compra */}
 
 
-                            <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
+                            <Modal opened={modalOpen} onClose={() => {
+                              setModalOpen(false);
+                              setActivex(0);
+                              setIsChecked(false);
+                              setCheckedIndex(-1);
+                            }}>
 
                               <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
                                 <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
@@ -497,9 +502,11 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                                     </Group>
                                     <Group position="center" mt="xl">
                                       <Button variant="default" onClick={prevStep}>
-                                        Back
+                                        Atras
                                       </Button>
-                                      <Button onClick={nextStep} type="submit">Next step</Button>
+                                      <Button onClick={nextStep} type="submit">
+                                        Siguiente
+                                      </Button>
                                     </Group>
                                   </form>
                                 </Stepper.Step>
@@ -541,8 +548,21 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                                   </Group>
 
                                   <Group position="center" mt="xl">
-                                    <Button variant="default" onClick={prevStep}>Back</Button>
-                                    <Button onClick={nextStep} type="submit">Next step</Button>
+                                    <Button variant="default" onClick={prevStep}>
+                                      Atras
+                                    </Button>
+
+                                    <Button
+                                      type="submit"
+                                      onClick={() => {
+                                        if (isChecked) {
+                                          setModalOpen(true);
+                                          nextStep();
+                                        }
+                                      }}
+                                      disabled={!isChecked}>
+                                      Siguiente
+                                    </Button>
                                   </Group>
                                 </Stepper.Step>
 
@@ -552,14 +572,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                                     color="blue"
                                     mt={30}
                                     style={{ width: '100%' }}
-                                    onClick={() => {
-                                      if (isChecked) {
-                                        setModalOpen(true);
-                                      } else {
-                                        alert("Selecciona un monto");
-                                      }
-                                    }}
-                                    disabled={!isChecked}
+
                                   >
                                     Comprar
                                   </Button>
