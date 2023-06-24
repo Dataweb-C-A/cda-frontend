@@ -8,6 +8,7 @@ import {
   Input,
   Group,
   Button,
+  Pagination
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 import FormModal from "../formModal";
@@ -84,45 +85,24 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const getData = () => {
-    axios.get(`https://rifa-max.com/api/v1/rifas/actives_pagy?page=${pageNumber}`, {
+  const getData = (page: number) => {
+    axios.get(`https://rifa-max.com/api/v1/rifas/actives_pagy?page=${page}`, {
       headers: {
         ContentType: 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((response) => {
       setLoading(false);
-      setTickets((prev) => [...prev, ...response.data.records]);
+      setTickets(response.data.records);
+      setTotalPages(response.data.pagy.pages)
     }).catch((error) => {
       console.log(error);
     });
   }
 
-  const closeForm = () => {
-    setPageNumber(1)
-    setOpenForm(false)
-  }
-const handleScrollEvent = async () =>{
-  const totalHeight = document.documentElement.scrollHeight;
-  const innerHeight = window.innerHeight;
-  const scrollTop = document.documentElement.scrollTop;
-
-  try{
-    if (innerHeight + scrollTop + 1 >= totalHeight){
-      setPageNumber((prev) => prev + 1)
-    }
-  } catch (err) {
-
-console. log(err)
-  }
-} 
-useEffect(() => {
-window.addEventListener("scroll", handleScrollEvent)
-
-return () => window.removeEventListener("scroll", handleScrollEvent)
-},[])
   const history = useHistory();
 
   function compareById(a: IRifas, b: IRifas) {
@@ -144,28 +124,34 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
   }, [])
 
   useEffect(() => {
-    getData()
+    getData(pageNumber);
   }, [pageNumber, openForm])
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
-  
-  // filtra las rifas según el valor de búsqueda
+
   const filteredTickets = tickets.filter((ticket) => {
-    // si el valor de búsqueda es vacío, muestra todas las rifas
     if (!searchValue) {
       return true;
     }
-    // convierte los atributos a buscar a minúsculas para realizar una comparación insensible a mayúsculas
     const searchString = searchValue.toLowerCase();
     const awardSign = ticket.awardSign?.toLowerCase() || "";
     const riferoName = ticket.user.name.toLowerCase() || "";
     const awardNoSign = ticket.awardNoSign?.toLowerCase() || "";
-    // retorna verdadero si el valor de búsqueda se encuentra en al menos uno de los atributos
     return awardSign.includes(searchString) || riferoName.includes(searchString) || awardNoSign.includes(searchString);
   });
-  
+
+  const handlePreviousPage = () => {
+    if (pageNumber > 1) {
+      setPageNumber(pageNumber - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    setPageNumber(pageNumber + 1);
+  };
+
   return (
     <>
       {
@@ -179,8 +165,8 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
         ) : (
           <>
             {
-              helpModal && 
-              <HelpModalBody 
+              helpModal &&
+              <HelpModalBody
                 open={helpModal}
                 onClose={() => setHelpModal(false)}
               />
@@ -213,7 +199,7 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
                     style={{ float: "right" }}
                     className="btn-rifa"
                     onClick={() => setOpenForm(!openForm)}
-                    onClose={() => closeForm()}
+                    onClose={() => setOpenForm(false)}
                     open={openForm}
                   >
                     Agregar Rifa
@@ -223,11 +209,11 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
               {
                 tickets.length === 0 &&
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
-                  <Loader size="lg" />
+                  <Text>No hay resultados</Text>
                 </div>
               }
               {
-                tickets.length > 0 ? (
+                tickets.length > 0 && (
                   <>
                     {filteredTickets.sort(compareById).map((ticket: IRifas) => {
                       return (
@@ -263,18 +249,16 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
                           <RifaTicket
                             ticket={ticket}
                           />
-                          
                         </AccordionList>
                       )
                     })}
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80px" }}>
-                      <Loader size="lg" />
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
+                      <Pagination
+                        total={totalPages} 
+                        onChange={(newPageNumber) => setPageNumber(newPageNumber)}
+                      />
                     </div>
                   </>
-                ) : (
-                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
-                    <Text size="xl">No hay resultados</Text>
-                  </div>
                 )
               }
             </Card>
@@ -285,4 +269,4 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
   )
 }
 
-export default Dashboard
+export default Dashboard;
