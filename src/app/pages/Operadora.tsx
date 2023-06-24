@@ -69,6 +69,44 @@ function Operadora() {
   const [draws, setDraws] = useState<IDraws[] | []>([])
   const [profiles, setProfiles] = useState([])
   const [loading, setLoading] = useState(true)
+  const [drawSelected, setDrawSelected] = useState<IDraws>({
+    id: 0,
+    title: '',
+    first_prize: '',
+    second_prize: null,
+    adnoucement: '',
+    award_images: [],
+    uniq: null,
+    init_date: '',
+    expired_date: '',
+    numbers: 0,
+    tickets_count: 0,
+    loteria: '',
+    has_winners: false,
+    progress: {
+      sold: 0,
+      available: 0,
+      current: 0
+    },
+    is_active: false,
+    first_winner: null,
+    second_winner: null,
+    draw_type: '',
+    limit: 0,
+    price_unit: 0,
+    money: '',
+    owner: {
+      id: 0,
+      user_id: 0,
+      name: '',
+      role: '',
+      email: '',
+      created_at: '',
+      updated_at: ''
+    },
+    created_at: '',
+    updated_at: ''
+  })
 
   const selector = useSelector((state: any) => state.lobby.open)
 
@@ -140,7 +178,7 @@ function Operadora() {
     )
   }
 
-  const BadgeStatus = ({ status, color, lobby_id }: { status: string, color: string, lobby_id: number }) => {
+  const BadgeStatus = ({ draw, lobby_id }: { draw: IDraws, lobby_id: number }) => {
 
     const useStyles = createStyles((theme) => ({
       trigger: {
@@ -165,6 +203,7 @@ function Operadora() {
               dispatch(
                 setLobbyMode(!selector)
               )
+              setDrawSelected(draw)
               setLobbyState({
                 open: !lobbyState.open,
                 lobby_id: lobby_id,
@@ -399,7 +438,7 @@ function Operadora() {
                   shadow={"0 0 7px 0 #5f5f5f3d"}
                   bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
                 >
-                  <BadgeStatus status={"Cerrado"} color={"green"} lobby_id={card.id} />
+                  <BadgeStatus draw={card} lobby_id={card.id} />
                   <Text mt={2} fw={500} fz={10} mb={4}>
                     {card.first_prize}
                   </Text>
@@ -462,10 +501,8 @@ function Operadora() {
           ) : (
             selector ? (
               <TicketModal
-                tickets={tickets}
                 draw_id={lobbyState.lobby_id}
               />
-              // <></>
             ) : (
               <Card
                 shadow="sm"

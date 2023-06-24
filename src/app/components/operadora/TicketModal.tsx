@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { Card, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
+import axios from 'axios';
 import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
 import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import { useDispatch } from 'react-redux';
 import { setLobbyMode } from '../../config/reducers/lobbySlice';
-
 import { useForm } from '@mantine/form';
+
 type clientProps = {
   name: string
   lastname: string
@@ -21,9 +22,54 @@ type ticketProps = {
   soldTo?: clientProps | undefined
 }
 
+interface IDraws {
+  id: number;
+  title: string;
+  first_prize: string;
+  second_prize: null | string;
+  adnoucement: string;
+  award_images: string[];
+  uniq: null;
+  init_date: string;
+  expired_date: string;
+  numbers: number;
+  tickets_count: number;
+  loteria: string;
+  has_winners: boolean;
+  progress: {
+    sold: number;
+    available: number;
+    current: number;
+  };
+  is_active: boolean;
+  first_winner: null | string;
+  second_winner: null | string;
+  draw_type: string;
+  limit: number;
+  price_unit: number;
+  money: string;
+  owner: {
+    id: number;
+    user_id: number;
+    name: string;
+    role: string;
+    email: string;
+    created_at: string;
+    updated_at: string;
+  };
+  created_at: string;
+  updated_at: string;
+}
+
+type FormValues = {
+  name: string;
+  lastn: string;
+  cedula: string;
+  phone: string;
+};
+
 type modalProps = {
   draw_id: number
-  tickets: ticketProps[]
 }
 
 function formatPlace(place: number): string {
@@ -38,16 +84,61 @@ function formatPlace(place: number): string {
   }
 }
 
-function TicketModal({ tickets, draw_id }: modalProps) {
-
-
+function TicketModal({ draw_id }: modalProps) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
   const [pages, setPages] = useState<number>(0)
+  const [draws, setDraws] = useState<IDraws>({
+    id: 0,
+    title: '',
+    first_prize: '',
+    second_prize: null,
+    adnoucement: '',
+    award_images: [],
+    uniq: null,
+    init_date: '',
+    expired_date: '',
+    numbers: 0,
+    tickets_count: 0,
+    loteria: '',
+    has_winners: false,
+    progress: {
+      sold: 0,
+      available: 0,
+      current: 0
+    },
+    is_active: false,
+    first_winner: null,
+    second_winner: null,
+    draw_type: '',
+    limit: 0,
+    price_unit: 0,
+    money: '',
+    owner: {
+      id: 0,
+      user_id: 0,
+      name: '',
+      role: '',
+      email: '',
+      created_at: '',
+      updated_at: ''
+    },
+    created_at: '',
+    updated_at: ''
+  })
   const elementRef = useRef<HTMLDivElement>(null)
 
   const [activex, setActivex] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    axios.get(`http://localhost:3000/draws_finder?id=${draw_id}`)
+      .then(res => {
+        setDraws(res.data)
+        setPages(Math.ceil(res.data.tickets_count / 6))
+      })
+      .catch(err => console.log(err))
+  }, [])
 
   const nextStep = () => {
     if (form.isValid()) {
@@ -58,12 +149,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
 
 
   const prevStep = () => setActivex((current) => (current > 0 ? current - 1 : current));
-  type FormValues = {
-    name: string;
-    lastn: string;
-    cedula: string;
-    phone: string;
-  };
 
   const onSubmit = (values: FormValues) => {
     const isFormValid = Object.values(form.errors).every((error) => error === null);
@@ -74,8 +159,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
       console.log(values);
     }
   };
-
-
 
   const form = useForm({
     initialValues: {
@@ -401,7 +484,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
             {
               active.length % 1 || active.length === 0 ? (
                 <>
-                  <Title order={3} mt="50%" ta="center">Debe seleccionar Numero para jugar</Title>
+                  <Title order={3} mt="50%" ta="center">Debe seleccionar numero para jugar</Title>
                   <IconSearch style={{
                     margin: '20px 0 0 37%',
                   }} size={100} />
@@ -432,7 +515,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                             <Divider my={7} label="Jugadas" labelPosition='center' />
                             {
                               active.map((item, index) => (
-                                <Title order={5} ta="center" key={index}>{formatPlace(item)} 2.5$ - Una moto - Sorteo 001</Title>
+                                <Title order={5} ta="center" key={index}>{formatPlace(item)} - {draws.title} - {draws.price_unit}$</Title>
                               )).reverse()
                             }
                           </Paper>
@@ -458,19 +541,17 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                             >
                               Selecciona moneda y compra
                             </Button>
-
-
                             {/** modal compra */}
-
-
-                            <Modal opened={modalOpen} onClose={() => {
-                              setModalOpen(false);
-                              setActivex(0);
-                              setIsChecked(false);
-                              setCheckedIndex(-1);
-                              form.reset();
-                            }}>
-
+                            <Modal 
+                              opened={modalOpen} 
+                              onClose={() => {
+                                setModalOpen(false);
+                                setActivex(0);
+                                setIsChecked(false);
+                                setCheckedIndex(-1);
+                                form.reset();
+                              }}
+                            >
                               <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
                                 <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
                                   <form onSubmit={form.onSubmit(onSubmit)}>
@@ -511,7 +592,6 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                                     </Group>
                                   </form>
                                 </Stepper.Step>
-
                                 <Stepper.Step label="Moneda" description="Elija el tipo de moneda">
                                   <Group position='apart'>
                                     <Title ta="end">$ {2.5 * active.length}</Title>
@@ -573,16 +653,13 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                                     color="blue"
                                     mt={30}
                                     style={{ width: '100%' }}
-
                                   >
                                     Comprar
                                   </Button>
                                 </Stepper.Completed>
                               </Stepper>
-
                             </Modal>
                           </div>
-
                           <Divider
                             label={'Detalles'}
                             dir='horizontal'
@@ -595,21 +672,18 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                             py={10}
                           />
                           <Image maw={110} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
-
                           {/** info de rifas */}
                           <Text fw={700}>Sorteo</Text>
-                          <Text mb={11}>Rifa de una moto</Text> {/*prize*/}
+                          <Text mb={11}>{draws.title}</Text> {/*prize*/}
                           <Text fw={700}>Tipo Sorteo</Text>
-                          <Text mb={11}>Terminal</Text> {/*prize*/}
+                          <Text mb={11}>{draws.draw_type}</Text> {/*prize*/}
                           <Text fw={700}>Inicio</Text>
-                          <Text mb={11} >08/03/2023</Text> {/*open*/}
+                          <Text mb={11} >{draws.init_date}</Text> {/*open*/}
                           <Text fw={700}>Cierre</Text>
-                          <Text mb={11} >08/03/2023</Text> {/*close*/}
+                          <Text mb={11} >{draws.expired_date ?? "Por anunciar"}</Text> {/*close*/}
                           <Text fw={700}>Progreso</Text>
-                          <Progress value={34} color="green" label={`34`} size="xl" mt={7} /> {/*Progreso*/}
+                          <Progress value={draws.progress.current} color="green" label={`${draws.progress.current}`} size="xl" mt={7} /> {/*Progreso*/}
                         </Card>
-
-
                       </Paper>
                     </Grid.Col>
                   </Grid>
