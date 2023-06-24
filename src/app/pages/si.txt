@@ -1,0 +1,64 @@
+interface IDraws {
+  id: number;
+  title: string; * 
+  first_prize: string; *
+  second_prize: null | string;
+  adnoucement: string;
+  award_images: string[];
+  uniq: null;
+  init_date: string; *
+  expired_date: string; *
+  numbers: number;
+  tickets_count: number;
+  loteria: string; 
+  has_winners: boolean;
+  progress: {
+    sold: number;
+    available: number;
+    current: number; *
+  };
+  is_active: boolean;
+  first_winner: null | string;
+  second_winner: null | string;
+  draw_type: string; *
+  limit: number; *
+  price_unit: number; *
+  money: string;
+  owner: {
+    id: number;
+    user_id: number;
+    name: string;
+    role: string;
+    email: string;
+    created_at: string;
+    updated_at: string;
+  };
+  created_at: string;
+  updated_at: string;
+}
+
+const [draws, setDraws] = useState<IDraws[] | []>([])
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    setTimeout(() => {
+      axios.post('http://137.184.93.36/api/public/draws', {
+        user_id: localStorage.getItem('user_id') || 1,
+      },
+        {
+          headers: {
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        })
+        .then((res) => {
+          console.log(res.data)
+          setDraws(res.data)
+          setLoading(false)
+        })
+        .catch((err) => {
+          console.log(err)
+        }
+        )
+    }, 3000)
+  }, [draws])
