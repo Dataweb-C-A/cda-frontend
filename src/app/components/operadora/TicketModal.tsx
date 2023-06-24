@@ -296,7 +296,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
       position: 'absolute',
       width: 'calc(100vw - 18rem)',
       scrollBehavior: 'smooth',
-      height: "calc(100vh - 7.2em)",
+      height: `calc(100vh - 7.2em)`,
       top: 80,
       scrollbarWidth: 'none',
     }}>
@@ -468,6 +468,7 @@ function TicketModal({ tickets, draw_id }: modalProps) {
                               setActivex(0);
                               setIsChecked(false);
                               setCheckedIndex(-1);
+                              form.reset;
                             }}>
 
                               <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
