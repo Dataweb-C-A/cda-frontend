@@ -211,7 +211,7 @@ export default function TableSort({ data }: TableSortProps) {
       <td>{verifyPayload(row.expired_date)}</td>
       <td>{row.draw_type}</td>
       <td>{row.limit}</td>
-      <td>{row.price_unit}</td>
+      <td>{row.price_unit} $</td>
       <td>{row.current}%</td>
     </tr>
   ));
