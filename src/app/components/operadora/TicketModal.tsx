@@ -593,7 +593,7 @@ function TicketModal({ draw_id }: modalProps) {
                                 </Stepper.Step>
                                 <Stepper.Step label="Moneda" description="Elija el tipo de moneda">
                                   <Group position='apart'>
-                                    <Title ta="end">$ {2.5 * active.length}</Title>
+                                    <Title ta="end">$ {draws.price_unit * active.length}</Title>
                                     <Checkbox
                                       checked={checkedIndex === 0}
                                       onChange={() => {
@@ -604,7 +604,7 @@ function TicketModal({ draw_id }: modalProps) {
                                   </Group>
                                   <Group position='apart'>
                                     <Title ta="end">
-                                      Bs.D {((2.5 * active.length) * 25.75).toFixed(2)}
+                                      Bs.D {((draws.price_unit * active.length) * 25.75).toFixed(2)}
                                     </Title>
                                     <Checkbox
                                       checked={checkedIndex === 1}
@@ -616,7 +616,7 @@ function TicketModal({ draw_id }: modalProps) {
                                   </Group>
                                   <Group position='apart'>
                                     <Title ta="end">
-                                      COP {((2.5 * active.length) * 4500).toFixed(2)}
+                                      COP {((draws.price_unit * active.length) * 4500).toFixed(2)}
                                     </Title>
                                     <Checkbox
                                       checked={checkedIndex === 2}
