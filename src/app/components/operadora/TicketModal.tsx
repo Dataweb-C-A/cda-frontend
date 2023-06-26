@@ -132,10 +132,9 @@ function TicketModal({ draw_id }: modalProps) {
   const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/draws_finder?id=${draw_id}`)
+    axios.get(`http://137.184.93.36/draws_finder?id=${draw_id}`)
       .then(res => {
         setDraws(res.data)
-        setPages(Math.ceil(res.data.tickets_count / 6))
       })
       .catch(err => console.log(err))
   }, [])
