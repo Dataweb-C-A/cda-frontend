@@ -2,28 +2,37 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
-import { Card, Grid, NumberInput, Input, Title, Text, Group, Switch, Modal, Button } from '@mantine/core'
+import { Card, Grid, NumberInput, Input, Title, Text, Group, Switch, Modal, Button, Loader } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
 import moment from 'moment'
 import TableSort from '../components/table'
 import { useForm } from '@mantine/form';
+import { Repeat } from 'tabler-icons-react'
 
-interface IExchange { }
+interface IExchange { 
+  variacion_bs: string;
+  variacion_cop: string;
+  automatic: boolean;
+  fecha: string | Date;
+  hora: string;
+}
 
-function Exchange({ }: IExchange) {
+function Exchange() {
   const [opened, { open, close }] = useDisclosure(false);
+  const [exchange, setExchange] = useState<IExchange[]>([])
+  const [loading, setLoading] = useState(true)
   const [profiles, setProfiles] = useState([])
+  const [refresher, setRefresher] = useState(0)
   const form = useForm({
     initialValues: {
-      BS: '',
-      termsOfService: false,
-      COP: '',
-      DOLLAR: '',
+      variacion_bs: '',
+      variacion_cop: '',
+      automatic: false,
     },
 
     validate: {
-      BS: (value) => {
-        if (!form.values.termsOfService) {
+      variacion_bs: (value) => {
+        if (!form.values.automatic) {
           if (!value) {
             return 'Variacion es requerida';
           }
@@ -33,66 +42,41 @@ function Exchange({ }: IExchange) {
         }
         return null;
       },
-      COP: (value) => {
-        if (!form.values.termsOfService) {
-          if (!value) {
-            return 'Variacion es requerida';
-          }
-          if (parseFloat(value) < 0) {
-            return 'La variacion no puede ser menor que 0';
-          }
+      variacion_cop: (value) => {
+        if (!value) {
+          return 'Variacion es requerida';
         }
-        return null;
-      },
-      DOLLAR: (value) => {
-        if (!form.values.termsOfService) {
-          if (!value) {
-            return 'Variacion es requerida';
-          }
-          if (parseFloat(value) < 0) {
-            return 'La variacion no puede ser menor que 0';
-          }
+        if (parseFloat(value) < 0) {
+          return 'La variacion no puede ser menor que 0';
         }
-        return null;
       },
     },
   });
+
   useEffect(() => {
     axios.get('https://rifa-max.com/api/v1/riferos', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
+    }).then(res => {
+      setProfiles(res.data)
+      setLoading(false)
     })
-      .then(res => {
-        setProfiles(res.data)
-      })
       .catch(err => {
         console.log(err)
       })
-  }, [])
+
+    axios.get('http://localhost:3000/exchange').then(res => {
+      setExchange(res.data.reverse())
+    }).catch(err => {
+      console.log(err)
+    })
+  }, [refresher])
+
   return (
     <>
       <Navbar profiles={profiles} links={links} />
-      <Grid mx={2} mt={5}>
-        <Grid.Col xs={12} md={6} lg={6}>
-          <Card shadow="sm" radius="sm">
-            <Title order={1} style={{ marginBottom: 0 }} ta="center">
-              COP {Intl.NumberFormat().format(6000)}
-            </Title>
-          </Card>
-        </Grid.Col>
-        <Grid.Col xs={12} md={6} lg={6}>
-          <Card shadow="sm" radius="sm">
-            <Title order={1} style={{ marginBottom: 0 }} ta="center">
-              Bs.D {Intl.NumberFormat().format(25.45)}
-            </Title>
-          </Card>
-        </Grid.Col>
-      </Grid>
-
       <Card shadow="sm" radius="sm" mx={10} mt={15} h="100vh">
-
-
         <Grid>
           <Grid.Col span={6}>
             <Title order={2} fw={500} mb={20}>
@@ -102,69 +86,69 @@ function Exchange({ }: IExchange) {
               </Text>
             </Title>
           </Grid.Col>
-
           <Grid.Col span={6}>
             <Button
               style={{ float: "right" }}
               className="btn-rifa"
               onClick={open}
+              leftIcon={
+                <Repeat />
+              }
             >
-              Ver montos
+              Actualizar tasa
             </Button>
           </Grid.Col>
         </Grid>
-
-
-        <TableSort data={
-          [{
-            COP: Intl.NumberFormat().format(6000),
-            BsD: Intl.NumberFormat().format(25.75),
-            fecha: moment().format('DD/MM/YYYY')
-          }, {
-            COP: Intl.NumberFormat().format(5990),
-            BsD: Intl.NumberFormat().format(25.45),
-            fecha: moment('2023-05-16').format('DD/MM/YYYY')
-          }]
-        } />
+        {
+          loading ? (
+            <>
+              <Loader ml="50%" mt="10%" />
+            </>
+          ) : (
+            <TableSort data={exchange} />
+          )
+        }
       </Card>
-      <Modal opened={opened} onClose={close} withCloseButton={false}>
-        <form onSubmit={form.onSubmit((values) => console.log(values))}>
-          <Switch ml={250} label="Automatico" {...form.getInputProps('termsOfService')} />
-          <Title order={1} style={{ marginBottom: 0 }} ta="center">
-          Variacion 
-            </Title>
+      <Modal opened={opened} centered onClose={close} withCloseButton={false}>
+        <form onSubmit={form.onSubmit((values) => {
+          axios.post("http://localhost:3000/exchange", values, 
+          { 
+            headers: {
+              'Content-Type': "application/json;charset=utf-8"
+            }
+          }).then(res => {
+            setRefresher(refresher + 1)
+            location.reload()
+            close()
+          }
+          ).catch(err => {
+            console.log(err)
+          })
+        })}>
+          <Title order={3} style={{ marginBottom: 20 }} ta="center">
+            Actualizar tasa
+          </Title>
           <NumberInput
             placeholder="Variacion BsF"
             label="Variacion BsF"
-            withAsterisk
-            {...form.getInputProps('BS')}
+            withAsterisk={!form.values.automatic}
             hideControls
-            disabled={form.values.termsOfService}
-            value={form.values.termsOfService ? 5 : form.values.BS ? Number(form.values.BS) : undefined}
+            disabled={form.values.automatic}
+            {...form.getInputProps('variacion_bs')}
           />
+          <Group position='right'>
+            <Switch mt={5} mb={0} label="Automatico?" labelPosition='left' {...form.getInputProps('automatic')} />
+          </Group>
           <NumberInput
             placeholder="Variacion COP"
             label="Variacion COP"
             withAsterisk
             hideControls
-            {...form.getInputProps('COP')}
-            disabled={form.values.termsOfService}
-            value={form.values.termsOfService ? 5 : form.values.COP ? Number(form.values.COP) : undefined}
+            error={form.errors.variacion_cop}
+            {...form.getInputProps('variacion_cop')}
           />
-          <NumberInput
-            placeholder="Precio Dolar"
-            label="Precio Dolar"
-            withAsterisk
-            hideControls
-            {...form.getInputProps('DOLLAR')}
-            disabled={form.values.termsOfService}
-            value={form.values.termsOfService ? 5 : form.values.DOLLAR ? Number(form.values.DOLLAR) : undefined}
-          />
-
-          <Button mt={10} ml={150} type="submit">Submit</Button>
+          <Button mt={10} fullWidth type="submit">Actualizar</Button>
         </form>
-
-
       </Modal>
     </>
   )
