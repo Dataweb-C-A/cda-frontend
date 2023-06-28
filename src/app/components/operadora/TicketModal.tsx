@@ -27,8 +27,8 @@ interface IDraws {
   title: string;
   first_prize: string;
   second_prize: null | string;
-  adnoucement: string;
-  award_images: string[];
+  adnoucement: string | null;
+  award_images: string | null;
   uniq: null;
   init_date: string;
   expired_date: string;
@@ -93,8 +93,8 @@ function TicketModal({ draw_id }: modalProps) {
     title: '',
     first_prize: '',
     second_prize: null,
-    adnoucement: '',
-    award_images: [],
+    adnoucement: null,
+    award_images: null,
     uniq: null,
     init_date: '',
     expired_date: '',
@@ -132,7 +132,7 @@ function TicketModal({ draw_id }: modalProps) {
   const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://137.184.93.36/draws_finder?id=${draw_id}`)
+    axios.get(`http://localhost:3000/draws_finder?id=${draw_id}`)
       .then(res => {
         setDraws(res.data)
       })
@@ -349,7 +349,7 @@ function TicketModal({ draw_id }: modalProps) {
 
   useEffect(() => {
     setTimeout(() => {
-      fetch(`http://137.184.93.36/places?id=${draw_id}&page=${currentPage}`)
+      fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
         .then((response) => response.json())
         .then((data) => {
           setApiData(data.places);
@@ -365,7 +365,7 @@ function TicketModal({ draw_id }: modalProps) {
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
     setCurrentPage(randomPage);
-    const response = await fetch(`http://137.184.93.36/places?id=${draw_id}&page=${randomPage}`);
+    const response = await fetch(`http://localhost:3000/places?id=${draw_id}&page=${randomPage}`);
     const data = await response.json();
     const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
     const randomTicketIndex = Math.floor(Math.random() * availableTickets.length);
@@ -670,7 +670,11 @@ function TicketModal({ draw_id }: modalProps) {
                             }}
                             py={10}
                           />
-                          <Image maw={110} mx="auto" radius="md" src="https://img.freepik.com/vector-gratis/ilustracion-motocicleta-color-rojo_1308-35859.jpg?w=2000" alt="moto image" />
+                          {
+                            draws.award_images !== null ? (
+                              <Image maw={110} mx="auto" radius="md" src={draws.award_images} alt="Premios" />
+                            ) : null
+                          }
                           {/** info de rifas */}
                           <Text fw={700}>Sorteo</Text>
                           <Text mb={11}>{draws.title}</Text> {/*prize*/}

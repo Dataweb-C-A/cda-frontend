@@ -46,7 +46,7 @@ type FormProps = {
   expired_date: Date | string | null;
   money: null | string;
   ads: IFile | null;
-  award: IFile[] | null;
+  award: IFile | null;
   owner_id: number;
   user_id: number;
 }
@@ -96,7 +96,7 @@ const form = useForm({
     expired_date: null,
     money: '$',
     ads: null,
-    award: [],
+    award: null,
     owner_id: 1,
     user_id: 1
   },
@@ -226,16 +226,13 @@ const form = useForm({
     )
   }
   const [files, setFiles] = useState<FileWithPath[]>([]);
-
   const [files2, setFiles2] = useState<FileWithPath[]>([]);
-
-
+  
   const removeFile = (index: number, dropzone: number) => {
     if (dropzone === 1) {
       const updatedFiles = [...files];
       updatedFiles.splice(index, 1);
       setFiles(updatedFiles);
-      form.setFieldValue('award', [])
     } else if (dropzone === 2) {
       const updatedFiles2 = [...files2];
       updatedFiles2.splice(index, 1);
@@ -542,7 +539,7 @@ const form = useForm({
                       Imagen de premio
                     </Text>
                     <Text size="sm" color="dimmed" inline mt={7}>
-                      presione o arrastre las imagenes en este area
+                      presione la imagen en este area
                     </Text>
                   </Dropzone>
                   <Text fz="sm" ta="center" c='red' mt={10} inline>
@@ -560,7 +557,7 @@ const form = useForm({
                 <Grid.Col span={6}>
                   <Group>
                     <Text size="xl" fz="md" mb={15} inline>
-                      Imagen de publicidad
+                      Imagen de premio
                     </Text>
                     <Text inline c='red' mt={-17} ml={-12}>*</Text>
                   </Group>
@@ -578,7 +575,7 @@ const form = useForm({
                   >
                     <IconPhoto size="3.2rem" stroke={1.5} />
                     <Text size="xl" inline>
-                      Imagen de publicidadvb
+                      Imagen de publicidad
                     </Text>
                     <Text size="sm" color="dimmed" inline mt={7}>
                       presione la imagen a publicar en este area
