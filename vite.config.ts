@@ -4,8 +4,15 @@ import viteSvgr from "vite-plugin-svgr";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 
 const manifestForPlugin: Partial<VitePWAOptions> = { 
-  registerType: "prompt",
+  registerType: "autoUpdate",
   includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
+  workbox: {
+    clientsClaim: true,
+    skipWaiting: true
+  },
+  devOptions: {
+    enabled: true
+  },
   manifest: {
     name: "Rifamax Admin",
     short_name: "Rifamax",
