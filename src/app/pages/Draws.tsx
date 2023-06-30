@@ -27,7 +27,7 @@ function Draws({ }: IDraws) {
   useEffect(() => {
     axios
     .post(
-      'http://137.184.93.36/api/public/draws',
+      'http://localhost:3000/api/public/draws',
       {
         user_id: localStorage.getItem('user_id') || 1,
       },

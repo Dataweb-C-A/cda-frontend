@@ -672,7 +672,7 @@ function TicketModal({ draw_id }: modalProps) {
                           />
                           {
                             draws.award_images !== null ? (
-                              <Image maw={110} mx="auto" radius="md" src={draws.award_images} alt="Premios" />
+                              <Image maw={300} mx="auto" radius="md" src={draws.adnoucement} alt="Premios" />
                             ) : null
                           }
                           {/** info de rifas */}
