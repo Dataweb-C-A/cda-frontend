@@ -24,7 +24,7 @@
   background-color: transparent;
   border: none;
   position: absolute;
-  left: calc(100vw - 15.3em);
+  left: calc(100vw - 13.3em);
   top: 20px;
 }
 
@@ -32,6 +32,7 @@
   background-color: transparent;
   border: none;
   position: absolute;
+  display: none;
   left: calc(100vw - 16em);
   top: 15px;
   &:hover {

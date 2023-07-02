@@ -13,7 +13,15 @@ type clientProps = {
   name: string
   lastname: string
   username: string
-  cedula: string
+  dni: string
+}
+
+interface IExchange {
+  BsD: string;
+  COP: string;
+  fecha: string;
+  hora: string;
+  automatico: boolean;
 }
 
 type ticketProps = {
@@ -61,10 +69,15 @@ interface IDraws {
   updated_at: string;
 }
 
+interface IPlace {
+  id: number,
+  place_numbers: number[]
+}
+
 type FormValues = {
   name: string;
-  lastn: string;
-  cedula: string;
+  dni: string;
+  email: string;
   phone: string;
 };
 
@@ -88,6 +101,14 @@ function TicketModal({ draw_id }: modalProps) {
   const [active, setActive] = useState<number[]>([])
   const [counter, setCounter] = useState<number>(0)
   const [pages, setPages] = useState<number>(0)
+  const [coin, setCoin] = useState('')
+  const [exchange, setExchange] = useState<IExchange>({
+    BsD: 'Bs. 27,18',
+    COP: '4160.17 COP',
+    fecha: '30/06/2023',
+    hora: '12:55',
+    automatico: true
+  })
   const [draws, setDraws] = useState<IDraws>({
     id: 0,
     title: '',
@@ -132,9 +153,15 @@ function TicketModal({ draw_id }: modalProps) {
   const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/draws_finder?id=${draw_id}`)
+    axios.get(`https://api.rifamax.app/draws_finder?id=${draw_id}`)
       .then(res => {
         setDraws(res.data)
+      })
+      .catch(err => console.log(err))
+
+    axios.get('https://api.rifamax.app/exchange?last=last')
+      .then(res => {
+        setExchange(res.data)
       })
       .catch(err => console.log(err))
   }, [])
@@ -145,7 +172,6 @@ function TicketModal({ draw_id }: modalProps) {
     }
   };
   const [formValues, setFormValues] = useState({});
-
 
   const prevStep = () => setActivex((current) => (current > 0 ? current - 1 : current));
 
@@ -159,11 +185,68 @@ function TicketModal({ draw_id }: modalProps) {
     }
   };
 
+  function send(draw: IDraws, place: IPlace): void {
+    try {
+      // Crear una instancia del WebSocket
+      const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
+  
+      // Evento que se dispara cuando la conexión se establece correctamente
+      socket.onopen = function (): void {
+        console.log('Conexión establecida.');
+  
+        const mensaje = (): void => {
+          fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}`)
+            .then(function (response: Response): Promise<string> {
+              return response.text();
+            })
+            .then(function (text: string): void {
+              // console.log(text);
+              socket.send(text);
+            });
+        };
+  
+        const qr = (): void => {
+          fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}&qr=on`)
+            .then(function (response: Response): Promise<string> {
+              return response.text();
+            })
+            .then(function (text: string): void {
+              // console.log(text);
+              socket.send(text);
+              socket.send('cut');
+            });
+        };
+  
+        mensaje();
+        setTimeout(() => {
+          qr();
+        }, 1000);
+      };
+  
+      // Evento que se dispara cuando se recibe un mensaje del servidor
+      socket.onmessage = function (event: MessageEvent): void {
+        console.log('Mensaje recibido del servidor:', event.data);
+      };
+  
+      // Evento que se dispara cuando se produce un error en la conexión
+      socket.onerror = function (error: Event): void {
+        console.error('Error en la conexión:', error);
+      };
+  
+      // Evento que se dispara cuando la conexión se cierra
+      socket.onclose = function (event: CloseEvent): void {
+        console.log('Conexión cerrada:', event.code, event.reason);
+      };
+    } catch (e) {
+      alert(JSON.stringify(e));
+    }
+  }  
+
   const form = useForm({
     initialValues: {
       name: '',
-      lastn: '',
-      cedula: '',
+      dni: '',
+      email: '',
       phone: ''
     },
     validate: {
@@ -173,13 +256,13 @@ function TicketModal({ draw_id }: modalProps) {
         }
         return null;
       },
-      lastn: (value, values) => {
+      email: (value, values) => {
         if (Object.values(values).some(val => val.trim()) && !value.trim()) {
-          return 'El apellido es requerido';
+          return 'El correo es requerido';
         }
         return null;
       },
-      cedula: (value, values) => {
+      dni: (value, values) => {
         if (Object.values(values).some(val => val.trim()) && !value.trim()) {
           return 'La cédula es requerida';
         }
@@ -349,7 +432,7 @@ function TicketModal({ draw_id }: modalProps) {
 
   useEffect(() => {
     setTimeout(() => {
-      fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
+      fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${currentPage}`)
         .then((response) => response.json())
         .then((data) => {
           setApiData(data.places);
@@ -365,7 +448,7 @@ function TicketModal({ draw_id }: modalProps) {
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
     setCurrentPage(randomPage);
-    const response = await fetch(`http://localhost:3000/places?id=${draw_id}&page=${randomPage}`);
+    const response = await fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${randomPage}`);
     const data = await response.json();
     const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
     const randomTicketIndex = Math.floor(Math.random() * availableTickets.length);
@@ -552,8 +635,8 @@ function TicketModal({ draw_id }: modalProps) {
                               }}
                             >
                               <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
-                                <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
-                                  <form onSubmit={form.onSubmit(onSubmit)}>
+                                {/* <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
+                                  <form>
                                     <Group grow>
                                       <TextInput
                                         label="Nombre"
@@ -561,9 +644,9 @@ function TicketModal({ draw_id }: modalProps) {
                                         {...form.getInputProps('name')}
                                       />
                                       <TextInput
-                                        label="Apellido"
-                                        placeholder="Apellido"
-                                        {...form.getInputProps('lastn')}
+                                        label="Correo electronico"
+                                        placeholder="cliente@rifamax.com"
+                                        {...form.getInputProps('email')}
                                       />
                                     </Group>
                                     <Group grow>
@@ -571,7 +654,7 @@ function TicketModal({ draw_id }: modalProps) {
                                         mt={10}
                                         label="Cédula"
                                         placeholder="Cédula"
-                                        {...form.getInputProps('cedula')}
+                                        {...form.getInputProps('dni')}
                                       />
                                       <NumberInput
                                         mt={10}
@@ -590,7 +673,7 @@ function TicketModal({ draw_id }: modalProps) {
                                       </Button>
                                     </Group>
                                   </form>
-                                </Stepper.Step>
+                                </Stepper.Step> */}
                                 <Stepper.Step label="Moneda" description="Elija el tipo de moneda">
                                   <Group position='apart'>
                                     <Title ta="end">$ {draws.price_unit * active.length}</Title>
@@ -599,37 +682,40 @@ function TicketModal({ draw_id }: modalProps) {
                                       onChange={() => {
                                         setCheckedIndex(0);
                                         setIsChecked(true);
+                                        setCoin("$");
                                       }}
                                     />
                                   </Group>
                                   <Group position='apart'>
                                     <Title ta="end">
-                                      Bs.D {((draws.price_unit * active.length) * 25.75).toFixed(2)}
+                                      Bs.D {((draws.price_unit * active.length) * parseFloat(exchange.BsD.replace('Bs. ', '').replace(',', '.'))).toFixed(2)}
                                     </Title>
                                     <Checkbox
                                       checked={checkedIndex === 1}
                                       onChange={() => {
                                         setCheckedIndex(1);
                                         setIsChecked(true);
+                                        setCoin("Bs.D");
                                       }}
                                     />
                                   </Group>
                                   <Group position='apart'>
                                     <Title ta="end">
-                                      COP {((draws.price_unit * active.length) * 4500).toFixed(2)}
+                                      COP {((draws.price_unit * active.length) * parseFloat(exchange.COP.replace(' COP', ''))).toFixed(2)}
                                     </Title>
                                     <Checkbox
                                       checked={checkedIndex === 2}
                                       onChange={() => {
                                         setCheckedIndex(2);
                                         setIsChecked(true);
+                                        setCoin("COP");
                                       }}
                                     />
                                   </Group>
 
                                   <Group position="center" mt="xl">
                                     <Button variant="default" onClick={prevStep}>
-                                      Atras
+                                      Atrás
                                     </Button>
 
                                     <Button
@@ -652,8 +738,29 @@ function TicketModal({ draw_id }: modalProps) {
                                     color="blue"
                                     mt={30}
                                     style={{ width: '100%' }}
+                                    onClick={() => {
+                                      axios.post("https://api.rifamax.app/places", {place: {
+                                        agency_id: JSON.parse(localStorage.getItem('user') || '').id,
+                                        user_id: JSON.parse(localStorage.getItem('user') || '').id,
+                                        draw_id: draws.id,
+                                        place_nro: active
+                                      }}, {
+                                        headers: {
+                                          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
+                                          'Content-Type': 'application/json',
+                                          'Accept': 'application/json',
+                                        },
+                                      }).then((res) => {
+                                        send(draws, res.data.place)
+                                        setModalOpen(false);
+                                        setActivex(0);
+                                        setIsChecked(false);
+                                        setCheckedIndex(-1);
+                                        form.reset();
+                                      })
+                                    }}
                                   >
-                                    Comprar
+                                    Comprar 
                                   </Button>
                                 </Stepper.Completed>
                               </Stepper>
@@ -671,8 +778,8 @@ function TicketModal({ draw_id }: modalProps) {
                             py={10}
                           />
                           {
-                            draws.award_images !== null ? (
-                              <Image maw={300} mx="auto" radius="md" src={draws.adnoucement} alt="Premios" />
+                            draws.adnoucement !== null ? (
+                              <Image maw={300} mx="auto"  radius="md" src={draws.adnoucement} alt="Premios" />
                             ) : null
                           }
                           {/** info de rifas */}

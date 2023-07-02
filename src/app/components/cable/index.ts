@@ -1,4 +1,4 @@
 import * as ActionCable from 'actioncable';
 
-const cable = ActionCable.createConsumer('ws://localhost:3000/cable');
+const cable = ActionCable.createConsumer('ws://api.rifamax.app/cable');
 export default cable;

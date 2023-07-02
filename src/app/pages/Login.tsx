@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   TextInput,
   PasswordInput,
@@ -51,6 +51,12 @@ function Login() {
   const dispatch = useDispatch()
 
   const history = useHistory()
+
+  useEffect(() => {
+    localStorage.removeItem('token')
+    localStorage.removeItem("user")
+    localStorage.removeItem('printer')
+  }, [])
 
   async function handleLogin(remember: boolean = false) {
     try {

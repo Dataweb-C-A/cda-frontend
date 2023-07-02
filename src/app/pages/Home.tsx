@@ -36,6 +36,10 @@ const Home: React.FC = () => {
       .catch(err => {
         console.log(err)
       })
+
+    JSON.parse(localStorage.getItem('user') || '').id ? null : (
+      history.push('/login')
+    ) 
   }, [])
 
   return (

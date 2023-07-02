@@ -47,8 +47,18 @@ type FormProps = {
   money: null | string;
   ads: IFile | null;
   award: IFile | null;
-  owner_id: number;
+  owner_id: number | string;
   user_id: number;
+}
+
+interface IWhitelist {
+  id: number,
+  user_id: number,
+  name: string,
+  role: string,
+  email: string,
+  created_at: string | Date,
+  updated_at: string | Date
 }
 
 function DrawsModal({
@@ -69,6 +79,7 @@ function DrawsModal({
   const [ticketsCount, setTicketsCountState] = useState<number>(100)
   const validate = new Date(moment().format('YYYY-MM-DD 19:30:00'))
   const [checkedIndex, setCheckedIndex] = useState(0);
+  const [ownerLabel, setOwnerLabel] = useState<IWhitelist[]>([])
   const { user } = useUser();
   const [isSecondPrizeEnabled, setSecondPrizeEnabled] = useState(false);
 
@@ -80,6 +91,12 @@ function DrawsModal({
     }, 1000)
     return () => clearInterval(interval)
   }, [actualDate])
+
+  useEffect(() => {
+    axios.get("https://api.rifamax.app/whitelists").then((res) => {
+      setOwnerLabel(res.data)
+    })
+  }, [])
 
 const form = useForm({
   initialValues: {
@@ -98,7 +115,7 @@ const form = useForm({
     ads: null,
     award: null,
     owner_id: 1,
-    user_id: 1
+    user_id: JSON.parse(localStorage.getItem('user') || '').id || 1
   },
   validate: {
     title: (value: string) => {
@@ -129,7 +146,6 @@ const form = useForm({
     },
     init_date: (value: Date) => {
       if (!value) return 'Fecha de inicio requerida';
-      if (value < actualDate) return 'La fecha de inicio debe ser mayor a la fecha actual';
     },
     expired_date: (value: Date) => {
       if (checkedIndex === 2) {
@@ -153,14 +169,17 @@ const form = useForm({
       if (value <= 0) return 'El precio unitario debe ser mayor a 0';
     },
     numbers: (value: number) => {
-      if (!value) return 'Cantidad de números requerida';
-      if (value < 100 || value >= 1000) return 'La cantidad de números debe ser mayor o igual a 100 y menor o igual a 1000';
+      if (!value) return 'Numeros de la rifa requeridos';
+      if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
+    },
+    owner_id: (value: number | string) => {
+      if (!value) return 'Agencia requerida'
     },
     money: (value: string) => {
       if (!value) return 'Moneda requerida';
     },
-    award: (value: string[]) => {
-      if (value.length === 0) return 'Premios requeridos';
+    award: (value: string) => {
+      if (!value) return 'Premio requerido';
     },
     ads: (value: string) => {
       if (!value) return 'Anuncio requerido';
@@ -179,7 +198,7 @@ const form = useForm({
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
 
-    axios.post('http://localhost:3000/draws', {draw: values}, {
+    axios.post('https://api.rifamax.app/draws', {draw: values}, {
       headers: {
         "Content-Type": ["application/json", "multipart/form-data"],
         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
@@ -487,8 +506,7 @@ const form = useForm({
               <Text fz="sm" ta="center" c='red' inline>
                 {form.errors.limit}
               </Text>
-              <Grid
-                mb={15}>
+              <Grid>
                 <Grid.Col span={6}>
                   <NumberInput
                     label="Precio unitario"
@@ -515,6 +533,22 @@ const form = useForm({
                       { value: 'COP', label: 'Pesos Colombianos' }
                     ]}
                     {...form.getInputProps('money')}
+                  />
+                </Grid.Col>
+              </Grid>
+              <Grid mb={15}>
+                <Grid.Col span={12}>
+                  <Select
+                    size='md'
+                    mb="md"
+                    label="Taquillas disponibles"
+                    placeholder="Elige una taquilla disponible"
+                    withAsterisk
+                    error={form.errors.owner_id}
+                    data={[
+                      { value: '221', label: 'Maxima02' }
+                    ]}
+                    {...form.getInputProps('owner_id')}
                   />
                 </Grid.Col>
               </Grid>

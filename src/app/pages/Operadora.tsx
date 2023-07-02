@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Text, Button, Container, Grid, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton } from "@mantine/core";
+import { Card, Text, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -11,6 +11,7 @@ import data from "./card.json"
 import { TbZoomQuestion } from 'react-icons/tb'
 import { useDispatch, useSelector } from "react-redux";
 import { setLobbyMode } from "../config/reducers/lobbySlice";
+import { ImSad } from "react-icons/im";
 
 interface ILobbyState {
   open: boolean
@@ -69,6 +70,7 @@ function Operadora() {
   const [draws, setDraws] = useState<IDraws[] | []>([])
   const [profiles, setProfiles] = useState([])
   const [loading, setLoading] = useState(true)
+  const [modalState, setModalState] = useState(true)
   const [drawSelected, setDrawSelected] = useState<IDraws>({
     id: 0,
     title: '',
@@ -145,8 +147,8 @@ function Operadora() {
 
   useEffect(() => {
     setTimeout(() => {
-      axios.post('http://localhost:3000/api/public/draws', {
-        user_id: localStorage.getItem('user_id') || 1,
+      axios.post('https://api.rifamax.app/api/public/draws', {
+        user_id: JSON.parse(localStorage.getItem('user') || '').id || 1,
       },
         {
           headers: {
@@ -464,6 +466,70 @@ function Operadora() {
               </Grid.Col>
             </Grid>
           ))}
+          {
+            draws.length === 0 && loading === false ? (
+              <Grid mt={0} gutter={10} mx={10}>
+                <Grid.Col xs={6} lg={2} order={1}>
+                  <Card
+                    w={235}
+                    h="calc(100vh - 5.8em)"
+                    shadow={"0 0 7px 0 #5f5f5f3d"}
+                    bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
+                  >
+                    <div style={{ display: "flex", height:"100%", justifyItems: "center" }}>
+                      <div style={{ width: "100%" }}>
+                        <Text mt="calc(50vh - 5.8em)" fw={500} ta="center" fz={25} mb={4}>
+                          <Text>
+                            <ImSad size={100} strokeWidth={0.01} />
+                          </Text>
+                          No hay sorteos
+                        </Text>
+                      </div>
+                    </div>
+                  </Card>
+                </Grid.Col>
+              </Grid>
+            ) : null
+          }
+          {
+            localStorage.getItem("printer") ? null : (
+              <Modal
+                opened={modalState}
+                onClose={() => setModalState(false)}
+                title={<Text fw={700} fz={20} ta="center">Seleccione tipo de impresora</Text>}
+                withCloseButton={false}
+                closeOnClickOutside={false}
+                closeOnEscape={false}
+                centered
+              >
+                <Text mb={20}>
+                  Debe seleccionar el tipo de impresora para este computador.
+                </Text>
+                <Group ml="10%">
+                  <Button
+                    variant="filled"
+                    color="blue"
+                    onClick={() => {
+                      localStorage.setItem("printer", "80mm")
+                      setModalState(false)
+                    }}
+                  >
+                    Impresora 80mm
+                  </Button>
+                  <Button
+                    variant="filled"
+                    color="blue"
+                    onClick={() => {
+                      localStorage.setItem("printer", "58mm")
+                      setModalState(false)
+                    }}
+                  >
+                    Impresora 58mm
+                  </Button>
+                </Group>
+              </Modal>
+            )
+          }
         </Paper>
       </div>
       <div style={{ marginLeft: '250px', marginTop: '-870px' }} >

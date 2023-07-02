@@ -2,15 +2,18 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
-import { Card, Stepper, Grid, Button, Modal, Title, Text } from '@mantine/core'
+import { Card, Stepper, Grid, Button, Modal, Title, Text, Loader, Group } from '@mantine/core'
 import Table from '../components/table/drawtable'
 import DrawsModal from '../components/drawsModal';
+import { BiHappy } from 'react-icons/bi'
+import { IconMoodHappy } from '@tabler/icons'
 
 interface IDraws { }
 
 function Draws({ }: IDraws) {
   const [profiles, setProfiles] = useState([])
   const [openForm, setOpenForm] = useState(false)
+  const [modalState, setModalState] = useState(true)
   const [draws, setDraws] = useState<{ 
     title: string ;
     first_prize: string ;
@@ -26,11 +29,8 @@ function Draws({ }: IDraws) {
 
   useEffect(() => {
     axios
-    .post(
-      'http://localhost:3000/api/public/draws',
-      {
-        user_id: localStorage.getItem('user_id') || 1,
-      },
+    .get(
+      'https://api.rifamax.app/api/public/draws',
       {
         headers: {
           'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
@@ -89,7 +89,45 @@ function Draws({ }: IDraws) {
   return (
     <>
       <Navbar profiles={profiles} links={links} />
-
+      {
+        localStorage.getItem("printer") ? null : (
+          <Modal
+            opened={modalState}
+            onClose={() => setModalState(false)}
+            title={<Text fw={700} fz={20} ta="center">Seleccione tipo de impresora</Text>}
+            withCloseButton={false}
+            closeOnClickOutside={false}
+            closeOnEscape={false}
+            centered
+          >
+            <Text mb={20}>
+              Debe seleccionar el tipo de impresora para este computador.
+            </Text>
+            <Group ml="10%">
+              <Button
+                variant="filled"
+                color="blue"
+                onClick={() => {
+                  localStorage.setItem("printer", "80mm")
+                  setModalState(false)
+                }}
+              >
+                Impresora 80mm
+              </Button>
+              <Button
+                variant="filled"
+                color="blue"
+                onClick={() => {
+                  localStorage.setItem("printer", "58mm")
+                  setModalState(false)
+                }}
+              >
+                Impresora 58mm
+              </Button>
+            </Group>
+          </Modal>
+        )
+      }
       <Card mx={15} mt={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
         <Grid>
           <Grid.Col md={5} sm={12}>
@@ -114,11 +152,22 @@ function Draws({ }: IDraws) {
             </DrawsModal>
           </Grid.Col>
         </Grid>
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <Table data={draws} />
-        )}
+        {
+          draws.length === 0 ? (
+            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap"}}>
+              <Text fz={30} fw={100} ta="center" mt={100} style={{ width: "100%" }}>
+                No hay sorteos, sé el primero en crear uno.
+              </Text>
+              <IconMoodHappy strokeWidth={.6} style={{ width: 300, height: 300, marginBottom: 100}}/>
+            </div>
+          ) : (
+            loading ? (
+              <div>Loading...</div>
+            ) : (
+              <Table data={draws} />
+            )
+          )
+        }
       </Card>
     </>
   )
