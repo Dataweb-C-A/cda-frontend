@@ -8,6 +8,7 @@ import TicketModal from "../components/operadora/TicketModal";
 import tickets from '../assets/data/tickets.json'
 import axios from "axios";
 import data from "./card.json"
+import { IconMoodConfuzed } from '@tabler/icons-react';
 import { TbZoomQuestion } from 'react-icons/tb'
 import { useDispatch, useSelector } from "react-redux";
 import { setLobbyMode } from "../config/reducers/lobbySlice";
@@ -67,6 +68,7 @@ function Operadora() {
     lobby_state: false,
     lobby_connection: new Date()
   })
+  const [errors, setErrors] = useState(null)
   const [draws, setDraws] = useState<IDraws[] | []>([])
   const [profiles, setProfiles] = useState([])
   const [loading, setLoading] = useState(true)
@@ -160,10 +162,12 @@ function Operadora() {
         .then((res) => {
           console.log(res.data)
           setDraws(res.data)
+          setErrors((null))
           setLoading(false)
         })
         .catch((err) => {
           console.log(err)
+          setErrors(err.response.data.message)
         }
         )
     }, 3000)
@@ -230,43 +234,49 @@ function Operadora() {
 
   return (
     <>
-    {
-      loading ? (
-        <Card w="100vw" h={60} py={0} mb={0} bg={theme.colors.dark[4]}>
-          <div 
-            style={{
-              height: '100%',
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'row'
-            }}
-          >
-            <div style={{
-              width: '50%',
-              display: 'flex',
-              justifyContent: 'flex-end'
-            }}>
-              <Skeleton height={40} circle />
-            </div>
-            <div style={{
-              width: '50%',
-              display: 'flex',
-              justifyContent: 'flex-end',
-              flexDirection: 'row',
-              gap: '10px'
-            }}>
-              <Skeleton height={40} circle />
-              <Skeleton height={40} circle />
-              <Skeleton height={40} circle />
-              <Skeleton height={40} circle />
-            </div>
-          </div>
-        </Card>
-      ) : (
-        JSON.parse(localStorage.user).role === 'Auto' ? null : (<Navbar profiles={profiles} links={links} />)
-      )
-    }
+      {
+        errors ? (
+          <Navbar profiles={profiles} links={links} />
+        ) : (
+          loading ? (
+            <Card w="100vw" h={60} py={0} mb={0} bg={theme.colors.dark[4]}>
+              <div
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'row'
+                }}
+              >
+                <div style={{
+                  width: '50%',
+                  display: 'flex',
+                  justifyContent: 'flex-end'
+                }}>
+                  <Skeleton height={40} circle />
+                </div>
+                <div style={{
+                  width: '50%',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  flexDirection: 'row',
+                  gap: '10px'
+                }}>
+                  <Skeleton height={40} circle />
+                  <Skeleton height={40} circle />
+                  <Skeleton height={40} circle />
+                  <Skeleton height={40} circle />
+                </div>
+              </div>
+            </Card>
+          ) : (
+            JSON.parse(localStorage.user).role === 'Auto' ? null : (
+              <Navbar profiles={profiles} links={links} />
+            )
+          )
+        )
+      }
       <div>
         <Paper
           mt={10}
@@ -291,7 +301,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -303,7 +313,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -315,7 +325,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -327,7 +337,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -339,7 +349,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -351,7 +361,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -363,7 +373,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -375,7 +385,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -387,7 +397,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -399,7 +409,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -411,7 +421,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
                 <Card w={240} mt={10} ml={10} py={0} bg={theme.colors.dark[4]}>
@@ -423,7 +433,7 @@ function Operadora() {
                       <Skeleton w="100%" h={40} />
                     </Grid.Col>
                     <Skeleton w="100%" h={25} mx={7} />
-                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15}/>
+                    <Skeleton w="100%" h={25} mt={5} mx={7} mb={15} />
                   </Grid>
                 </Card>
               </>
@@ -476,7 +486,7 @@ function Operadora() {
                     shadow={"0 0 7px 0 #5f5f5f3d"}
                     bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
                   >
-                    <div style={{ display: "flex", height:"100%", justifyItems: "center" }}>
+                    <div style={{ display: "flex", height: "100%", justifyItems: "center" }}>
                       <div style={{ width: "100%" }}>
                         <Text mt="calc(50vh - 5.8em)" fw={500} ta="center" fz={25} mb={4}>
                           <Text>
@@ -534,81 +544,95 @@ function Operadora() {
       </div>
       <div style={{ marginLeft: '250px', marginTop: '-870px' }} >
         {
-          loading === true ? (
-            <>
-              <Card 
-                mt={8}
-                mx={7}
-                w="84.1%"
-                bg={theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[0]}
-                style={{
-                  position: 'absolute',
-                  top: 70,
-                  height: "calc(100vh - 5.4em)",
-                  flexWrap: 'wrap'
-                }}
-              >
-                <div 
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'column'
-                  }}
-                >
-                  <Skeleton width={250} height={250} circle />
-                  <Skeleton width={450} mt={30} height={30} />
-                  <Skeleton width={600} mt={10} height={30} />
-                </div>
-              </Card>
-            </>
+          errors ? (
+          <>
+            <IconMoodConfuzed    style={{
+              height: '500px',
+              width: '500px',
+              marginLeft: '170px'
+            }}
+            />
+             <Title order={1}>Ha ocurrido un error... </Title>
+
+             <Title order={1}>Al parecer estas en la lista de espera</Title>
+          </>
           ) : (
-            selector ? (
-              <TicketModal
-                draw_id={lobbyState.lobby_id}
-              />
-            ) : (
-              <Card
-                shadow="sm"
-                radius="sm"
-                mt={8}
-                mx={7}
-                w="84.1%"
-                bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
-                style={{
-                  position: 'absolute',
-                  top: 70,
-                  height: "calc(100vh - 5.4em)"
-                }}
-              >
-                <div
+            loading === true ? (
+              <>
+                <Card
+                  mt={8}
+                  mx={7}
+                  w="84.1%"
+                  bg={theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[0]}
                   style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center'
+                    position: 'absolute',
+                    top: 70,
+                    height: "calc(100vh - 5.4em)",
+                    flexWrap: 'wrap'
                   }}
                 >
                   <div
                     style={{
+                      height: '100%',
                       width: '100%',
-                      margin: 'auto auto'
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'column'
                     }}
                   >
-
-                    <Title order={1} ta="center" mt='18%'>
-                      <TbZoomQuestion size="200px" strokeWidth="1.2px" /> <br />
-                      Selecciona un sorteo
-                    </Title>
+                    <Skeleton width={250} height={250} circle />
+                    <Skeleton width={450} mt={30} height={30} />
+                    <Skeleton width={600} mt={10} height={30} />
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </>
+            ) : (
+              selector ? (
+                <TicketModal
+                  draw_id={lobbyState.lobby_id}
+                />
+              ) : (
+                <Card
+                  shadow="sm"
+                  radius="sm"
+                  mt={8}
+                  mx={7}
+                  w="84.1%"
+                  bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
+                  style={{
+                    position: 'absolute',
+                    top: 70,
+                    height: "calc(100vh - 5.4em)"
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '100%',
+                        margin: 'auto auto'
+                      }}
+                    >
+                      <Title order={1} ta="center" mt='18%'>
+                        <TbZoomQuestion size="200px" strokeWidth="1.2px" /> <br />
+                        Selecciona un sorteo
+                      </Title>
+                    </div>
+                  </div>
+                </Card>
+              )
             )
           )
         }
+
       </div>
     </>
 
