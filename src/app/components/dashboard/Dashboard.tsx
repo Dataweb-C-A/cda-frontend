@@ -6,9 +6,9 @@ import {
   Title,
   Loader,
   Input,
+  Pagination,
   Group,
   Button,
-  Pagination
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 import FormModal from "../formModal";
@@ -103,6 +103,30 @@ function Dashboard() {
     });
   }
 
+
+  const closeForm = () => {
+    setPageNumber(1)
+    setOpenForm(false)
+  }
+const handleScrollEvent = async () =>{
+  const totalHeight = document.documentElement.scrollHeight;
+  const innerHeight = window.innerHeight;
+  const scrollTop = document.documentElement.scrollTop;
+
+  try{
+    if (innerHeight + scrollTop + 1 >= totalHeight){
+      setPageNumber((prev) => prev + 1)
+    }
+  } catch (err) {
+
+console. log(err)
+  }
+} 
+useEffect(() => {
+window.addEventListener("scroll", handleScrollEvent)
+
+return () => window.removeEventListener("scroll", handleScrollEvent)
+},[])
   const history = useHistory();
 
   function compareById(a: IRifas, b: IRifas) {
@@ -131,17 +155,6 @@ function Dashboard() {
     setSearchValue(event.target.value);
   };
 
-  const filteredTickets = tickets.filter((ticket) => {
-    if (!searchValue) {
-      return true;
-    }
-    const searchString = searchValue.toLowerCase();
-    const awardSign = ticket.awardSign?.toLowerCase() || "";
-    const riferoName = ticket.user.name.toLowerCase() || "";
-    const awardNoSign = ticket.awardNoSign?.toLowerCase() || "";
-    return awardSign.includes(searchString) || riferoName.includes(searchString) || awardNoSign.includes(searchString);
-  });
-
   const handlePreviousPage = () => {
     if (pageNumber > 1) {
       setPageNumber(pageNumber - 1);
@@ -151,7 +164,22 @@ function Dashboard() {
   const handleNextPage = () => {
     setPageNumber(pageNumber + 1);
   };
-
+  
+  // filtra las rifas según el valor de búsqueda
+  const filteredTickets = tickets.filter((ticket) => {
+    // si el valor de búsqueda es vacío, muestra todas las rifas
+    if (!searchValue) {
+      return true;
+    }
+    // convierte los atributos a buscar a minúsculas para realizar una comparación insensible a mayúsculas
+    const searchString = searchValue.toLowerCase();
+    const awardSign = ticket.awardSign?.toLowerCase() || "";
+    const riferoName = ticket.user.name.toLowerCase() || "";
+    const awardNoSign = ticket.awardNoSign?.toLowerCase() || "";
+    // retorna verdadero si el valor de búsqueda se encuentra en al menos uno de los atributos
+    return awardSign.includes(searchString) || riferoName.includes(searchString) || awardNoSign.includes(searchString);
+  });
+  
   return (
     <>
       {
@@ -165,13 +193,30 @@ function Dashboard() {
         ) : (
           <>
             {
-              helpModal &&
-              <HelpModalBody
+              helpModal && 
+              <HelpModalBody 
                 open={helpModal}
                 onClose={() => setHelpModal(false)}
               />
             }
             <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+              {/* <Group position="left" mb={20} spacing={0}>
+                <Button size="sm" variant="filled" color="blue" disabled style={{
+                  borderRadius: "5px 0 0 5px",
+                  cursor: 'not-allowed',
+                  boxShadow: '0 0 7px 0 #5f5f5f3d'
+                }}>
+                  Rifas
+                </Button>
+                <Button size="sm" variant="filled" color="blue" onClick={() => {
+                  history.push('/lobby');
+                }} style={{
+                  borderRadius: "0 5px 5px 0",
+                  boxShadow: '0 0 7px 0 #5f5f5f3d'
+                }}>
+                  Rifas de moto
+                </Button>
+              </Group> */}
               <Grid>
                 <Grid.Col md={5} sm={12}>
                   <Title order={2} fw={500} mb={20}>
@@ -197,9 +242,9 @@ function Dashboard() {
                     variant="filled"
                     color="blue"
                     style={{ float: "right" }}
-                    className="btn-rifa"
+                      className="btn-rifa"
                     onClick={() => setOpenForm(!openForm)}
-                    onClose={() => setOpenForm(false)}
+                    onClose={() => closeForm()}
                     open={openForm}
                   >
                     Agregar Rifa
@@ -209,13 +254,13 @@ function Dashboard() {
               {
                 tickets.length === 0 &&
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
-                  <Text>No hay resultados</Text>
+                  <Loader size="lg" />
                 </div>
               }
               {
-                tickets.length > 0 && (
+                tickets.length > 0 ? (
                   <>
-                    {filteredTickets.sort(compareById).map((ticket: IRifas) => {
+                    {tickets.sort(compareById).map((ticket: IRifas) => {
                       return (
                         <AccordionList
                           repeat={ticket}
@@ -249,6 +294,7 @@ function Dashboard() {
                           <RifaTicket
                             ticket={ticket}
                           />
+                          
                         </AccordionList>
                       )
                     })}
@@ -259,6 +305,10 @@ function Dashboard() {
                       />
                     </div>
                   </>
+                ) : (
+                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+                    <Text size="xl">No hay resultados</Text>
+                  </div>
                 )
               }
             </Card>
@@ -269,4 +319,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard;
+export default Dashboard
