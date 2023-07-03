@@ -6,7 +6,6 @@ import {
   Title,
   Loader,
   Input,
-  Pagination,
   Group,
   Button,
 } from "@mantine/core";
@@ -85,24 +84,21 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [totalPages, setTotalPages] = useState(1);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const getData = (page: number) => {
-    axios.get(`https://rifa-max.com/api/v1/rifas/actives_pagy?page=${page}`, {
+  const getData = () => {
+    axios.get(`https://rifa-max.com/api/v1/rifas/actives_no_tickets`, {
       headers: {
         ContentType: 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((response) => {
       setLoading(false);
-      setTickets(response.data.records);
-      setTotalPages(response.data.pagy.pages)
+      setTickets(response.data);
     }).catch((error) => {
       console.log(error);
     });
   }
-
 
   const closeForm = () => {
     setPageNumber(1)
@@ -148,21 +144,11 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
   }, [])
 
   useEffect(() => {
-    getData(pageNumber);
+    getData()
   }, [pageNumber, openForm])
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
-  };
-
-  const handlePreviousPage = () => {
-    if (pageNumber > 1) {
-      setPageNumber(pageNumber - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    setPageNumber(pageNumber + 1);
   };
   
   // filtra las rifas según el valor de búsqueda
@@ -298,12 +284,6 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
                         </AccordionList>
                       )
                     })}
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
-                      <Pagination
-                        total={totalPages} 
-                        onChange={(newPageNumber) => setPageNumber(newPageNumber)}
-                      />
-                    </div>
                   </>
                 ) : (
                   <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
