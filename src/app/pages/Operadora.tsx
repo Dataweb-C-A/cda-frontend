@@ -290,7 +290,7 @@ function Operadora() {
           {/** rifas abiertas */}
 
           {
-            loading === true && (
+            errors === null && loading ? (
               <>
                 <Card w={240} mt={8} ml={10} py={0} bg={theme.colors.dark[4]}>
                   <Grid mt={5}>
@@ -437,7 +437,7 @@ function Operadora() {
                   </Grid>
                 </Card>
               </>
-            )
+            ) : null
           }
 
           {draws.map(card => (
@@ -549,7 +549,7 @@ function Operadora() {
             <IconMoodConfuzed    style={{
               height: '500px',
               width: '500px',
-              marginLeft: '170px'
+              marginLeft: '110px'
             }}
             />
              <Title order={1}>Ha ocurrido un error... </Title>
