@@ -1,10 +1,10 @@
 import React, { useEffect, useState, lazy } from 'react'
 import Navbar from '../components/navbar'
-import { Grid, Paper, Group, Button } from '@mantine/core'
+import { Grid, Paper, Group, Button, Card, Avatar, Text, Title, useMantineTheme } from '@mantine/core'
 import Cards from '../components/cards'
 import { profiles } from '../assets/data/profiles'
 import { links } from '../assets/data/links'
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from 'axios'
 import Dashboard from '../components/dashboard/Dashboard'
 
@@ -12,6 +12,7 @@ const Home: React.FC = () => {
   const [users, setUsers] = useState<any>([])
   const [stats, setStats] = useState<any>({})
 
+  const theme = useMantineTheme();
   const history = useHistory();
   
   useEffect(() => {
@@ -51,15 +52,15 @@ const Home: React.FC = () => {
           expandScreen={true}
         />
         {/* <Group position="left" mb={10} mx={12} mt={10} spacing={0}>
-          <Button size="sm" variant="filled" color="blue" disabled style={{
-            borderRadius: "5px 0 0 5px",
+          <Button size="sm" variant="filled" bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} color="blue" disabled style={{
+            , zIndex: 99999orderRadius: "5px 0 0 5px",
             cursor: 'not-allowed',
             boxShadow: '0 0 7px 0 #5f5f5f3d'
           }}>
             Rifas
           </Button>
-          <Button size="sm" variant="filled" color="blue" onClick={() => {
-            history.push('/lobby');
+          <Button size="sm" variant="filled" bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} color="blue" onClick={() => {
+            h, zIndex: 99999story.push('/lobby');
           }} style={{
             borderRadius: "0 5px 5px 0",
             boxShadow: '0 0 7px 0 #5f5f5f3d'
@@ -96,6 +97,50 @@ const Home: React.FC = () => {
             />
           </Grid.Col>
         </Grid>
+        <Group ml={15} p={0} position='left' spacing={0}>
+          <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "5px 0 0 0", zIndex: 9 }}>
+            <Link
+              style={{
+                width: "100%",
+                height: "100%",
+                textDecoration: "none",
+                paddingTop: "13px",
+                color: "#fff"
+              }}
+              to="/lobby/normales"
+            >
+              Rifas Normales
+            </Link>
+          </Button>
+          <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "0 0 0 0" , zIndex: 9 }}>
+            <Link
+              style={{
+                width: "100%",
+                height: "100%",
+                textDecoration: "none",
+                paddingTop: "13px",
+                color: "#fff"
+              }}
+              to="/lobby/terminales"
+            >
+              Rifas Terminales
+            </Link>
+          </Button>
+          <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "0 5px 0 0", zIndex: 9 }}>
+            <Link
+              style={{
+                width: "100%",
+                height: "100%",
+                textDecoration: "none",
+                paddingTop: "13px",
+                color: "#fff"
+              }}
+              to="/lobby/triples"
+            >
+              Rifas Triples
+            </Link>
+          </Button>
+        </Group>
         <Dashboard />
       </div>
     </Paper>
