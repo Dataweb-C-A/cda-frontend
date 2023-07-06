@@ -492,6 +492,9 @@ function Operadora() {
                     </Grid.Col>
                   </Grid>
                     <Group my={10}>
+                    {/* <Spoiler maxHeight={120} showLabel="Max" hideLabel="menos">
+                      Suaberifico
+                    </Spoiler> */}
                     <Button
                       size="xs"
                       w="30%"
