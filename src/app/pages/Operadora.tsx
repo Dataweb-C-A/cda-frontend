@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card,Popover, Text, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton, Divider } from "@mantine/core";
+import { Card, Popover, Text, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton, Divider } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -227,7 +227,7 @@ function Operadora() {
             />
             Jugar
           </Button>
-        </div> 
+        </div>
         <div style={{ float: "right" }}></div>
       </Paper>
     )
@@ -446,9 +446,9 @@ function Operadora() {
               <Grid.Col xs={6} lg={2} order={1}>
                 <Card
                   key={card.id}
-                  w={235}
-                  h={170}
-                  shadow={"0 0 7px 0 #5f5f5f3d"}
+                  w={235}shadow="sm"
+                  component="a"
+                  target="_blank"
                   bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
                 >
                   <Text mt={2} fw={500} fz={15} mb={4} align="center">
@@ -491,11 +491,11 @@ function Operadora() {
                       </Badge>
                     </Grid.Col>
                   </Grid>
-                    <Group my={10}>
+                  <Group my={10}>
                     {/* <Spoiler maxHeight={120} showLabel="Max" hideLabel="menos">
                       Suaberifico
                     </Spoiler> */}
-                    <Button
+                    {/* <Button
                       size="xs"
                       w="30%"
                       variant="subtle"
@@ -506,7 +506,26 @@ function Operadora() {
                           rotate: '0deg',
                         }}
                       />
-                    </Button>
+                    </Button> */}
+                    <Spoiler maxHeight={0} showLabel="ver mas" hideLabel="Ocultar" transitionDuration={0}>
+
+                      <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                        Premio:   	  Moto Bera
+                      </Text>
+
+                      <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                        Tipo:	          Terminal(00-99)
+                      </Text>
+                      <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                        Agencia:    	  4 Bocas
+                      </Text>
+                      <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                        Tipo sorteo:	  Progresivo
+                      </Text><Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                        Fecha sorteo: 	  Por anunciar
+                      </Text>
+
+                    </Spoiler>
                     <Button
                       w="62.1%"
                       size="xs"
@@ -525,7 +544,7 @@ function Operadora() {
                     >
                       Jugar
                     </Button>
-                    </Group>
+                  </Group>
                 </Card>
               </Grid.Col>
             </Grid>
@@ -603,7 +622,7 @@ function Operadora() {
               style={{ position: "absolute", top: 15, right: 15, width: "120px", zIndex: 99999 }}
             >
               <Card>
-                <img src={RifamaxLogo} width="100%"/>
+                <img src={RifamaxLogo} width="100%" />
               </Card>
             </div>
           ) : null
