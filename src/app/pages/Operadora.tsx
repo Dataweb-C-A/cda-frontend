@@ -546,7 +546,9 @@ function Operadora() {
         {
           errors ? (
           <>
-            <IconMoodConfuzed    style={{
+            <IconMoodConfuzed    
+            
+            style={{
               height: '500px',
               width: '500px',
               marginLeft: '110px'
@@ -599,11 +601,12 @@ function Operadora() {
                   mt={8}
                   mx={7}
                   w="84.1%"
+
                   bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
                   style={{
                     position: 'absolute',
-                    top: 70,
-                    height: "calc(100vh - 5.4em)"
+                    top: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? 5 : 70,
+                    height: "calc(100vh - 5.8em)"
                   }}
                 >
                   <div
