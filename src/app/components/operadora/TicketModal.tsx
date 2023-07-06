@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
+import { Card,Loader, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import axios from 'axios';
 import { Carousel } from '@mantine/carousel';
@@ -539,8 +539,13 @@ function TicketModal({ draw_id }: modalProps) {
 
               })
             ) : (
-              <Text>loading...</Text>
-            )}
+              <>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70vh" }}>
+                  <Loader />
+                  <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
+                </div>
+              </>
+              )}
           </Group>
         </div>
 
