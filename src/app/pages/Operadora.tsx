@@ -13,6 +13,7 @@ import { TbZoomQuestion } from 'react-icons/tb'
 import { useDispatch, useSelector } from "react-redux";
 import { setLobbyMode } from "../config/reducers/lobbySlice";
 import { ImSad } from "react-icons/im";
+import RifamaxLogo from "../assets/images/rifamax-logo.png"
 
 interface ILobbyState {
   open: boolean
@@ -201,7 +202,7 @@ function Operadora() {
 
     return (
       <Paper className={cx(classes.trigger)} onClick={() => handleLobby(lobby_id, new Date())}>
-        {/* <div style={{ float: "right", top: '0px' }}>
+        <div style={{ float: "right", top: '0px' }}>
           <Button
             size="xs"
             style={{ marginTop: '-100px', marginLeft: '10px', paddingLeft: 5 }}
@@ -226,7 +227,7 @@ function Operadora() {
             />
             Jugar
           </Button>
-        </div>  */}
+        </div> 
         <div style={{ float: "right" }}></div>
       </Paper>
     )
@@ -284,7 +285,7 @@ function Operadora() {
           h="100%"
           style={{
             overflowY: "auto",
-            height: "calc(100vh - 4.9em)"
+            height: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? "calc(100vh - 1.8em)" : "calc(100vh - 5.6em)"
           }}
         >
           {/** rifas abiertas */}
@@ -498,7 +499,7 @@ function Operadora() {
                 <Grid.Col xs={6} lg={2} order={1}>
                   <Card
                     w={235}
-                    h="calc(100vh - 5.8em)"
+                    h={JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? "calc(100vh - 2em)" : "calc(100vh - 5.8em)"}
                     shadow={"0 0 7px 0 #5f5f5f3d"}
                     bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
                   >
@@ -559,6 +560,17 @@ function Operadora() {
         </Paper>
       </div>
       <div style={{ marginLeft: '250px', marginTop: '-870px' }} >
+        {
+          JSON.parse(localStorage.getItem("user") || '').role === "Auto" && loading === false ? (
+            <div
+              style={{ position: "absolute", top: 15, right: 15, width: "120px", zIndex: 99999 }}
+            >
+              <Card>
+                <img src={RifamaxLogo} width="100%"/>
+              </Card>
+            </div>
+          ) : null
+        }
         {
           errors ? (
             <>
@@ -622,7 +634,7 @@ function Operadora() {
                   style={{
                     position: 'absolute',
                     top: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? 5 : 70,
-                    height: "calc(100vh - 5.8em)"
+                    height: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? "calc(100vh - 2em)" : "calc(100vh - 5.8em)"
                   }}
                 >
                   <div

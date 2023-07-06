@@ -457,14 +457,19 @@ function TicketModal({ draw_id }: modalProps) {
   };
 
   return (
-    <Card shadow={'0 0 7px 0 #5f5f5f3d'} mb={20} ml={10} ref={elementRef} style={{
-      position: 'absolute',
-      width: 'calc(100vw - 18rem)',
-      scrollBehavior: 'smooth',
-      height: `calc(100vh - 7.2em)`,
-      top: 80,
-      scrollbarWidth: 'none',
-    }}>
+    <Card
+      shadow="sm"
+      radius="sm"
+      mt={8}
+      mx={7}
+      w="84.1%"
+      bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
+      style={{
+        position: 'absolute',
+        top: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? 5 : 70,
+        height: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? "calc(100vh - 2em)" : "calc(100vh - 5.8em)"
+      }}
+    >
       <Group>
         <CloseButton
           onClick={() => dispatch(
