@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Text, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton } from "@mantine/core";
+import { Card,Popover, Text, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -201,10 +201,10 @@ function Operadora() {
 
     return (
       <Paper className={cx(classes.trigger)} onClick={() => handleLobby(lobby_id, new Date())}>
-        <div style={{ float: "right", top: '0px' }}>
+        {/* <div style={{ float: "right", top: '0px' }}>
           <Button
             size="xs"
-            style={{ marginTop: '-10px', marginLeft: '10px', paddingLeft: 5 }}
+            style={{ marginTop: '-100px', marginLeft: '10px', paddingLeft: 5 }}
             onClick={() => {
               dispatch(
                 setLobbyMode(!selector)
@@ -224,9 +224,9 @@ function Operadora() {
                 marginRight: '5px'
               }}
             />
-            Ver mas
+            Jugar
           </Button>
-        </div>
+        </div>  */}
         <div style={{ float: "right" }}></div>
       </Paper>
     )
@@ -446,20 +446,24 @@ function Operadora() {
                 <Card
                   key={card.id}
                   w={235}
-                  h={120}
+                  h={160}
                   shadow={"0 0 7px 0 #5f5f5f3d"}
                   bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
                 >
-                  <BadgeStatus draw={card} lobby_id={card.id} />
-                  <Text mt={2} fw={500} fz={10} mb={4}>
+                  <Text mt={2} fw={500} fz={15} mb={4} align="center">
                     {card.first_prize}
                   </Text>
-                  <Text mt={-3} fw={300} fz={7}>
-                    Inicio: {card.init_date} - {
+                  <Text mt={-3} fw={300} fz={11} align="center">
+                    Inicio: {card.init_date}  {
+
+                    }
+                  </Text>
+                  <Text mt={-3} fw={300} fz={11} align="center">
+                    {
                       card.expired_date ? `Cierre: ${card.expired_date}` : 'Alcanzar progreso'
                     }
                   </Text>
-                  <Text mt={0} fw={300} fz={8}>
+                  <Text mt={0} fw={300} fz={10}>
                     Progreso:
                   </Text>
                   <Grid>
@@ -470,8 +474,20 @@ function Operadora() {
                       <Badge variant="filled" color={card.is_active ? 'green' : 'red'} size="xs" radius={4}>
                         {card.is_active ? 'Activo' : 'Inactivo'}
                       </Badge>
+
                     </Grid.Col>
+
                   </Grid>
+                  <BadgeStatus draw={card} lobby_id={card.id} />
+                  <Group mt={10} ml={15}>
+                    
+                    <Button size="xs">
+                      Ver mas
+                    </Button>
+                    <Button size="xs">
+                      Jugar
+                    </Button>
+                  </Group>
                 </Card>
               </Grid.Col>
             </Grid>
@@ -545,19 +561,19 @@ function Operadora() {
       <div style={{ marginLeft: '250px', marginTop: '-870px' }} >
         {
           errors ? (
-          <>
-            <IconMoodConfuzed    
-            
-            style={{
-              height: '500px',
-              width: '500px',
-              marginLeft: '110px'
-            }}
-            />
-             <Title order={1}>Ha ocurrido un error... </Title>
+            <>
+              <IconMoodConfuzed
 
-             <Title order={1}>Al parecer estas en la lista de espera</Title>
-          </>
+                style={{
+                  height: '500px',
+                  width: '500px',
+                  marginLeft: '110px'
+                }}
+              />
+              <Title order={1}>Ha ocurrido un error... </Title>
+
+              <Title order={1}>Al parecer estas en la lista de espera</Title>
+            </>
           ) : (
             loading === true ? (
               <>
