@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card,Popover, Text, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton } from "@mantine/core";
+import { Card,Popover, Text, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton, Divider } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -150,7 +150,7 @@ function Operadora() {
 
   useEffect(() => {
     setTimeout(() => {
-      axios.post('https://api.rifamax.app/api/public/draws', {
+      axios.post('http://localhost:3000/api/public/draws', {
         user_id: JSON.parse(localStorage.getItem('user') || '').id || 1,
       },
         {
@@ -447,26 +447,40 @@ function Operadora() {
                 <Card
                   key={card.id}
                   w={235}
-                  h={160}
+                  h={170}
                   shadow={"0 0 7px 0 #5f5f5f3d"}
                   bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
                 >
                   <Text mt={2} fw={500} fz={15} mb={4} align="center">
                     {card.first_prize}
                   </Text>
-                  <Text mt={-3} fw={300} fz={11} align="center">
-                    Inicio: {card.init_date}  {
-
+                  <Group position="apart">
+                    <Text mt={-3} fz={12} fw={300}>
+                      Inicio
+                    </Text>
+                    <Text mt={-3} fz={12} fw={300}>
+                      {card.init_date}
+                    </Text>
+                  </Group>
+                  <Group position="apart">
+                    <Text mt={-3} fz={12} fw={300}>
+                      Cierre
+                    </Text>
+                    <Text mt={-3} fz={12} fw={300}>
+                      {
+                        card.expired_date ? `${card.expired_date}` : 'Alcanzar progreso'
+                      }
+                    </Text>
+                  </Group>
+                  <Divider
+                    labelPosition="center"
+                    variant="dashed"
+                    label={
+                      <Text mt={0} ta="center" fw={600} fz={12}>
+                        Progreso
+                      </Text>
                     }
-                  </Text>
-                  <Text mt={-3} fw={300} fz={11} align="center">
-                    {
-                      card.expired_date ? `Cierre: ${card.expired_date}` : 'Alcanzar progreso'
-                    }
-                  </Text>
-                  <Text mt={0} fw={300} fz={10}>
-                    Progreso:
-                  </Text>
+                  />
                   <Grid>
                     <Grid.Col span={8}>
                       <Progress value={Number(card.progress.current)} color="green" label={`${card.progress.current.toFixed(0)}%`} size="xl" mt={7} />
@@ -475,20 +489,40 @@ function Operadora() {
                       <Badge variant="filled" color={card.is_active ? 'green' : 'red'} size="xs" radius={4}>
                         {card.is_active ? 'Activo' : 'Inactivo'}
                       </Badge>
-
                     </Grid.Col>
-
                   </Grid>
-                  <BadgeStatus draw={card} lobby_id={card.id} />
-                  <Group mt={10} ml={15}>
-                    
-                    <Button size="xs">
-                      Ver mas
+                    <Group my={10}>
+                    <Button
+                      size="xs"
+                      w="30%"
+                      variant="subtle"
+                    >
+                      <ChevronIcon
+                        fontSize={30}
+                        style={{
+                          rotate: '0deg',
+                        }}
+                      />
                     </Button>
-                    <Button size="xs">
+                    <Button
+                      w="62.1%"
+                      size="xs"
+                      onClick={() => {
+                        dispatch(
+                          setLobbyMode(!selector)
+                        )
+                        setDrawSelected(card)
+                        setLobbyState({
+                          open: !lobbyState.open,
+                          lobby_id: card.id,
+                          lobby_state: true,
+                          lobby_connection: new Date()
+                        })
+                      }}
+                    >
                       Jugar
                     </Button>
-                  </Group>
+                    </Group>
                 </Card>
               </Grid.Col>
             </Grid>
