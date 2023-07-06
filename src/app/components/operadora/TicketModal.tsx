@@ -782,17 +782,6 @@ function TicketModal({ draw_id }: modalProps) {
                               <Image maw={300} mx="auto"  radius="md" src={draws.adnoucement} alt="Premios" />
                             ) : null
                           }
-                          {/** info de rifas */}
-                          <Text fw={700}>Sorteo</Text>
-                          <Text mb={11}>{draws.title}</Text> {/*prize*/}
-                          <Text fw={700}>Tipo Sorteo</Text>
-                          <Text mb={11}>{draws.draw_type}</Text> {/*prize*/}
-                          <Text fw={700}>Inicio</Text>
-                          <Text mb={11} >{draws.init_date}</Text> {/*open*/}
-                          <Text fw={700}>Cierre</Text>
-                          <Text mb={11} >{draws.expired_date ?? "Por anunciar"}</Text> {/*close*/}
-                          <Text fw={700}>Progreso</Text>
-                          <Progress value={draws.progress.current} color="green" label={`${draws.progress.current}`} size="xl" mt={7} /> {/*Progreso*/}
                         </Card>
                       </Paper>
                     </Grid.Col>
