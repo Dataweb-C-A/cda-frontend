@@ -150,7 +150,7 @@ function Operadora() {
 
   useEffect(() => {
     setTimeout(() => {
-      axios.post('https://api.rifamax.app/api/public/draws', {
+      axios.post('http://localhost:3000/api/public/draws', {
         user_id: JSON.parse(localStorage.getItem('user') || '').id || 1,
       },
         {
@@ -446,7 +446,7 @@ function Operadora() {
               <Grid.Col xs={6} lg={2} order={1}>
                 <Card
                   key={card.id}
-                  w={235}shadow="sm"
+                  w={235} shadow="sm"
                   component="a"
                   target="_blank"
                   bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
@@ -491,7 +491,6 @@ function Operadora() {
                       </Badge>
                     </Grid.Col>
                   </Grid>
-                  <Group my={10}>
                     {/* <Spoiler maxHeight={120} showLabel="Max" hideLabel="menos">
                       Suaberifico
                     </Spoiler> */}
@@ -507,44 +506,85 @@ function Operadora() {
                         }}
                       />
                     </Button> */}
-                    <Spoiler maxHeight={0} showLabel="ver mas" hideLabel="Ocultar" transitionDuration={0}>
-
-                      <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                        Premio:   	  Moto Bera
-                      </Text>
-
-                      <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                        Tipo:	          Terminal(00-99)
-                      </Text>
-                      <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                        Agencia:    	  4 Bocas
-                      </Text>
-                      <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                        Tipo sorteo:	  Progresivo
-                      </Text><Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                        Fecha sorteo: 	  Por anunciar
-                      </Text>
-
-                    </Spoiler>
-                    <Button
-                      w="62.1%"
-                      size="xs"
-                      onClick={() => {
-                        dispatch(
-                          setLobbyMode(!selector)
-                        )
-                        setDrawSelected(card)
-                        setLobbyState({
-                          open: !lobbyState.open,
-                          lobby_id: card.id,
-                          lobby_state: true,
-                          lobby_connection: new Date()
-                        })
-                      }}
-                    >
-                      Jugar
-                    </Button>
-                  </Group>
+                    <Group mt={10} spacing={0}>
+                      <Button
+                        w="100%"
+                        size="xs"
+                        onClick={() => {
+                          dispatch(
+                            setLobbyMode(!selector)
+                          )
+                          setDrawSelected(card)
+                          setLobbyState({
+                            open: !lobbyState.open,
+                            lobby_id: card.id,
+                            lobby_state: true,
+                            lobby_connection: new Date()
+                          })
+                        }}
+                      >
+                        Jugar
+                      </Button>
+                      <Spoiler
+                        w="100%"
+                        pt={15}
+                        maxHeight={0}
+                        showLabel={
+                          <Group position="center">
+                            <ChevronIcon
+                              fontSize={30}
+                              style={{
+                                rotate: '0deg',
+                              }}
+                            />
+                            <Text ta="center">
+                              Ver mas
+                            </Text>
+                          </Group>
+                        }
+                        hideLabel={
+                          <Group position="center">
+                            <ChevronIcon
+                              fontSize={30}
+                              style={{
+                                rotate: '180deg',
+                              }}
+                            />
+                            <Text>
+                              Cerrar
+                            </Text>
+                          </Group>
+                        } 
+                        transitionDuration={150}
+                      >
+                        <Paper p={9}>
+                          <Group spacing={0}>
+                            <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                              Premio:
+                            </Text>
+                            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
+                              {card.first_prize}
+                            </Text>
+                          </Group>
+                          <Group spacing={0}>
+                            <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                              Tipo:
+                            </Text>
+                            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
+                              Terminal (01-99)
+                            </Text>
+                          </Group>
+                          <Group spacing={0}>
+                          <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                              Agencia: 
+                            </Text>
+                            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
+                              {JSON.parse(localStorage.getItem("user") || '').name}
+                            </Text>
+                          </Group>
+                        </Paper>
+                      </Spoiler>
+                    </Group>
                 </Card>
               </Grid.Col>
             </Grid>

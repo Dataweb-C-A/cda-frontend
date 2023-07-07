@@ -152,3 +152,52 @@ select option:checked {
     background-color: #eef5f9!important;
   }
 }
+.mantine-Spoiler-control {
+  -webkit-tap-highlight-color: transparent;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  font-size: 16px;
+  background-color: transparent;
+  text-align: center;
+  color: #d5d7e0;
+  margin-bottom: 10px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  width: 100%;
+  height: 30px;
+  padding-left: 14px;
+  padding-right: 14px;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+  -webkit-tap-highlight-color: transparent;
+  display: inline-block;
+  border-radius: 4px;
+  font-weight: 600;
+  position: relative;
+  line-height: 1;
+  font-size: 12px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background-color: #1971c2;
+  color: #fff;
+}
+
+.mantine-Spoiler-root {
+  display: flex;
+  flex-wrap: wrap-reverse;
+}
+
+
+.mantine-Spoiler-content {
+  width: 100%;
+}
