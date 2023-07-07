@@ -15,6 +15,7 @@ import { Router as Routing } from './app/config/router/router'
 import Exchange from './app/pages/Exchange'
 import Reports from './app/pages/Reports'
 import Draws from './app/pages/Draws'
+import Public from './app/pages/PublicDraws'
 
 type AppProps = {
   children: React.ReactNode
@@ -57,7 +58,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <App>
         <Switch>
           <Route path="/login" component={Login} />
-          <AuthRouter path="/riferos/:id" component={Riferos} isPrivate />
+          <Route path="/public_draws" component={Public} />
+          <AuthRouter path="/riferos" component={Riferos} isPrivate />
           <AuthRouter path="/lobby" component={Operadora} isPrivate />
           <AuthRouter path="/reports" component={Reports} isPrivate />
           <AuthRouter path="/exchange" component={Exchange} isPrivate />
