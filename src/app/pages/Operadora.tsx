@@ -150,7 +150,7 @@ function Operadora() {
 
   useEffect(() => {
     setTimeout(() => {
-      axios.post('https://api.rifamax.app/api/public/draws', {
+      axios.post('http://localhost:3000/api/public/draws', {
         user_id: JSON.parse(localStorage.getItem('user') || '').id || 1,
       },
         {

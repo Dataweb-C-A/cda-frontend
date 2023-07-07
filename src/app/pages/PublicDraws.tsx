@@ -6,6 +6,7 @@ import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch 
 import { useDispatch } from 'react-redux';
 import { useForm } from '@mantine/form';
 import { useLocation } from 'react-router-dom';
+import RifamaxLogo from "../assets/images/rifamax-logo.png"
 
 type clientProps = {
   name: string
@@ -159,7 +160,7 @@ function TicketModal({ draw_id }: modalProps) {
   let query = useQuery();
 
   useEffect(() => {
-    axios.get(`https://api.rifamax.app/draws_finder?id=${draw_id}`)
+    axios.get(`https://api.rifamax.app/draws_finder?id=${query.get('draw_id')}`)
       .then(res => {
         setDraws(res.data)
       })
@@ -248,7 +249,7 @@ function TicketModal({ draw_id }: modalProps) {
     },
     ticket: {
       background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1],
-      cursor: 'pointer',
+      cursor: 'not-allowed',
       height: '50px',
       margin: '0.3rem',
       marginRight: '2rem',
@@ -276,13 +277,14 @@ function TicketModal({ draw_id }: modalProps) {
       position: 'sticky',
       top: `${window.pageYOffset}rem`,
       right: '0',
+      marginRight: "200px",
       width: '100%',
     },
     ticketsFlex: {
-      width: '100%'
+      width: '70%'
     },
     taquillaFlex: {
-      width: '0%',
+      width: '30%',
     },
     cardTaquilla: {
       position: 'sticky',
@@ -303,11 +305,6 @@ function TicketModal({ draw_id }: modalProps) {
   const [searchTicket, setSearchTicket] = useState("");
   const { classes, cx } = useStyles()
   const [modalOpen, setModalOpen] = useState(false);
-
-  const limpiarJugada = () => {
-    setActive([]);
-    setSelectedTicket(null);
-  };
 
   const handleTickets = (register: number) => {
     const ticket = apiData.find((item) => item.place_number === register);
@@ -408,8 +405,8 @@ function TicketModal({ draw_id }: modalProps) {
       shadow="sm"
       radius="sm"
       mt={0}
-      pt={150}
-      px={300}
+      pt={200}
+      px={20}
       w="100%"
       bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
       style={{
@@ -453,7 +450,7 @@ function TicketModal({ draw_id }: modalProps) {
       <br />
 
       <div className={classes.container}>
-        <div className={classes.ticketsFlex}>
+        <div className={classes.ticketsFlex} style={{ padding: "0 100px 0 100px"}}>
           <Group key={counter}>
             {/** card  ticket*/}
             {apiData.length > 0 ? (
@@ -491,7 +488,56 @@ function TicketModal({ draw_id }: modalProps) {
           </Group>
         </div>
 
-       
+        <div className={classes.taquillaFlex} style={{ paddingRight: "100px" }}>
+          <nav
+            className={classes.stickyNav}
+          >
+            <Paper shadow="sm" mb={10}>
+              <div 
+                style={{
+                  padding: "50px"
+                }}
+              >
+                <Title ta="center" order={1} fw={300}>
+                  {draws.title}
+                </Title>
+                {
+                  draws.adnoucement ? (
+                    <img src={draws.adnoucement} width={'300'} height={'300'} style={{ marginLeft: "16%" }}/>
+                  ) : null
+                }
+                <Group position="apart">
+                  <Text fz={20} fw={700}>Tipo:</Text>
+                  <Text fz={20}>Terminal (01-99)</Text>
+                </Group>
+                <Group position="apart">
+                  <Text fz={20} fw={700}>Precio por ticket:</Text>
+                  <Text fz={20}>{draws.price_unit}$</Text>
+                </Group>
+                <Group position="apart">
+                  <Text fz={20} fw={700}>Fecha de inicio:</Text>
+                  <Text fz={20}>{draws.init_date}</Text>
+                </Group>
+                <Group position="apart">
+                  <Text fz={20} fw={700}>Fecha de cierre:</Text>
+                  <Text fz={20}>{draws.expired_date}</Text>
+                </Group>
+                <Text fz={20} mt={5} mb={5}>Progreso</Text>
+                <Progress label={String(draws.progress.current) + "%"} size={30} color={draws.is_active ? "green" : "red"} value={draws.progress.current} />
+              </div>
+              <img
+                src={RifamaxLogo}
+                style={{
+                  marginLeft: "30%",
+                  marginTop: "-50px"
+                }}
+                width="219px"
+                height="124px"
+                alt="logo"
+              />
+            </Paper>
+          </nav>
+        </div>
 
       </div>
     </Card>
