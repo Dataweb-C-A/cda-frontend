@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Stepper, Switch, Select, CloseButton, NumberInput, Image, SimpleGrid, Modal, Button, Slider, TextInput, Checkbox, Text, Grid, useMantineTheme, Group, Divider } from '@mantine/core'
+import { Stepper, Switch, Select, CloseButton, NumberInput, Image, SimpleGrid, Modal, Button, Slider, TextInput, Checkbox, Text, Grid, useMantineTheme, Group, Divider, MultiSelect } from '@mantine/core'
 import moment from 'moment'
 import { useForm } from '@mantine/form';
 import axios from 'axios'
@@ -43,6 +43,7 @@ type FormProps = {
   numbers: null | number | string;
   second_prize: null | string | null;
   init_date: null | Date | string;
+  visible_taquillas_ids: number[];
   expired_date: Date | string | null;
   money: null | string;
   ads: IFile | null;
@@ -59,6 +60,11 @@ interface IWhitelist {
   email: string,
   created_at: string | Date,
   updated_at: string | Date
+}
+
+interface IVisibleTaquillas {
+  label: string;
+  value: number;
 }
 
 function DrawsModal({
@@ -80,10 +86,24 @@ function DrawsModal({
   const validate = new Date(moment().format('YYYY-MM-DD 19:30:00'))
   const [checkedIndex, setCheckedIndex] = useState(0);
   const [ownerLabel, setOwnerLabel] = useState<IWhitelist[]>([])
+  const [visibleTaquillas, setVisibleTaquillas] = useState<IVisibleTaquillas[]>([
+    {
+      label: "Cargando...",
+      value: 0
+    }
+  ])
   const { user } = useUser();
   const [isSecondPrizeEnabled, setSecondPrizeEnabled] = useState(false);
 
   const theme = useMantineTheme();
+
+  useEffect(() => {
+    axios.get("https://api.rifamax.app/whitelists").then((res) => {
+      
+    }).catch((e) => {
+      console.log(e)
+    }) 
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -94,7 +114,14 @@ function DrawsModal({
 
   useEffect(() => {
     axios.get("https://api.rifamax.app/whitelists").then((res) => {
-      setOwnerLabel(res.data)
+      setVisibleTaquillas(
+        res.data.map((item: IWhitelist) => {
+          return {
+            label: item.name,
+            value: item.user_id
+          }
+        })
+      )
     })
   }, [])
 
@@ -110,6 +137,7 @@ const form = useForm({
     numbers: null,
     second_prize: null,
     init_date: null,
+    visible_taquillas_ids: [],
     expired_date: null,
     money: '$',
     ads: null,
@@ -537,18 +565,31 @@ const form = useForm({
                 </Grid.Col>
               </Grid>
               <Grid mb={15}>
-                <Grid.Col span={12}>
+                <Grid.Col span={6}>
                   <Select
                     size='md'
                     mb="md"
-                    label="Taquillas disponibles"
+                    label="Taquilla patrocinante"
                     placeholder="Elige una taquilla disponible"
                     withAsterisk
                     error={form.errors.owner_id}
-                    data={[
-                      { value: '221', label: 'Maxima02' }
-                    ]}
+                    data={visibleTaquillas.map((item: any) => {
+                      return { value: item.value, label: item.label }
+                    })}
                     {...form.getInputProps('owner_id')}
+                  />
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <MultiSelect
+                    size='md'
+                    mb="md"
+                    label="Taquillas visibles"
+                    placeholder="Elige una taquilla disponible"
+                    error={form.errors.visible_taquillas_ids}
+                    data={visibleTaquillas.map((item: any) => {
+                      return { value: item.value, label: item.label }
+                    })}
+                    {...form.getInputProps('visible_taquillas_ids')}
                   />
                 </Grid.Col>
               </Grid>
