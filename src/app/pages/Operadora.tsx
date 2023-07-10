@@ -724,8 +724,7 @@ function Operadora() {
                   radius="sm"
                   mt={8}
                   mx={7}
-                  w="84.1%"
-
+                  w="86%"
                   bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
                   style={{
                     position: 'absolute',

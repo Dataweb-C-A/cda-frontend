@@ -520,7 +520,7 @@ function TicketModal({ draw_id }: modalProps) {
                 </Group>
                 <Group position="apart">
                   <Text fz={20} fw={700}>Fecha de cierre:</Text>
-                  <Text fz={20}>{draws.expired_date}</Text>
+                  <Text fz={20}>{draws.expired_date ? `${draws.expired_date}` : 'Alcanzar progreso'}</Text>
                 </Group>
                 <Text fz={20} mt={5} mb={5}>Progreso</Text>
                 <Progress label={String(draws.progress.current) + "%"} size={30} color={draws.is_active ? "green" : "red"} value={draws.progress.current} />

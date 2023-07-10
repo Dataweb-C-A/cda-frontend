@@ -105,7 +105,7 @@ const Home: React.FC = () => {
                 height: "100%",
                 textDecoration: "none",
                 paddingTop: "13px",
-                color: "#fff"
+                color: theme.colorScheme === "dark" ? "#fff" : "#000"
               }}
               to="/lobby/normales"
             >
@@ -119,7 +119,7 @@ const Home: React.FC = () => {
                 height: "100%",
                 textDecoration: "none",
                 paddingTop: "13px",
-                color: "#fff"
+                color: theme.colorScheme === "dark" ? "#fff" : "#000"
               }}
               to="/lobby/terminales"
             >
@@ -133,7 +133,7 @@ const Home: React.FC = () => {
                 height: "100%",
                 textDecoration: "none",
                 paddingTop: "13px",
-                color: "#fff"
+                color: theme.colorScheme === "dark" ? "#fff" : "#000"
               }}
               to="/lobby/triples"
             >

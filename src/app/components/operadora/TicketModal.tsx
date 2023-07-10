@@ -153,13 +153,13 @@ function TicketModal({ draw_id }: modalProps) {
   const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
-    axios.get(`https://api.rifamax.app/draws_finder?id=${draw_id}`)
+    axios.get(`http://localhost:3000/draws_finder?id=${draw_id}`)
       .then(res => {
         setDraws(res.data)
       })
       .catch(err => console.log(err))
 
-    axios.get('https://api.rifamax.app/exchange?last=last')
+    axios.get('http://localhost:3000/exchange?last=last')
       .then(res => {
         setExchange(res.data)
       })
@@ -195,7 +195,7 @@ function TicketModal({ draw_id }: modalProps) {
         console.log('Conexión establecida.');
   
         const mensaje = (): void => {
-          fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}`)
+          fetch(`http://localhost:3000/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}`)
             .then(function (response: Response): Promise<string> {
               return response.text();
             })
@@ -206,7 +206,7 @@ function TicketModal({ draw_id }: modalProps) {
         };
   
         const qr = (): void => {
-          fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}&qr=on`)
+          fetch(`http://localhost:3000/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}&qr=on`)
             .then(function (response: Response): Promise<string> {
               return response.text();
             })
@@ -328,7 +328,9 @@ function TicketModal({ draw_id }: modalProps) {
       width: '100%',
     },
     ticketsFlex: {
-      width: '70%'
+      width: '70%',
+      paddingRight: '25px',
+      paddingLeft: "20px"
     },
     taquillaFlex: {
       width: '30%',
@@ -432,7 +434,7 @@ function TicketModal({ draw_id }: modalProps) {
 
   useEffect(() => {
     setTimeout(() => {
-      fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${currentPage}`)
+      fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
         .then((response) => response.json())
         .then((data) => {
           setApiData(data.places);
@@ -448,7 +450,7 @@ function TicketModal({ draw_id }: modalProps) {
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
     setCurrentPage(randomPage);
-    const response = await fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${randomPage}`);
+    const response = await fetch(`http://localhost:3000/places?id=${draw_id}&page=${randomPage}`);
     const data = await response.json();
     const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
     const randomTicketIndex = Math.floor(Math.random() * availableTickets.length);
@@ -462,7 +464,7 @@ function TicketModal({ draw_id }: modalProps) {
       radius="sm"
       mt={8}
       mx={7}
-      w="84.1%"
+      w="86%"
       bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
       style={{
         position: 'absolute',
@@ -516,7 +518,7 @@ function TicketModal({ draw_id }: modalProps) {
             {apiData.length > 0 ? (
               apiData.map((item, index) => {
                 const cardStyle = {
-                  width: `${70 / 10}%`,
+                  width: `${70 / 9}%`,
                   margin: '4px'
                 };
 
@@ -749,7 +751,7 @@ function TicketModal({ draw_id }: modalProps) {
                                     mt={30}
                                     style={{ width: '100%' }}
                                     onClick={() => {
-                                      axios.post("https://api.rifamax.app/places", {place: {
+                                      axios.post("http://localhost:3000/places", {place: {
                                         agency_id: JSON.parse(localStorage.getItem('user') || '').id,
                                         user_id: JSON.parse(localStorage.getItem('user') || '').id,
                                         draw_id: draws.id,
