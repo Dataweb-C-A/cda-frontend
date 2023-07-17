@@ -201,3 +201,12 @@ select option:checked {
 .mantine-Spoiler-content {
   width: 100%;
 }
+
+.card-link {
+  color: #1971c2;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    background-color: #1A1B1E;
+  }
+}

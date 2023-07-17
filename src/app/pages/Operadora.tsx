@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Popover, Text, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton, Divider } from "@mantine/core";
+import { Card, Popover, Text, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton, Divider, Anchor } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLobbyMode } from "../config/reducers/lobbySlice";
 import { ImSad } from "react-icons/im";
 import RifamaxLogo from "../assets/images/rifamax-logo.png"
+import { useHistory } from "react-router-dom";
 
 interface ILobbyState {
   open: boolean
@@ -114,7 +115,7 @@ function Operadora() {
   })
 
   const selector = useSelector((state: any) => state.lobby.open)
-
+  const history = useHistory()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -440,7 +441,29 @@ function Operadora() {
               </>
             ) : null
           }
-
+          <Card 
+            className="card-link"
+            mx={15} 
+            my={5} 
+            w={235} 
+            onClick={() => {
+              history.push('/')
+            }}
+            style={{
+              cursor: "pointer"
+            }}
+          >
+            <Text ta="center" size={20} fw={200}>
+              <ChevronIcon
+                style={{
+                  rotate: "90deg",
+                  marginRight: 5,
+                  marginTop: 7
+                }}
+              /> 
+              Regresar a las rifas
+            </Text>
+          </Card>
           {draws.map(card => (
             <Grid mt={0} gutter={10} mx={10}>
               <Grid.Col xs={6} lg={2} order={1}>
