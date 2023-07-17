@@ -8,6 +8,7 @@ import moment from 'moment'
 import TableSort from '../components/table'
 import { useForm } from '@mantine/form';
 import { Repeat } from 'tabler-icons-react'
+import { IconUpload } from '@tabler/icons'
 
 interface IExchange { 
   variacion_bs: string;
@@ -43,12 +44,15 @@ function Exchange() {
         return null;
       },
       variacion_cop: (value) => {
-        if (!value) {
-          return 'Variacion es requerida';
+        if (!form.values.automatic) {
+          if (!value) {
+            return 'Variacion es requerida';
+          }
+          if (parseFloat(value) < 0) {
+            return 'La variacion no puede ser menor que 0';
+          }
         }
-        if (parseFloat(value) < 0) {
-          return 'La variacion no puede ser menor que 0';
-        }
+        return null;
       },
     },
   });
@@ -66,12 +70,12 @@ function Exchange() {
         console.log(err)
       })
 
-    axios.get('https://api.rifamax.app/exchange').then(res => {
+    axios.get('http://localhost:3000/exchange').then(res => {
       setExchange(res.data.reverse())
     }).catch(err => {
       console.log(err)
     })
-  }, [refresher])
+  }, [loading])
 
   return (
     <>
@@ -109,16 +113,20 @@ function Exchange() {
           )
         }
       </Card>
-      <Modal opened={opened} centered onClose={close} withCloseButton={false}>
+      <Modal 
+        opened={opened} 
+        onClose={close} 
+        centered 
+        withCloseButton={false}
+      >
         <form onSubmit={form.onSubmit((values) => {
-          axios.post("https://api.rifamax.app/exchange", values, 
+          axios.post("http://localhost:3000/exchange", values, 
           { 
             headers: {
               'Content-Type': "application/json;charset=utf-8"
             }
           }).then(res => {
-            setRefresher(refresher + 1)
-            location.reload()
+            setLoading(true)
             close()
           }
           ).catch(err => {
@@ -131,23 +139,43 @@ function Exchange() {
           <NumberInput
             placeholder="Variacion BsF"
             label="Variacion BsF"
+            my={5}
+            size="md"
             withAsterisk={!form.values.automatic}
             hideControls
             disabled={form.values.automatic}
+            error={form.errors.variacion_bs}
             {...form.getInputProps('variacion_bs')}
           />
-          <Group position='right'>
-            <Switch mt={5} mb={0} label="Automatico?" labelPosition='left' {...form.getInputProps('automatic')} />
-          </Group>
           <NumberInput
             placeholder="Variacion COP"
             label="Variacion COP"
-            withAsterisk
+            my={5}
+            size="md"
+            withAsterisk={!form.values.automatic}
             hideControls
+            disabled={form.values.automatic}
             error={form.errors.variacion_cop}
             {...form.getInputProps('variacion_cop')}
           />
-          <Button mt={10} fullWidth type="submit">Actualizar</Button>
+          <Group position='right'>
+            <Switch 
+              size="md" 
+              mt={5} 
+              mb={0} 
+              label="Automatico?" 
+              labelPosition='left' 
+              {...form.getInputProps('automatic')} 
+            />
+          </Group>
+          <Button 
+            mt={10} 
+            fullWidth 
+            type="submit" 
+            leftIcon={<IconUpload />}
+          >
+            Actualizar
+          </Button>
         </form>
       </Modal>
     </>

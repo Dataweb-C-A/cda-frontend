@@ -48,7 +48,7 @@ type FormProps = {
   money: null | string;
   ads: IFile | null;
   award: IFile | null;
-  owner_id: number | string;
+  owner_id: number | string | null;
   user_id: number;
 }
 
@@ -86,19 +86,19 @@ function DrawsModal({
   const validate = new Date(moment().format('YYYY-MM-DD 19:30:00'))
   const [checkedIndex, setCheckedIndex] = useState(0);
   const [ownerLabel, setOwnerLabel] = useState<IWhitelist[]>([])
+  const [allTaquillas, setAllTaquillas] = useState<boolean>(true)
   const [visibleTaquillas, setVisibleTaquillas] = useState<IVisibleTaquillas[]>([
     {
       label: "Cargando...",
       value: 0
     }
   ])
-  const { user } = useUser();
   const [isSecondPrizeEnabled, setSecondPrizeEnabled] = useState(false);
-
-  const theme = useMantineTheme();
+  const [files, setFiles] = useState<FileWithPath[]>([]);
+  const [files2, setFiles2] = useState<FileWithPath[]>([]);
 
   useEffect(() => {
-    axios.get("https://api.rifamax.app/whitelists").then((res) => {
+    axios.get("http://localhost:3000/whitelists").then((res) => {
       
     }).catch((e) => {
       console.log(e)
@@ -113,7 +113,7 @@ function DrawsModal({
   }, [actualDate])
 
   useEffect(() => {
-    axios.get("https://api.rifamax.app/whitelists").then((res) => {
+    axios.get("http://localhost:3000/whitelists").then((res) => {
       setVisibleTaquillas(
         res.data.map((item: IWhitelist) => {
           return {
@@ -128,7 +128,7 @@ function DrawsModal({
 const form = useForm({
   initialValues: {
     title: '',
-    draw_type: 'End-To-Date',
+    draw_type: 'Progressive',
     limit: null,
     price_unit: null,
     loteria: 'ZULIA 7A',
@@ -142,7 +142,7 @@ const form = useForm({
     money: '$',
     ads: null,
     award: null,
-    owner_id: 1,
+    owner_id: null,
     user_id: JSON.parse(localStorage.getItem('user') || '').id || 1
   },
   validate: {
@@ -200,11 +200,18 @@ const form = useForm({
       if (!value) return 'Numeros de la rifa requeridos';
       if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
     },
-    owner_id: (value: number | string) => {
-      if (!value) return 'Agencia requerida'
+    owner_id: (value: number | string | null) => {
+      if (value === null) return 'Agencia requerida'
     },
     money: (value: string) => {
       if (!value) return 'Moneda requerida';
+    },
+    visible_taquillas_ids: (value: number[]) => {
+      if (allTaquillas) { 
+        null
+      } else { 
+        if (value.length < 1) return 'Taquillas requeridas';
+      }
     },
     award: (value: string) => {
       if (!value) return 'Premio requerido';
@@ -226,7 +233,7 @@ const form = useForm({
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
 
-    axios.post('https://api.rifamax.app/draws', {draw: values}, {
+    axios.post('http://localhost:3000/draws', {draw: values}, {
       headers: {
         "Content-Type": ["application/json", "multipart/form-data"],
         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
@@ -272,8 +279,6 @@ const form = useForm({
       </div>
     )
   }
-  const [files, setFiles] = useState<FileWithPath[]>([]);
-  const [files2, setFiles2] = useState<FileWithPath[]>([]);
   
   const removeFile = (index: number, dropzone: number) => {
     if (dropzone === 1) {
@@ -584,6 +589,7 @@ const form = useForm({
                     size='md'
                     mb="md"
                     label="Taquillas visibles"
+                    disabled={allTaquillas}
                     placeholder="Elige una taquilla disponible"
                     error={form.errors.visible_taquillas_ids}
                     data={visibleTaquillas.map((item: any) => {
@@ -593,6 +599,21 @@ const form = useForm({
                   />
                 </Grid.Col>
               </Grid>
+              <Group 
+                mt={-25} 
+                position='right'
+              >
+                <Switch 
+                  label="Seleccionar todas" 
+                  checked={true}
+                  // onChange={(e) => {
+                  //   if (e.target.checked) {
+                  //     form.getInputProps('visible_taquillas_ids').onChange([])
+                  //   }
+                  //   setAllTaquillas(e.target.checked)
+                  // }} 
+                />
+              </Group>
               <Grid>
                 <Grid.Col span={6}>
                   <Text size="xl" fz="md" mb={15} inline>

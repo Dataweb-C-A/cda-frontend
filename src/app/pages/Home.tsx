@@ -97,50 +97,54 @@ const Home: React.FC = () => {
             />
           </Grid.Col>
         </Grid>
-        <Group ml={15} p={0} position='left' spacing={0}>
-          <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "5px 0 0 0", zIndex: 9 }}>
-            <Link
-              style={{
-                width: "100%",
-                height: "100%",
-                textDecoration: "none",
-                paddingTop: "13px",
-                color: theme.colorScheme === "dark" ? "#fff" : "#000"
-              }}
-              to="/lobby/normales"
-            >
-              Rifas Normales
-            </Link>
-          </Button>
-          <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "0 0 0 0" , zIndex: 9 }}>
-            <Link
-              style={{
-                width: "100%",
-                height: "100%",
-                textDecoration: "none",
-                paddingTop: "13px",
-                color: theme.colorScheme === "dark" ? "#fff" : "#000"
-              }}
-              to="/lobby/terminales"
-            >
-              Rifas Terminales
-            </Link>
-          </Button>
-          <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "0 5px 0 0", zIndex: 9 }}>
-            <Link
-              style={{
-                width: "100%",
-                height: "100%",
-                textDecoration: "none",
-                paddingTop: "13px",
-                color: theme.colorScheme === "dark" ? "#fff" : "#000"
-              }}
-              to="/lobby/triples"
-            >
-              Rifas Triples
-            </Link>
-          </Button>
-        </Group>
+        {
+          JSON.parse(localStorage.getItem('user') || '').role === "Taquilla" && (
+            <Group ml={15} p={0} position='left' spacing={0}>
+              <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "5px 0 0 0", zIndex: 9 }}>
+                <Link
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    textDecoration: "none",
+                    paddingTop: "13px",
+                    color: theme.colorScheme === "dark" ? "#fff" : "#000"
+                  }}
+                  to="/lobby/normales"
+                >
+                  Rifas Normales
+                </Link>
+              </Button>
+              <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "0 0 0 0" , zIndex: 9 }}>
+                <Link
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    textDecoration: "none",
+                    paddingTop: "13px",
+                    color: theme.colorScheme === "dark" ? "#fff" : "#000"
+                  }}
+                  to="/lobby/terminales"
+                >
+                  Rifas Terminales
+                </Link>
+              </Button>
+              <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "0 5px 0 0", zIndex: 9 }}>
+                <Link
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    textDecoration: "none",
+                    paddingTop: "13px",
+                    color: theme.colorScheme === "dark" ? "#fff" : "#000"
+                  }}
+                  to="/lobby/triples"
+                >
+                  Rifas Triples
+                </Link>
+              </Button>
+            </Group>
+          )
+        }
         <Dashboard />
       </div>
     </Paper>
