@@ -510,7 +510,7 @@ function TicketModal({ draw_id }: modalProps) {
                   <Text fz={20}>{draws.expired_date ? `${draws.expired_date}` : 'Alcanzar progreso'}</Text>
                 </Group>
                 <Text fz={20} mt={5} mb={5}>Progreso</Text>
-                <Progress label={String(draws.progress.current) + "%"} size={30} color={draws.is_active ? "green" : "red"} value={draws.progress.current} />
+                <Progress label={String(draws.progress.current.toFixed(2)) + "%"} size={30} color={draws.is_active ? "green" : "red"} value={draws.progress.current} />
               </div>
               <img
                 src={RifamaxLogo}
