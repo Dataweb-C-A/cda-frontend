@@ -160,18 +160,20 @@ function TicketModal({ draw_id }: modalProps) {
   let query = useQuery();
 
   useEffect(() => {
-    axios.get(`https://api.rifamax.app/draws_finder?id=${query.get('draw_id')}`)
-      .then(res => {
-        setDraws(res.data)
-      })
-      .catch(err => console.log(err))
-
-    axios.get('https://api.rifamax.app/exchange?last=last')
-      .then(res => {
-        setExchange(res.data)
-      })
-      .catch(err => console.log(err))
-  }, [])
+    setTimeout(() => {
+      axios.get(`https://api.rifamax.app/draws_finder?id=${query.get('draw_id')}`)
+        .then(res => {
+          setDraws(res.data)
+        })
+        .catch(err => console.log(err))
+  
+      axios.get('https://api.rifamax.app/exchange?last=last')
+        .then(res => {
+          setExchange(res.data)
+        })
+        .catch(err => console.log(err))
+    }, 500)
+  }, [draws])
 
 
   function send(draw: IDraws, place: IPlace): void {
@@ -304,7 +306,6 @@ function TicketModal({ draw_id }: modalProps) {
   }))
   const [searchTicket, setSearchTicket] = useState("");
   const { classes, cx } = useStyles()
-  const [modalOpen, setModalOpen] = useState(false);
 
   const handleTickets = (register: number) => {
     const ticket = apiData.find((item) => item.place_number === register);
@@ -359,9 +360,6 @@ function TicketModal({ draw_id }: modalProps) {
     setCounter(0);
   }, [active]);
 
-
-  const [checkedIndex, setCheckedIndex] = useState(-1);
-  const [isChecked, setIsChecked] = useState(false);
   const [apiData, setApiData] = useState<ticketProps[] | []>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
@@ -388,17 +386,6 @@ function TicketModal({ draw_id }: modalProps) {
         });
     }, 500)
   }, [currentPage, apiData]);
-
-  const getRandomTicket = async () => {
-    const randomPage = Math.floor(Math.random() * totalPages) + 1;
-    setCurrentPage(randomPage);
-    const response = await fetch(`https://api.rifamax.app/places?id=${query.get("draw_id")}&page=${randomPage}`);
-    const data = await response.json();
-    const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
-    const randomTicketIndex = Math.floor(Math.random() * availableTickets.length);
-    const randomTicket = availableTickets[randomTicketIndex];
-    setActive([...active, randomTicket.place_number]);
-  };
 
   return (
     <Card
