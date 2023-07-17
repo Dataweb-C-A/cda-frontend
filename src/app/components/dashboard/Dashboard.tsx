@@ -8,6 +8,7 @@ import {
   Input,
   Group,
   Button,
+  Pagination,
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 import FormModal from "../formModal";
@@ -85,44 +86,55 @@ function Dashboard() {
   const [openForm, setOpenForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState(10);
 
   const getData = () => {
-    axios.get(`https://rifa-max.com/api/v1/rifas/actives_no_tickets`, {
-      headers: {
-        ContentType: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    }).then((response) => {
-      setLoading(false);
-      setTickets(response.data);
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
+    axios
+      .get(`https://rifa-max.com/api/v1/rifas/actives_no_tickets`, {
+        params: {
+          page: currentPage,
+          perPage: perPage,
+        },
+        headers: {
+          ContentType: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        setLoading(false);
+        setTickets(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const closeForm = () => {
-    setPageNumber(1)
-    setOpenForm(false)
-  }
-const handleScrollEvent = async () =>{
-  const totalHeight = document.documentElement.scrollHeight;
-  const innerHeight = window.innerHeight;
-  const scrollTop = document.documentElement.scrollTop;
+    setPageNumber(1);
+    setOpenForm(false);
+  };
 
-  try{
-    if (innerHeight + scrollTop + 1 >= totalHeight){
-      setPageNumber((prev) => prev + 1)
+  const handleScrollEvent = async () => {
+    const totalHeight = document.documentElement.scrollHeight;
+    const innerHeight = window.innerHeight;
+    const scrollTop = document.documentElement.scrollTop;
+
+    try {
+      if (innerHeight + scrollTop + 1 >= totalHeight) {
+        setPageNumber((prev) => prev + 1);
+      }
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
+  };
 
-console. log(err)
-  }
-} 
-useEffect(() => {
-window.addEventListener("scroll", handleScrollEvent)
+  useEffect(() => {
+    window.addEventListener("scroll", handleScrollEvent);
 
-return () => window.removeEventListener("scroll", handleScrollEvent)
-},[])
+    return () => window.removeEventListener("scroll", handleScrollEvent);
+  }, []);
+
   const history = useHistory();
 
   function compareById(a: IRifas, b: IRifas) {
@@ -132,171 +144,152 @@ return () => window.removeEventListener("scroll", handleScrollEvent)
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
       if ((event.ctrlKey && event.key === "m") || event.key === "M") {
-        setHelpModal(!helpModal);
+        setHelpModal((prevState) => !prevState);
       }
-    }
+    };
 
     document.addEventListener("keydown", keyDownHandler);
 
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
-    }
-  }, [])
+    };
+  }, []);
 
   useEffect(() => {
-    getData()
-  }, [pageNumber, openForm])
+    getData();
+  }, [pageNumber, openForm]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
-  
-  // filtra las rifas según el valor de búsqueda
-  const filteredTickets = tickets.filter((ticket) => {
-    // si el valor de búsqueda es vacío, muestra todas las rifas
-    if (!searchValue) {
-      return true;
-    }
-    // convierte los atributos a buscar a minúsculas para realizar una comparación insensible a mayúsculas
-    const searchString = searchValue.toLowerCase();
-    const awardSign = ticket.awardSign?.toLowerCase() || "";
-    const riferoName = ticket.user.name.toLowerCase() || "";
-    const awardNoSign = ticket.awardNoSign?.toLowerCase() || "";
-    // retorna verdadero si el valor de búsqueda se encuentra en al menos uno de los atributos
-    return awardSign.includes(searchString) || riferoName.includes(searchString) || awardNoSign.includes(searchString);
-  });
-  
+
+  const filteredTickets = tickets
+    .slice((currentPage - 1) * perPage, currentPage * perPage)
+    .filter((ticket) => {
+      if (!searchValue) {
+        return true;
+      }
+      const searchString = searchValue.toLowerCase();
+      const awardSign = ticket.awardSign?.toLowerCase() || "";
+      const riferoName = ticket.user.name.toLowerCase() || "";
+      const awardNoSign = ticket.awardNoSign?.toLowerCase() || "";
+      return (
+        awardSign.includes(searchString) ||
+        riferoName.includes(searchString) ||
+        awardNoSign.includes(searchString)
+      );
+    });
+
   return (
     <>
-      {
-        loading ? (
+      {loading ? (
+        <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+            <Loader />
+            <Text style={{ marginLeft: "10px" }}>Cargando Rifas...</Text>
+          </div>
+        </Card>
+      ) : (
+        <>
+          {helpModal && (
+            <HelpModalBody
+              open={helpModal}
+              onClose={() => setHelpModal(false)}
+            />
+          )}
           <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
-              <Loader />
-              <Text style={{ marginLeft: "10px" }}>Cargando Rifas...</Text>
-            </div>
-          </Card>
-        ) : (
-          <>
-            {
-              helpModal && 
-              <HelpModalBody 
-                open={helpModal}
-                onClose={() => setHelpModal(false)}
-              />
-            }
-            <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
-              {/* <Group position="left" mb={20} spacing={0}>
-                <Button size="sm" variant="filled" color="blue" disabled style={{
-                  borderRadius: "5px 0 0 5px",
-                  cursor: 'not-allowed',
-                  boxShadow: '0 0 7px 0 #5f5f5f3d'
-                }}>
+            <Grid>
+              <Grid.Col md={5} sm={12}>
+                <Title order={2} fw={500} mb={20}>
                   Rifas
-                </Button>
-                <Button size="sm" variant="filled" color="blue" onClick={() => {
-                  history.push('/lobby');
-                }} style={{
-                  borderRadius: "0 5px 5px 0",
-                  boxShadow: '0 0 7px 0 #5f5f5f3d'
-                }}>
-                  Rifas de moto
-                </Button>
-              </Group> */}
-              <Grid>
-                <Grid.Col md={5} sm={12}>
-                  <Title order={2} fw={500} mb={20}>
-                    Rifas
-                    <Text fw={300} fz={20}>
-                      Estado de las Rifas mensuales
-                    </Text>
-                  </Title>
-                  <Input
-                    icon={<Search />}
-                    variant="filled"
-                    placeholder="Buscar por premio, rifero o número de premiado"
-                    radius="sm"
-                    size="sm"
-                    mt={-15}
-                    mb={20}
-                    value={searchValue}
-                    onChange={handleSearchChange}
-                  />
-                </Grid.Col>
-                <Grid.Col md={7} sm={12}>
-                  <FormModal
-                    variant="filled"
-                    color="blue"
-                    style={{ float: "right" }}
-                      className="btn-rifa"
-                    onClick={() => setOpenForm(!openForm)}
-                    onClose={() => closeForm()}
-                    open={openForm}
+                  <Text fw={300} fz={20}>
+                    Estado de las Rifas mensuales
+                  </Text>
+                </Title>
+                <Input
+                  icon={<Search />}
+                  variant="filled"
+                  placeholder="Buscar por premio, rifero o número de premiado"
+                  radius="sm"
+                  size="sm"
+                  mt={-15}
+                  mb={20}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                />
+                <Pagination
+                  total={Math.ceil(tickets.length / perPage)}
+                  onChange={(value) => setCurrentPage(value)}
+                />
+              </Grid.Col>
+              <Grid.Col md={7} sm={12}>
+                <FormModal
+                  variant="filled"
+                  color="blue"
+                  style={{ float: "right" }}
+                  className="btn-rifa"
+                  onClick={() => setOpenForm((prevState) => !prevState)}
+                  onClose={() => closeForm()}
+                  open={openForm}
+                >
+                  Agregar Rifa
+                </FormModal>
+              </Grid.Col>
+            </Grid>
+            {tickets.length === 0 ? (
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+                <Loader size="lg" />
+              </div>
+            ) : (
+              <>
+                {filteredTickets.sort(compareById).map((ticket: IRifas) => (
+                  <AccordionList
+                    key={ticket.id}
+                    repeat={ticket}
+                    data={{
+                      id: ticket.id,
+                      rifero: ticket.user.name,
+                      prize: ticket.awardSign,
+                      status: ticket.is_send,
+                      pin: !!ticket.pin,
+                      pinNumber: ticket.pin || null,
+                      verify: ticket.verify
+                    }}
+                    dataPDF={{
+                      agency: ticket.user.name,
+                      serie: ticket.id,
+                      rifDate: moment(ticket.rifDate).format("DD/MM/YYYY"),
+                      hour: moment(new Date()).format("hh:mm A"),
+                      lotery: 'ZULIA 7A 7:05PM',
+                      phone: ticket.rifero.phone,
+                      awardNoSign: ticket.awardNoSign,
+                      numbers: ticket.numbers.toString(),
+                      money: ticket.money,
+                      price: ticket.price.toString(),
+                      awardSign: ticket.awardSign,
+                      serial: ticket.serial,
+                      plate: ticket.plate,
+                      year: ticket.year,
+                      rifero: ticket.user.name,
+                    }}
                   >
-                    Agregar Rifa
-                  </FormModal>
-                </Grid.Col>
-              </Grid>
-              {
-                tickets.length === 0 &&
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
-                  <Loader size="lg" />
-                </div>
-              }
-              {
-                tickets.length > 0 ? (
-                  <>
-                    {tickets.sort(compareById).map((ticket: IRifas) => {
-                      return (
-                        <AccordionList
-                          repeat={ticket}
-                          data={{
-                            id: ticket.id,
-                            rifero: ticket.user.name,
-                            prize: ticket.awardSign,
-                            status: ticket.is_send,
-                            pin: ticket.pin ? true : false,
-                            pinNumber: ticket.pin ? ticket.pin : null,
-                            verify: ticket.verify
-                          }}
-                          dataPDF={{
-                            agency: ticket.user.name,
-                            serie: ticket.id,
-                            rifDate: moment(ticket.rifDate).format("DD/MM/YYYY"),
-                            hour: moment(new Date()).format("hh:mm A"),
-                            lotery: 'ZULIA 7A 7:05PM',
-                            phone: ticket.rifero.phone,
-                            awardNoSign: ticket.awardNoSign,
-                            numbers: ticket.numbers.toString(),
-                            money: ticket.money,
-                            price: ticket.price.toString(),
-                            awardSign: ticket.awardSign,
-                            serial: ticket.serial,
-                            plate: ticket.plate,
-                            year: ticket.year,
-                            rifero: ticket.user.name,
-                          }}
-                        >
-                          <RifaTicket
-                            ticket={ticket}
-                          />
-                          
-                        </AccordionList>
-                      )
-                    })}
-                  </>
-                ) : (
-                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
-                    <Text size="xl">No hay resultados</Text>
-                  </div>
-                )
-              }
-            </Card>
-          </>
-        )
-      }
+                    <RifaTicket
+                      ticket={ticket}
+                    />
+                  </AccordionList>
+                ))}
+              </>
+            )}
+            {tickets.length === 0 && (
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
+                <Text size="xl">No hay resultados</Text>
+              </div>
+            )}
+          </Card>
+        </>
+      )}
     </>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;
