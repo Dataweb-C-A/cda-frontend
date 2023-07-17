@@ -153,13 +153,13 @@ function TicketModal({ draw_id }: modalProps) {
   const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/draws_finder?id=${draw_id}`)
+    axios.get(`https://api.rifamax.app/draws_finder?id=${draw_id}`)
       .then(res => {
         setDraws(res.data)
       })
       .catch(err => console.log(err))
 
-    axios.get('http://localhost:3000/exchange?last=last')
+    axios.get('https://api.rifamax.app/exchange?last=last')
       .then(res => {
         setExchange(res.data)
       })
@@ -195,7 +195,7 @@ function TicketModal({ draw_id }: modalProps) {
         console.log('Conexión establecida.');
   
         const mensaje = (): void => {
-          fetch(`http://localhost:3000/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}`)
+          fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}`)
             .then(function (response: Response): Promise<string> {
               return response.text();
             })
@@ -206,7 +206,7 @@ function TicketModal({ draw_id }: modalProps) {
         };
   
         const qr = (): void => {
-          fetch(`http://localhost:3000/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}&qr=on`)
+          fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}&qr=on`)
             .then(function (response: Response): Promise<string> {
               return response.text();
             })
@@ -434,7 +434,7 @@ function TicketModal({ draw_id }: modalProps) {
 
   useEffect(() => {
     setTimeout(() => {
-      fetch(`http://localhost:3000/places?id=${draw_id}&page=${currentPage}`)
+      fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${currentPage}`)
         .then((response) => response.json())
         .then((data) => {
           setApiData(data.places);
@@ -450,7 +450,7 @@ function TicketModal({ draw_id }: modalProps) {
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
     setCurrentPage(randomPage);
-    const response = await fetch(`http://localhost:3000/places?id=${draw_id}&page=${randomPage}`);
+    const response = await fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${randomPage}`);
     const data = await response.json();
     const availableTickets = data.places.filter((ticket: ticketProps) => !ticket.is_sold);
     const randomTicketIndex = Math.floor(Math.random() * availableTickets.length);
@@ -751,7 +751,7 @@ function TicketModal({ draw_id }: modalProps) {
                                     mt={30}
                                     style={{ width: '100%' }}
                                     onClick={() => {
-                                      axios.post("http://localhost:3000/places", {place: {
+                                      axios.post("https://api.rifamax.app/places", {place: {
                                         agency_id: JSON.parse(localStorage.getItem('user') || '').id,
                                         user_id: JSON.parse(localStorage.getItem('user') || '').id,
                                         draw_id: draws.id,

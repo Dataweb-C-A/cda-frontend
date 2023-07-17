@@ -70,7 +70,7 @@ function Exchange() {
         console.log(err)
       })
 
-    axios.get('http://localhost:3000/exchange').then(res => {
+    axios.get('https://api.rifamax.app/exchange').then(res => {
       setExchange(res.data.reverse())
     }).catch(err => {
       console.log(err)
@@ -120,7 +120,7 @@ function Exchange() {
         withCloseButton={false}
       >
         <form onSubmit={form.onSubmit((values) => {
-          axios.post("http://localhost:3000/exchange", values, 
+          axios.post("https://api.rifamax.app/exchange", values, 
           { 
             headers: {
               'Content-Type': "application/json;charset=utf-8"
