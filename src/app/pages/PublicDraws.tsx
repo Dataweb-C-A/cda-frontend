@@ -432,27 +432,13 @@ function TicketModal({ draw_id }: modalProps) {
                 totalPages > 1 && (
                   <>
                     <Pagination
+                    pl={105}
                       total={totalPages}
                       page={currentPage}
                       onChange={(newPage) => setCurrentPage(newPage)}
                     />
                     {/* buscar numero */}
-                    <Input
-                      placeholder="Buscar Numero"
-                      radius="xs"
-                      rightSection={
-                        <ActionIcon onClick={() => searchTicketByNumber()}>
-                          <IconTicket size="1.125rem" />
-                        </ActionIcon>
-                      }
-                      type="number"
-                      max={totalPages * 100}
-                      value={searchTicket}
-                      onChange={(event) => {
-                        setSearchTicket(event.currentTarget.value);
-                        setSelectedTicket(null);
-                      }}
-                    />
+                    
 
                   </>
 
@@ -516,7 +502,7 @@ function TicketModal({ draw_id }: modalProps) {
                           }
                           <Group position="apart">
                             <Text fz={20} fw={700}>Tipo:</Text>
-                            <Text fz={20}>Terminal (01-99)</Text>
+                            <Text fz={20}>Triple (01-99)</Text>
                           </Group>
                           <Group position="apart">
                             <Text fz={20} fw={700}>Precio por ticket:</Text>
@@ -567,8 +553,7 @@ function TicketModal({ draw_id }: modalProps) {
             {
               allPublic.map((item) => {
                 return (
-                  <Grid>
-                    <Grid.Col span={2} mb={5}>
+                  <>
                       <Paper p={20} w="100%" h="100%" style={{ display: "flex", flexWrap: 'wrap' }} className='card-link' onClick={() => {
                         history.push(`/public_draws?draw_id=${item.id}`)
                         setAllPublic([])
@@ -605,8 +590,8 @@ function TicketModal({ draw_id }: modalProps) {
                         </Group>
                       </Paper>
                       <Progress value={item.progress.current} size={25} label={`${String(item.progress.current.toFixed(0))}%`} color="green" style={{ zIndex: 999999 }} />
-                    </Grid.Col>
-                  </Grid>
+                 
+                  </>
                 )
               })
             }
