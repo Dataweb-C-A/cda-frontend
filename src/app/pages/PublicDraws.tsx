@@ -160,6 +160,7 @@ function TicketModal({ draw_id }: modalProps) {
 
   const [activex, setActivex] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [selectedOwners, setSelectedOwners] = useState<Set<string>>(new Set());
 
   let query = useQuery();
   useEffect(() => {
@@ -172,24 +173,32 @@ function TicketModal({ draw_id }: modalProps) {
         .catch(err => {
           setDraws(null);
         });
-
+  
       axios.get('https://api.rifamax.app/api/public/draws')
         .then(res => {
           setAllPublic(res.data);
         });
-
+  
       axios.get('https://api.rifamax.app/exchange?last=last')
         .then(res => {
           setExchange(res.data);
         });
     }, 500);
   }, [draws]);
-
-
+  
   const data: OptionType[] = useMemo(() => {
-    return allPublic.map(item => ({
-      value: item.owner.name,
-      label: item.owner.name
+    const owners = new Set<string>(); // Utilizamos un Set para almacenar los propietarios únicos
+  
+    allPublic.forEach(item => {
+      if (item.owner && item.owner.name) {
+        owners.add(item.owner.name); // Agregamos cada propietario al Set
+      }
+    });
+  
+    // Convertimos los valores del Set en un arreglo de objetos OptionType
+    return Array.from(owners).map(owner => ({
+      value: owner,
+      label: owner
     }));
   }, [allPublic]);
   function send(draw: IDraws, place: IPlace): void {
