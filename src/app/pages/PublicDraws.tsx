@@ -5,7 +5,7 @@ import { Carousel } from '@mantine/carousel';
 import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import { useDispatch } from 'react-redux';
 import { useForm } from '@mantine/form';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import RifamaxLogo from "../assets/images/rifamax-logo.png"
 
 type clientProps = {
@@ -104,6 +104,7 @@ function formatPlace(place: number): string {
 
 function TicketModal({ draw_id }: modalProps) {
   const [active, setActive] = useState<number[]>([])
+  const [allPublic, setAllPublic] = useState<IDraws[]>([])
   const [counter, setCounter] = useState<number>(0)
   const [pages, setPages] = useState<number>(0)
   const [coin, setCoin] = useState('')
@@ -114,7 +115,7 @@ function TicketModal({ draw_id }: modalProps) {
     hora: '12:55',
     automatico: true
   })
-  const [draws, setDraws] = useState<IDraws>({
+  const [draws, setDraws] = useState<IDraws | null>({
     id: 0,
     title: '',
     first_prize: '',
@@ -165,13 +166,19 @@ function TicketModal({ draw_id }: modalProps) {
         .then(res => {
           setDraws(res.data)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          setDraws(null)
+        })
+
+      axios.get('https://api.rifamax.app/api/public/draws')
+        .then(res => {
+          setAllPublic(res.data)
+        })
   
       axios.get('https://api.rifamax.app/exchange?last=last')
         .then(res => {
           setExchange(res.data)
         })
-        .catch(err => console.log(err))
     }, 500)
   }, [draws])
 
@@ -360,10 +367,13 @@ function TicketModal({ draw_id }: modalProps) {
     setCounter(0);
   }, [active]);
 
-  const [apiData, setApiData] = useState<ticketProps[] | []>([]);
+  const [loading, setLoading] = useState<boolean>(true)
+  const [apiData, setApiData] = useState<ticketProps[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const history = useHistory()
 
   const deselectSoldTickets = () => {
     setActive((prevActive) => prevActive.filter((item) => {
@@ -379,10 +389,13 @@ function TicketModal({ draw_id }: modalProps) {
         .then((data) => {
           setApiData(data.places);
           setTotalPages(data.metadata.pages);
+          setLoading(false)
           deselectSoldTickets();
         })
         .catch((error) => {
-          console.error('Error fetching API data:', error);
+          setTotalPages(0);
+          setLoading(false)
+          setApiData([]);
         });
     }, 500)
   }, [currentPage, apiData]);
@@ -392,7 +405,7 @@ function TicketModal({ draw_id }: modalProps) {
       shadow="sm"
       radius="sm"
       mt={0}
-      pt={200}
+      pt={draws === null ? 0 : 200}
       px={20}
       w="100%"
       bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
@@ -401,132 +414,197 @@ function TicketModal({ draw_id }: modalProps) {
         height: "calc(100vh)"
       }}
     >
-      <Group>
-        
-        {
-          totalPages > 1 && (
-            <>
-              <Pagination
-                total={totalPages}
-                page={currentPage}
-                onChange={(newPage) => setCurrentPage(newPage)}
-              />
-              {/* buscar numero */}
-              <Input
-                placeholder="Buscar Numero"
-                radius="xs"
-                rightSection={
-                  <ActionIcon onClick={() => searchTicketByNumber()}>
-                    <IconTicket size="1.125rem" />
-                  </ActionIcon>
-                }
-                type="number"
-                max={totalPages * 100}
-                value={searchTicket}
-                onChange={(event) => {
-                  setSearchTicket(event.currentTarget.value);
-                  setSelectedTicket(null);
-                }}
-              />
+      {
+        loading ? (
+          <>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70vh" }}>
+              <Loader />
+              <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
+            </div>
+          </>
+        ) : (
+          <>
+            <Group>
+              
+              {
+                totalPages > 1 && (
+                  <>
+                    <Pagination
+                      total={totalPages}
+                      page={currentPage}
+                      onChange={(newPage) => setCurrentPage(newPage)}
+                    />
+                    {/* buscar numero */}
+                    <Input
+                      placeholder="Buscar Numero"
+                      radius="xs"
+                      rightSection={
+                        <ActionIcon onClick={() => searchTicketByNumber()}>
+                          <IconTicket size="1.125rem" />
+                        </ActionIcon>
+                      }
+                      type="number"
+                      max={totalPages * 100}
+                      value={searchTicket}
+                      onChange={(event) => {
+                        setSearchTicket(event.currentTarget.value);
+                        setSelectedTicket(null);
+                      }}
+                    />
 
-            </>
+                  </>
 
-          )
-        }
-      </Group>
-      <br />
+                )
+              }
+            </Group>
+            <br />
+            <div className={classes.container}>
+              <div className={classes.ticketsFlex} style={{ padding: "0 100px 0 100px"}}>
+                <Group key={counter}>
+                  {/** card  ticket*/}
+                  {apiData.length > 0 ? (
+                    apiData.map((item, index) => {
+                      const cardStyle = {
+                        width: `${70 / 9}%`,
+                        margin: '4px'
+                      };
 
-      <div className={classes.container}>
-        <div className={classes.ticketsFlex} style={{ padding: "0 100px 0 100px"}}>
-          <Group key={counter}>
-            {/** card  ticket*/}
-            {apiData.length > 0 ? (
-              apiData.map((item, index) => {
-                const cardStyle = {
-                  width: `${70 / 9}%`,
-                  margin: '4px'
-                };
+                      return (
+                        <Card
+                          px={8}
+                          className={cx(classes.ticket, {
+                            [classes.sold]: item.is_sold,
+                          })}
+                          key={index}
+                          onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
+                          style={cardStyle}
+                        >
+                          <div className={classes.ticketsTop}></div>
+                          <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
+                          <div className={classes.ticketsBottom}></div>
+                        </Card>
+                      );
 
-                return (
-                  <Card
-                    px={8}
-                    className={cx(classes.ticket, {
-                      [classes.sold]: item.is_sold,
-                    })}
-                    key={index}
-                    onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
-                    style={cardStyle}
-                  >
-                    <div className={classes.ticketsTop}></div>
-                    <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
-                    <div className={classes.ticketsBottom}></div>
-                  </Card>
-                );
-
-              })
-            ) : (
-              <>
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70vh" }}>
-                  <Loader />
-                  <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
-                </div>
-              </>
-              )}
-          </Group>
-        </div>
-
-        <div className={classes.taquillaFlex} style={{ paddingRight: "100px" }}>
-          <nav
-            className={classes.stickyNav}
-          >
-            <Paper shadow="sm" mb={10}>
-              <div 
-                style={{
-                  padding: "50px"
-                }}
-              >
-                <Title ta="center" order={1} fw={300}>
-                  {draws.title}
-                </Title>
-                {
-                  draws.adnoucement ? (
-                    <img src={draws.adnoucement} width={'300'} height={'300'} style={{ marginLeft: "16%" }}/>
-                  ) : null
-                }
-                <Group position="apart">
-                  <Text fz={20} fw={700}>Tipo:</Text>
-                  <Text fz={20}>Terminal (01-99)</Text>
+                    })
+                  ) : (
+                      null
+                    )}
                 </Group>
-                <Group position="apart">
-                  <Text fz={20} fw={700}>Precio por ticket:</Text>
-                  <Text fz={20}>{draws.price_unit}$</Text>
-                </Group>
-                <Group position="apart">
-                  <Text fz={20} fw={700}>Fecha de inicio:</Text>
-                  <Text fz={20}>{draws.init_date}</Text>
-                </Group>
-                <Group position="apart">
-                  <Text fz={20} fw={700}>Fecha de cierre:</Text>
-                  <Text fz={20}>{draws.expired_date ? `${draws.expired_date}` : 'Alcanzar progreso'}</Text>
-                </Group>
-                <Text fz={20} mt={5} mb={5}>Progreso</Text>
-                <Progress label={String(draws.progress.current.toFixed(2)) + "%"} size={30} color={draws.is_active ? "green" : "red"} value={draws.progress.current} />
               </div>
-              <img
-                src={RifamaxLogo}
-                style={{
-                  marginLeft: "30%",
-                  marginTop: "-50px"
-                }}
-                width="219px"
-                height="124px"
-                alt="logo"
-              />
-            </Paper>
-          </nav>
-        </div>
 
-      </div>
+              {
+                draws !== null ? (
+                  <div className={classes.taquillaFlex} style={{ paddingRight: "100px" }}>
+                    <nav
+                      className={classes.stickyNav}
+                    >
+                      <Paper shadow="sm" mb={10}>
+                        <div 
+                          style={{
+                            padding: "50px"
+                          }}
+                        >
+                          <Title ta="center" order={1} fw={300}>
+                            {draws.title}
+                          </Title>
+                          {
+                            draws.adnoucement ? (
+                              <img src={draws.adnoucement} width={'300'} height={'300'} style={{ marginLeft: "16%" }}/>
+                            ) : null
+                          }
+                          <Group position="apart">
+                            <Text fz={20} fw={700}>Tipo:</Text>
+                            <Text fz={20}>Terminal (01-99)</Text>
+                          </Group>
+                          <Group position="apart">
+                            <Text fz={20} fw={700}>Precio por ticket:</Text>
+                            <Text fz={20}>{draws.price_unit}$</Text>
+                          </Group>
+                          <Group position="apart">
+                            <Text fz={20} fw={700}>Fecha de inicio:</Text>
+                            <Text fz={20}>{draws.init_date}</Text>
+                          </Group>
+                          <Group position="apart">
+                            <Text fz={20} fw={700}>Fecha de cierre:</Text>
+                            <Text fz={20}>{draws.expired_date ? `${draws.expired_date}` : 'Alcanzar progreso'}</Text>
+                          </Group>
+                          <Text fz={20} mt={5} mb={5}>Progreso</Text>
+                          <Progress label={String(draws.progress.current.toFixed(2)) + "%"} size={30} color={draws.is_active ? "green" : "red"} value={draws.progress.current} />
+                        </div>
+                        <img
+                          src={RifamaxLogo}
+                          style={{
+                            marginLeft: "30%",
+                            marginTop: "-50px"
+                          }}
+                          width="219px"
+                          height="124px"
+                          alt="logo"
+                        />
+                      </Paper>
+                    </nav>
+                  </div>
+                ) : (
+                  null
+                )
+              }
+
+            </div>
+          </>
+        )
+      }
+      {
+        draws === null && (
+          <>
+            {
+              allPublic.map((item) => {
+                return(
+                  <Grid>
+                    <Grid.Col span={2} mb={5}>
+                      <Paper p={20} w="100%" h="100%" style={{ display: "flex", flexWrap: 'wrap' }} className='card-link' onClick={() => { 
+                        history.push(`/public_draws?draw_id=${item.id}`)
+                        setAllPublic([])
+                        axios.get(`https://api.rifamax.app/draws_finder?id=${item.id}`)
+                        .then(res => {
+                          setDraws(res.data)
+                        })
+                        .catch(err => {
+                          setDraws(null)
+                        })
+                      }}>
+                        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+                          <Text fw={300} size={18} ta="center">
+                            {item.title}
+                          </Text>
+                          <Image src={item.adnoucement} width={200} />
+                          <Progress value={item.progress.sold} />
+                        </div>
+                        <Group position="apart" mt={10} w='100%'>
+                          <Text fw={600} size={16} align='left'>
+                            Patrocinado por:
+                          </Text>
+                          <Text fw={300} size={16} align='right'>
+                            {item.owner.name}
+                          </Text>
+                        </Group>
+                        <Group position="apart" mt={-10} w='100%'>
+                          <Text fw={600} size={16} align='left'>
+                            Precio por Ticket:
+                          </Text>
+                          <Text fw={300} size={16} align='right'>
+                            {item.price_unit}$
+                          </Text>
+                        </Group>
+                      </Paper>
+                      <Progress value={item.progress.current} size={25} label={`${String(item.progress.current.toFixed(0))}%`} color="green" style={{ zIndex: 999999 }}/>
+                    </Grid.Col>
+                  </Grid>
+                )
+              })
+            }
+          </>
+        )
+      }
     </Card>
   )
 }
