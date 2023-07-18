@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect, useRef } from 'react'
-import { Card,Loader, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
+import { Card, Loader, Pagination, ActionIcon, Input, MultiSelect, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
 import axios from 'axios';
 import { Carousel } from '@mantine/carousel';
 import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch } from '@tabler/icons-react';
@@ -28,7 +28,10 @@ type ticketProps = {
   is_sold: boolean
   soldTo?: clientProps | undefined
 }
-
+type OptionType = {
+  value: string;
+  label: string;
+};
 interface IDraws {
   id: number;
   title: string;
@@ -159,50 +162,53 @@ function TicketModal({ draw_id }: modalProps) {
   const [isFormValid, setIsFormValid] = useState(false);
 
   let query = useQuery();
-
   useEffect(() => {
     setTimeout(() => {
+      // Fetch the data
       axios.get(`https://api.rifamax.app/draws_finder?id=${query.get('draw_id')}`)
         .then(res => {
-          setDraws(res.data)
+          setDraws(res.data);
         })
         .catch(err => {
-          setDraws(null)
-        })
+          setDraws(null);
+        });
 
       axios.get('https://api.rifamax.app/api/public/draws')
         .then(res => {
-          setAllPublic(res.data)
-        })
-  
+          setAllPublic(res.data);
+        });
+
       axios.get('https://api.rifamax.app/exchange?last=last')
         .then(res => {
-          setExchange(res.data)
-        })
-    }, 500)
-  }, [draws])
+          setExchange(res.data);
+        });
+    }, 500);
+  }, [draws]);
 
 
+  const data: OptionType[] = useMemo(() => {
+    return allPublic.map(item => ({
+      value: item.owner.name,
+      label: item.owner.name
+    }));
+  }, [allPublic]);
   function send(draw: IDraws, place: IPlace): void {
     try {
-      // Crear una instancia del WebSocket
       const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
-  
-      // Evento que se dispara cuando la conexión se establece correctamente
+
       socket.onopen = function (): void {
         console.log('Conexión establecida.');
-  
+
         const mensaje = (): void => {
           fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}`)
             .then(function (response: Response): Promise<string> {
               return response.text();
             })
             .then(function (text: string): void {
-              // console.log(text);
               socket.send(text);
             });
         };
-  
+
         const qr = (): void => {
           fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}&qr=on`)
             .then(function (response: Response): Promise<string> {
@@ -214,31 +220,27 @@ function TicketModal({ draw_id }: modalProps) {
               socket.send('cut');
             });
         };
-  
+
         mensaje();
         setTimeout(() => {
           qr();
         }, 1000);
       };
-  
-      // Evento que se dispara cuando se recibe un mensaje del servidor
+
       socket.onmessage = function (event: MessageEvent): void {
         console.log('Mensaje recibido del servidor:', event.data);
       };
-  
-      // Evento que se dispara cuando se produce un error en la conexión
       socket.onerror = function (error: Event): void {
         console.error('Error en la conexión:', error);
       };
-  
-      // Evento que se dispara cuando la conexión se cierra
+
       socket.onclose = function (event: CloseEvent): void {
         console.log('Conexión cerrada:', event.code, event.reason);
       };
     } catch (e) {
       alert(JSON.stringify(e));
     }
-  }  
+  }
 
   const theme = useMantineTheme()
 
@@ -425,7 +427,7 @@ function TicketModal({ draw_id }: modalProps) {
         ) : (
           <>
             <Group>
-              
+
               {
                 totalPages > 1 && (
                   <>
@@ -459,7 +461,7 @@ function TicketModal({ draw_id }: modalProps) {
             </Group>
             <br />
             <div className={classes.container}>
-              <div className={classes.ticketsFlex} style={{ padding: "0 100px 0 100px"}}>
+              <div className={classes.ticketsFlex} style={{ padding: "0 100px 0 100px" }}>
                 <Group key={counter}>
                   {/** card  ticket*/}
                   {apiData.length > 0 ? (
@@ -487,8 +489,8 @@ function TicketModal({ draw_id }: modalProps) {
 
                     })
                   ) : (
-                      null
-                    )}
+                    null
+                  )}
                 </Group>
               </div>
 
@@ -499,7 +501,7 @@ function TicketModal({ draw_id }: modalProps) {
                       className={classes.stickyNav}
                     >
                       <Paper shadow="sm" mb={10}>
-                        <div 
+                        <div
                           style={{
                             padding: "50px"
                           }}
@@ -509,7 +511,7 @@ function TicketModal({ draw_id }: modalProps) {
                           </Title>
                           {
                             draws.adnoucement ? (
-                              <img src={draws.adnoucement} width={'300'} height={'300'} style={{ marginLeft: "16%" }}/>
+                              <img src={draws.adnoucement} width={'300'} height={'300'} style={{ marginLeft: "16%" }} />
                             ) : null
                           }
                           <Group position="apart">
@@ -556,21 +558,27 @@ function TicketModal({ draw_id }: modalProps) {
       {
         draws === null && (
           <>
+            <MultiSelect
+              data={data}
+              label="selecciona tu taquilla"
+              placeholder="taquilla"
+              mb={15}
+            />
             {
               allPublic.map((item) => {
-                return(
+                return (
                   <Grid>
                     <Grid.Col span={2} mb={5}>
-                      <Paper p={20} w="100%" h="100%" style={{ display: "flex", flexWrap: 'wrap' }} className='card-link' onClick={() => { 
+                      <Paper p={20} w="100%" h="100%" style={{ display: "flex", flexWrap: 'wrap' }} className='card-link' onClick={() => {
                         history.push(`/public_draws?draw_id=${item.id}`)
                         setAllPublic([])
                         axios.get(`https://api.rifamax.app/draws_finder?id=${item.id}`)
-                        .then(res => {
-                          setDraws(res.data)
-                        })
-                        .catch(err => {
-                          setDraws(null)
-                        })
+                          .then(res => {
+                            setDraws(res.data)
+                          })
+                          .catch(err => {
+                            setDraws(null)
+                          })
                       }}>
                         <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
                           <Text fw={300} size={18} ta="center">
@@ -596,7 +604,7 @@ function TicketModal({ draw_id }: modalProps) {
                           </Text>
                         </Group>
                       </Paper>
-                      <Progress value={item.progress.current} size={25} label={`${String(item.progress.current.toFixed(0))}%`} color="green" style={{ zIndex: 999999 }}/>
+                      <Progress value={item.progress.current} size={25} label={`${String(item.progress.current.toFixed(0))}%`} color="green" style={{ zIndex: 999999 }} />
                     </Grid.Col>
                   </Grid>
                 )
