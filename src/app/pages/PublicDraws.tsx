@@ -107,7 +107,6 @@ function formatPlace(place: number): string {
 
 function TicketModal({ draw_id }: modalProps) {
   const [active, setActive] = useState<number[]>([])
-  const [allPublic, setAllPublic] = useState<IDraws[]>([])
   const [counter, setCounter] = useState<number>(0)
   const [pages, setPages] = useState<number>(0)
   const [coin, setCoin] = useState('')
@@ -157,10 +156,23 @@ function TicketModal({ draw_id }: modalProps) {
     updated_at: ''
   })
   const elementRef = useRef<HTMLDivElement>(null)
+  const [allPublic, setAllPublic] = useState<IDraws[]>([]);
 
   const [activex, setActivex] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false);
   const [selectedOwners, setSelectedOwners] = useState<Set<string>>(new Set());
+  const filteredData = useMemo(() => {
+    if (selectedOwners.size === 0) {
+      return allPublic; // Si no se ha seleccionado ningún propietario, mostrar todos los elementos
+    }
+
+    return allPublic.filter((item) => {
+      if (item.owner && item.owner.name) {
+        return selectedOwners.has(item.owner.name); // Filtrar los elementos que coincidan con los propietarios seleccionados
+      }
+      return false;
+    });
+  }, [allPublic, selectedOwners]);
 
   let query = useQuery();
   useEffect(() => {
@@ -173,28 +185,28 @@ function TicketModal({ draw_id }: modalProps) {
         .catch(err => {
           setDraws(null);
         });
-  
+
       axios.get('https://api.rifamax.app/api/public/draws')
         .then(res => {
           setAllPublic(res.data);
         });
-  
+
       axios.get('https://api.rifamax.app/exchange?last=last')
         .then(res => {
           setExchange(res.data);
         });
     }, 500);
   }, [draws]);
-  
+
   const data: OptionType[] = useMemo(() => {
     const owners = new Set<string>(); // Utilizamos un Set para almacenar los propietarios únicos
-  
+
     allPublic.forEach(item => {
       if (item.owner && item.owner.name) {
         owners.add(item.owner.name); // Agregamos cada propietario al Set
       }
     });
-  
+
     // Convertimos los valores del Set en un arreglo de objetos OptionType
     return Array.from(owners).map(owner => ({
       value: owner,
@@ -441,13 +453,13 @@ function TicketModal({ draw_id }: modalProps) {
                 totalPages > 1 && (
                   <>
                     <Pagination
-                    pl={105}
+                      pl={105}
                       total={totalPages}
                       page={currentPage}
                       onChange={(newPage) => setCurrentPage(newPage)}
                     />
                     {/* buscar numero */}
-                    
+
 
                   </>
 
@@ -555,51 +567,52 @@ function TicketModal({ draw_id }: modalProps) {
           <>
             <MultiSelect
               data={data}
-              label="selecciona tu taquilla"
-              placeholder="taquilla"
-              mb={15}
+              label="Selecciona los propietarios"
+              placeholder="Propietarios"
+              value={Array.from(selectedOwners)}
+              onChange={(values) => setSelectedOwners(new Set(values))}
             />
             {
-              allPublic.map((item) => {
+              filteredData.map((item) => {
                 return (
                   <>
-                      <Paper p={20} w="100%" h="100%" style={{ display: "flex", flexWrap: 'wrap' }} className='card-link' onClick={() => {
-                        history.push(`/public_draws?draw_id=${item.id}`)
-                        setAllPublic([])
-                        axios.get(`https://api.rifamax.app/draws_finder?id=${item.id}`)
-                          .then(res => {
-                            setDraws(res.data)
-                          })
-                          .catch(err => {
-                            setDraws(null)
-                          })
-                      }}>
-                        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
-                          <Text fw={300} size={18} ta="center">
-                            {item.title}
-                          </Text>
-                          <Image src={item.adnoucement} width={200} />
-                          <Progress value={item.progress.sold} />
-                        </div>
-                        <Group position="apart" mt={10} w='100%'>
-                          <Text fw={600} size={16} align='left'>
-                            Patrocinado por:
-                          </Text>
-                          <Text fw={300} size={16} align='right'>
-                            {item.owner.name}
-                          </Text>
-                        </Group>
-                        <Group position="apart" mt={-10} w='100%'>
-                          <Text fw={600} size={16} align='left'>
-                            Precio por Ticket:
-                          </Text>
-                          <Text fw={300} size={16} align='right'>
-                            {item.price_unit}$
-                          </Text>
-                        </Group>
-                      </Paper>
-                      <Progress value={item.progress.current} size={25} label={`${String(item.progress.current.toFixed(0))}%`} color="green" style={{ zIndex: 999999 }} />
-                 
+                    <Paper p={20} w="100%" h="100%" style={{ display: "flex", flexWrap: 'wrap' }} className='card-link' onClick={() => {
+                      history.push(`/public_draws?draw_id=${item.id}`)
+                      setAllPublic([])
+                      axios.get(`https://api.rifamax.app/draws_finder?id=${item.id}`)
+                        .then(res => {
+                          setDraws(res.data)
+                        })
+                        .catch(err => {
+                          setDraws(null)
+                        })
+                    }}>
+                      <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+                        <Text fw={300} size={18} ta="center">
+                          {item.title}
+                        </Text>
+                        <Image src={item.adnoucement} width={200} />
+                        <Progress value={item.progress.sold} />
+                      </div>
+                      <Group position="apart" mt={10} w='100%'>
+                        <Text fw={600} size={16} align='left'>
+                          Patrocinado por:
+                        </Text>
+                        <Text fw={300} size={16} align='right'>
+                          {item.owner.name}
+                        </Text>
+                      </Group>
+                      <Group position="apart" mt={-10} w='100%'>
+                        <Text fw={600} size={16} align='left'>
+                          Precio por Ticket:
+                        </Text>
+                        <Text fw={300} size={16} align='right'>
+                          {item.price_unit}$
+                        </Text>
+                      </Group>
+                    </Paper>
+                    <Progress value={item.progress.current} size={25} label={`${String(item.progress.current.toFixed(0))}%`} color="green" style={{ zIndex: 999999 }} />
+
                   </>
                 )
               })
