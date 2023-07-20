@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect, useRef } from 'react'
-import { Card, Loader, Pagination, ActionIcon, Input, MultiSelect, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
+import { Card, Loader, Pagination, ActionIcon, Input, MultiSelect, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton, Badge } from '@mantine/core'
 import axios from 'axios';
 import { Carousel } from '@mantine/carousel';
 import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch } from '@tabler/icons-react';
@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from '@mantine/form';
 import { useHistory, useLocation } from 'react-router-dom';
 import RifamaxLogo from "../assets/images/rifamax-logo.png"
+import moment from 'moment';
 
 type clientProps = {
   name: string
@@ -570,54 +571,111 @@ function TicketModal({ draw_id }: modalProps) {
               value={Array.from(selectedOwners)}
               onChange={(values) => setSelectedOwners(new Set(values))}
             />
-            {
-              filteredData.map((item) => {
-                return (
-                  <>
-
-                   
-                      <Card ml={10} radius="md" w={"30%"} onClick={() => {
-                        history.push(`/public_draws?draw_id=${item.id}`)
-                        setAllPublic([])
-                        axios.get(`https://api.rifamax.app/draws_finder?id=${item.id}`)
-                          .then(res => {
-                            setDraws(res.data)
-                          })
-                          .catch(err => {
-                            setDraws(null)
-                          })
-                      }}>
-                        <Text fw={300} size={18} ta="center">
-                          {item.title}
-                        </Text>
-                        <Image src={item.adnoucement} width={200} />
-                        <Group position="apart" mt={10} w='100%'>
-                          <Text fw={600} size={16} align='left'>
-                            Patrocinado por:
-                          </Text>
-                          <Text fw={300} size={16} align='right'>
-                            {item.owner.name}
-                          </Text>
-                        </Group>
-                        <Group position="apart" mt={-10} w='100%'>
-                          <Text fw={600} size={16} align='left'>
-                            Precio por Ticket:
-                          </Text>
-                          <Text fw={300} size={16} align='right'>
-                            {item.price_unit}$
-                          </Text>
-
-                        </Group>
-                        <Progress value={item.progress.current} size={15} label={`${String(item.progress.current.toFixed(0))}%`} color="green" style={{ zIndex: 999999 }} />
-
-                      </Card>
-
-
-                    
-                  </>
-                )
-              })
-            }
+            <Grid mt={10}>
+              {
+                filteredData.map((item) => {
+                  return (
+                    <>
+                      <Grid.Col span={2}>
+                        <Card
+                          shadow="sm"
+                          p="lg"
+                          radius="md"
+                          withBorder
+                        >
+                          <Card.Section>
+                            <Image
+                              src={item.adnoucement}
+                              height={160}
+                            />
+                          </Card.Section>
+                          <Group position="apart" mt="md" mb="xs">
+                            <Text weight={500}>{item.title}</Text>
+                            <Badge color={item.is_active ? 'green' : 'red'} variant="light">
+                              {item.is_active ? 'En venta' : 'Vendido'}
+                            </Badge>
+                          </Group>
+                          <Group position="apart" mt={10} w='100%'>
+                            <Text size="sm" fw={600} color="dimmed">
+                              Precio del ticket:
+                            </Text>
+                            <Text size="sm" color="dimmed">
+                              {item.price_unit}$
+                            </Text>
+                          </Group>
+                          <Group position="apart" w='100%'>
+                            <Text size="sm" fw={600} color="dimmed">
+                              Taquilla Patrocinante:
+                            </Text>
+                            <Text size="sm" color="dimmed">
+                              {item.owner.name}
+                            </Text>
+                          </Group>
+                          <Group position="apart" w='100%'>
+                            <Text size="sm" fw={600} color="dimmed">
+                              Fecha de inicio:
+                            </Text>
+                            <Text size="sm" color="dimmed">
+                              {moment(item.init_date).format('DD/MM/YYYY')}
+                            </Text>
+                          </Group>
+                          <Group position="apart" w='100%'>
+                            <Text size="sm" fw={600} color="dimmed">
+                              Fecha de cierre:
+                            </Text>
+                            <Text size="sm" color="dimmed">
+                              {
+                                item.expired_date ? (
+                                  moment(item.expired_date).format('DD/MM/YYYY')
+                                ) : (
+                                  'Alcanzar progreso'
+                                )
+                              }
+                            </Text>
+                          </Group>
+                          <Group position="apart" w='100%'>
+                            <Text size="sm" fw={600} color="dimmed">
+                              Limite de progreso:
+                            </Text>
+                            <Text size="sm" color="dimmed">
+                              {item.limit}% 
+                            </Text>
+                          </Group>
+                          <Progress
+                            value={item.progress.current}
+                            size={15}
+                            mt={10}
+                            label={`${String(item.progress.current.toFixed(0))}%`}
+                            color="green"
+                            style={{ zIndex: 999999 }}
+                          />
+                          <Button
+                            variant="light"
+                            color="blue"
+                            fullWidth
+                            mt="md"
+                            radius="md"
+                            onClick={() => {
+                              history.push(`/public_draws?draw_id=${item.id}`)
+                              setAllPublic([])
+                              axios.get(`https://api.rifamax.app/draws_finder?id=${item.id}`)
+                                .then(res => {
+                                  setDraws(res.data)
+                                })
+                                .catch(err => {
+                                  setDraws(null)
+                                })
+                            }}
+                          >
+                            Ver tickets
+                          </Button>
+                        </Card>
+                      </Grid.Col>
+                    </>
+                  )
+                })
+              }
+            </Grid>
           </>
         )
       }

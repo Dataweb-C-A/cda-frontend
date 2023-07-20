@@ -176,7 +176,7 @@ const form = useForm({
       if (!value) return 'Fecha de inicio requerida';
     },
     expired_date: (value: Date) => {
-      if (checkedIndex === 2) {
+      if (form.values.draw_type === 'Progressive') {
         form.setFieldValue('expired_date', null);
       } else {
         if (!value) return 'Fecha de finalización requerida';
@@ -491,8 +491,7 @@ const form = useForm({
                     checkedIndex === 3 ? 1000 : 0
                   }
                   label="1000 tickets triples"
-                  disabled
-                  // disabled={checkedIndex === 3}
+                  disabled={checkedIndex === 3}
                   onChange={() => {
                     form.getInputProps('tickets_count').onChange(1000)
                     setTicketsCountState(1000)
