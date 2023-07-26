@@ -109,7 +109,7 @@ const Home: React.FC = () => {
                     paddingTop: "13px",
                     color: theme.colorScheme === "dark" ? "#fff" : "#000"
                   }}
-                  href="/lobby/normales"
+                  href="/lobby?type=normales"
                 >
                   Rifas Normales
                 </a>
@@ -123,7 +123,7 @@ const Home: React.FC = () => {
                     paddingTop: "13px",
                     color: theme.colorScheme === "dark" ? "#fff" : "#000"
                   }}
-                  href="/lobby/terminales"
+                  href="/lobby?type=terminales"
                 >
                   Rifas Terminales
                 </a>
@@ -137,7 +137,7 @@ const Home: React.FC = () => {
                     paddingTop: "13px",
                     color: theme.colorScheme === "dark" ? "#fff" : "#000"
                   }}
-                  href="/lobby/triples"
+                  href="/lobby?type=triples"
                 >
                   Rifas Triples
                 </a>
