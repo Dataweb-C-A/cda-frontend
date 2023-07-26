@@ -500,6 +500,7 @@ function TicketModal({ draw_id }: modalProps) {
               <Pagination
                 total={totalPages}
                 page={currentPage}
+                siblings={10}
                 onChange={(newPage) => setCurrentPage(newPage)}
               />
               {/* buscar numero */}

@@ -179,7 +179,7 @@ function Operadora() {
           setErrors(err.response.data.message)
         }
         )
-    }, 3000)
+    }, 250)
   }, [draws])
 
   const handleLobby = (id: number, connection: Date) => {
