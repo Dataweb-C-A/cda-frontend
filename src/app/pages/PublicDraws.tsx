@@ -158,7 +158,6 @@ function TicketModal({ draw_id }: modalProps) {
   })
   const elementRef = useRef<HTMLDivElement>(null)
   const [allPublic, setAllPublic] = useState<IDraws[]>([]);
-
   const [activex, setActivex] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false);
   const [selectedOwners, setSelectedOwners] = useState<Set<string>>(new Set());

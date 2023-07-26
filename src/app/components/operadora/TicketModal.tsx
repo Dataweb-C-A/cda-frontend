@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card,Loader, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton } from '@mantine/core'
+import { Card, Loader, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton, ScrollArea } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import axios from 'axios';
 import { Carousel } from '@mantine/carousel';
@@ -109,7 +109,7 @@ function formatPlace(place: number, tickets: number): string {
       return place.toString();
     }
   } else {
-    return place.toString(); 
+    return place.toString();
   }
 }
 
@@ -205,11 +205,11 @@ function TicketModal({ draw_id }: modalProps) {
     try {
       // Crear una instancia del WebSocket
       const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
-  
+
       // Evento que se dispara cuando la conexión se establece correctamente
       socket.onopen = function (): void {
         console.log('Conexión establecida.');
-  
+
         const mensaje = (): void => {
           fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}`)
             .then(function (response: Response): Promise<string> {
@@ -220,7 +220,7 @@ function TicketModal({ draw_id }: modalProps) {
               socket.send(text);
             });
         };
-  
+
         const qr = (): void => {
           fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}&qr=on`)
             .then(function (response: Response): Promise<string> {
@@ -232,23 +232,23 @@ function TicketModal({ draw_id }: modalProps) {
               socket.send('cut');
             });
         };
-  
+
         mensaje();
         setTimeout(() => {
           qr();
         }, 1000);
       };
-  
+
       // Evento que se dispara cuando se recibe un mensaje del servidor
       socket.onmessage = function (event: MessageEvent): void {
         console.log('Mensaje recibido del servidor:', event.data);
       };
-  
+
       // Evento que se dispara cuando se produce un error en la conexión
       socket.onerror = function (error: Event): void {
         console.error('Error en la conexión:', error);
       };
-  
+
       // Evento que se dispara cuando la conexión se cierra
       socket.onclose = function (event: CloseEvent): void {
         console.log('Conexión cerrada:', event.code, event.reason);
@@ -256,7 +256,7 @@ function TicketModal({ draw_id }: modalProps) {
     } catch (e) {
       alert(JSON.stringify(e));
     }
-  }  
+  }
 
   const form = useForm({
     initialValues: {
@@ -563,7 +563,7 @@ function TicketModal({ draw_id }: modalProps) {
                   <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
                 </div>
               </>
-              )}
+            )}
           </Group>
         </div>
 
@@ -592,7 +592,7 @@ function TicketModal({ draw_id }: modalProps) {
               </Button>
             </Group>
             {
-              active.length % 1 || active.length === 0 ? (
+              false ? (
                 <>
                   <Title order={3} mt="50%" ta="center">Debe seleccionar numero para jugar</Title>
                   <IconSearch style={{
@@ -603,67 +603,68 @@ function TicketModal({ draw_id }: modalProps) {
                 <>
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
-                      <Paper shadow="sm" mb={10} style={{ overflowX: 'hidden' }}>
-                        <Card shadow="sm" mb={10} bg={
-                          theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[1]
-                        }
-                          withBorder
-                        >
-                          <Paper shadow="sm" mb={0} style={{
-                            maxHeight: '18.5vh',
-                            overflowY: 'hidden',
-                            scrollbarWidth: 'none',
-                            scrollbarColor: 'transparent transparent',
-                            overflowX: 'hidden'
-                          }}>
-                            <Text
-                              fz={20}
-                              ta="center"
-                              fw={600}
-                            >
-                              Tickets seleccionados
-                            </Text>
-                            <Divider my={7} label="Jugadas" labelPosition='center' />
-                            <Group position='apart' pr={20}>
-                              <Text fw={600} size={20}>JUGADAS: {active.length}</Text>
-                              <Text fw={600} size={20}>TOTAL: {active.length * draws.price_unit}$</Text>
-                            </Group>
-                          </Paper>
-                          <br />
-                          <div style={{ top: '500%', right: '-6%' }}>
-                            <div style={{ marginLeft: '180px', }}>
-                              {
-                                active.length % 1 || active.length === 0 ? (
-                                  <Title>0$</Title>
-                                ) : (
-                                  <>
-                                  </>
-                                )
-                              }
-                            </div>
-                            {/*  boton  compra*/}
-                            <Button
-                              variant="filled"
-                              color="blue"
-                              mt={0}
-                              style={{ width: '100%' }}
-                              onClick={() => setModalOpen(true)}
-                            >
-                              Selecciona moneda y compra
-                            </Button>
-                            {/** modal compra */}
-                            <Modal 
-                              opened={modalOpen} 
-                              onClose={() => {
-                                setModalOpen(false);
-                                setActivex(0);
-                                setIsChecked(false);
-                                setCheckedIndex(-1);
-                                form.reset();
-                              }}
-                            >
-                              <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
-                                {/* <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
+                      <Card shadow="sm" mb={10} bg={
+                        theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[1]
+                      }
+                        withBorder
+                      >
+                        <Paper shadow="sm" mb={0} style={{
+                          maxHeight: '18.5vh',
+                          overflowY: 'hidden',
+                          scrollbarWidth: 'none',
+                          scrollbarColor: 'transparent transparent',
+                          overflowX: 'hidden'
+                        }}>
+                          <Text
+                            mt={7}
+                            fz={20}
+                            ta="center"
+                            fw={600}
+                          >
+                            Jugadas
+                          </Text>
+                          <Divider my={7} />
+                          <ScrollArea h={100} type="auto">
+                            {
+                              active.length >= 1 ? (
+                                <Text>
+                                  {active.map((item, index) => (
+                                    <Text key={index} ta="center">Numero: {formatPlace(item, draws.tickets_count)} - {draws.title} - Monto: {draws.price_unit}$</Text>
+                                  ))}
+                                </Text>
+                              ) : null
+                            }
+                          </ScrollArea>
+                          <Group position='apart' pr={20}>
+                            <Text fw={600} size={20}>JUGADAS: {active.length}</Text>
+                            <Text fw={600} size={20}>TOTAL: {active.length * draws.price_unit}$</Text>
+                          </Group>
+                        </Paper>
+                        <br />
+                        <div style={{ top: '500%', right: '-6%' }}>
+                          {/*  boton  compra*/}
+                          <Button
+                            variant="filled"
+                            color="blue"
+                            mt={0}
+                            style={{ width: '100%' }}
+                            onClick={() => setModalOpen(true)}
+                          >
+                            Selecciona moneda y compra
+                          </Button>
+                          {/** modal compra */}
+                          <Modal
+                            opened={modalOpen}
+                            onClose={() => {
+                              setModalOpen(false);
+                              setActivex(0);
+                              setIsChecked(false);
+                              setCheckedIndex(-1);
+                              form.reset();
+                            }}
+                          >
+                            <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
+                              {/* <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
                                   <form>
                                     <Group grow>
                                       <TextInput
@@ -702,116 +703,114 @@ function TicketModal({ draw_id }: modalProps) {
                                     </Group>
                                   </form>
                                 </Stepper.Step> */}
-                                <Stepper.Step label="Moneda" description="Elija el tipo de moneda">
-                                  <Group position='apart'>
-                                    <Title ta="end">$ {draws.price_unit * active.length}</Title>
-                                    <Checkbox
-                                      checked={checkedIndex === 0}
-                                      onChange={() => {
-                                        setCheckedIndex(0);
-                                        setIsChecked(true);
-                                        setCoin("$");
-                                      }}
-                                    />
-                                  </Group>
-                                  <Group position='apart'>
-                                    <Title ta="end">
-                                      Bs.D {((draws.price_unit * active.length) * parseFloat(exchange.BsD.replace('Bs. ', '').replace(',', '.'))).toFixed(2)}
-                                    </Title>
-                                    <Checkbox
-                                      checked={checkedIndex === 1}
-                                      onChange={() => {
-                                        setCheckedIndex(1);
-                                        setIsChecked(true);
-                                        setCoin("Bs.D");
-                                      }}
-                                    />
-                                  </Group>
-                                  <Group position='apart'>
-                                    <Title ta="end">
-                                      COP {((draws.price_unit * active.length) * parseFloat(exchange.COP.replace(' COP', ''))).toFixed(2)}
-                                    </Title>
-                                    <Checkbox
-                                      checked={checkedIndex === 2}
-                                      onChange={() => {
-                                        setCheckedIndex(2);
-                                        setIsChecked(true);
-                                        setCoin("COP");
-                                      }}
-                                    />
-                                  </Group>
-
-                                  <Group position="center" mt="xl">
-                                    <Button variant="default" onClick={prevStep}>
-                                      Atrás
-                                    </Button>
-
-                                    <Button
-                                      type="submit"
-                                      onClick={() => {
-                                        if (isChecked) {
-                                          setModalOpen(true);
-                                          nextStep();
-                                        }
-                                      }}
-                                      disabled={!isChecked}>
-                                      Siguiente
-                                    </Button>
-                                  </Group>
-                                </Stepper.Step>
-
-                                <Stepper.Completed>
+                              <Stepper.Step label="Moneda" description="Elija el tipo de moneda">
+                                <Group position='apart'>
+                                  <Title ta="end">$ {draws.price_unit * active.length}</Title>
+                                  <Checkbox
+                                    checked={checkedIndex === 0}
+                                    onChange={() => {
+                                      setCheckedIndex(0);
+                                      setIsChecked(true);
+                                      setCoin("$");
+                                    }}
+                                  />
+                                </Group>
+                                <Group position='apart'>
+                                  <Title ta="end">
+                                    Bs.D {((draws.price_unit * active.length) * parseFloat(exchange.BsD.replace('Bs. ', '').replace(',', '.'))).toFixed(2)}
+                                  </Title>
+                                  <Checkbox
+                                    checked={checkedIndex === 1}
+                                    onChange={() => {
+                                      setCheckedIndex(1);
+                                      setIsChecked(true);
+                                      setCoin("Bs.D");
+                                    }}
+                                  />
+                                </Group>
+                                <Group position='apart'>
+                                  <Title ta="end">
+                                    COP {((draws.price_unit * active.length) * parseFloat(exchange.COP.replace(' COP', ''))).toFixed(2)}
+                                  </Title>
+                                  <Checkbox
+                                    checked={checkedIndex === 2}
+                                    onChange={() => {
+                                      setCheckedIndex(2);
+                                      setIsChecked(true);
+                                      setCoin("COP");
+                                    }}
+                                  />
+                                </Group>
+                                <Group position="center" mt="xl">
+                                  <Button variant="default" onClick={prevStep}>
+                                    Atrás
+                                  </Button>
                                   <Button
-                                    variant="filled"
-                                    color="blue"
-                                    mt={30}
-                                    style={{ width: '100%' }}
+                                    type="submit"
                                     onClick={() => {
-                                      axios.post("https://api.rifamax.app/places", {place: {
+                                      if (isChecked) {
+                                        setModalOpen(true);
+                                        nextStep();
+                                      }
+                                    }}
+                                    disabled={!isChecked}>
+                                    Siguiente
+                                  </Button>
+                                </Group>
+                              </Stepper.Step>
+                              <Stepper.Completed>
+                                <Button
+                                  variant="filled"
+                                  color="blue"
+                                  mt={30}
+                                  style={{ width: '100%' }}
+                                  onClick={() => {
+                                    axios.post("https://api.rifamax.app/places", {
+                                      place: {
                                         agency_id: JSON.parse(localStorage.getItem('user') || '').id,
                                         user_id: JSON.parse(localStorage.getItem('user') || '').id,
                                         draw_id: draws.id,
                                         place_nro: active
-                                      }}, {
-                                        headers: {
-                                          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
-                                          'Content-Type': 'application/json',
-                                          'Accept': 'application/json',
-                                        },
-                                      }).then((res) => {
-                                        send(draws, res.data.place)
-                                        setModalOpen(false);
-                                        setActivex(0);
-                                        setIsChecked(false);
-                                        setCheckedIndex(-1);
-                                        form.reset();
-                                      })
-                                    }}
-                                  >
-                                    Comprar 
-                                  </Button>
-                                </Stepper.Completed>
-                              </Stepper>
-                            </Modal>
-                          </div>
-                          <Divider
-                            label={'Detalles'}
-                            dir='horizontal'
-                            labelPosition='center'
-                            variant='dashed'
-                            mt={20}
-                            style={{
-                              zIndex: 9999999
-                            }}
-                            py={10}
-                          />
-                          {
-                            draws.adnoucement !== null ? (
-                              <Image maw={300} mx="auto"  radius="md" src={draws.adnoucement} alt="Premios" />
-                            ) : null
-                          }
-                        </Card>
-                      </Paper>
+                                      }
+                                    }, {
+                                      headers: {
+                                        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
+                                        'Content-Type': 'application/json',
+                                        'Accept': 'application/json',
+                                      },
+                                    }).then((res) => {
+                                      send(draws, res.data.place)
+                                      setModalOpen(false);
+                                      setActivex(0);
+                                      setIsChecked(false);
+                                      setCheckedIndex(-1);
+                                      form.reset();
+                                    })
+                                  }}
+                                >
+                                  Comprar
+                                </Button>
+                              </Stepper.Completed>
+                            </Stepper>
+                          </Modal>
+                        </div>
+                        <Divider
+                          label={'Detalles'}
+                          dir='horizontal'
+                          labelPosition='center'
+                          variant='dashed'
+                          mt={20}
+                          style={{
+                            zIndex: 9999999
+                          }}
+                          py={10}
+                        />
+                        {
+                          draws.adnoucement !== null ? (
+                            <Image maw={300} mx="auto" radius="md" src={draws.adnoucement} alt="Premios" />
+                          ) : null
+                        }
+                      </Card>
                     </Grid.Col>
                   </Grid>
                 </>
@@ -819,7 +818,6 @@ function TicketModal({ draw_id }: modalProps) {
             }
           </nav>
         </div>
-
       </div>
     </Card>
   )

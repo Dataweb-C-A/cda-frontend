@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, Popover, Text, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton, Divider, Anchor } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLobbyMode } from "../config/reducers/lobbySlice";
 import { ImSad } from "react-icons/im";
 import RifamaxLogo from "../assets/images/rifamax-logo.png"
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 interface ILobbyState {
   open: boolean
@@ -114,9 +114,16 @@ function Operadora() {
     updated_at: ''
   })
 
+  function useQuery() {
+    const { search } = useLocation();
+  
+    return useMemo(() => new URLSearchParams(search), [search]);
+  }
+
   const selector = useSelector((state: any) => state.lobby.open)
   const history = useHistory()
   const dispatch = useDispatch()
+  let query = useQuery()
 
   useEffect(() => {
     axios.get('https://rifa-max.com/api/v1/riferos', {
@@ -151,7 +158,7 @@ function Operadora() {
 
   useEffect(() => {
     setTimeout(() => {
-      axios.post('https://api.rifamax.app/api/public/draws', {
+      axios.post(`https://api.rifamax.app/api/public/draws?type=${query.get('type')}`, {
         user_id: JSON.parse(localStorage.getItem('user') || '').id || 1,
       },
         {
@@ -441,29 +448,40 @@ function Operadora() {
               </>
             ) : null
           }
-          <Card 
-            className="card-link"
-            mx={15} 
-            my={5} 
-            w={235} 
-            onClick={() => {
-              history.push('/')
-            }}
-            style={{
-              cursor: "pointer"
-            }}
-          >
-            <Text ta="center" size={20} fw={200}>
-              <ChevronIcon
-                style={{
-                  rotate: "90deg",
-                  marginRight: 5,
-                  marginTop: 7
-                }}
-              /> 
-              Regresar a las rifas
-            </Text>
-          </Card>
+          <Group spacing={5}>
+            <Card 
+              className="card-link"
+              ml={15} 
+              my={5} 
+              w={115} 
+              onClick={() => {
+                history.push('/')
+              }}
+              style={{
+                cursor: "pointer"
+              }}
+            >
+              <Text ta="center" size={20} fw={200}>
+                Regresar a las rifas
+              </Text>
+            </Card>
+            <Card 
+              className="card-link"
+              mr={15} 
+              my={5} 
+              w={115} 
+              onClick={() => {
+                window.location.replace(`/lobby?type=${query.get('type') === 'terminales' ? 'triples' : 'terminales'}`)
+              }}
+              style={{
+                cursor: "pointer"
+              }}
+            >
+              <Text ta="center" size={20} fw={200}>
+                { query.get('type') === 'terminales' ? 'Rifas Triples' : 'Rifas Terminales' }
+              </Text>
+            </Card>
+          </Group>
           {draws.map(card => (
             <Grid mt={0} gutter={10} mx={10}>
               <Grid.Col xs={6} lg={2} order={1}>

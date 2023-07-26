@@ -109,20 +109,6 @@ const Home: React.FC = () => {
                     paddingTop: "13px",
                     color: theme.colorScheme === "dark" ? "#fff" : "#000"
                   }}
-                  href="/lobby?type=normales"
-                >
-                  Rifas Normales
-                </a>
-              </Button>
-              <Button variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "0 0 0 0" , zIndex: 9 }}>
-                <a
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    textDecoration: "none",
-                    paddingTop: "13px",
-                    color: theme.colorScheme === "dark" ? "#fff" : "#000"
-                  }}
                   href="/lobby?type=terminales"
                 >
                   Rifas Terminales
