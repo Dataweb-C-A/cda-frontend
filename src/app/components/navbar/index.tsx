@@ -151,7 +151,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
       />
       <div>
         <div className={`button-theme ${expandScreen ? "button-theme-expandScreen" : ""}`}>
-          <ThemeSwitcher />
+          {/* <ThemeSwitcher /> */}
         </div>
         <Button className={`button-users ${expandScreen ? "button-users-expandScreen" : ""}`} onClick={() => setCommunityOpen(true)}>
           <FaUsers className="users-icon"

@@ -28,7 +28,7 @@ function App({children}: AppProps) {
     <Mantine
       withGlobalStyles
       theme={{
-        colorScheme, // Use the colorScheme from the store
+        colorScheme: 'dark', // Use the colorScheme from the store
         colors: {
           dark: [
             '#d5d7e0',
