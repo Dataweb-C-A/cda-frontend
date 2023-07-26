@@ -459,9 +459,7 @@ function TicketModal({ draw_id }: modalProps) {
                       page={currentPage}
                       onChange={(newPage) => setCurrentPage(newPage)}
                     />
-
                   </>
-
                 )
               }
             </Group>
@@ -522,7 +520,7 @@ function TicketModal({ draw_id }: modalProps) {
                           }
                           <Group position="apart">
                             <Text fz={20} fw={700}>Tipo:</Text>
-                            <Text fz={20}>Triple (01-99)</Text>
+                            <Text fz={20}>{draws.tickets_count === 100 ? 'Terminal (01-99)' : 'Triple (000-999)'}</Text>
                           </Group>
                           <Group position="apart">
                             <Text fz={20} fw={700}>Precio por ticket:</Text>

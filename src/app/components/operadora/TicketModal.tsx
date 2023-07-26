@@ -85,15 +85,31 @@ type modalProps = {
   draw_id: number
 }
 
-function formatPlace(place: number): string {
-  if (place <= 9) {
-    return '0' + place;
-  } else if (place <= 99) {
-    return '' + place;
-  } else if (place === 100) {
-    return '00';
+function formatPlace(place: number, tickets: number): string {
+  if (tickets === 100) {
+    if (place <= 9) {
+      return '0' + place;
+    } else if (place <= 99) {
+      return '' + place;
+    } else if (place === 100) {
+      return '00';
+    } else {
+      return place.toString();
+    }
+  } else if (tickets === 1000) {
+    if (place <= 9) {
+      return '00' + place;
+    } else if (place <= 99) {
+      return '0' + place;
+    } else if (place <= 100) {
+      return place.toString();
+    } else if (place === 1000) {
+      return '000';
+    } else {
+      return place.toString();
+    }
   } else {
-    return place.toString();
+    return place.toString(); 
   }
 }
 
@@ -534,7 +550,7 @@ function TicketModal({ draw_id }: modalProps) {
                     style={cardStyle}
                   >
                     <div className={classes.ticketsTop}></div>
-                    <Text ta="center" mt='0%'>{formatPlace(item.place_number)}</Text>
+                    <Text ta="center" mt='0%'>{formatPlace(item.place_number, draws.tickets_count)}</Text>
                     <div className={classes.ticketsBottom}></div>
                   </Card>
                 );
@@ -587,7 +603,7 @@ function TicketModal({ draw_id }: modalProps) {
                 <>
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
-                      <Paper shadow="sm" mb={10}>
+                      <Paper shadow="sm" mb={10} style={{ overflowX: 'hidden' }}>
                         <Card shadow="sm" mb={10} bg={
                           theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[1]
                         }
@@ -595,9 +611,10 @@ function TicketModal({ draw_id }: modalProps) {
                         >
                           <Paper shadow="sm" mb={0} style={{
                             maxHeight: '18.5vh',
-                            overflowY: 'scroll',
+                            overflowY: 'hidden',
                             scrollbarWidth: 'none',
                             scrollbarColor: 'transparent transparent',
+                            overflowX: 'hidden'
                           }}>
                             <Text
                               fz={20}
@@ -607,11 +624,10 @@ function TicketModal({ draw_id }: modalProps) {
                               Tickets seleccionados
                             </Text>
                             <Divider my={7} label="Jugadas" labelPosition='center' />
-                            {
-                              active.map((item, index) => (
-                                <Title order={5} ta="center" key={index}>{formatPlace(item)} - {draws.title} - {draws.price_unit}$</Title>
-                              )).reverse()
-                            }
+                            <Group position='apart' pr={20}>
+                              <Text fw={600} size={20}>JUGADAS: {active.length}</Text>
+                              <Text fw={600} size={20}>TOTAL: {active.length * draws.price_unit}$</Text>
+                            </Group>
                           </Paper>
                           <br />
                           <div style={{ top: '500%', right: '-6%' }}>

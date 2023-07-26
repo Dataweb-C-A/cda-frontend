@@ -20,16 +20,24 @@ type ILobby= {
   }
 }
 
-function formatPlace(place: number): string {
-  if (place <= 9) {
-    return '00' + place;
-  } else if (place <= 99) {
-    return '0' + place;
-  } else if (place === 1000) {
-    return '000';
-  } else {
-    return place.toString();
-  }
+function formatPlace(place: number, tickets?: ILobby): string {
+  // if (tickets.tickets[-1].place >= 998) {
+  //   if (place <= 9) {
+  //     return '00' + place;
+  //   } else if (place <= 99) {
+  //     return '0' + place;
+  //   } else if (place ===)
+  // } else {
+    if (place <= 9) {
+      return '00' + place;
+    } else if (place <= 99) {
+      return '0' + place;
+    } else if (place === 1000) {
+      return '000';
+    } else {
+      return place.toString();
+    }
+  // }
 }
 
 function Lobby({tickets, lobby}: ILobby) {
