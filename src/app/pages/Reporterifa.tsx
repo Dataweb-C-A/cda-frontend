@@ -7,6 +7,7 @@ import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
 
 import axios from 'axios'
+import { DatePicker } from '@mantine/dates';
 type Props = {}
 
 function Reporterifa({}: Props) {
@@ -78,8 +79,8 @@ function Reporterifa({}: Props) {
               left={0}
               right={0}
               color='blue'
-              number={stats.totals}
-              label='Total de Rifas'
+              number='392.91$'
+              label='Ganancia total'
             />
           </Grid.Col>
           <Grid.Col xs={6} lg={4}>
@@ -87,8 +88,8 @@ function Reporterifa({}: Props) {
               left={0}
               right={0}
               color='green'
-              number={stats.actives}
-              label='Rifas activas'
+              number='102.20$'
+              label='Ganancia de este mes'
             />
           </Grid.Col>
           <Grid.Col xs={12} lg={4} span={12}>
@@ -96,20 +97,42 @@ function Reporterifa({}: Props) {
               left={0}
               right={0}
               color='red'
-              number={stats.expired}
-              label='Rifas expiradas'
+              number='20.32$'
+              label='Ganancia de hoy'
             />
           </Grid.Col>
         </Grid>
 
-        <Card shadow="sm" radius="sm" mx={10} mt={15} h="100vh">
-        <Title order={2} fw={500} mb={20}>
+        <Card shadow="sm" radius="sm" mx={15} mt={5} h="100vh">
+        <Grid>
+          <Grid.Col xl={6} md={6} xs={12}>
+            <Title order={2} fw={500} mb={20}>
               Reportes de Rifas
               <Text fw={300} fz={20} mb={-7}>
               Reportes de Rifas registradas
               </Text>
             </Title>
-        <Table captionSide="bottom" withColumnBorders>
+          </Grid.Col>
+          <Grid.Col xl={6} md={6} xs={12}>
+            <Group position='right'>
+              <DatePicker 
+                mt={-10}
+                placeholder="Seleccionar fecha"
+                inputFormat="MM/DD/YYYY"
+                label="Filtrar desde"
+                variant='filled'
+              />
+              <DatePicker 
+                mt={-10}
+                placeholder="Seleccionar fecha"
+                inputFormat="MM/DD/YYYY"
+                label="Filtrar hasta"
+                variant='filled'
+              />
+            </Group>
+          </Grid.Col>
+        </Grid>
+        <Table captionSide="bottom" withColumnBorders highlightOnHover>
       <thead>{ths}</thead>
       <tbody>{rows}</tbody>
     </Table>
