@@ -11,21 +11,29 @@ type Props = {}
 
 function Reporterifa({}: Props) {
   const elements = [
-    { position: 'a', symbol: 'C', name: 'b' },
+    { Premio: 'Una moto ', Fecha: '12/5/23', Cierre: '12/7/23' ,Precioticket:'15$',Progreso:'25%',Comision:'30%'},
+    { Premio: '100 $', Fecha: '12/5/23', Cierre: '12/7/23' ,Precioticket:'1$',Progreso:'85%',Comision:'20%'},
+    { Premio: 'Un chivo', Fecha: '12/5/23', Cierre: '12/7/23' ,Precioticket:'25$',Progreso:'50%',Comision:'5%'},
   ];
   const ths = (
     <tr>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
+      <th>Premio</th>
+      <th>Fecha</th>
+      <th>Cierre</th>
+      <th>Precio ticket</th>
+      <th>Progreso</th>
+      <th>Comisión</th>
     </tr>
   );
 
   const rows = elements.map((element) => (
-    <tr key={element.name}>
-      <td>{element.position}</td>
-      <td>{element.name}</td>
-      <td>{element.symbol}</td>
+    <tr key={element.Fecha}>
+      <td>{element.Premio}</td>
+      <td>{element.Fecha}</td>
+      <td>{element.Cierre}</td>
+      <td>{element.Precioticket}</td>
+      <td>{element.Progreso}</td>
+      <td>{element.Comision}</td>
     </tr>
   ));
   const [users, setUsers] = useState<any>([])
@@ -95,6 +103,12 @@ function Reporterifa({}: Props) {
         </Grid>
 
         <Card shadow="sm" radius="sm" mx={10} mt={15} h="100vh">
+        <Title order={2} fw={500} mb={20}>
+              Reportes de Rifas
+              <Text fw={300} fz={20} mb={-7}>
+              Reportes de Rifas registradas
+              </Text>
+            </Title>
         <Table captionSide="bottom" withColumnBorders>
       <thead>{ths}</thead>
       <tbody>{rows}</tbody>
