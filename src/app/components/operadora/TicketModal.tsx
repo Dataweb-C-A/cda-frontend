@@ -167,6 +167,8 @@ function TicketModal({ draw_id }: modalProps) {
 
   const [activex, setActivex] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [searchTicket, setSearchTicket] = useState("");
+  const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
 
   useEffect(() => {
     axios.get(`https://api.rifamax.app/draws_finder?id=${draw_id}`)
@@ -203,10 +205,8 @@ function TicketModal({ draw_id }: modalProps) {
 
   function send(draw: IDraws, place: IPlace): void {
     try {
-      // Crear una instancia del WebSocket
       const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
 
-      // Evento que se dispara cuando la conexión se establece correctamente
       socket.onopen = function (): void {
         console.log('Conexión establecida.');
 
@@ -216,7 +216,7 @@ function TicketModal({ draw_id }: modalProps) {
               return response.text();
             })
             .then(function (text: string): void {
-              // console.log(text);
+              
               socket.send(text);
             });
         };
@@ -227,7 +227,6 @@ function TicketModal({ draw_id }: modalProps) {
               return response.text();
             })
             .then(function (text: string): void {
-              // console.log(text);
               socket.send(text);
               socket.send('cut');
             });
@@ -239,17 +238,14 @@ function TicketModal({ draw_id }: modalProps) {
         }, 1000);
       };
 
-      // Evento que se dispara cuando se recibe un mensaje del servidor
       socket.onmessage = function (event: MessageEvent): void {
         console.log('Mensaje recibido del servidor:', event.data);
       };
 
-      // Evento que se dispara cuando se produce un error en la conexión
       socket.onerror = function (error: Event): void {
         console.error('Error en la conexión:', error);
       };
 
-      // Evento que se dispara cuando la conexión se cierra
       socket.onclose = function (event: CloseEvent): void {
         console.log('Conexión cerrada:', event.code, event.reason);
       };
@@ -371,7 +367,6 @@ function TicketModal({ draw_id }: modalProps) {
       },
     },
   }))
-  const [searchTicket, setSearchTicket] = useState("");
   const { classes, cx } = useStyles()
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -406,13 +401,13 @@ function TicketModal({ draw_id }: modalProps) {
     if (searchTicket.trim() === "") {
       return;
     }
-
+  
     const ticketNumber = parseInt(searchTicket);
     if (isNaN(ticketNumber) || ticketNumber < 1 || ticketNumber > 1000) {
       setSearchTicket("");
       return;
     }
-
+  
     const ticket = apiData.find((item) => item.place_number === ticketNumber);
     if (ticket) {
       handleTickets(ticket.place_number);
@@ -433,12 +428,12 @@ function TicketModal({ draw_id }: modalProps) {
     setCounter(0);
   }, [active, formValues]);
 
-
+  
+  
   const [checkedIndex, setCheckedIndex] = useState(-1);
   const [isChecked, setIsChecked] = useState(false);
   const [apiData, setApiData] = useState<ticketProps[] | []>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const deselectSoldTickets = () => {
@@ -519,7 +514,13 @@ function TicketModal({ draw_id }: modalProps) {
                   setSearchTicket(event.currentTarget.value);
                   setSelectedTicket(null);
                 }}
+                onKeyPress={(event) => {
+                  if (event.key === "Enter") {
+                    searchTicketByNumber();
+                  }
+                }}
               />
+
 
             </>
 
