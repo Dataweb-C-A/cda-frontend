@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Card, Loader, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton, ScrollArea } from '@mantine/core'
 import { useScrollPosition } from '../../hooks/useScroll'
 import axios from 'axios';
+import '../../assets/scss/cards.scss'
 import { Carousel } from '@mantine/carousel';
 import Operadora from '../../pages/Operadora'
 import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch } from '@tabler/icons-react';
@@ -164,7 +165,7 @@ function TicketModal({ draw_id }: modalProps) {
     updated_at: ''
   })
   const elementRef = useRef<HTMLDivElement>(null)
-
+  const [modalOpened, setModalOpened] = useState(false);
   const [activex, setActivex] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false);
   const [searchTicket, setSearchTicket] = useState("");
@@ -216,7 +217,7 @@ function TicketModal({ draw_id }: modalProps) {
               return response.text();
             })
             .then(function (text: string): void {
-              
+
               socket.send(text);
             });
         };
@@ -396,18 +397,28 @@ function TicketModal({ draw_id }: modalProps) {
       setCurrentPage(Math.ceil(register / 100));
     }
   };
+  const [errorModalOpened, setErrorModalOpened] = useState(false);
 
+  useEffect(() => {
+    if (modalOpened) {
+      const timeoutId = setTimeout(() => {
+        setModalOpened(false);
+      }, 3000);
+
+      return () => clearTimeout(timeoutId); 
+    }
+  }, [modalOpened]);
   const searchTicketByNumber = () => {
     if (searchTicket.trim() === "") {
       return;
     }
-  
+
     const ticketNumber = parseInt(searchTicket);
     if (isNaN(ticketNumber) || ticketNumber < 1 || ticketNumber > 1000) {
       setSearchTicket("");
       return;
     }
-  
+
     const ticket = apiData.find((item) => item.place_number === ticketNumber);
     if (ticket) {
       handleTickets(ticket.place_number);
@@ -428,8 +439,8 @@ function TicketModal({ draw_id }: modalProps) {
     setCounter(0);
   }, [active, formValues]);
 
-  
-  
+
+
   const [checkedIndex, setCheckedIndex] = useState(-1);
   const [isChecked, setIsChecked] = useState(false);
   const [apiData, setApiData] = useState<ticketProps[] | []>([]);
@@ -541,6 +552,7 @@ function TicketModal({ draw_id }: modalProps) {
                 };
 
                 return (
+
                   <Card
                     px={8}
                     className={cx(classes.ticket, {
@@ -766,6 +778,7 @@ function TicketModal({ draw_id }: modalProps) {
                                   color="blue"
                                   mt={30}
                                   style={{ width: '100%' }}
+
                                   onClick={() => {
                                     axios.post("https://api.rifamax.app/places", {
                                       place: {
@@ -787,7 +800,15 @@ function TicketModal({ draw_id }: modalProps) {
                                       setIsChecked(false);
                                       setCheckedIndex(-1);
                                       form.reset();
-                                    })
+                                      setModalOpened(true);
+                                    }).catch(err => {
+                                      if (err.response && err.response.status === 401) {
+                                        setErrorModalOpened(true);
+                                      } else {
+                                        console.log(err);
+                                      }
+                                    });
+                                    {/**error */}
                                   }}
                                 >
                                   Comprar
@@ -812,7 +833,28 @@ function TicketModal({ draw_id }: modalProps) {
                             <Image maw={300} mx="auto" radius="md" src={draws.adnoucement} alt="Premios" />
                           ) : null
                         }
+
                       </Card>
+                      {modalOpened && (
+                        <Modal opened={modalOpened} onClose={() => setModalOpened(false)} withCloseButton={false} mt={350}>
+                          <div className='card-container' style={{  }}>
+                            <div className='card-body' style={{ borderRadius: '3px', backgroundColor: theme.colorScheme === "dark" ? '#2b2c3d' : '#fff' }}>
+                              <div className='dot-color' style={{ backgroundColor: 'green' }}>
+                                <p style={{ color: 'green' }}>
+                                  .
+                                </p>
+                              </div>
+                              <div className='card-number'>
+                               
+                                <Text fz="md" fw={700} c={"white"}>
+                                 Compra realizada
+                                </Text>
+                              </div>
+                            </div>
+                          </div>
+                        </Modal>
+                      )}
+
                     </Grid.Col>
                   </Grid>
                 </>
