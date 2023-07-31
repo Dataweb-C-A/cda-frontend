@@ -85,7 +85,7 @@ type FormValues = {
 type modalProps = {
   draw_id: number
 }
-
+  
 function formatPlace(place: number, tickets: number): string {
   if (tickets === 100) {
     if (place <= 9) {
@@ -170,6 +170,7 @@ function TicketModal({ draw_id }: modalProps) {
   const [isFormValid, setIsFormValid] = useState(false);
   const [searchTicket, setSearchTicket] = useState("");
   const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
+  
 
   useEffect(() => {
     axios.get(`https://api.rifamax.app/draws_finder?id=${draw_id}`)
@@ -405,7 +406,7 @@ function TicketModal({ draw_id }: modalProps) {
         setModalOpened(false);
       }, 3000);
 
-      return () => clearTimeout(timeoutId); 
+      return () => clearTimeout(timeoutId);
     }
   }, [modalOpened]);
   const searchTicketByNumber = () => {
@@ -802,13 +803,13 @@ function TicketModal({ draw_id }: modalProps) {
                                       form.reset();
                                       setModalOpened(true);
                                     }).catch(err => {
-                                      if (err.response && err.response.status === 401) {
+                                      if (err.response && err.response.status === 422) {
                                         setErrorModalOpened(true);
                                       } else {
                                         console.log(err);
                                       }
                                     });
-                                    {/**error */}
+                                    {/**error */ }
                                   }}
                                 >
                                   Comprar
@@ -837,7 +838,7 @@ function TicketModal({ draw_id }: modalProps) {
                       </Card>
                       {modalOpened && (
                         <Modal opened={modalOpened} onClose={() => setModalOpened(false)} withCloseButton={false} mt={350}>
-                          <div className='card-container' style={{  }}>
+                          <div className='card-container' style={{}}>
                             <div className='card-body' style={{ borderRadius: '3px', backgroundColor: theme.colorScheme === "dark" ? '#2b2c3d' : '#fff' }}>
                               <div className='dot-color' style={{ backgroundColor: 'green' }}>
                                 <p style={{ color: 'green' }}>
@@ -845,15 +846,35 @@ function TicketModal({ draw_id }: modalProps) {
                                 </p>
                               </div>
                               <div className='card-number'>
-                               
+
                                 <Text fz="md" fw={700} c={"white"}>
-                                 Compra realizada
+                                  Compra realizada
                                 </Text>
                               </div>
                             </div>
                           </div>
                         </Modal>
                       )}
+                      {errorModalOpened && (
+                        <Modal opened={modalOpened} onClose={() => setModalOpened(false)} withCloseButton={false} mt={350}>
+                        <div className='card-container' style={{}}>
+                          <div className='card-body' style={{ borderRadius: '3px', backgroundColor: theme.colorScheme === "dark" ? '#2b2c3d' : '#fff' }}>
+                            <div className='dot-color' style={{ backgroundColor: 'red' }}>
+                              <p style={{ color: 'red' }}>
+                                .
+                              </p>
+                            </div>
+                            <div className='card-number'>
+
+                              <Text fz="md" fw={700} c={"white"}>
+                                Error
+                              </Text>
+                            </div>
+                          </div>
+                        </div>
+                      </Modal>
+                      )}
+
 
                     </Grid.Col>
                   </Grid>
