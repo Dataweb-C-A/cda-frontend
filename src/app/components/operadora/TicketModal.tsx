@@ -875,7 +875,7 @@ function TicketModal({ draw_id }: modalProps) {
                             <div className='card-number'>
 
                               <Text fz="md" fw={700} c={"white"}>
-                                Error: Los tickets han sido vendidos
+                                Los tickets han sido vendidos
                               </Text>
                             </div>
                           </div>

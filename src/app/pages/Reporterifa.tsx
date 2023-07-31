@@ -10,19 +10,38 @@ import { DatePicker } from '@mantine/dates';
 type Props = {}
 
 function Reporterifa({ }: Props) {
-  const elements = [
-    { Premio: 'Una moto ', inicio: '07/12/2023', Cierre: '07/15/2023', Precioticket: '15$', Progreso: '25%', Comision: '30%' },
-    { Premio: '100 $', inicio: '07/12/2023', Cierre: '07/16/2023', Precioticket: '1$', Progreso: '85%', Comision: '20%' },
-    { Premio: 'Un chivo', inicio: '07/13/2023', Cierre: '07/17/2023', Precioticket: '25$', Progreso: '50%', Comision: '5%' },
-  ];
+  
+  interface Elemento {
+    Premio: string;
+    inicio: string;
+    Cierre: string;
+    Precioticket: string;
+    ganancia: string;
+}
+
+const elements: Elemento[] = [
+    { Premio: 'Una moto', inicio: '07/12/2023', Cierre: '07/15/2023', Precioticket: '15$', ganancia: '' },
+    { Premio: '100 $', inicio: '07/12/2023', Cierre: '07/16/2023', Precioticket: '1$', ganancia: '' },
+    { Premio: 'Un chivo', inicio: '07/13/2023', Cierre: '07/17/2023', Precioticket: '25$', ganancia: '' },
+];
+
+function calcularGanancia(precioticket: string): string {
+    const porcentajeGanancia = 0.3;
+    const precioNumerico = parseFloat(precioticket.replace('$', ''));
+    return (precioNumerico - porcentajeGanancia).toFixed(2) + '$';
+}
+
+elements.forEach((element) => {
+    element.ganancia = calcularGanancia(element.Precioticket);
+});
+
   const ths = (
     <tr>
       <th>Premio</th>
       <th>inicio</th>
       <th>Cierre</th>
       <th>Precio ticket</th>
-      <th>Progreso</th>
-      <th>Comisión</th>
+      <th>Ganancia</th>
     </tr>
   );
   const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
@@ -35,27 +54,16 @@ function Reporterifa({ }: Props) {
     return `${month}/${day}/${year}`;
   };
 
-  const filteredRows = elements.filter((element) => {
-    const startDate = new Date(element.inicio);
-    const endDate = new Date(element.Cierre);
-    const formattedSelectedStartDate = selectedStartDate ? formatDate(selectedStartDate) : null;
-    const formattedSelectedEndDate = selectedEndDate ? formatDate(selectedEndDate) : null;
-    return (
-      (!selectedStartDate || formatDate(startDate) === formattedSelectedStartDate) &&
-      (!selectedEndDate || formatDate(endDate) === formattedSelectedEndDate)
-    );
-  });
-  const rows = filteredRows.map((element) => (
+ 
+  const rows = elements.map((element) => (
     <tr key={element.inicio}>
       <td>{element.Premio}</td>
       <td>{element.inicio}</td>
       <td>{element.Cierre}</td>
       <td>{element.Precioticket}</td>
-      <td>{element.Progreso}</td>
-      <td>{element.Comision}</td>
+      <td>{element.ganancia}</td>
     </tr>
   ));
-
 
 
   const [users, setUsers] = useState<any>([])
@@ -95,14 +103,26 @@ function Reporterifa({ }: Props) {
     <>
       <Navbar profiles={profiles} links={links} />
 
-      <Grid gutter={20} m={15} >
-        <Cards
+      <Grid grow gutter={20} m={15} >
+      <Grid.Col span={4}>
+      <Cards
           left={0}
           right={0}
           color='green'
           number='20.32$'
           label='Ganancia de hoy'
         />
+          </Grid.Col>
+          <Grid.Col span={4}>
+          <Cards
+          left={0}
+          right={0}
+          color='blue'
+          number='30%'
+          label='ganancia'
+        />
+          </Grid.Col>
+        
       </Grid>
 
       <Card shadow="sm" radius="sm" mx={15} mt={5} h="100vh">
@@ -124,8 +144,6 @@ function Reporterifa({ }: Props) {
                 inputFormat="MM/DD/YYYY"
                 label="Filtrar desde"
                 variant='filled'
-                value={selectedStartDate}
-                onChange={(value) => setSelectedStartDate(value)}
               />
 
               {/**fecha de cierre */}
@@ -135,8 +153,6 @@ function Reporterifa({ }: Props) {
                 inputFormat="MM/DD/YYYY"
                 label="Filtrar hasta"
                 variant='filled'
-                value={selectedEndDate}
-                onChange={(value) => setSelectedEndDate(value)}
               />
 
             </Group>
