@@ -408,7 +408,14 @@ function TicketModal({ draw_id }: modalProps) {
 
       return () => clearTimeout(timeoutId);
     }
-  }, [modalOpened]);
+    if (errorModalOpened) {
+      const timeoutId = setTimeout(() => {
+        setErrorModalOpened(false);
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [modalOpened, errorModalOpened]);
   const searchTicketByNumber = () => {
     if (searchTicket.trim() === "") {
       return;
