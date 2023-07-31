@@ -803,11 +803,12 @@ function TicketModal({ draw_id }: modalProps) {
                                       form.reset();
                                       setModalOpened(true);
                                     }).catch(err => {
-                                      if (err.response && err.response.status === 422) {
-                                        setErrorModalOpened(true);
-                                      } else {
-                                        console.log(err);
-                                      }
+                                      setModalOpen(false);
+                                      setActivex(0);
+                                      setIsChecked(false);
+                                      setCheckedIndex(-1);
+                                      form.reset();
+                                      setErrorModalOpened(true);
                                     });
                                     {/**error */ }
                                   }}
@@ -856,7 +857,7 @@ function TicketModal({ draw_id }: modalProps) {
                         </Modal>
                       )}
                       {errorModalOpened && (
-                        <Modal opened={modalOpened} onClose={() => setModalOpened(false)} withCloseButton={false} mt={350}>
+                        <Modal opened={errorModalOpened} onClose={() => setErrorModalOpened(false)} withCloseButton={false} mt={350}>
                         <div className='card-container' style={{}}>
                           <div className='card-body' style={{ borderRadius: '3px', backgroundColor: theme.colorScheme === "dark" ? '#2b2c3d' : '#fff' }}>
                             <div className='dot-color' style={{ backgroundColor: 'red' }}>
@@ -867,15 +868,13 @@ function TicketModal({ draw_id }: modalProps) {
                             <div className='card-number'>
 
                               <Text fz="md" fw={700} c={"white"}>
-                                Error
+                                Error: Los tickets han sido vendidos
                               </Text>
                             </div>
                           </div>
                         </div>
                       </Modal>
                       )}
-
-
                     </Grid.Col>
                   </Grid>
                 </>
