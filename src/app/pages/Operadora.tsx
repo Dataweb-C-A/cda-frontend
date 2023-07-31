@@ -64,6 +64,7 @@ interface IDraws {
 
 function Operadora() {
   const theme = useMantineTheme()
+  const [isLoaded, setIsLoaded] = useState<{ status: boolean, count: number }>({ status: false, count: 0 })
   const [lobbyState, setLobbyState] = useState<ILobbyState>({
     open: false,
     lobby_id: 0,
@@ -157,6 +158,34 @@ function Operadora() {
   }, [])
 
   useEffect(() => {
+    axios.post(`https://api.rifamax.app/api/public/draws?type=${query.get('type')}`, {
+      user_id: JSON.parse(localStorage.getItem('user') || '').id || 1,
+    },
+      {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log(res.data)
+        setDraws(res.data)
+        setErrors((null))
+        setIsLoaded({
+          status: true,
+          count: isLoaded.count + 1
+        })
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+        setErrors(err.response.data.message)
+      }
+    )
+  }, [])
+
+  useEffect(() => {
     setTimeout(() => {
       axios.post(`https://api.rifamax.app/api/public/draws?type=${query.get('type')}`, {
         user_id: JSON.parse(localStorage.getItem('user') || '').id || 1,
@@ -179,7 +208,7 @@ function Operadora() {
           setErrors(err.response.data.message)
         }
         )
-    }, 250)
+    },1000)
   }, [draws])
 
   const handleLobby = (id: number, connection: Date) => {

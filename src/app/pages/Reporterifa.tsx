@@ -119,7 +119,7 @@ elements.forEach((element) => {
           right={0}
           color='blue'
           number='30%'
-          label='ganancia'
+          label='Comision de agencia'
         />
           </Grid.Col>
         
