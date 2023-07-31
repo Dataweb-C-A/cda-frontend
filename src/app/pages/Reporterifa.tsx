@@ -27,7 +27,7 @@ function Reporterifa({ }: Props) {
   );
   const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
-  
+
   const formatDate = (date: Date): string => {
     const month = date.getMonth() + 1;
     const day = date.getDate();
@@ -55,9 +55,9 @@ function Reporterifa({ }: Props) {
       <td>{element.Comision}</td>
     </tr>
   ));
-  
-  
-  
+
+
+
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
   const [stats, setStats] = useState<any>({})
@@ -130,14 +130,14 @@ function Reporterifa({ }: Props) {
 
               {/**fecha de cierre */}
               <DatePicker
-  mt={-10}
-  placeholder="Seleccionar fecha"
-  inputFormat="MM/DD/YYYY"
-  label="Filtrar hasta"
-  variant='filled'
-  value={selectedEndDate}
-  onChange={(value) => setSelectedEndDate(value)}
-/>
+                mt={-10}
+                placeholder="Seleccionar fecha"
+                inputFormat="MM/DD/YYYY"
+                label="Filtrar hasta"
+                variant='filled'
+                value={selectedEndDate}
+                onChange={(value) => setSelectedEndDate(value)}
+              />
 
             </Group>
           </Grid.Col>
