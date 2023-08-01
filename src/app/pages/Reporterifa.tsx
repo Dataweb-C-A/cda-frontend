@@ -20,22 +20,13 @@ function Reporterifa({ }: Props) {
   }
 
   const elements: Elemento[] = [
-    { Premio: 'Una moto', inicio: '08/10/2023', Cierre: '08/15/2023', Precioticket: '15$', ganancia: '' },
-    { Premio: '100 $', inicio: '08/10/2023', Cierre: '08/16/2023', Precioticket: '1$', ganancia: '' },
-    { Premio: 'Un chivo', inicio: '08/11/2023', Cierre: '08/17/2023', Precioticket: '25$', ganancia: '' },
+    { Premio: 'Una moto', inicio: '08/10/2023', Cierre: '08/15/2023', Precioticket: '15$', ganancia: '10.70$' },
+    { Premio: '100 $', inicio: '08/10/2023', Cierre: '08/16/2023', Precioticket: '1$', ganancia: '0.70$' },
+    { Premio: 'Un chivo', inicio: '08/11/2023', Cierre: '08/17/2023', Precioticket: '25$', ganancia: '24.70$' },
   ];
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  function calcularGanancia(precioticket: string): string {
-    const porcentajeGanancia = 0.3;
-    const precioNumerico = parseFloat(precioticket.replace('$', ''));
-    return (precioNumerico - porcentajeGanancia).toFixed(2) + '$';
-  }
-
-  elements.forEach((element) => {
-    element.ganancia = calcularGanancia(element.Precioticket);
-  });
-
+ 
   const ths = (
     <tr>
       <th>Premio</th>
@@ -45,12 +36,6 @@ function Reporterifa({ }: Props) {
       <th>Ganancia</th>
     </tr>
   );
-  const formatDate = (date: Date): string => {
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
 
 
   const filterElements = () => {
@@ -71,7 +56,16 @@ function Reporterifa({ }: Props) {
   }, [startDate, endDate]);
 
 
-  const rows = filteredElements.map((element) => (
+  const rows = elements
+  .filter((element) => {
+    if (!startDate || !endDate) {
+      return true;
+    }
+    const elementStartDate = new Date(element.inicio);
+    const elementEndDate = new Date(element.Cierre);
+    return elementStartDate >= startDate && elementEndDate <= endDate;
+  })
+  .map((element) => (
     <tr key={element.inicio}>
       <td>{element.Premio}</td>
       <td>{element.inicio}</td>
