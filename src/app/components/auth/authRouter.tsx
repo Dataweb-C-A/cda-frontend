@@ -8,57 +8,71 @@ interface AuthRouterProps {
   isPrivate: boolean;
 }
 
+enum Role {
+  Admin = 'Admin',
+  Rifero = 'Rifero',
+  Taquilla = 'Taquilla',
+  Agencia = 'Agencia',
+  Auto = 'Auto',
+  Undefined = 'undefined',
+  Null = 'null',
+}
+
 type PermissionMap = {
-  [role: string]: string[];
+  [role in Role]: string[];
+};
+
+const permissions: PermissionMap = {
+  [Role.Admin]: ['/', '/users', '/reports', '/exchange', '/draws'],
+  [Role.Rifero]: ['/'],
+  [Role.Taquilla]: ['/', '/riferos', '/lobby', '/reportes-rifa'],
+  [Role.Agencia]: ['/'],
+  [Role.Auto]: ['/lobby'],
+  [Role.Undefined]: ['/login'],
+  [Role.Null]: ['/login'],
 };
 
 const AuthRouter: React.FC<AuthRouterProps> = ({ component: Component, path, isPrivate, ...rest }) => {
   const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') || '{}') : useUser();
-
-  const permissions: PermissionMap = {
-    Admin: ['/', '/users', '/reports', '/exchange', '/draws'],
-    Rifero: ['/'],
-    Taquilla: ['/', '/riferos', '/lobby'],
-    Agencia: ['/'],
-    Auto: ['/lobby'],
-    undefined: ['/login'],
-    null: ['/login'],
-  };
-
   return (
-    <>
-      <Route
-        path={path}
-        {...rest}
-        render={(props) => {
-          const userRole = user?.role || 'undefined';
-          const allowedRoutes = permissions[userRole];
+    <Route
+      path={path}
+      {...rest}
+      render={(props) => {
+        const userRole: Role = user?.role || Role.Undefined;
+        const allowedRoutes = permissions[userRole];
 
-          if (isPrivate && !(Boolean(localStorage.getItem('token')) && user)) {
-            return (
-              <Redirect
-                to={{
-                  pathname: '/login',
-                  state: { from: props.location },
-                }}
-              />
-            );
-          } else if (allowedRoutes.some((allowedRoute) => props.match?.path?.startsWith(allowedRoute))) {
-            return <Component {...props} />;
-          } else {
-            const firstAllowedRoute = allowedRoutes[0];
-            return (
-              <Redirect
-                to={{
-                  pathname: firstAllowedRoute,
-                  state: { from: props.location },
-                }}
-              />
-            );
-          }
-        }}
-      />
-    </>
+        if (isPrivate && !(Boolean(localStorage.getItem('token')) && user)) {
+          console.log('Redirección a /login porque la ruta es privada y el usuario no está autenticado.');
+          return (
+            <Redirect
+              to={{
+                pathname: '/login',
+                state: { from: props.location },
+              }}
+            />
+          );
+        }
+
+        const isRouteAllowed = allowedRoutes.includes(props.location?.pathname);
+        
+        if (isPrivate && !isRouteAllowed) {
+          const firstAllowedRoute = allowedRoutes[0];
+          console.log(`Redirección a ${firstAllowedRoute} porque la ruta no está permitida para el rol del usuario.`);
+          return (
+            <Redirect
+              to={{
+                pathname: firstAllowedRoute,
+                state: { from: props.location },
+              }}
+            />
+          );
+        }
+
+        console.log('Acceso permitido a la ruta.');
+        return <Component {...props} />;
+      }}
+    />
   );
 };
 
