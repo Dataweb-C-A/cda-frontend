@@ -13,67 +13,55 @@ function Reporterifa({ }: Props) {
 
   interface Elemento {
     Premio: string;
-    inicio: string;
-    Cierre: string;
+    vendidoa: string;
     Precioticket: string;
     ganancia: string;
   }
 
   const elements: Elemento[] = [
-    { Premio: 'Una moto', inicio: '08/10/2023', Cierre: '08/15/2023', Precioticket: '15$', ganancia: '10.70$' },
-    { Premio: '100 $', inicio: '08/10/2023', Cierre: '08/16/2023', Precioticket: '1$', ganancia: '0.70$' },
-    { Premio: 'Un chivo', inicio: '08/11/2023', Cierre: '08/17/2023', Precioticket: '25$', ganancia: '24.70$' },
+    { Premio: 'Una moto', vendidoa: '08/15/2023', Precioticket: '15$', ganancia: '10.70$' },
+    { Premio: '100 $', vendidoa: '08/16/2023', Precioticket: '1$', ganancia: '0.70$' },
+    { Premio: 'Un chivo', vendidoa: '08/17/2023', Precioticket: '25$', ganancia: '24.70$' },
   ];
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
- 
+
   const ths = (
     <tr>
       <th>Premio</th>
-      <th>inicio</th>
-      <th>Cierre</th>
+      <th>Vendido a</th>
       <th>Precio ticket</th>
       <th>Ganancia</th>
     </tr>
   );
 
-
-  const filterElements = () => {
-    return elements.filter((element) => {
-      if (!startDate || !endDate) {
-        return true;
-      }
-      const elementStartDate = new Date(element.inicio);
-      const elementEndDate = new Date(element.Cierre);
-      return elementStartDate >= startDate && elementEndDate <= endDate;
-    });
-  };
-
   const [filteredElements, setFilteredElements] = useState<Elemento[]>(elements);
-
-  useEffect(() => {
-    setFilteredElements(filterElements());
-  }, [startDate, endDate]);
+  const [dateFrom, setDateFrom] = useState<Date | null>(null);
+  const [dateTo, setDateTo] = useState<Date | null>(null);
 
 
-  const rows = elements
-  .filter((element) => {
-    if (!startDate || !endDate) {
-      return true;
-    }
-    const elementStartDate = new Date(element.inicio);
-    const elementEndDate = new Date(element.Cierre);
-    return elementStartDate >= startDate && elementEndDate <= endDate;
-  })
-  .map((element) => (
-    <tr key={element.inicio}>
+  const rows = filteredElements.map((element) => (
+    <tr key={element.Premio}>
       <td>{element.Premio}</td>
-      <td>{element.inicio}</td>
-      <td>{element.Cierre}</td>
+      <td>{element.vendidoa}</td>
       <td>{element.Precioticket}</td>
       <td>{element.ganancia}</td>
     </tr>
   ));
+
+  const filterElementsByDate = () => {
+    if (dateFrom && dateTo) {
+      const filtered = elements.filter((element) => {
+        const vendidoaDate = new Date(element.vendidoa);
+        return vendidoaDate >= dateFrom && vendidoaDate <= dateTo;
+      });
+      setFilteredElements(filtered);
+    } else {
+      setFilteredElements(elements);
+    }
+  };
+
+  useEffect(() => {
+    filterElementsByDate();
+  }, [dateFrom, dateTo]);
 
 
   const [users, setUsers] = useState<any>([])
@@ -154,8 +142,8 @@ function Reporterifa({ }: Props) {
                 inputFormat="MM/DD/YYYY"
                 label="Filtrar desde"
                 variant="filled"
-                value={startDate}
-                onChange={(date) => setStartDate(date)}
+                value={dateFrom}
+                onChange={(value) => setDateFrom(value)}
               />
 
               {/**fecha de cierre */}
@@ -165,8 +153,8 @@ function Reporterifa({ }: Props) {
                 inputFormat="MM/DD/YYYY"
                 label="Filtrar hasta"
                 variant="filled"
-                value={endDate}
-                onChange={(date) => setEndDate(date)}
+                value={dateTo}
+                onChange={(value) => setDateTo(value)}
               />
 
             </Group>
