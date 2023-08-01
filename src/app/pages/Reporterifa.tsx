@@ -10,30 +10,31 @@ import { DatePicker } from '@mantine/dates';
 type Props = {}
 
 function Reporterifa({ }: Props) {
-  
+
   interface Elemento {
     Premio: string;
     inicio: string;
     Cierre: string;
     Precioticket: string;
     ganancia: string;
-}
+  }
 
-const elements: Elemento[] = [
-    { Premio: 'Una moto', inicio: '07/12/2023', Cierre: '07/15/2023', Precioticket: '15$', ganancia: '' },
-    { Premio: '100 $', inicio: '07/12/2023', Cierre: '07/16/2023', Precioticket: '1$', ganancia: '' },
-    { Premio: 'Un chivo', inicio: '07/13/2023', Cierre: '07/17/2023', Precioticket: '25$', ganancia: '' },
-];
-
-function calcularGanancia(precioticket: string): string {
+  const elements: Elemento[] = [
+    { Premio: 'Una moto', inicio: '08/10/2023', Cierre: '08/15/2023', Precioticket: '15$', ganancia: '' },
+    { Premio: '100 $', inicio: '08/10/2023', Cierre: '08/16/2023', Precioticket: '1$', ganancia: '' },
+    { Premio: 'Un chivo', inicio: '08/11/2023', Cierre: '08/17/2023', Precioticket: '25$', ganancia: '' },
+  ];
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  function calcularGanancia(precioticket: string): string {
     const porcentajeGanancia = 0.3;
     const precioNumerico = parseFloat(precioticket.replace('$', ''));
     return (precioNumerico - porcentajeGanancia).toFixed(2) + '$';
-}
+  }
 
-elements.forEach((element) => {
+  elements.forEach((element) => {
     element.ganancia = calcularGanancia(element.Precioticket);
-});
+  });
 
   const ths = (
     <tr>
@@ -44,9 +45,6 @@ elements.forEach((element) => {
       <th>Ganancia</th>
     </tr>
   );
-  const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
-  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
-
   const formatDate = (date: Date): string => {
     const month = date.getMonth() + 1;
     const day = date.getDate();
@@ -54,8 +52,26 @@ elements.forEach((element) => {
     return `${month}/${day}/${year}`;
   };
 
- 
-  const rows = elements.map((element) => (
+
+  const filterElements = () => {
+    return elements.filter((element) => {
+      if (!startDate || !endDate) {
+        return true;
+      }
+      const elementStartDate = new Date(element.inicio);
+      const elementEndDate = new Date(element.Cierre);
+      return elementStartDate >= startDate && elementEndDate <= endDate;
+    });
+  };
+
+  const [filteredElements, setFilteredElements] = useState<Elemento[]>(elements);
+
+  useEffect(() => {
+    setFilteredElements(filterElements());
+  }, [startDate, endDate]);
+
+
+  const rows = filteredElements.map((element) => (
     <tr key={element.inicio}>
       <td>{element.Premio}</td>
       <td>{element.inicio}</td>
@@ -104,25 +120,25 @@ elements.forEach((element) => {
       <Navbar profiles={profiles} links={links} />
 
       <Grid grow gutter={20} m={15} >
-      <Grid.Col span={4}>
-      <Cards
-          left={0}
-          right={0}
-          color='green'
-          number='20.32$'
-          label='Ganancia de hoy'
-        />
-          </Grid.Col>
-          <Grid.Col span={4}>
+        <Grid.Col span={4}>
           <Cards
-          left={0}
-          right={0}
-          color='blue'
-          number='30%'
-          label='Comision de agencia'
-        />
-          </Grid.Col>
-        
+            left={0}
+            right={0}
+            color='green'
+            number='20.32$'
+            label='Ganancia de hoy'
+          />
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <Cards
+            left={0}
+            right={0}
+            color='blue'
+            number='30%'
+            label='Comision de agencia'
+          />
+        </Grid.Col>
+
       </Grid>
 
       <Card shadow="sm" radius="sm" mx={15} mt={5} h="100vh">
@@ -143,7 +159,9 @@ elements.forEach((element) => {
                 placeholder="Seleccionar fecha"
                 inputFormat="MM/DD/YYYY"
                 label="Filtrar desde"
-                variant='filled'
+                variant="filled"
+                value={startDate}
+                onChange={(date) => setStartDate(date)}
               />
 
               {/**fecha de cierre */}
@@ -152,7 +170,9 @@ elements.forEach((element) => {
                 placeholder="Seleccionar fecha"
                 inputFormat="MM/DD/YYYY"
                 label="Filtrar hasta"
-                variant='filled'
+                variant="filled"
+                value={endDate}
+                onChange={(date) => setEndDate(date)}
               />
 
             </Group>
