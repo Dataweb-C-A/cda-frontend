@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import { Link, useHistory } from "react-router-dom";
-import { Grid, TextInput, Table, Group, Button, Card, Avatar, Text, Title, useMantineTheme } from '@mantine/core'
+import { Grid, TextInput, Table, Group, Pagination, Card, Avatar, Text, Title, useMantineTheme } from '@mantine/core'
 import Cards from '../components/cards'
 import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
@@ -81,6 +81,28 @@ function Reporterifa({ }: Props) {
     filterElements();
   }, [dateFrom, dateTo, premioFilter]);
 
+  const [commissionPercentage, setCommissionPercentage] = useState('');
+  const [todayEarnings, setTodayEarnings] = useState('');
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+
+    const apiUrl = `https://api.rifamax.app/places/reports?agency_id=${user.id}`;
+
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setCommissionPercentage(data.ui.commission_parser);
+        setTodayEarnings(`${(data.ui.earnings.agency_all_earnings) - (data.ui.earnings.agency_all_earnings * data.ui.commission_percentage) / 100}0$`);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+
+
+
 
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
@@ -119,13 +141,13 @@ function Reporterifa({ }: Props) {
     <>
       <Navbar profiles={profiles} links={links} />
 
-      <Grid grow gutter={20} m={15} >
+      <Grid grow gutter={20} m={5} >
         <Grid.Col span={4}>
           <Cards
             left={0}
             right={0}
             color='green'
-            number='20.32$'
+            number={todayEarnings}
             label='Ganancia de hoy'
           />
         </Grid.Col>
@@ -134,7 +156,7 @@ function Reporterifa({ }: Props) {
             left={0}
             right={0}
             color='blue'
-            number='30%'
+            number={commissionPercentage}
             label='Comision de agencia'
           />
         </Grid.Col>
@@ -164,7 +186,7 @@ function Reporterifa({ }: Props) {
               <DatePicker
                 mt={-10}
                 placeholder="Seleccionar fecha"
-                inputFormat="MM/DD/YYYY"
+                inputFormat="YYYY MMM DD"
                 label="Filtrar desde"
                 variant="filled"
                 value={dateFrom}
@@ -175,7 +197,7 @@ function Reporterifa({ }: Props) {
               <DatePicker
                 mt={-10}
                 placeholder="Seleccionar fecha"
-                inputFormat="MM/DD/YYYY"
+                inputFormat="YYYY MMM DD"
                 label="Filtrar hasta"
                 variant="filled"
                 value={dateTo}
@@ -185,7 +207,8 @@ function Reporterifa({ }: Props) {
             </Group>
           </Grid.Col>
         </Grid>
-        <Table captionSide="bottom" withColumnBorders highlightOnHover>
+        <Pagination total={10} radius="md" withControls={false} />
+        <Table mt={15} captionSide="bottom" withColumnBorders highlightOnHover>
           <thead>{ths}</thead>
           <tbody>{rows}</tbody>
         </Table>
