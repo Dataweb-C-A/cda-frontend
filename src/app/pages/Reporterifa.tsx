@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import { Link, useHistory } from "react-router-dom";
-import { Grid, Paper, Table, Group, Button, Card, Avatar, Text, Title, useMantineTheme } from '@mantine/core'
+import { Grid, TextInput, Table, Group, Button, Card, Avatar, Text, Title, useMantineTheme } from '@mantine/core'
 import Cards from '../components/cards'
 import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
@@ -59,9 +59,27 @@ function Reporterifa({ }: Props) {
     }
   };
 
+  const [premioFilter, setPremioFilter] = useState<string>('');
+
+  const filterElements = () => {
+    const filtered = elements.filter((element) => {
+
+      const premioIncludesFilter = premioFilter === '' || element.Premio.toLowerCase().includes(premioFilter.toLowerCase());
+      if (dateFrom && dateTo) {
+        const vendidoaDate = new Date(element.vendidoa);
+        const dateInRange = vendidoaDate >= dateFrom && vendidoaDate <= dateTo;
+        return premioIncludesFilter && dateInRange;
+      }
+
+      return premioIncludesFilter;
+    });
+
+    setFilteredElements(filtered);
+  };
+
   useEffect(() => {
-    filterElementsByDate();
-  }, [dateFrom, dateTo]);
+    filterElements();
+  }, [dateFrom, dateTo, premioFilter]);
 
 
   const [users, setUsers] = useState<any>([])
@@ -135,6 +153,13 @@ function Reporterifa({ }: Props) {
           </Grid.Col>
           <Grid.Col xl={6} md={6} xs={12}>
             <Group position='right'>
+              <TextInput
+                mt={-10}
+                value={premioFilter}
+                onChange={(event) => setPremioFilter(event.currentTarget.value)}
+                placeholder="Escriba el premio"
+                label="Filtrar premio"
+              />
               {/**fecha de inicio */}
               <DatePicker
                 mt={-10}
