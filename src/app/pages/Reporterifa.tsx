@@ -50,7 +50,7 @@ function Reporterifa({ }: Props) {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const apiUrl = `https://api.rifamax.app/places/reports?agency_id=${user.id}&at=${startDate || moment().subtract(1, 'days').format('YYYY-MM-DD')}&to=${endDate || moment().format('YYYY-MM-DD')}`;
+    const apiUrl = `https://api.rifamax.app/places/reports?agency_id=${user.id}&at=${startDate || moment().format('YYYY-MM-DD')}&to=${endDate || moment().add(1, 'days').format('YYYY-MM-DD')}`;
 
     axios
       .get(apiUrl)
