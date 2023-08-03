@@ -32,6 +32,9 @@ function Reporterifa({ }: Props) {
   const [filteredElements, setFilteredElements] = useState<Elemento[]>(elements);
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
+  const [resultCommisssion, setResultCommisssion] = useState('');
+  const [commissionPercentage, setCommissionPercentage] = useState('');
+  const [todayEarnings, setTodayEarnings] = useState(''); 
 
   const [premioFilter, setPremioFilter] = useState<string>(''); // Estado para el filtro por título
 
@@ -42,7 +45,7 @@ function Reporterifa({ }: Props) {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const apiUrl = `https://api.rifamax.app/places/reports?agency_id=${user.id}`;
-
+  
     axios
       .get(apiUrl)
       .then((response) => {
@@ -50,12 +53,9 @@ function Reporterifa({ }: Props) {
         setElements(data.places);
         setFilteredElements(data.places);
         setCommissionPercentage(data.ui.commission_parser);
-        setTodayEarnings(
-          `${data.ui.earnings.agency_all_earnings -
-          (data.ui.earnings.agency_all_earnings * parseFloat(data.ui.commission_percentage)) / 100
-          }0$`
-        );
-
+        setResultCommisssion(data.ui.earnings.result_commission);  
+        setTodayEarnings(data.ui.earnings.today_earnings_parser);
+        
         const uniqueTitles = Array.from(new Set<string>(data.places.map((element: Elemento) => element.title)));
         const options = uniqueTitles.map((title) => ({ value: title, label: title }));
         setSelectOptions(options);
@@ -81,22 +81,17 @@ function Reporterifa({ }: Props) {
     setSelectedOption(selected.value);
   };
  
-  // Eliminar la función filterElementsByDate, ya que no se utiliza
-
-// ...
-
 const filterElements = () => {
   const filtered = elements.filter((element) => {
     const premioIncludesFilter =
       premioFilter === '' || element.title.toLowerCase().includes(premioFilter.toLowerCase());
 
     if (dateFrom && dateTo) {
-      // Ajustar las fechas para que sean UTC y eliminar horas, minutos y segundos
+      
       const adjustedDateFrom = new Date(Date.UTC(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate()));
       const adjustedDateTo = new Date(Date.UTC(dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate()));
 
       const vendidoaDate = new Date(element.sold_at);
-      // Ajustar la fecha vendidoaDate para que sea UTC y eliminar horas, minutos y segundos
       vendidoaDate.setUTCHours(0, 0, 0, 0);
 
       const dateInRange = vendidoaDate >= adjustedDateFrom && vendidoaDate <= adjustedDateTo;
@@ -115,8 +110,6 @@ useEffect(() => {
 
 
 
-  const [commissionPercentage, setCommissionPercentage] = useState('');
-  const [todayEarnings, setTodayEarnings] = useState('');
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
   const [stats, setStats] = useState<any>({})
@@ -178,8 +171,8 @@ useEffect(() => {
             left={0}
             right={0}
             color='red'
-            number={2}
-            label='Resultado'
+            number={resultCommisssion}
+            label='Ganancia total'
           />
         </Grid.Col>
 
