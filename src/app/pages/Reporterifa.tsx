@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import { Link, useHistory } from "react-router-dom";
-import { Grid, TextInput, Table, Group, Pagination, Card, Avatar, Text, Title, useMantineTheme } from '@mantine/core'
+import { Grid, TextInput, Table, Group, Pagination, Select, Card, Avatar, Text, Title, useMantineTheme } from '@mantine/core'
 import Cards from '../components/cards'
 import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
@@ -12,18 +12,14 @@ type Props = {}
 function Reporterifa({ }: Props) {
 
   interface Elemento {
-    Premio: string;
-    vendidoa: string;
-    Precioticket: string;
-    ganancia: string;
+    title: string;
+    sold_at: string;
+    price_unit: number;
+    ganancia: number;
+    ganancia_final: number;
   }
 
-  const elements: Elemento[] = [
-    { Premio: 'Una moto', vendidoa: '08/15/2023', Precioticket: '15$', ganancia: '10.70$' },
-    { Premio: '100 $', vendidoa: '08/16/2023', Precioticket: '1$', ganancia: '0.70$' },
-    { Premio: 'Un chivo', vendidoa: '08/17/2023', Precioticket: '25$', ganancia: '24.70$' },
-  ];
-
+  const [elements, setElements] = useState<Elemento[]>([]);
   const ths = (
     <tr>
       <th>Premio</th>
@@ -38,19 +34,48 @@ function Reporterifa({ }: Props) {
   const [dateTo, setDateTo] = useState<Date | null>(null);
 
 
+  const [selectOptions, setSelectOptions] = useState<{ value: string; label: string }[]>([]);
+  const [selectedOption, setSelectedOption] = useState('');
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const apiUrl = `https://api.rifamax.app/places/reports?agency_id=${user.id}`;
+
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        const data = response.data;
+        setElements(data.places);
+        setFilteredElements(data.places);
+        setCommissionPercentage(data.ui.commission_parser);
+        setTodayEarnings(
+          `${data.ui.earnings.agency_all_earnings -
+          (data.ui.earnings.agency_all_earnings * parseFloat(data.ui.commission_percentage)) / 100
+          }0$`
+        );
+
+        const uniqueTitles = Array.from(new Set<string>(data.places.map((element: Elemento) => element.title)));
+        const options = uniqueTitles.map((title) => ({ value: title, label: title }));
+        setSelectOptions(options);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
   const rows = filteredElements.map((element) => (
-    <tr key={element.Premio}>
-      <td>{element.Premio}</td>
-      <td>{element.vendidoa}</td>
-      <td>{element.Precioticket}</td>
-      <td>{element.ganancia}</td>
+    <tr key={element.title}>
+      <td>{element.title}</td>
+      <td>{element.sold_at.slice(0, 10)}</td>
+      <td>{`${element.price_unit}$`}</td>
+      <td>{`${element.ganancia_final}$`}</td>
     </tr>
   ));
+
 
   const filterElementsByDate = () => {
     if (dateFrom && dateTo) {
       const filtered = elements.filter((element) => {
-        const vendidoaDate = new Date(element.vendidoa);
+        const vendidoaDate = new Date(element.sold_at);
         return vendidoaDate >= dateFrom && vendidoaDate <= dateTo;
       });
       setFilteredElements(filtered);
@@ -60,13 +85,15 @@ function Reporterifa({ }: Props) {
   };
 
   const [premioFilter, setPremioFilter] = useState<string>('');
-
+  const handleSelectChange = (selected: { value: string; label: string }) => {
+    setSelectedOption(selected.value);
+  };
   const filterElements = () => {
     const filtered = elements.filter((element) => {
 
-      const premioIncludesFilter = premioFilter === '' || element.Premio.toLowerCase().includes(premioFilter.toLowerCase());
+      const premioIncludesFilter = premioFilter === '' || element.title.toLowerCase().includes(premioFilter.toLowerCase());
       if (dateFrom && dateTo) {
-        const vendidoaDate = new Date(element.vendidoa);
+        const vendidoaDate = new Date(element.sold_at);
         const dateInRange = vendidoaDate >= dateFrom && vendidoaDate <= dateTo;
         return premioIncludesFilter && dateInRange;
       }
@@ -83,27 +110,6 @@ function Reporterifa({ }: Props) {
 
   const [commissionPercentage, setCommissionPercentage] = useState('');
   const [todayEarnings, setTodayEarnings] = useState('');
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}')
-
-
-    const apiUrl = `https://api.rifamax.app/places/reports?agency_id=${user.id}`;
-
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        setCommissionPercentage(data.ui.commission_parser);
-        setTodayEarnings(`${(data.ui.earnings.agency_all_earnings) - (data.ui.earnings.agency_all_earnings * data.ui.commission_percentage) / 100}0$`);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-
-
-
-
-
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
   const [stats, setStats] = useState<any>({})
@@ -175,13 +181,7 @@ function Reporterifa({ }: Props) {
           </Grid.Col>
           <Grid.Col xl={6} md={6} xs={12}>
             <Group position='right'>
-              <TextInput
-                mt={-10}
-                value={premioFilter}
-                onChange={(event) => setPremioFilter(event.currentTarget.value)}
-                placeholder="Escriba el premio"
-                label="Filtrar premio"
-              />
+              <Select label="filtre por premio" data={selectOptions} />
               {/**fecha de inicio */}
               <DatePicker
                 mt={-10}
@@ -207,7 +207,18 @@ function Reporterifa({ }: Props) {
             </Group>
           </Grid.Col>
         </Grid>
-        <Pagination total={10} radius="md" withControls={false} />
+        {/**
+         * <Pagination
+        total={Math.ceil(elements.length / elementsPerPage)}
+        initialPage={currentPage}
+        onPageChange={handlePageChange}
+        boundaryLinks
+        size="sm"
+        rtl
+      />
+         * 
+         */}
+
         <Table mt={15} captionSide="bottom" withColumnBorders highlightOnHover>
           <thead>{ths}</thead>
           <tbody>{rows}</tbody>
