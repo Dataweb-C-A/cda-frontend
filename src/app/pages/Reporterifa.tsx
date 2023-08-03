@@ -33,6 +33,9 @@ function Reporterifa({ }: Props) {
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
 
+  const [premioFilter, setPremioFilter] = useState<string>(''); // Estado para el filtro por título
+
+
 
   const [selectOptions, setSelectOptions] = useState<{ value: string; label: string }[]>([]);
   const [selectedOption, setSelectedOption] = useState('');
@@ -72,41 +75,45 @@ function Reporterifa({ }: Props) {
   ));
 
 
-  const filterElementsByDate = () => {
-    if (dateFrom && dateTo) {
-      const filtered = elements.filter((element) => {
-        const vendidoaDate = new Date(element.sold_at);
-        return vendidoaDate >= dateFrom && vendidoaDate <= dateTo;
-      });
-      setFilteredElements(filtered);
-    } else {
-      setFilteredElements(elements);
-    }
-  };
 
-  const [premioFilter, setPremioFilter] = useState<string>('');
+
   const handleSelectChange = (selected: { value: string; label: string }) => {
     setSelectedOption(selected.value);
   };
-  const filterElements = () => {
-    const filtered = elements.filter((element) => {
+ 
+  // Eliminar la función filterElementsByDate, ya que no se utiliza
 
-      const premioIncludesFilter = premioFilter === '' || element.title.toLowerCase().includes(premioFilter.toLowerCase());
-      if (dateFrom && dateTo) {
-        const vendidoaDate = new Date(element.sold_at);
-        const dateInRange = vendidoaDate >= dateFrom && vendidoaDate <= dateTo;
-        return premioIncludesFilter && dateInRange;
-      }
+// ...
 
-      return premioIncludesFilter;
-    });
+const filterElements = () => {
+  const filtered = elements.filter((element) => {
+    const premioIncludesFilter =
+      premioFilter === '' || element.title.toLowerCase().includes(premioFilter.toLowerCase());
 
-    setFilteredElements(filtered);
-  };
+    if (dateFrom && dateTo) {
+      // Ajustar las fechas para que sean UTC y eliminar horas, minutos y segundos
+      const adjustedDateFrom = new Date(Date.UTC(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate()));
+      const adjustedDateTo = new Date(Date.UTC(dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate()));
 
-  useEffect(() => {
-    filterElements();
-  }, [dateFrom, dateTo, premioFilter]);
+      const vendidoaDate = new Date(element.sold_at);
+      // Ajustar la fecha vendidoaDate para que sea UTC y eliminar horas, minutos y segundos
+      vendidoaDate.setUTCHours(0, 0, 0, 0);
+
+      const dateInRange = vendidoaDate >= adjustedDateFrom && vendidoaDate <= adjustedDateTo;
+      return premioIncludesFilter && dateInRange;
+    }
+
+    return premioIncludesFilter;
+  });
+
+  setFilteredElements(filtered);
+};
+
+useEffect(() => {
+  filterElements();
+}, [dateFrom, dateTo, premioFilter]);
+
+
 
   const [commissionPercentage, setCommissionPercentage] = useState('');
   const [todayEarnings, setTodayEarnings] = useState('');
@@ -166,6 +173,15 @@ function Reporterifa({ }: Props) {
             label='Comision de agencia'
           />
         </Grid.Col>
+        <Grid.Col span={4}>
+          <Cards
+            left={0}
+            right={0}
+            color='red'
+            number={2}
+            label='Resultado'
+          />
+        </Grid.Col>
 
       </Grid>
 
@@ -193,7 +209,6 @@ function Reporterifa({ }: Props) {
                 onChange={(value) => setDateFrom(value)}
               />
 
-              {/**fecha de cierre */}
               <DatePicker
                 mt={-10}
                 placeholder="Seleccionar fecha"
@@ -203,6 +218,7 @@ function Reporterifa({ }: Props) {
                 value={dateTo}
                 onChange={(value) => setDateTo(value)}
               />
+
 
             </Group>
           </Grid.Col>
