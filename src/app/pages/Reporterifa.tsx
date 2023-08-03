@@ -6,6 +6,7 @@ import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
 import axios from 'axios'
 import { DatePicker } from '@mantine/dates';
+import moment from 'moment';
 type Props = {}
 
 function Reporterifa({ }: Props) {
@@ -49,26 +50,26 @@ function Reporterifa({ }: Props) {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const apiUrl = `https://api.rifamax.app/places/reports?agency_id=${user.id}`;
+    const apiUrl = `https://api.rifamax.app/places/reports?agency_id=${user.id}&at=${startDate || moment().subtract(1, 'days').format('YYYY-MM-DD')}&to=${endDate || moment().format('YYYY-MM-DD')}`;
 
     axios
       .get(apiUrl)
       .then((response) => {
         const data = response.data;
-        setElements(data.places);
-        setFilteredElements(data.places);
+        setElements(data.places.reverse());
+        setFilteredElements(data.places.reverse());
         setCommissionPercentage(data.ui.commission_parser);
         setResultCommisssion(data.ui.earnings.result_commission);
         setTodayEarnings(data.ui.earnings.today_earnings_parser);
 
-        const uniqueTitles = Array.from(new Set<string>(data.places.map((element: Elemento) => element.title)));
+        const uniqueTitles = Array.from(new Set<string>(data.places.reverse().map((element: Elemento) => element.title)));
         const options = uniqueTitles.map((title) => ({ value: title, label: title }));
         setSelectOptions(options);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  }, [startDate, endDate]);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredElements.length);
   const paginatedRows = filteredElements
@@ -168,7 +169,7 @@ function Reporterifa({ }: Props) {
             right={0}
             color='red'
             number={resultCommisssion}
-            label='Ganancia total'
+            label='Ganancia final'
           />
         </Grid.Col>
       </Grid>
