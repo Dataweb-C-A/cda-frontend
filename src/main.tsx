@@ -17,19 +17,20 @@ import Reports from './app/pages/Reports'
 import Reporterifa from './app/pages/Reporterifa'
 import Draws from './app/pages/Draws'
 import Public from './app/pages/PublicDraws'
+import Cuadre from './app/pages/Cuadre'
 
 type AppProps = {
   children: React.ReactNode
 }
 
 function App({children}: AppProps) {
-  const colorScheme = useSelector((state: RootState) => state.theme.mode) // Get the colorScheme from the store
+  const colorScheme = useSelector((state: RootState) => state.theme.mode) 
 
   return (
     <Mantine
       withGlobalStyles
       theme={{
-        colorScheme: 'dark', // Use the colorScheme from the store
+        colorScheme: 'dark',
         colors: {
           dark: [
             '#d5d7e0',
@@ -66,6 +67,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <AuthRouter path="/reportes-rifa" component={Reporterifa} isPrivate />
           <AuthRouter path="/exchange" component={Exchange} isPrivate />
           <AuthRouter path="/draws" component={Draws} isPrivate />
+          <AuthRouter path="/Cuadre" component={Cuadre} isPrivate />
           <AuthRouter path="/" component={Home} isPrivate />
         </Switch>
       </App>
