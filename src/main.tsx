@@ -67,7 +67,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <AuthRouter path="/reportes-rifa" component={Reporterifa} isPrivate />
           <AuthRouter path="/exchange" component={Exchange} isPrivate />
           <AuthRouter path="/draws" component={Draws} isPrivate />
-          <AuthRouter path="/Cuadre" component={Cuadre} isPrivate />
+          <AuthRouter path="/cuadre" component={Cuadre} isPrivate />
           <AuthRouter path="/" component={Home} isPrivate />
         </Switch>
       </App>

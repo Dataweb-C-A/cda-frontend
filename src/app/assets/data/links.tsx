@@ -11,7 +11,7 @@ export const links = [
   { name: 'Inicio', url: '/', chevron: false, icon: <FaHome size={20} strokeWidth={0} /> },
   { name: 'Riferos', url: '/riferos', chevron: false, icon: <FiUsers size={20} strokeWidth={1.5} />, role: 'Taquilla' },
   { name: 'Reportes de rifas', url: '/reportes-rifa', chevron: false, icon: <IconNotes size={20} strokeWidth={1.5} />, role: 'Taquilla' },
-  { name: 'Cuadre', url: '/Cuadre', chevron: false, icon: <IconBrandGoogleAnalytics size={20} strokeWidth={1.5} />, role: 'Taquilla' },
+  { name: 'Cuadre', url: '/cuadre', chevron: false, icon: <IconBrandGoogleAnalytics size={20} strokeWidth={1.5} />, role: 'Taquilla' },
   { name: 'Reportes', url: '/reports', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <BsBuilding size={20} strokeWidth={0} />, role: 'Admin' },
   // { name: 'Rifas', url: '/rifas', chevron: true, icon: <BsTicketPerforated size={20} strokeWidth={0} /> },
   // { name: 'Usuarios', url: '/users', chevron: false, icon: <FiUsers size={20} strokeWidth={1.5} /> },

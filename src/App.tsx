@@ -1,7 +1,8 @@
 import React from 'react'
 import { Paper, SimpleGrid } from '@mantine/core'
 import AvatarCard from './app/components/avatarCard'
-import Navbar from './app/components/navbar'
+import 
+import Navbar from './app/components/navbar' from './app/components/navbar'
 import Cards from './app/components/cards'
 import Toolkit from './app/components/toolkit'
 import { BsWallet2 as Wallet, BsGearWide as Config } from 'react-icons/bs'
