@@ -462,21 +462,24 @@ function TicketModal({ draw_id }: modalProps) {
     }));
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${currentPage}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setApiData(data.places);
-          setTotalPages(data.metadata.pages);
-          deselectSoldTickets();
-        })
-        .catch((error) => {
-          console.error('Error fetching API data:', error);
-        });
-    }, 500)
-  }, [currentPage, apiData]);
+  const [loading, setLoading] = useState(false);
 
+  const loadPageData = async (page: number) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${page}`);
+      const data = await response.json();
+      setApiData(data.places);
+      setTotalPages(data.metadata.pages);
+      deselectSoldTickets();
+    } catch (error) {
+      console.error('Error fetching API data:', error);
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    loadPageData(currentPage);
+  }, [currentPage]);
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
     setCurrentPage(randomPage);
@@ -545,13 +548,21 @@ function TicketModal({ draw_id }: modalProps) {
 
           )
         }
+         {loading && (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "calc(100vh - 10rem)" }}>
+          <Loader />
+          <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
+        </div>
+      )}
       </Group>
       <br />
 
       <div className={classes.container}>
+        
         <div className={classes.ticketsFlex}>
           <Group key={counter}>
             {/** card  ticket*/}
+            
             {apiData.length > 0 ? (
               apiData.map((item, index) => {
                 const cardStyle = {
@@ -560,7 +571,7 @@ function TicketModal({ draw_id }: modalProps) {
                 };
 
                 return (
-
+                  <>
                   <Card
                     px={8}
                     className={cx(classes.ticket, {
@@ -575,6 +586,7 @@ function TicketModal({ draw_id }: modalProps) {
                     <Text ta="center" mt='0%'>{formatPlace(item.place_number, draws.tickets_count)}</Text>
                     <div className={classes.ticketsBottom}></div>
                   </Card>
+                  </>
                 );
 
               })
