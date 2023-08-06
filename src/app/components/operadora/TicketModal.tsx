@@ -416,10 +416,17 @@ function TicketModal({ draw_id }: modalProps) {
       return () => clearTimeout(timeoutId);
     }
   }, [modalOpened, errorModalOpened]);
+
+ 
+  
+
   const searchTicketByNumber = () => {
     if (searchTicket.trim() === "") {
       return;
+      
     }
+
+    
 
     const ticketNumber = parseInt(searchTicket);
     if (isNaN(ticketNumber) || ticketNumber < 1 || ticketNumber > 1000) {
@@ -549,7 +556,7 @@ function TicketModal({ draw_id }: modalProps) {
           )
         }
          {loading && (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "calc(100vh - 10rem)" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100vh" }}>
           <Loader />
           <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
         </div>
