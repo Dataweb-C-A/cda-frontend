@@ -57,6 +57,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -76,6 +77,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -94,6 +96,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -113,6 +116,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -131,6 +135,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -148,6 +153,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -165,6 +171,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -180,10 +187,11 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
+              styles={{ input: { width: '150px', textAlign: 'center' } }}
             />
 
           </Group>
@@ -192,10 +200,23 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
+              min={0}
+
+              styles={{ input: { width: '150px', textAlign: 'center' } }}
+            />
+
+          </Group>
+          <Group position="apart" spacing="xl" mt={15}>
+            <Text fz="xl">Gasto</Text>
+            <NumberInput
+              width="100%"
+              defaultValue={0}
+              type='number'
 
               min={0}
 
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
+              styles={{ input: { width: '150px', textAlign: 'center' } }}
             />
 
           </Group>
@@ -236,6 +257,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -255,6 +277,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -273,6 +296,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -292,6 +316,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -310,6 +335,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -327,6 +353,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -344,6 +371,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -359,10 +387,11 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
+              styles={{ input: { width: '150px', textAlign: 'center' } }}
             />
 
           </Group>
@@ -371,14 +400,27 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
+              styles={{ input: { width: '150px', textAlign: 'center' } }}
             />
 
           </Group>
+          <Group position="apart" spacing="xl" mt={15}>
+            <Text fz="xl">Gasto</Text>
+            <NumberInput
+              width="100%"
+              defaultValue={0}
+              type='number'
 
+              min={0}
+
+              styles={{ input: { width: '150px', textAlign: 'center' } }}
+            />
+
+          </Group>
           <Divider my="sm" variant="dashed" />
           <Group position="apart" spacing="xl" mt={15}>
             <Text fz="xl">Total Pesos</Text>
@@ -416,6 +458,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -435,6 +478,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -453,6 +497,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -472,6 +517,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -490,6 +536,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -507,6 +554,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -524,6 +572,7 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
@@ -539,10 +588,11 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
+              styles={{ input: { width: '150px', textAlign: 'center' } }}
             />
 
           </Group>
@@ -551,10 +601,24 @@ const Cuadre = () => {
             <NumberInput
               width="100%"
               defaultValue={0}
+              type='number'
 
               min={0}
 
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
+              styles={{ input: { width: '150px', textAlign: 'center' } }}
+            />
+
+          </Group>
+          <Group position="apart" spacing="xl" mt={15}>
+            <Text fz="xl">Gasto</Text>
+            <NumberInput
+              width="100%"
+              defaultValue={0}
+              type='number'
+
+              min={0}
+
+              styles={{ input: { width: '150px', textAlign: 'center' } }}
             />
 
           </Group>
