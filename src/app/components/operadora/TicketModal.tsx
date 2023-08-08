@@ -170,7 +170,8 @@ function TicketModal({ draw_id }: modalProps) {
   const [isFormValid, setIsFormValid] = useState(false);
   const [searchTicket, setSearchTicket] = useState("");
   const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
-  
+
+
 
   useEffect(() => {
     axios.get(`https://api.rifamax.app/draws_finder?id=${draw_id}`)
@@ -418,38 +419,45 @@ function TicketModal({ draw_id }: modalProps) {
   }, [modalOpened, errorModalOpened]);
 
  
+  const isTicketSold = (ticketNumber: number) => {
+  const ticket = apiData.find((item) => item.place_number === ticketNumber);
+  return ticket ? ticket.is_sold : false;
+};
+
+const searchTicketByNumber = () => {
+  if (searchTicket.trim() === "") {
+    return;
+  }
+
+  const ticketNumber = parseInt(searchTicket);
+  if (isNaN(ticketNumber) || ticketNumber < 1 || ticketNumber > 1000) {
+    setSearchTicket("");
+    return;
+  }
+
+  if (isTicketSold(ticketNumber)) {
+    setErrorModalOpened(true); // Show error modal
+    setSearchTicket("");
+    return;
+  }
+
+  const ticket = apiData.find((item) => item.place_number === ticketNumber);
+  if (ticket) {
+    handleTickets(ticket.place_number);
+    setSearchTicket("");
+  } else {
+    const targetPage = Math.ceil(ticketNumber / 100);
+    if (targetPage !== currentPage) {
+      setCurrentPage(targetPage);
+      setTimeout(() => {
+        handleTickets(ticketNumber);
+        setSearchTicket("");
+      }, 500);
+    }
+  }
+};
+
   
-
-  const searchTicketByNumber = () => {
-    if (searchTicket.trim() === "") {
-      return;
-      
-    }
-
-    
-
-    const ticketNumber = parseInt(searchTicket);
-    if (isNaN(ticketNumber) || ticketNumber < 1 || ticketNumber > 1000) {
-      setSearchTicket("");
-      return;
-    }
-
-    const ticket = apiData.find((item) => item.place_number === ticketNumber);
-    if (ticket) {
-      handleTickets(ticket.place_number);
-      setSearchTicket("");
-    } else {
-      const targetPage = Math.ceil(ticketNumber / 100);
-      if (targetPage !== currentPage) {
-        setCurrentPage(targetPage);
-        setTimeout(() => {
-          handleTickets(ticketNumber);
-          setSearchTicket("");
-        }, 500);
-      }
-    }
-  };
-
   useEffect(() => {
     setCounter(0);
   }, [active, formValues]);
@@ -548,6 +556,7 @@ function TicketModal({ draw_id }: modalProps) {
                     searchTicketByNumber();
                   }
                 }}
+                
               />
 
 

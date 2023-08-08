@@ -17,13 +17,15 @@ const Cuadre = () => {
     <>
       <Navbar profiles={profiles} links={links} />
       <DatePicker
-        label="Dia"
-        placeholder="Escoga un dia"
-        value={value}
-        onChange={setValue}
-        ml={15}
-        mr={15}
-      />
+      clearable
+      defaultValue={new Date()}
+      label="Seleccione fecha"
+      placeholder="Seleccione fecha"
+      ml={15}
+      mr={15}
+    />
+
+        
 
       <Group
         grow
@@ -263,7 +265,7 @@ const Cuadre = () => {
 
               styles={{ input: { width: '70px', textAlign: 'center' } }}
             />
-            <Text fz="xl">0 COP..</Text>
+            <Text fz="xl">0 COP.</Text>
 
           </Group>
 
