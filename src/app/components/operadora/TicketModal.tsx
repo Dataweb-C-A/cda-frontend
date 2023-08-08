@@ -85,7 +85,7 @@ type FormValues = {
 type modalProps = {
   draw_id: number
 }
-  
+
 function formatPlace(place: number, tickets: number): string {
   if (tickets === 100) {
     if (place <= 9) {
@@ -171,7 +171,7 @@ function TicketModal({ draw_id }: modalProps) {
   const [searchTicket, setSearchTicket] = useState("");
   const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
 
-
+  const [paginationLoaded, setPaginationLoaded] = useState(false);
 
   useEffect(() => {
     axios.get(`https://api.rifamax.app/draws_finder?id=${draw_id}`)
@@ -380,25 +380,27 @@ function TicketModal({ draw_id }: modalProps) {
 
   const handleTickets = (register: number) => {
     const ticket = apiData.find((item) => item.place_number === register);
-
+    
     if (ticket && ticket.is_sold) {
+      setErrorModalOpened(true); 
       return;
     }
-
+  
+    const currentPageContainsTicket = Math.ceil(register / 100) === currentPage;
+    if (!currentPageContainsTicket) {
+      setCurrentPage(Math.ceil(register / 100));
+    }
+  
     if (active.includes(register)) {
       setActive(active.filter((item) => item !== register));
     } else {
       setActive(active.concat(register));
     }
     setCounter(counter + 1);
-
+  
     setSelectedTicket(ticket || null);
-
-    const currentPageContainsTicket = Math.ceil(register / 100) === currentPage;
-    if (!currentPageContainsTicket) {
-      setCurrentPage(Math.ceil(register / 100));
-    }
   };
+  
   const [errorModalOpened, setErrorModalOpened] = useState(false);
 
   useEffect(() => {
@@ -418,46 +420,52 @@ function TicketModal({ draw_id }: modalProps) {
     }
   }, [modalOpened, errorModalOpened]);
 
- 
   const isTicketSold = (ticketNumber: number) => {
-  const ticket = apiData.find((item) => item.place_number === ticketNumber);
-  return ticket ? ticket.is_sold : false;
-};
+    const ticket = apiData.find((item) => item.place_number === ticketNumber);
+    return ticket ? ticket.is_sold : false;
+  };
 
-const searchTicketByNumber = () => {
-  if (searchTicket.trim() === "") {
-    return;
-  }
+  const searchTicketByNumber = async () => {
+    if (searchTicket.trim() === "") {
+      return;
+    }
 
-  const ticketNumber = parseInt(searchTicket);
-  if (isNaN(ticketNumber) || ticketNumber < 1 || ticketNumber > 1000) {
-    setSearchTicket("");
-    return;
-  }
+    const ticketNumber = parseInt(searchTicket);
+    if (isNaN(ticketNumber) || ticketNumber < 1 || ticketNumber > 1000) {
+      setSearchTicket("");
+      return;
+    }
 
-  if (isTicketSold(ticketNumber)) {
-    setErrorModalOpened(true); // Show error modal
-    setSearchTicket("");
-    return;
-  }
-
-  const ticket = apiData.find((item) => item.place_number === ticketNumber);
-  if (ticket) {
-    handleTickets(ticket.place_number);
-    setSearchTicket("");
-  } else {
     const targetPage = Math.ceil(ticketNumber / 100);
     if (targetPage !== currentPage) {
       setCurrentPage(targetPage);
-      setTimeout(() => {
-        handleTickets(ticketNumber);
-        setSearchTicket("");
-      }, 500);
     }
-  }
-};
 
-  
+    const ticket = apiData.find((item) => item.place_number === ticketNumber);
+
+    if (ticket && ticket.is_sold) {
+      setErrorModalOpened(true); // Show error modal for sold ticket
+      setSearchTicket("");
+      return;
+    }
+
+    try {
+      await loadPageData(Math.ceil(ticketNumber / 100));
+    } catch (error) {
+      console.error('Error loading page data:', error);
+    }
+
+    if (isTicketSold(ticketNumber)) {
+      setErrorModalOpened(true);
+      setSearchTicket("");
+      return;
+    }
+
+    handleTickets(ticketNumber);
+    setSearchTicket("");
+  };
+
+
   useEffect(() => {
     setCounter(0);
   }, [active, formValues]);
@@ -487,14 +495,17 @@ const searchTicketByNumber = () => {
       setApiData(data.places);
       setTotalPages(data.metadata.pages);
       deselectSoldTickets();
+      setPaginationLoaded(true); // Set the paginationLoaded to true after loading data
     } catch (error) {
       console.error('Error fetching API data:', error);
     }
     setLoading(false);
   };
+
   useEffect(() => {
     loadPageData(currentPage);
   }, [currentPage]);
+
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
     setCurrentPage(randomPage);
@@ -541,7 +552,7 @@ const searchTicketByNumber = () => {
                 radius="xs"
                 rightSection={
                   <ActionIcon onClick={() => searchTicketByNumber()}>
-                    <IconTicket size="1.125rem" />
+                    <IconSearch size="1.125rem" />
                   </ActionIcon>
                 }
                 type="number"
@@ -551,12 +562,11 @@ const searchTicketByNumber = () => {
                   setSearchTicket(event.currentTarget.value);
                   setSelectedTicket(null);
                 }}
-                onKeyPress={(event) => {
+                onKeyPress={async (event) => {
                   if (event.key === "Enter") {
-                    searchTicketByNumber();
+                    await searchTicketByNumber();
                   }
                 }}
-                
               />
 
 
@@ -564,21 +574,21 @@ const searchTicketByNumber = () => {
 
           )
         }
-         {loading && (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100vh" }}>
-          <Loader />
-          <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
-        </div>
-      )}
+        {loading && (
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100vh" }}>
+            <Loader />
+            <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
+          </div>
+        )}
       </Group>
       <br />
 
       <div className={classes.container}>
-        
+
         <div className={classes.ticketsFlex}>
           <Group key={counter}>
             {/** card  ticket*/}
-            
+
             {apiData.length > 0 ? (
               apiData.map((item, index) => {
                 const cardStyle = {
@@ -588,20 +598,20 @@ const searchTicketByNumber = () => {
 
                 return (
                   <>
-                  <Card
-                    px={8}
-                    className={cx(classes.ticket, {
-                      [classes.selected]: active.includes(item.place_number),
-                      [classes.sold]: item.is_sold,
-                    })}
-                    key={index}
-                    onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
-                    style={cardStyle}
-                  >
-                    <div className={classes.ticketsTop}></div>
-                    <Text ta="center" mt='0%'>{formatPlace(item.place_number, draws.tickets_count)}</Text>
-                    <div className={classes.ticketsBottom}></div>
-                  </Card>
+                    <Card
+                      px={8}
+                      className={cx(classes.ticket, {
+                        [classes.selected]: active.includes(item.place_number),
+                        [classes.sold]: item.is_sold,
+                      })}
+                      key={index}
+                      onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
+                      style={cardStyle}
+                    >
+                      <div className={classes.ticketsTop}></div>
+                      <Text ta="center" mt='0%'>{formatPlace(item.place_number, draws.tickets_count)}</Text>
+                      <div className={classes.ticketsBottom}></div>
+                    </Card>
                   </>
                 );
 
@@ -893,22 +903,22 @@ const searchTicketByNumber = () => {
                       )}
                       {errorModalOpened && (
                         <Modal opened={errorModalOpened} onClose={() => setErrorModalOpened(false)} withCloseButton={false} mt={350}>
-                        <div className='card-container' style={{}}>
-                          <div className='card-body' style={{ borderRadius: '3px', backgroundColor: theme.colorScheme === "dark" ? '#2b2c3d' : '#fff' }}>
-                            <div className='dot-color' style={{ backgroundColor: 'red' }}>
-                              <p style={{ color: 'red' }}>
-                                .
-                              </p>
-                            </div>
-                            <div className='card-number'>
+                          <div className='card-container' style={{}}>
+                            <div className='card-body' style={{ borderRadius: '3px', backgroundColor: theme.colorScheme === "dark" ? '#2b2c3d' : '#fff' }}>
+                              <div className='dot-color' style={{ backgroundColor: 'red' }}>
+                                <p style={{ color: 'red' }}>
+                                  .
+                                </p>
+                              </div>
+                              <div className='card-number'>
 
-                              <Text fz="md" fw={700} c={"white"}>
-                                Los tickets han sido vendidos
-                              </Text>
+                                <Text fz="md" fw={700} c={"white"}>
+                                  Los tickets han sido vendidos
+                                </Text>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </Modal>
+                        </Modal>
                       )}
                     </Grid.Col>
                   </Grid>
