@@ -1,16 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Loader, Pagination, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, TextInput, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, Box, CloseButton, ScrollArea } from '@mantine/core'
-import { useScrollPosition } from '../../hooks/useScroll'
+import { Card, Loader, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import axios from 'axios';
 import '../../assets/scss/cards.scss'
-import { Carousel } from '@mantine/carousel';
-import Operadora from '../../pages/Operadora'
-import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch } from '@tabler/icons-react';
+import { IconSearch } from '@tabler/icons-react';
 import { useDispatch } from 'react-redux';
 import { setLobbyMode } from '../../config/reducers/lobbySlice';
 import { useForm } from '@mantine/form';
-import { IconArrowBadgeLeftFilled } from '@tabler/icons-react';
-import { IconArrowBadgeRightFilled } from '@tabler/icons-react';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons';
 
 type clientProps = {
   name: string
@@ -548,13 +544,13 @@ function TicketModal({ draw_id }: modalProps) {
 
                   <ActionIcon
                   variant="default"
-                  color="gray"
-                  w={15}
+                  mr={10}
+                  py={0}
+                  size={40}
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
                 >
-                  <IconArrowBadgeLeftFilled
-                    size="1.125rem" />
+                  <IconChevronLeft />
                 </ActionIcon>
                 
 
@@ -563,23 +559,26 @@ function TicketModal({ draw_id }: modalProps) {
                 {[...Array(totalPages)].map((_, index) => (
                   <Button
                     key={index}
-                    variant="default" color="gray" size="md" compact
+                  mr={10}
+                    variant="default" color="gray" size="xl" compact
+                    py={10}
                     onClick={() => setCurrentPage(index + 1)}
-                    style={{ opacity: currentPage === index + 1 ? 1 : 0.6, background: currentPage === index + 1 ? theme.colors.blue[6] : null }}
+                    style={{ opacity: currentPage === index + 1 ? 1 : 0.6, background: currentPage === index + 1 ? theme.colors.blue[6] : 'rgba(0, 0, 0, 0)' }}
                   >
                     {index}
                   </Button>
                 ))}
                 
                 <ActionIcon
+
                   variant="default"
                   color="gray"
-                  w={15}
+                  py={0}
+                  size={40}
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
                 >
-                  <IconArrowBadgeRightFilled
-                    size="1.125rem" />
+                  <IconChevronRight />
                 </ActionIcon>
                 
               </Group>
