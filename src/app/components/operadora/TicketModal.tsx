@@ -9,6 +9,8 @@ import { IconAlertCircle, IconTicket, IconArrowRight, IconArrowLeft, IconSearch 
 import { useDispatch } from 'react-redux';
 import { setLobbyMode } from '../../config/reducers/lobbySlice';
 import { useForm } from '@mantine/form';
+import { IconArrowBadgeLeftFilled } from '@tabler/icons-react';
+import { IconArrowBadgeRightFilled } from '@tabler/icons-react';
 
 type clientProps = {
   name: string
@@ -380,27 +382,27 @@ function TicketModal({ draw_id }: modalProps) {
 
   const handleTickets = (register: number) => {
     const ticket = apiData.find((item) => item.place_number === register);
-    
+
     if (ticket && ticket.is_sold) {
-      setErrorModalOpened(true); 
+      setErrorModalOpened(true);
       return;
     }
-  
+
     const currentPageContainsTicket = Math.ceil(register / 100) === currentPage;
     if (!currentPageContainsTicket) {
       setCurrentPage(Math.ceil(register / 100));
     }
-  
+
     if (active.includes(register)) {
       setActive(active.filter((item) => item !== register));
     } else {
       setActive(active.concat(register));
     }
     setCounter(counter + 1);
-  
+
     setSelectedTicket(ticket || null);
   };
-  
+
   const [errorModalOpened, setErrorModalOpened] = useState(false);
 
   useEffect(() => {
@@ -540,12 +542,41 @@ function TicketModal({ draw_id }: modalProps) {
         {
           totalPages > 1 && (
             <>
-              <Pagination
-                total={totalPages}
-                page={currentPage}
-                siblings={10}
-                onChange={(newPage) => setCurrentPage(newPage)}
-              />
+
+              <Group spacing="xs">
+                <Button
+                  variant="outline"
+                  color="gray"
+                  size="xs"
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <IconArrowBadgeLeftFilled />
+                </Button>
+                {[...Array(totalPages)].map((_, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    color="gray"
+                    size="xs"
+                    onClick={() => setCurrentPage(index + 1)}
+                    style={{ opacity: currentPage === index + 1 ? 1 : 0.6 }}
+                  >
+                    {index}
+                  </Button>
+                ))}
+                <Button
+                  variant="outline"
+                  color="gray"
+                  size="xs"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  <IconArrowBadgeRightFilled />
+                </Button>
+              </Group>
+
+
               {/* buscar numero */}
               <Input
                 placeholder="Buscar Numero"
@@ -568,7 +599,6 @@ function TicketModal({ draw_id }: modalProps) {
                   }
                 }}
               />
-
 
             </>
 
