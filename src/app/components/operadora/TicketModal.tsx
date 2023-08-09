@@ -544,36 +544,44 @@ function TicketModal({ draw_id }: modalProps) {
             <>
 
               <Group spacing="xs">
-                <Button
-                  variant="outline"
+                
+
+                  <ActionIcon
+                  variant="default"
                   color="gray"
-                  size="xs"
+                  w={15}
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
                 >
-                  <IconArrowBadgeLeftFilled />
-                </Button>
+                  <IconArrowBadgeLeftFilled
+                    size="1.125rem" />
+                </ActionIcon>
+                
+
+
+
                 {[...Array(totalPages)].map((_, index) => (
                   <Button
                     key={index}
-                    variant="outline"
-                    color="gray"
-                    size="xs"
+                    variant="default" color="gray" size="md" compact
                     onClick={() => setCurrentPage(index + 1)}
-                    style={{ opacity: currentPage === index + 1 ? 1 : 0.6 }}
+                    style={{ opacity: currentPage === index + 1 ? 1 : 0.6, background: currentPage === index + 1 ? theme.colors.blue[6] : null }}
                   >
                     {index}
                   </Button>
                 ))}
-                <Button
-                  variant="outline"
+                
+                <ActionIcon
+                  variant="default"
                   color="gray"
-                  size="xs"
+                  w={15}
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
                 >
-                  <IconArrowBadgeRightFilled />
-                </Button>
+                  <IconArrowBadgeRightFilled
+                    size="1.125rem" />
+                </ActionIcon>
+                
               </Group>
 
 
