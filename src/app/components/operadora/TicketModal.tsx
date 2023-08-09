@@ -483,6 +483,19 @@ function TicketModal({ draw_id }: modalProps) {
       return !ticket?.is_sold;
     }));
   };
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const margin = windowWidth === 1280 ? '1px' : '4px';
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const [loading, setLoading] = useState(false);
 
@@ -494,7 +507,7 @@ function TicketModal({ draw_id }: modalProps) {
       setApiData(data.places);
       setTotalPages(data.metadata.pages);
       deselectSoldTickets();
-      setPaginationLoaded(true); // Set the paginationLoaded to true after loading data
+      setPaginationLoaded(true); 
     } catch (error) {
       console.error('Error fetching API data:', error);
     }
@@ -628,12 +641,11 @@ function TicketModal({ draw_id }: modalProps) {
             {/** card  ticket*/}
 
             {apiData.length > 0 ? (
-              apiData.map((item, index) => {
-                const cardStyle = {
-                  width: `${70 / 9}%`,
-                  // bailarines
-                  margin: '4px'
-                };
+        apiData.map((item, index) => {
+          const cardStyle = {
+            width: `${70 / 9}%`,
+            margin: margin, 
+          };
 
                 return (
                   <>
