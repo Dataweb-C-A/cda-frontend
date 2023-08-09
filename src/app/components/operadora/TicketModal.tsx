@@ -308,6 +308,7 @@ function TicketModal({ draw_id }: modalProps) {
     ticket: {
       background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1],
       cursor: 'pointer',
+      // bailarines
       height: '50px',
       margin: '0.3rem',
       marginRight: '2rem',
@@ -519,13 +520,13 @@ function TicketModal({ draw_id }: modalProps) {
     <Card
       shadow="sm"
       radius="sm"
-      mt={8}
-      mx={7}
-      w="86%"
+      mt={4}
+      w="100%"
       bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
       style={{
         position: 'absolute',
         top: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? 5 : 70,
+        left: 0,
         height: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? "calc(100vh - 2em)" : "calc(100vh - 5.8em)"
       }}
     >
@@ -630,6 +631,7 @@ function TicketModal({ draw_id }: modalProps) {
               apiData.map((item, index) => {
                 const cardStyle = {
                   width: `${70 / 9}%`,
+                  // bailarines
                   margin: '4px'
                 };
 

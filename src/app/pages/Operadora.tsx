@@ -477,188 +477,153 @@ function Operadora() {
               </>
             ) : null
           }
-          <Group spacing={5}>
-            <Card 
-              className="card-link"
-              ml={15} 
-              my={5} 
-              w={115} 
-              onClick={() => {
-                history.push('/')
-              }}
-              style={{
-                cursor: "pointer"
-              }}
-            >
-              <Text ta="center" size={20} fw={200}>
-                Regresar a las rifas
-              </Text>
-            </Card>
-            <Card 
-              className="card-link"
-              mr={15} 
-              my={5} 
-              w={115} 
-              onClick={() => {
-                window.location.replace(`/lobby?type=${query.get('type') === 'terminales' ? 'triples' : 'terminales'}`)
-              }}
-              style={{
-                cursor: "pointer"
-              }}
-            >
-              <Text ta="center" size={20} fw={200}>
-                { query.get('type') === 'terminales' ? 'Rifas Triples' : 'Rifas Terminales' }
-              </Text>
-            </Card>
-          </Group>
-          {draws.map(card => (
-            <Grid mt={0} gutter={10} mx={10}>
-              <Grid.Col xs={6} lg={2} order={1}>
-                <Card
-                  key={card.id}
-                  w={235} shadow="sm"
-                  component="a"
-                  target="_blank"
-                  bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
-                >
-                  <Text mt={2} fw={500} fz={15} mb={4} align="center">
-                    {card.first_prize}
-                  </Text>
-                  <Group position="apart">
-                    <Text mt={-3} fz={12} fw={300}>
-                      Inicio
+          
+          <Group mt={0} mx={10}>
+            {draws.map(card => (
+                  <Card
+                    key={card.id}
+                    w={235} shadow="sm"
+                    component="a"
+                    target="_blank"
+                    bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
+                  >
+                    <Text mt={2} fw={500} fz={15} mb={4} align="center">
+                      {card.first_prize}
                     </Text>
-                    <Text mt={-3} fz={12} fw={300}>
-                      {card.init_date}
-                    </Text>
-                  </Group>
-                  <Group position="apart">
-                    <Text mt={-3} fz={12} fw={300}>
-                      Cierre
-                    </Text>
-                    <Text mt={-3} fz={12} fw={300}>
-                      {
-                        card.expired_date ? `${card.expired_date}` : 'Alcanzar progreso'
-                      }
-                    </Text>
-                  </Group>
-                  <Divider
-                    labelPosition="center"
-                    variant="dashed"
-                    label={
-                      <Text mt={0} ta="center" fw={600} fz={12}>
-                        Progreso
+                    <Group position="apart">
+                      <Text mt={-3} fz={12} fw={300}>
+                        Inicio
                       </Text>
-                    }
-                  />
-                  <Grid>
-                    <Grid.Col span={8}>
-                      <Progress value={Number(card.progress.current)} color="green" label={`${card.progress.current.toFixed(0)}%`} size="xl" mt={7} />
-                    </Grid.Col>
-                    <Grid.Col span={4}>
-                      <Badge variant="filled" color={card.is_active ? 'green' : 'red'} size="xs" radius={4}>
-                        {card.is_active ? 'Activo' : 'Inactivo'}
-                      </Badge>
-                    </Grid.Col>
-                  </Grid>
-                    {/* <Spoiler maxHeight={120} showLabel="Max" hideLabel="menos">
-                      Suaberifico
-                    </Spoiler> */}
-                    {/* <Button
-                      size="xs"
-                      w="30%"
-                      variant="subtle"
-                    >
-                      <ChevronIcon
-                        fontSize={30}
-                        style={{
-                          rotate: '0deg',
-                        }}
-                      />
-                    </Button> */}
-                    <Group mt={10} spacing={0}>
-                      <Button
-                        w="100%"
-                        size="xs"
-                        onClick={() => {
-                          dispatch(
-                            setLobbyMode(!selector)
-                          )
-                          setDrawSelected(card)
-                          setLobbyState({
-                            open: !lobbyState.open,
-                            lobby_id: card.id,
-                            lobby_state: true,
-                            lobby_connection: new Date()
-                          })
-                        }}
-                      >
-                        Jugar
-                      </Button>
-                      <Spoiler
-                        w="100%"
-                        pt={15}
-                        maxHeight={0}
-                        showLabel={
-                          <Group position="center">
-                            <ChevronIcon
-                              fontSize={30}
-                              style={{
-                                rotate: '0deg',
-                              }}
-                            />
-                            <Text ta="center">
-                              Ver mas
-                            </Text>
-                          </Group>
-                        }
-                        hideLabel={
-                          <Group position="center">
-                            <ChevronIcon
-                              fontSize={30}
-                              style={{
-                                rotate: '180deg',
-                              }}
-                            />
-                            <Text>
-                              Cerrar
-                            </Text>
-                          </Group>
-                        } 
-                        transitionDuration={150}
-                      >
-                        <Paper p={9}>
-                          <Group spacing={0}>
-                            <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                              Premio:
-                            </Text>
-                            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
-                              {card.first_prize}
-                            </Text>
-                          </Group>
-                          <Group spacing={0}>
-                            <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                              Tipo:
-                            </Text>
-                            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
-                              Terminal (01-99)
-                            </Text>
-                          </Group>
-                          <Group spacing={0}>
-                          <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                              Agencia: 
-                            </Text>
-                            <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
-                              {JSON.parse(localStorage.getItem("user") || '').name}
-                            </Text>
-                          </Group>
-                        </Paper>
-                      </Spoiler>
+                      <Text mt={-3} fz={12} fw={300}>
+                        {card.init_date}
+                      </Text>
                     </Group>
-                </Card>
-              </Grid.Col>
-            </Grid>
-          ))}
+                    <Group position="apart">
+                      <Text mt={-3} fz={12} fw={300}>
+                        Cierre
+                      </Text>
+                      <Text mt={-3} fz={12} fw={300}>
+                        {
+                          card.expired_date ? `${card.expired_date}` : 'Alcanzar progreso'
+                        }
+                      </Text>
+                    </Group>
+                    <Divider
+                      labelPosition="center"
+                      variant="dashed"
+                      label={
+                        <Text mt={0} ta="center" fw={600} fz={12}>
+                          Progreso
+                        </Text>
+                      }
+                    />
+                    <Grid>
+                      <Grid.Col span={8}>
+                        <Progress value={Number(card.progress.current)} color="green" label={`${card.progress.current.toFixed(0)}%`} size="xl" mt={7} />
+                      </Grid.Col>
+                      <Grid.Col span={4}>
+                        <Badge variant="filled" color={card.is_active ? 'green' : 'red'} size="xs" radius={4}>
+                          {card.is_active ? 'Activo' : 'Inactivo'}
+                        </Badge>
+                      </Grid.Col>
+                    </Grid>
+                      {/* <Spoiler maxHeight={120} showLabel="Max" hideLabel="menos">
+                        Suaberifico
+                      </Spoiler> */}
+                      {/* <Button
+                        size="xs"
+                        w="30%"
+                        variant="subtle"
+                      >
+                        <ChevronIcon
+                          fontSize={30}
+                          style={{
+                            rotate: '0deg',
+                          }}
+                        />
+                      </Button> */}
+                      <Group mt={10} spacing={0}>
+                        <Button
+                          w="100%"
+                          size="xs"
+                          onClick={() => {
+                            dispatch(
+                              setLobbyMode(!selector)
+                            )
+                            setDrawSelected(card)
+                            setLobbyState({
+                              open: !lobbyState.open,
+                              lobby_id: card.id,
+                              lobby_state: true,
+                              lobby_connection: new Date()
+                            })
+                          }}
+                        >
+                          Jugar
+                        </Button>
+                        <Spoiler
+                          w="100%"
+                          pt={15}
+                          maxHeight={0}
+                          showLabel={
+                            <Group position="center">
+                              <ChevronIcon
+                                fontSize={30}
+                                style={{
+                                  rotate: '0deg',
+                                }}
+                              />
+                              <Text ta="center">
+                                Ver mas
+                              </Text>
+                            </Group>
+                          }
+                          hideLabel={
+                            <Group position="center">
+                              <ChevronIcon
+                                fontSize={30}
+                                style={{
+                                  rotate: '180deg',
+                                }}
+                              />
+                              <Text>
+                                Cerrar
+                              </Text>
+                            </Group>
+                          } 
+                          transitionDuration={150}
+                        >
+                          <Paper p={9}>
+                            <Group spacing={0}>
+                              <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                                Premio:
+                              </Text>
+                              <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
+                                {card.first_prize}
+                              </Text>
+                            </Group>
+                            <Group spacing={0}>
+                              <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                                Tipo:
+                              </Text>
+                              <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
+                                Terminal (01-99)
+                              </Text>
+                            </Group>
+                            <Group spacing={0}>
+                            <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
+                                Agencia: 
+                              </Text>
+                              <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
+                                {JSON.parse(localStorage.getItem("user") || '').name}
+                              </Text>
+                            </Group>
+                          </Paper>
+                        </Spoiler>
+                      </Group>
+                  </Card>
+            ))}
+          </Group>
           {
             draws.length === 0 && loading === false ? (
               <Grid mt={0} gutter={10} mx={10}>
@@ -789,7 +754,8 @@ function Operadora() {
                   draw_id={lobbyState.lobby_id}
                 />
               ) : (
-                <Card
+                null
+                /* <Card
                   shadow="sm"
                   radius="sm"
                   mt={8}
@@ -823,7 +789,7 @@ function Operadora() {
                       </Title>
                     </div>
                   </div>
-                </Card>
+                </Card> */
               )
             )
           )
