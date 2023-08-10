@@ -195,9 +195,15 @@ function Operadora() {
  
  const [pressedButton, setPressedButton] = useState<number | null>(null);
 
- const handleButtonClick = (buttonIndex: number) => {
-   setPressedButton(buttonIndex);
- };
+ const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const handleButtonClick = (buttonIndex: number) => {
+    if (buttonIndex === activeIndex) {
+      setActiveIndex(null);
+    } else {
+      setActiveIndex(buttonIndex);
+    }
+  };
   useEffect(() => {
     setTimeout(() => {
       axios.post(`https://api.rifamax.app/api/public/draws?type=${query.get('type')}`, {
@@ -494,32 +500,30 @@ function Operadora() {
           
           <Group mt={0} mx={10}>
             {draws.map((card, index) => (
-                  <Button
-                    key={card.id}
-                    w={235}
-                    h={110}
-                    component="a"
-                    target="_blank"
-                    style={{ backgroundColor: active === index ? "#3c3d47" : "#2b2c3d" }}
-
-                    onClick={() => {
-                      setActive(index)
-                      dispatch(
-                        setLobbyMode(!selector)
-                      )
-                      setDrawSelected(card)
-                      setLobbyState({
-                        open: !lobbyState.open,
-                        lobby_id: card.id,
-                        lobby_state: true,
-                        lobby_connection: new Date()
-
-                      })
-                      
-                    }}
-                    
-                   
-                  >
+                 <Button
+                 key={card.id}
+                 w={235}
+                 h={110}
+                 component="a"
+                 target="_blank"
+                 style={{
+                  backgroundColor:
+                    activeIndex === index ? "#3c3d47" : "#2b2c3d",
+                  border:
+                    activeIndex === index ? "2px solid #00ff00" : "none",
+                }}
+                 onClick={() => {
+                   handleButtonClick(index); 
+                   dispatch(setLobbyMode(!selector));
+                   setDrawSelected(card);
+                   setLobbyState({
+                     open: !lobbyState.open,
+                     lobby_id: card.id,
+                     lobby_state: true,
+                     lobby_connection: new Date(),
+                   });
+                 }}
+               >
                     <Text mt={2} fw={500} fz={15} mb={4} align="center">
                       {card.first_prize}
                     </Text>
