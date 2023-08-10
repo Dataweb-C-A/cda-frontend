@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Loader, ActionIcon, Input, Modal, Text, Stepper, Image, Group, NumberInput, Progress, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
+import { Card, Loader, ActionIcon, Flex, Input, Modal, Text, Stepper, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import axios from 'axios';
 import '../../assets/scss/cards.scss'
 import { IconSearch } from '@tabler/icons-react';
@@ -507,7 +507,7 @@ function TicketModal({ draw_id }: modalProps) {
       setApiData(data.places);
       setTotalPages(data.metadata.pages);
       deselectSoldTickets();
-      setPaginationLoaded(true); 
+      setPaginationLoaded(true);
     } catch (error) {
       console.error('Error fetching API data:', error);
     }
@@ -533,14 +533,15 @@ function TicketModal({ draw_id }: modalProps) {
     <Card
       shadow="sm"
       radius="sm"
-      mt={4}
+      mt={150}
       w="100%"
-      bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
+      //  { bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}}
       style={{
         position: 'absolute',
         top: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? 5 : 70,
         left: 0,
-        height: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? "calc(100vh - 2em)" : "calc(100vh - 5.8em)"
+        height: "100",
+        background: theme.colors.dark[7]
       }}
     >
       <Group>
@@ -554,9 +555,9 @@ function TicketModal({ draw_id }: modalProps) {
             <>
 
               <Group spacing="xs">
-                
 
-                  <ActionIcon
+
+                <ActionIcon
                   variant="default"
                   mr={10}
                   py={0}
@@ -566,14 +567,12 @@ function TicketModal({ draw_id }: modalProps) {
                 >
                   <IconChevronLeft />
                 </ActionIcon>
-                
-
 
 
                 {[...Array(totalPages)].map((_, index) => (
                   <Button
                     key={index}
-                  mr={10}
+                    mr={10}
                     variant="default" color="gray" size="xl" compact
                     py={10}
                     onClick={() => setCurrentPage(index + 1)}
@@ -582,7 +581,7 @@ function TicketModal({ draw_id }: modalProps) {
                     {index}
                   </Button>
                 ))}
-                
+
                 <ActionIcon
 
                   variant="default"
@@ -594,7 +593,7 @@ function TicketModal({ draw_id }: modalProps) {
                 >
                   <IconChevronRight />
                 </ActionIcon>
-                
+
               </Group>
 
 
@@ -626,7 +625,7 @@ function TicketModal({ draw_id }: modalProps) {
           )
         }
         {loading && (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100vh" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100" }}>
             <Loader />
             <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
           </div>
@@ -641,16 +640,17 @@ function TicketModal({ draw_id }: modalProps) {
             {/** card  ticket*/}
 
             {apiData.length > 0 ? (
-        apiData.map((item, index) => {
-          const cardStyle = {
-            width: `${70 / 9}%`,
-            margin: margin, 
-          };
+              apiData.map((item, index) => {
+                const cardStyle = {
+                  width: `${70 / 9}%`,
+                  margin: margin,
+                };
 
                 return (
                   <>
                     <Card
                       px={8}
+
                       className={cx(classes.ticket, {
                         [classes.selected]: active.includes(item.place_number),
                         [classes.sold]: item.is_sold,
@@ -714,13 +714,13 @@ function TicketModal({ draw_id }: modalProps) {
                 <>
                   <Grid>
                     <Grid.Col xl={12} sm={12}>
-                      <Card shadow="sm" mb={10} bg={
+                      <Card shadow="sm" mb={100} bg={
                         theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[1]
                       }
                         withBorder
                       >
                         <Paper shadow="sm" mb={0} style={{
-                          maxHeight: '18.5vh',
+                          maxHeight: '19.5vh',
                           overflowY: 'hidden',
                           scrollbarWidth: 'none',
                           scrollbarColor: 'transparent transparent',
@@ -734,6 +734,7 @@ function TicketModal({ draw_id }: modalProps) {
                           >
                             Jugadas
                           </Text>
+
                           <Divider my={7} />
                           <ScrollArea h={100} type="auto">
                             {
@@ -852,6 +853,7 @@ function TicketModal({ draw_id }: modalProps) {
                                     }}
                                   />
                                 </Group>
+
                                 <Group position="center" mt="xl">
                                   <Button variant="default" onClick={prevStep}>
                                     Atrás
@@ -928,7 +930,36 @@ function TicketModal({ draw_id }: modalProps) {
                         />
                         {
                           draws.adnoucement !== null ? (
-                            <Image maw={300} mx="auto" radius="md" src={draws.adnoucement} alt="Premios" />
+                            <>
+
+                              <Group position="apart">
+
+
+                                <Image maw={250} radius="md" src={draws.adnoucement} alt="Premios" />
+
+                                <Flex
+                                  mih={50}
+                                  gap="md"
+                                  justify="center"
+                                  align="center"
+                                  direction="column"
+                                  wrap="wrap"
+                                >
+
+                                  <Title>Titulo</Title>
+                                  <Text>{draws.first_prize}</Text>
+                                  <Title>Premio</Title>
+                                  <Text>{draws.first_prize}</Text>
+                                  <Title>Limite</Title>
+                                  <Text>{draws.limit}</Text>
+                                  <Title>Progreso</Title>
+
+
+                                </Flex>
+                              </Group>
+                              <Progress value={Number(draws.progress.current)} color="green" label={`${draws.progress.current.toFixed(0)}%`} size="xl" mt={7} />
+
+                            </>
                           ) : null
                         }
 

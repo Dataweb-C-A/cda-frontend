@@ -184,7 +184,11 @@ function Operadora() {
       }
     )
   }, [])
-
+  
+  const cardStyle = {
+    
+    cursor: 'pointer',
+ };
   useEffect(() => {
     setTimeout(() => {
       axios.post(`https://api.rifamax.app/api/public/draws?type=${query.get('type')}`, {
@@ -330,7 +334,8 @@ function Operadora() {
           {
             errors === null && loading ? (
               <>
-                <Card w={240} mt={8} ml={10} py={0} bg={theme.colors.dark[4]}>
+                <Card w={240} mt={8} ml={10} py={0} bg={theme.colors.dark[4]}
+                >
                   <Grid mt={5}>
                     <Grid.Col span={3}>
                       <Skeleton height={40} circle />
@@ -485,6 +490,20 @@ function Operadora() {
                     w={235} shadow="sm"
                     component="a"
                     target="_blank"
+                    style={cardStyle}
+                   
+                    onClick={() => {
+                      dispatch(
+                        setLobbyMode(!selector)
+                      )
+                      setDrawSelected(card)
+                      setLobbyState({
+                        open: !lobbyState.open,
+                        lobby_id: card.id,
+                        lobby_state: true,
+                        lobby_connection: new Date()
+                      })
+                    }}
                     bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
                   >
                     <Text mt={2} fw={500} fz={15} mb={4} align="center">
@@ -542,85 +561,7 @@ function Operadora() {
                           }}
                         />
                       </Button> */}
-                      <Group mt={10} spacing={0}>
-                        <Button
-                          w="100%"
-                          size="xs"
-                          onClick={() => {
-                            dispatch(
-                              setLobbyMode(!selector)
-                            )
-                            setDrawSelected(card)
-                            setLobbyState({
-                              open: !lobbyState.open,
-                              lobby_id: card.id,
-                              lobby_state: true,
-                              lobby_connection: new Date()
-                            })
-                          }}
-                        >
-                          Jugar
-                        </Button>
-                        <Spoiler
-                          w="100%"
-                          pt={15}
-                          maxHeight={0}
-                          showLabel={
-                            <Group position="center">
-                              <ChevronIcon
-                                fontSize={30}
-                                style={{
-                                  rotate: '0deg',
-                                }}
-                              />
-                              <Text ta="center">
-                                Ver mas
-                              </Text>
-                            </Group>
-                          }
-                          hideLabel={
-                            <Group position="center">
-                              <ChevronIcon
-                                fontSize={30}
-                                style={{
-                                  rotate: '180deg',
-                                }}
-                              />
-                              <Text>
-                                Cerrar
-                              </Text>
-                            </Group>
-                          } 
-                          transitionDuration={150}
-                        >
-                          <Paper p={9}>
-                            <Group spacing={0}>
-                              <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                                Premio:
-                              </Text>
-                              <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
-                                {card.first_prize}
-                              </Text>
-                            </Group>
-                            <Group spacing={0}>
-                              <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                                Tipo:
-                              </Text>
-                              <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
-                                Terminal (01-99)
-                              </Text>
-                            </Group>
-                            <Group spacing={0}>
-                            <Text ta="left" sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400}>
-                                Agencia: 
-                              </Text>
-                              <Text sx={{ fontFamily: 'Greycliff CF, sans-serif' }} fz="xs " fw={400} ta="right">
-                                {JSON.parse(localStorage.getItem("user") || '').name}
-                              </Text>
-                            </Group>
-                          </Paper>
-                        </Spoiler>
-                      </Group>
+                     
                   </Card>
             ))}
           </Group>
