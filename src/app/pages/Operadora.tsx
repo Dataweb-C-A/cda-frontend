@@ -184,10 +184,19 @@ function Operadora() {
       }
     )
   }, [])
-  
+ 
   const cardStyle = {
-    
+      
     cursor: 'pointer',
+ };
+ const [active, setActive] = useState<number>(-1);
+
+ const [noactive, setnoActive] = useState<number>(-1);
+ 
+ const [pressedButton, setPressedButton] = useState<number | null>(null);
+
+ const handleButtonClick = (buttonIndex: number) => {
+   setPressedButton(buttonIndex);
  };
   useEffect(() => {
     setTimeout(() => {
@@ -238,7 +247,7 @@ function Operadora() {
         },
       },
     }))
-
+   
     const { classes, cx } = useStyles()
 
     return (
@@ -484,15 +493,17 @@ function Operadora() {
           }
           
           <Group mt={0} mx={10}>
-            {draws.map(card => (
-                  <Card
+            {draws.map((card, index) => (
+                  <Button
                     key={card.id}
-                    w={235} shadow="sm"
+                    w={235}
+                    h={110}
                     component="a"
                     target="_blank"
-                    style={cardStyle}
-                   
+                    style={{ backgroundColor: active === index ? "#3c3d47" : "#2b2c3d" }}
+
                     onClick={() => {
+                      setActive(index)
                       dispatch(
                         setLobbyMode(!selector)
                       )
@@ -502,67 +513,18 @@ function Operadora() {
                         lobby_id: card.id,
                         lobby_state: true,
                         lobby_connection: new Date()
+
                       })
+                      
                     }}
-                    bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0]}
+                    
+                   
                   >
                     <Text mt={2} fw={500} fz={15} mb={4} align="center">
                       {card.first_prize}
                     </Text>
-                    <Group position="apart">
-                      <Text mt={-3} fz={12} fw={300}>
-                        Inicio
-                      </Text>
-                      <Text mt={-3} fz={12} fw={300}>
-                        {card.init_date}
-                      </Text>
-                    </Group>
-                    <Group position="apart">
-                      <Text mt={-3} fz={12} fw={300}>
-                        Cierre
-                      </Text>
-                      <Text mt={-3} fz={12} fw={300}>
-                        {
-                          card.expired_date ? `${card.expired_date}` : 'Alcanzar progreso'
-                        }
-                      </Text>
-                    </Group>
-                    <Divider
-                      labelPosition="center"
-                      variant="dashed"
-                      label={
-                        <Text mt={0} ta="center" fw={600} fz={12}>
-                          Progreso
-                        </Text>
-                      }
-                    />
-                    <Grid>
-                      <Grid.Col span={8}>
-                        <Progress value={Number(card.progress.current)} color="green" label={`${card.progress.current.toFixed(0)}%`} size="xl" mt={7} />
-                      </Grid.Col>
-                      <Grid.Col span={4}>
-                        <Badge variant="filled" color={card.is_active ? 'green' : 'red'} size="xs" radius={4}>
-                          {card.is_active ? 'Activo' : 'Inactivo'}
-                        </Badge>
-                      </Grid.Col>
-                    </Grid>
-                      {/* <Spoiler maxHeight={120} showLabel="Max" hideLabel="menos">
-                        Suaberifico
-                      </Spoiler> */}
-                      {/* <Button
-                        size="xs"
-                        w="30%"
-                        variant="subtle"
-                      >
-                        <ChevronIcon
-                          fontSize={30}
-                          style={{
-                            rotate: '0deg',
-                          }}
-                        />
-                      </Button> */}
-                     
-                  </Card>
+                   
+                  </Button>
             ))}
           </Group>
           {

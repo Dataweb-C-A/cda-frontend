@@ -545,11 +545,7 @@ function TicketModal({ draw_id }: modalProps) {
       }}
     >
       <Group>
-        <CloseButton
-          onClick={() => dispatch(
-            setLobbyMode(false)
-          )}
-        />
+
         {
           totalPages > 1 && (
             <>
@@ -678,7 +674,7 @@ function TicketModal({ draw_id }: modalProps) {
           </Group>
         </div>
 
-        <Divider orientation="vertical" label="Sorteos" variant="dashed" mr={20} />
+
         <div className={classes.taquillaFlex}>
           <nav
             className={classes.stickyNav}
@@ -945,14 +941,15 @@ function TicketModal({ draw_id }: modalProps) {
                                   direction="column"
                                   wrap="wrap"
                                 >
-
-                                  <Title>Titulo</Title>
+                                  <Title order={3}>Premio</Title>
                                   <Text>{draws.first_prize}</Text>
-                                  <Title>Premio</Title>
-                                  <Text>{draws.first_prize}</Text>
-                                  <Title>Limite</Title>
+                                  <Title order={3}>Fecha de inicio</Title>
+                                  <Text>{draws.init_date}</Text>
+                                  <Title order={3}>Fecha de cierre</Title>
+                                  <Text>{draws.expired_date === null ? "por anunciar" : draws.expired_date}</Text>
+                                  <Title order={3}>Limite</Title>
                                   <Text>{draws.limit}</Text>
-                                  <Title>Progreso</Title>
+                                  <Title order={3}>Progreso</Title>
 
 
                                 </Flex>
