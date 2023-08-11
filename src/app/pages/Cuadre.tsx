@@ -35,6 +35,7 @@ const Cuadre = () => {
   const [denominationsInBs, setDenominationsInBs] = useState<Denomination[]>([]);
   const [denominationsIncop, setDenominationsIncop] = useState<Denomination[]>([]);
   const [denominationsIndollar, setDenominationsIndollar] = useState<Denomination[]>([]);
+  const [modifiedDenominationsInBs, setModifiedDenominationsInBs] = useState<Denomination[]>([]);
 
 
   useEffect(() => {
@@ -42,11 +43,40 @@ const Cuadre = () => {
       setDenominationsInBs(res.data[0].denominations_in_bsd.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
       setDenominationsIncop(res.data[0].denominations_in_cop.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
       setDenominationsIndollar(res.data[0].denominations_in_dollar.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
-      console.log(res.data[0].denominations_in_bsd);
     }).catch((err) => {
       console.log(err);
     });
   }, []);
+
+  
+  const updateCuadre = () => {
+    const modifiedData = {
+      denominations_in_bsd: modifiedDenominationsInBs,
+    };
+    
+    modifiedData.denominations_in_bsd.map((item) => {
+      console.log(item)
+      axios.put(`https://api.rifamax.app/quadres/${item.id}`, modifiedData)
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    })
+  };
+  
+  const handleQuantityChange = (denominationId: number, newValue: number) => {
+    // Encuentra el índice de la denominación en el array original
+    const index = denominationsInBs.findIndex((item) => item.id === denominationId);
+    if (index !== -1) {
+      // Actualiza el array modificado con el nuevo valor de cantidad
+      const modifiedArray = [...modifiedDenominationsInBs];
+      modifiedArray[index] = { ...modifiedArray[index], quantity: newValue };
+      setModifiedDenominationsInBs(modifiedArray);
+    }
+  }
+
   return (
     <>
       <Navbar profiles={profiles} links={links} />
@@ -74,6 +104,7 @@ const Cuadre = () => {
           radius="lg"
           withBorder
         >
+
           <Group
             position="apart"
             spacing="xl"
@@ -92,11 +123,15 @@ const Cuadre = () => {
                     <Text fz="xl">{item.label}</Text>
                     <NumberInput
                       width="100%"
-                      defaultValue={item.quantity || 0}
+                      value={item.quantity || 0}
                       type="number"
                       min={0}
+                      onChange={() => {
+
+                      }}
                       styles={{ input: { width: '70px', textAlign: 'center' } }}
                     />
+
                     <Text fz="xl">{item.total} Bs.</Text>
                   </Group>
                 );
@@ -122,6 +157,7 @@ const Cuadre = () => {
                       <NumberInput
                         width="100%"
                         defaultValue={item.ammount || 0}
+                        onChange={(value: number) => handleQuantityChange(item.id, value)}
                         type='number'
                         decimalSeparator=","
                         min={0}
@@ -323,9 +359,16 @@ const Cuadre = () => {
       </Group>
 
       <Group position="center" mt={15}>
-        <Button color="indigo" size="xl" radius="xl" compact>
+        <Button
+          color="indigo"
+          size="xl"
+          radius="xl"
+          compact
+          onClick={() => updateCuadre(modifiedDenominationsInBs)}
+        >
           Actualizar Cuadre
         </Button>
+
       </Group>
 
 
