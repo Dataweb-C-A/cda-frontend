@@ -8,13 +8,15 @@ import { IconCashBanknote } from '@tabler/icons-react';
 import image from '../assets/images/dola.jpg';
 import axios from 'axios';
 interface Denomination {
-  id?: number; // [{id: 1, quantity: 2, ammount: null}, {id: 2, quantity: null, ammount: 200}]
+  id: number; // [{id: 1, quantity: 2, ammount: null}, {id: 2, quantity: null, ammount: 200}]
   value: string;
   short_value: string;
   quantity: number | null;
   power: number | null;
   category: string;
+  total: number;
   label: string;
+  ammount: number | null;
 }
 
 interface CurrencyData {
@@ -37,13 +39,13 @@ const Cuadre = () => {
 
   useEffect(() => {
     axios.get('https://api.rifamax.app/quadres?agency_id=221').then((res) => {
-      setDenominationsInBs(res.data[0].denominations_in_bsd.reverse())
-      setDenominationsIncop(res.data[0].denominations_in_cop.reverse())
-      setDenominationsIndollar(res.data[0].denominations_in_dollar.reverse())
-      console.log(res.data[0].denominations_in_bsd)
+      setDenominationsInBs(res.data[0].denominations_in_bsd.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
+      setDenominationsIncop(res.data[0].denominations_in_cop.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
+      setDenominationsIndollar(res.data[0].denominations_in_dollar.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
+      console.log(res.data[0].denominations_in_bsd);
     }).catch((err) => {
-      console.log(err)
-    })
+      console.log(err);
+    });
   }, []);
   return (
     <>
@@ -81,36 +83,30 @@ const Cuadre = () => {
           </Group>
 
           <Divider my="sm" variant="dashed" />
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            {
-              denominationsInBs.map((item, index) => {
-                if (item.category === "CASH") {
-                  return (
-                    <Group w="100%" position="apart" spacing={0}>
 
-                      <Text fz="xl">{item.label}</Text>
-                      <NumberInput
-                        width="100%"
-                        defaultValue={0}
-                        type="number"
-                        min={0}
-                        styles={{ input: { width: '70px', textAlign: 'center' } }}
-                      />
-                      <Text fz="xl">0 Bs.</Text>
-                    </Group>
-                  );
-                }
-              })
-            }
+          <Group position="apart" spacing="xl" mt={15}>
+            {denominationsInBs.map((item, index) => {
+              if (item.category === "CASH") {
+                return (
+                  <Group w="100%" position="apart" spacing={0} key={item.id}>
+                    <Text fz="xl">{item.label}</Text>
+                    <NumberInput
+                      width="100%"
+                      defaultValue={item.quantity || 0}
+                      type="number"
+                      min={0}
+                      styles={{ input: { width: '70px', textAlign: 'center' } }}
+                    />
+                    <Text fz="xl">{item.total} Bs.</Text>
+                  </Group>
+                );
+              }
+              return null;
+            })}
           </Group>
 
-
-
           <Divider my="sm" variant="dashed" />
+
           <Group
             position="apart"
             spacing="xl"
@@ -125,9 +121,9 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.ammount || 0}
                         type='number'
-
+                        decimalSeparator=","
                         min={0}
 
                         styles={{ input: { width: '150px', textAlign: 'center' } }}
@@ -140,6 +136,7 @@ const Cuadre = () => {
           </Group>
 
           <Divider my="sm" variant="dashed" />
+
           <Group position="apart" spacing="xl" mt={15}>
             <Text fz="xl">Total Bolivares</Text>
             <Text fz="xl">200 Bs.</Text>
@@ -181,15 +178,16 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.quantity || 0}
                         type="number"
                         min={0}
                         styles={{ input: { width: '70px', textAlign: 'center' } }}
                       />
-                      <Text fz="xl">0 Bs.</Text>
+                      <Text fz="xl">{item.total} COP</Text>
                     </Group>
                   );
                 }
+                return null;
               })
             }
           </Group>
@@ -210,7 +208,7 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.ammount || 0}
                         type='number'
 
                         min={0}
@@ -265,12 +263,12 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.quantity || 0}
                         type="number"
                         min={0}
                         styles={{ input: { width: '70px', textAlign: 'center' } }}
                       />
-                      <Text fz="xl">0 Bs.</Text>
+                      <Text fz="xl">{item.total} $</Text>
                     </Group>
                   );
                 }
@@ -294,9 +292,9 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.ammount || 0}
                         type='number'
-
+                        decimalSeparator=","
                         min={0}
 
                         styles={{ input: { width: '150px', textAlign: 'center' } }}
