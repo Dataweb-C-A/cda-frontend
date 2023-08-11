@@ -335,15 +335,16 @@ function Operadora() {
             ) : null
           }
           
-          <Group mt={0} mx={10}>
+          <Group ml={35} mt={0} >
             {draws.map((card, index) => (
                  <Button
                  key={card.id}
-                 w={235}
+                 w={205}
                  h={110}
                  component="a"
                  target="_blank"
                  style={{
+                  zIndex: 999999,
                   backgroundColor:
                     activeIndex === index && lobbyState.open ? "#3c3d47" : "#2b2c3d",
                   border:

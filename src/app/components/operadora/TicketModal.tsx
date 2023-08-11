@@ -252,6 +252,8 @@ function TicketModal({ draw_id }: modalProps) {
       };
     } catch (e) {
       alert(JSON.stringify(e));
+
+      
     }
   }
 
@@ -533,13 +535,13 @@ function TicketModal({ draw_id }: modalProps) {
     <Card
       shadow="sm"
       radius="sm"
-      mt={150}
+      mt={95}
       w="100%"
       //  { bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}}
       style={{
         position: 'absolute',
         top: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? 5 : 70,
-        left: 0,
+        left: 0,  
         height: "100",
         background: theme.colors.dark[7]
       }}
@@ -550,7 +552,7 @@ function TicketModal({ draw_id }: modalProps) {
           totalPages > 1 && (
             <>
 
-              <Group spacing="xs">
+              <Group mt={25} ml={25} spacing="xs">
 
 
                 <ActionIcon
@@ -594,7 +596,7 @@ function TicketModal({ draw_id }: modalProps) {
 
 
               {/* buscar numero */}
-              <Input
+              <Input mt={25} 
                 placeholder="Buscar Numero"
                 radius="xs"
                 rightSection={
@@ -679,25 +681,7 @@ function TicketModal({ draw_id }: modalProps) {
           <nav
             className={classes.stickyNav}
           >
-            <Group mb={20}>
-              <Button
-                mb={10}
-                style={{}}
-                variant="filled"
-                color="blue"
-                onClick={getRandomTicket}
-              >
-                Numeros al azar
-              </Button>
-              <Button
-                mb={10}
-                variant="filled"
-                color="blue"
-                onClick={limpiarJugada}
-              >
-                Limpiar Jugada
-              </Button>
-            </Group>
+           
             {
               false ? (
                 <>
@@ -715,7 +699,7 @@ function TicketModal({ draw_id }: modalProps) {
                       }
                         withBorder
                       >
-                        <Paper shadow="sm" mb={0} style={{
+                        <Paper shadow="sm" mb={-20} style={{
                           maxHeight: '19.5vh',
                           overflowY: 'hidden',
                           scrollbarWidth: 'none',
