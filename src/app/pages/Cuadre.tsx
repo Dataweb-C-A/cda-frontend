@@ -6,26 +6,57 @@ import { DatePicker } from '@mantine/dates';
 import { links } from '../assets/data/links'
 import { IconCashBanknote } from '@tabler/icons-react';
 import image from '../assets/images/dola.jpg';
+import axios from 'axios';
+interface Denomination {
+  id?: number; // [{id: 1, quantity: 2, ammount: null}, {id: 2, quantity: null, ammount: 200}]
+  value: string;
+  short_value: string;
+  quantity: number | null;
+  power: number | null;
+  category: string;
+  label: string;
+}
 
+interface CurrencyData {
+  current_day: string;
+  created_at: string;
+  total_bsd: number;
+  denominations_in_bsd: Denomination[];
+  denominations_in_dollar: Denomination[];
+  denominations_in_cop: Denomination[];
+}
 const Cuadre = () => {
 
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
   const [value, setValue] = useState<Date | null>(null);
+  const [denominationsInBs, setDenominationsInBs] = useState<Denomination[]>([]);
+  const [denominationsIncop, setDenominationsIncop] = useState<Denomination[]>([]);
+  const [denominationsIndollar, setDenominationsIndollar] = useState<Denomination[]>([]);
 
+
+  useEffect(() => {
+    axios.get('https://api.rifamax.app/quadres?agency_id=221').then((res) => {
+      setDenominationsInBs(res.data[0].denominations_in_bsd.reverse())
+      setDenominationsIncop(res.data[0].denominations_in_cop.reverse())
+      setDenominationsIndollar(res.data[0].denominations_in_dollar.reverse())
+      console.log(res.data[0].denominations_in_bsd)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }, []);
   return (
     <>
       <Navbar profiles={profiles} links={links} />
-      <DatePicker
-      clearable
-      defaultValue={new Date()}
-      label="Seleccione fecha"
-      placeholder="Seleccione fecha"
-      ml={15}
-      mr={15}
-    />
 
-        
+      <DatePicker
+        clearable
+        defaultValue={new Date()}
+        label="Seleccione fecha"
+        placeholder="Seleccione fecha"
+        ml={15}
+        mr={15}
+      />
 
       <Group
         grow
@@ -55,172 +86,57 @@ const Cuadre = () => {
             spacing="xl"
             mt={15}
           >
-            <Text fz="xl">0.5 Bs</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
+            {
+              denominationsInBs.map((item, index) => {
+                if (item.category === "CASH") {
+                  return (
+                    <Group w="100%" position="apart" spacing={0}>
 
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 Bs.</Text>
-
+                      <Text fz="xl">{item.label}</Text>
+                      <NumberInput
+                        width="100%"
+                        defaultValue={0}
+                        type="number"
+                        min={0}
+                        styles={{ input: { width: '70px', textAlign: 'center' } }}
+                      />
+                      <Text fz="xl">0 Bs.</Text>
+                    </Group>
+                  );
+                }
+              })
+            }
           </Group>
 
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
 
-          >
-            <Text fz="xl">1 Bs.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 Bs.</Text>
-
-          </Group>
-
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            <Text fz="xl">5 Bs.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 Bs.</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-
-
-          >
-            <Text fz="xl">10 Bs.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 Bs.</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-
-          >
-            <Text fz="xl">20 Bs.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 Bs.</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            <Text fz="xl">50 Bs.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 Bs.</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            <Text fz="xl">100 Bs.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 Bs.</Text>
-
-          </Group>
 
           <Divider my="sm" variant="dashed" />
-          <Group position="apart" spacing="xl">
-            <Text fz="xl">Pago movil</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
+          <Group
+            position="apart"
+            spacing="xl"
+            mt={15}
+          >
+            {
+              denominationsInBs.map((item, index) => {
+                if (item.category !== "CASH") {
+                  return (
+                    <Group w="100%" position="apart" spacing={0}>
 
-              min={0}
+                      <Text fz="xl">{item.label}</Text>
+                      <NumberInput
+                        width="100%"
+                        defaultValue={0}
+                        type='number'
 
-              styles={{ input: { width: '150px', textAlign: 'center' } }}
-            />
+                        min={0}
 
-          </Group>
-          <Group position="apart" spacing="xl" mt={15}>
-            <Text fz="xl">Sencillo</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-              min={0}
-
-              styles={{ input: { width: '150px', textAlign: 'center' } }}
-            />
-
-          </Group>
-          <Group position="apart" spacing="xl" mt={15}>
-            <Text fz="xl">Gasto</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '150px', textAlign: 'center' } }}
-            />
-
+                        styles={{ input: { width: '150px', textAlign: 'center' } }}
+                      />
+                    </Group>
+                  );
+                }
+              })
+            }
           </Group>
 
           <Divider my="sm" variant="dashed" />
@@ -250,178 +166,62 @@ const Cuadre = () => {
             <Text fz="xl"> 1 000 COP.  </Text>
           </Group>
           <Divider my="sm" variant="dashed" />
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            <Text fz="xl">1000 COP.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 COP.</Text>
-
-          </Group>
-
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-
-          >
-            <Text fz="xl">2000 COP.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 COP.</Text>
-
-          </Group>
 
           <Group
             position="apart"
             spacing="xl"
             mt={15}
           >
-            <Text fz="xl">5000 COP.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
+            {
+              denominationsIncop.map((item, index) => {
+                if (item.category === "CASH") {
+                  return (
+                    <Group w="100%" position="apart" spacing={0}>
 
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 COP.</Text>
-
+                      <Text fz="xl">{item.label}</Text>
+                      <NumberInput
+                        width="100%"
+                        defaultValue={0}
+                        type="number"
+                        min={0}
+                        styles={{ input: { width: '70px', textAlign: 'center' } }}
+                      />
+                      <Text fz="xl">0 Bs.</Text>
+                    </Group>
+                  );
+                }
+              })
+            }
           </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
 
-
-          >
-            <Text fz="xl">10 000 COP.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 COP.</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-
-          >
-            <Text fz="xl">20 000 COP.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 COP.</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            <Text fz="xl">50 000 COP.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 COP.</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            <Text fz="xl">100 000 COP.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 COP.</Text>
-
-          </Group>
 
           <Divider my="sm" variant="dashed" />
-          <Group position="apart" spacing="xl">
-            <Text fz="xl">Transferencia</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
+          <Group
+            position="apart"
+            spacing="xl"
+            mt={15}
+          >
+            {
+              denominationsIncop.map((item, index) => {
+                if (item.category !== "CASH") {
+                  return (
+                    <Group w="100%" position="apart" spacing={0}>
 
-              min={0}
+                      <Text fz="xl">{item.label}</Text>
+                      <NumberInput
+                        width="100%"
+                        defaultValue={0}
+                        type='number'
 
-              styles={{ input: { width: '150px', textAlign: 'center' } }}
-            />
+                        min={0}
 
-          </Group>
-          <Group position="apart" spacing="xl" mt={15}>
-            <Text fz="xl">Sencillo</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '150px', textAlign: 'center' } }}
-            />
-
-          </Group>
-          <Group position="apart" spacing="xl" mt={15}>
-            <Text fz="xl">Gasto</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '150px', textAlign: 'center' } }}
-            />
-
+                        styles={{ input: { width: '150px', textAlign: 'center' } }}
+                      />
+                    </Group>
+                  );
+                }
+              })
+            }
           </Group>
           <Divider my="sm" variant="dashed" />
           <Group position="apart" spacing="xl" mt={15}>
@@ -456,175 +256,57 @@ const Cuadre = () => {
             spacing="xl"
             mt={15}
           >
-            <Text fz="xl">1 $</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
+            {
+              denominationsIndollar.map((item, index) => {
+                if (item.category === "CASH") {
+                  return (
+                    <Group w="100%" position="apart" spacing={0}>
 
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 $</Text>
-
+                      <Text fz="xl">{item.label}</Text>
+                      <NumberInput
+                        width="100%"
+                        defaultValue={0}
+                        type="number"
+                        min={0}
+                        styles={{ input: { width: '70px', textAlign: 'center' } }}
+                      />
+                      <Text fz="xl">0 Bs.</Text>
+                    </Group>
+                  );
+                }
+              })
+            }
           </Group>
 
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-
-          >
-            <Text fz="xl">2 $</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 $</Text>
-
-          </Group>
-
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            <Text fz="xl">5 $.</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 $</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-
-
-          >
-            <Text fz="xl">10 $</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 $</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-
-          >
-            <Text fz="xl">20 $</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 $</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            <Text fz="xl">50 $</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 $</Text>
-
-          </Group>
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            <Text fz="xl">100 $</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '70px', textAlign: 'center' } }}
-            />
-            <Text fz="xl">0 $</Text>
-
-          </Group>
 
           <Divider my="sm" variant="dashed" />
-          <Group position="apart" spacing="xl">
-            <Text fz="xl">Zelle</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
+          <Group
+            position="apart"
+            spacing="xl"
+            mt={15}
+          >
+            {
+              denominationsIndollar.map((item, index) => {
+                if (item.category !== "CASH") {
+                  return (
+                    <Group w="100%" position="apart" spacing={0}>
 
-              min={0}
+                      <Text fz="xl">{item.label}</Text>
+                      <NumberInput
+                        width="100%"
+                        defaultValue={0}
+                        type='number'
 
-              styles={{ input: { width: '150px', textAlign: 'center' } }}
-            />
+                        min={0}
 
+                        styles={{ input: { width: '150px', textAlign: 'center' } }}
+                      />
+                    </Group>
+                  );
+                }
+              })
+            }
           </Group>
-          <Group position="apart" spacing="xl" mt={15}>
-            <Text fz="xl">Sencillo</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '150px', textAlign: 'center' } }}
-            />
-
-          </Group>
-          <Group position="apart" spacing="xl" mt={15}>
-            <Text fz="xl">Gasto</Text>
-            <NumberInput
-              width="100%"
-              defaultValue={0}
-              type='number'
-
-              min={0}
-
-              styles={{ input: { width: '150px', textAlign: 'center' } }}
-            />
-
-          </Group>
-
           <Divider my="sm" variant="dashed" />
           <Group position="apart" spacing="xl" mt={15}>
             <Text fz="xl">Total Dolares</Text>
