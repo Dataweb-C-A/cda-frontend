@@ -8,13 +8,15 @@ import { IconCashBanknote } from '@tabler/icons-react';
 import image from '../assets/images/dola.jpg';
 import axios from 'axios';
 interface Denomination {
-  id?: number; // [{id: 1, quantity: 2, ammount: null}, {id: 2, quantity: null, ammount: 200}]
+  id: number; // [{id: 1, quantity: 2, ammount: null}, {id: 2, quantity: null, ammount: 200}]
   value: string;
   short_value: string;
   quantity: number | null;
   power: number | null;
   category: string;
+  total: number;
   label: string;
+  ammount: number | null;
 }
 
 interface CurrencyData {
@@ -33,18 +35,48 @@ const Cuadre = () => {
   const [denominationsInBs, setDenominationsInBs] = useState<Denomination[]>([]);
   const [denominationsIncop, setDenominationsIncop] = useState<Denomination[]>([]);
   const [denominationsIndollar, setDenominationsIndollar] = useState<Denomination[]>([]);
+  const [modifiedDenominationsInBs, setModifiedDenominationsInBs] = useState<Denomination[]>([]);
 
 
   useEffect(() => {
     axios.get('https://api.rifamax.app/quadres?agency_id=221').then((res) => {
-      setDenominationsInBs(res.data[0].denominations_in_bsd.reverse())
-      setDenominationsIncop(res.data[0].denominations_in_cop.reverse())
-      setDenominationsIndollar(res.data[0].denominations_in_dollar.reverse())
-      console.log(res.data[0].denominations_in_bsd)
+      setDenominationsInBs(res.data[0].denominations_in_bsd.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
+      setDenominationsIncop(res.data[0].denominations_in_cop.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
+      setDenominationsIndollar(res.data[0].denominations_in_dollar.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
     }).catch((err) => {
-      console.log(err)
-    })
+      console.log(err);
+    });
   }, []);
+
+  
+  const updateCuadre = () => {
+    const modifiedData = {
+      denominations_in_bsd: modifiedDenominationsInBs,
+    };
+    
+    modifiedData.denominations_in_bsd.map((item) => {
+      console.log(item)
+      axios.put(`https://api.rifamax.app/quadres/${item.id}`, modifiedData)
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    })
+  };
+  
+  const handleQuantityChange = (denominationId: number, newValue: number) => {
+    // Encuentra el índice de la denominación en el array original
+    const index = denominationsInBs.findIndex((item) => item.id === denominationId);
+    if (index !== -1) {
+      // Actualiza el array modificado con el nuevo valor de cantidad
+      const modifiedArray = [...modifiedDenominationsInBs];
+      modifiedArray[index] = { ...modifiedArray[index], quantity: newValue };
+      setModifiedDenominationsInBs(modifiedArray);
+    }
+  }
+
   return (
     <>
       <Navbar profiles={profiles} links={links} />
@@ -72,6 +104,7 @@ const Cuadre = () => {
           radius="lg"
           withBorder
         >
+
           <Group
             position="apart"
             spacing="xl"
@@ -81,36 +114,34 @@ const Cuadre = () => {
           </Group>
 
           <Divider my="sm" variant="dashed" />
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            {
-              denominationsInBs.map((item, index) => {
-                if (item.category === "CASH") {
-                  return (
-                    <Group w="100%" position="apart" spacing={0}>
 
-                      <Text fz="xl">{item.label}</Text>
-                      <NumberInput
-                        width="100%"
-                        defaultValue={0}
-                        type="number"
-                        min={0}
-                        styles={{ input: { width: '70px', textAlign: 'center' } }}
-                      />
-                      <Text fz="xl">0 Bs.</Text>
-                    </Group>
-                  );
-                }
-              })
-            }
+          <Group position="apart" spacing="xl" mt={15}>
+            {denominationsInBs.map((item, index) => {
+              if (item.category === "CASH") {
+                return (
+                  <Group w="100%" position="apart" spacing={0} key={item.id}>
+                    <Text fz="xl">{item.label}</Text>
+                    <NumberInput
+                      width="100%"
+                      value={item.quantity || 0}
+                      type="number"
+                      min={0}
+                      onChange={() => {
+
+                      }}
+                      styles={{ input: { width: '70px', textAlign: 'center' } }}
+                    />
+
+                    <Text fz="xl">{item.total} Bs.</Text>
+                  </Group>
+                );
+              }
+              return null;
+            })}
           </Group>
 
-
-
           <Divider my="sm" variant="dashed" />
+
           <Group
             position="apart"
             spacing="xl"
@@ -125,9 +156,10 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.ammount || 0}
+                        onChange={(value: number) => handleQuantityChange(item.id, value)}
                         type='number'
-
+                        decimalSeparator=","
                         min={0}
 
                         styles={{ input: { width: '150px', textAlign: 'center' } }}
@@ -140,6 +172,7 @@ const Cuadre = () => {
           </Group>
 
           <Divider my="sm" variant="dashed" />
+
           <Group position="apart" spacing="xl" mt={15}>
             <Text fz="xl">Total Bolivares</Text>
             <Text fz="xl">200 Bs.</Text>
@@ -181,15 +214,16 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.quantity || 0}
                         type="number"
                         min={0}
                         styles={{ input: { width: '70px', textAlign: 'center' } }}
                       />
-                      <Text fz="xl">0 Bs.</Text>
+                      <Text fz="xl">{item.total} COP</Text>
                     </Group>
                   );
                 }
+                return null;
               })
             }
           </Group>
@@ -210,7 +244,7 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.ammount || 0}
                         type='number'
 
                         min={0}
@@ -265,12 +299,12 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.quantity || 0}
                         type="number"
                         min={0}
                         styles={{ input: { width: '70px', textAlign: 'center' } }}
                       />
-                      <Text fz="xl">0 Bs.</Text>
+                      <Text fz="xl">{item.total} $</Text>
                     </Group>
                   );
                 }
@@ -294,9 +328,9 @@ const Cuadre = () => {
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
                         width="100%"
-                        defaultValue={0}
+                        defaultValue={item.ammount || 0}
                         type='number'
-
+                        decimalSeparator=","
                         min={0}
 
                         styles={{ input: { width: '150px', textAlign: 'center' } }}
@@ -325,9 +359,16 @@ const Cuadre = () => {
       </Group>
 
       <Group position="center" mt={15}>
-        <Button color="indigo" size="xl" radius="xl" compact>
+        <Button
+          color="indigo"
+          size="xl"
+          radius="xl"
+          compact
+          onClick={() => updateCuadre(modifiedDenominationsInBs)}
+        >
           Actualizar Cuadre
         </Button>
+
       </Group>
 
 
