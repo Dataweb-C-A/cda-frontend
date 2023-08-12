@@ -50,13 +50,10 @@ const Cuadre = () => {
 
   
   const updateCuadre = () => {
-    const modifiedData = {
-      denominations_in_bsd: modifiedDenominationsInBs,
-    };
     
-    modifiedData.denominations_in_bsd.map((item) => {
+    denominationsIndollar.map((item) => {
       console.log(item)
-      axios.put(`https://api.rifamax.app/quadres/${item.id}`, modifiedData)
+      axios.put(`https://api.rifamax.app/quadres/${item.id}`, item)
       .then((response) => {
         console.log(response.data)
       })
@@ -67,10 +64,9 @@ const Cuadre = () => {
   };
   
   const handleQuantityChange = (denominationId: number, newValue: number) => {
-    // Encuentra el índice de la denominación en el array original
+    
     const index = denominationsInBs.findIndex((item) => item.id === denominationId);
     if (index !== -1) {
-      // Actualiza el array modificado con el nuevo valor de cantidad
       const modifiedArray = [...modifiedDenominationsInBs];
       modifiedArray[index] = { ...modifiedArray[index], quantity: newValue };
       setModifiedDenominationsInBs(modifiedArray);
@@ -285,32 +281,36 @@ const Cuadre = () => {
             <Text fz="xl"> 200 $  </Text>
           </Group>
           <Divider my="sm" variant="dashed" />
-          <Group
-            position="apart"
-            spacing="xl"
-            mt={15}
-          >
-            {
-              denominationsIndollar.map((item, index) => {
-                if (item.category === "CASH") {
-                  return (
-                    <Group w="100%" position="apart" spacing={0}>
+          <Group position="apart" spacing="xl" mt={15}>
+  {denominationsIndollar.map((item, index) => {
+    if (item.category === "CASH") {
+      return (
+        <Group w="100%" position="apart" spacing={0} key={item.id}>
+          <Text fz="xl">{item.label}</Text>
+          <NumberInput
+            width="100%"
+            defaultValue={item.quantity !== null ? item.quantity : 0}
+            type="number"
+            onChange={(newQuantity) => {
+              const updatedDenominations = [...denominationsIndollar];
+              updatedDenominations[index] = {
+                ...updatedDenominations[index],
+                quantity: newQuantity !== undefined ? newQuantity : null,
+              };
+              setDenominationsIndollar(updatedDenominations);
+              console.log(denominationsIndollar)
+            }}
+            min={0}
+            styles={{ input: { width: '70px', textAlign: 'center' } }}
+          />
+          <Text fz="xl">{item.total} $</Text>
+        </Group>
+      );
+    }
+    return null;
+  })}
+</Group>
 
-                      <Text fz="xl">{item.label}</Text>
-                      <NumberInput
-                        width="100%"
-                        defaultValue={item.quantity || 0}
-                        type="number"
-                        min={0}
-                        styles={{ input: { width: '70px', textAlign: 'center' } }}
-                      />
-                      <Text fz="xl">{item.total} $</Text>
-                    </Group>
-                  );
-                }
-              })
-            }
-          </Group>
 
 
           <Divider my="sm" variant="dashed" />
@@ -364,7 +364,7 @@ const Cuadre = () => {
           size="xl"
           radius="xl"
           compact
-          onClick={() => updateCuadre(modifiedDenominationsInBs)}
+          onClick={() => updateCuadre()}
         >
           Actualizar Cuadre
         </Button>
