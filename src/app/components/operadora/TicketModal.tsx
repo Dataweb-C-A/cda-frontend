@@ -233,10 +233,23 @@ function TicketModal({ draw_id }: modalProps) {
             });
         };
 
-        mensaje();
+        const image = (): void => {
+          fetch(`https://api.rifamax.app/tickets/print?print=${localStorage.getItem('printer')}&draw_id=${draw.id}&plays=${place.id}&logo=yes`)
+            .then(function (response: Response): Promise<string> {
+              return response.text();
+            })
+            .then(function (text: string): void {
+              socket.send(text);
+            });
+        };
+
+        image();
+        setTimeout(() => {
+          mensaje();
+        }, 500);
         setTimeout(() => {
           qr();
-        }, 1000);
+        }, 1500);
       };
 
       socket.onmessage = function (event: MessageEvent): void {

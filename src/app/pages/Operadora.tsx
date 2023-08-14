@@ -344,7 +344,7 @@ function Operadora() {
                  component="a"
                  target="_blank"
                  style={{
-                  zIndex: 999999,
+                  zIndex: 9,
                   backgroundColor:
                     activeIndex === index && lobbyState.open ? "#3c3d47" : "#2b2c3d",
                   border:
