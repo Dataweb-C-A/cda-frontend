@@ -514,6 +514,22 @@ function TicketModal({ draw_id }: modalProps) {
 
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setTimeout(() => {
+      fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${currentPage}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setApiData(data.places);
+          setTotalPages(data.metadata.pages);
+          deselectSoldTickets();
+        })
+        .catch((error) => {
+          console.error('Error fetching API data:', error);
+        });
+    }, 500)
+  }, [currentPage, apiData]);
+
+
   const loadPageData = async (page: number) => {
     setLoading(true);
     try {
@@ -682,7 +698,7 @@ function TicketModal({ draw_id }: modalProps) {
               <>
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70vh" }}>
                   <Loader />
-                  <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
+                  <Text style={{ marginLeft: "10px" }}>Cargando Sorteo dx...</Text>
                 </div>
               </>
             )}
@@ -893,6 +909,7 @@ function TicketModal({ draw_id }: modalProps) {
                                       setCheckedIndex(-1);
                                       form.reset();
                                       setModalOpened(true);
+                                      window.location.reload()
                                     }).catch(err => {
                                       setModalOpen(false);
                                       setActivex(0);
