@@ -43,33 +43,33 @@ function infinito({ }: Props) {
             <Divider my="sm" label="TICKETS" labelPosition="center" variant="dashed" />
 
             <Group
-              mt="20%"
+              mt="15%"
               position='center'
             >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">1</Text>
+                <Text  fz={35}>1</Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">2</Text>
+                <Text  fz={35}>2</Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">3</Text>
+                <Text  fz={35}>3</Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">4</Text>
+                <Text  fz={35}>4</Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">5</Text>
+                <Text  fz={35}>5</Text>
               </Card >
             </Group>
 
@@ -80,27 +80,27 @@ function infinito({ }: Props) {
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">6</Text>
+                <Text  fz={35}>6</Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">7</Text>
+                <Text  fz={35}>7</Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">8</Text>
+                <Text  fz={35}>8</Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">9</Text>
+                <Text  fz={35}>9</Text>
               </Card >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
+              <Card px={35} py={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
               >
-                <Text fz="xl">10</Text>
+                <Text  fz={35}>10</Text>
               </Card >
             </Group>
           </Grid.Col>
@@ -119,9 +119,18 @@ function infinito({ }: Props) {
 
                   radius={"xl"}
                 >
-                  <ScrollArea w={300} h={200}>
+                  <Grid>
+                    <Grid.Col span={1}><ScrollArea w="100%" h="78vh">
 
-                  </ScrollArea>
+                    </ScrollArea></Grid.Col>
+                    <Grid.Col span={12}><Group position="apart">
+                      <Text  fz={30} fw={900}>Jugadas: 0</Text>
+                      <Text  fz={30} fw={900}>Total: 0$</Text>
+                    </Group></Grid.Col>
+                  </Grid>
+
+
+
                 </Card>
               </Card>
             </Group>
