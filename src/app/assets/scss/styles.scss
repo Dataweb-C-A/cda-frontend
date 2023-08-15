@@ -4,6 +4,7 @@ body {
   font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
   overflow-x: hidden;
+  background-color: #1d1e30 !important;
 }
 
 .mantine-Drawer-root .mantine-Drawer-drawer::-webkit-scrollbar, body::-webkit-scrollbar {
@@ -147,11 +148,6 @@ select option:checked {
   }
 }
 
-@media (prefers-color-scheme: 'light') {
-  body {
-    background-color: #eef5f9!important;
-  }
-}
 .mantine-Spoiler-control {
   -webkit-tap-highlight-color: transparent;
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
