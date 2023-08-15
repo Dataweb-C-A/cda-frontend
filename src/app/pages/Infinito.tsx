@@ -5,12 +5,26 @@ import { Select, Group, Divider, Text, Title, NumberInputHandlers, ActionIcon, I
 type Props = {}
 
 function infinito({ }: Props) {
-
+  
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
   const [value, setValue] = useState<Date | null>(null);
   return (
     <>
+     <style>
+        {`
+          .hover-card {
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            background-color: #1d1d29;
+            cursor:pointer;
+          }
+          .hover-card:hover {
+            transform: scale(1.05); 
+            background-color: #1971C2; 
+           
+          }
+        `}
+      </style>
       <Navbar profiles={profiles} links={links} />
       <Card
         shadow="sm"
@@ -31,27 +45,27 @@ function infinito({ }: Props) {
               mt="30%"
               position='center'
             >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder>
                 1
               </Card >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder>
                 2
               </Card >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder>
                 3
               </Card >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder>
                 4
               </Card >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder>
                 5
@@ -62,27 +76,27 @@ function infinito({ }: Props) {
               position='center'
               mb='30%'
             >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder>
                 6
               </Card >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder >
                 7
               </Card >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder>
                 8
               </Card >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder>
                 9
               </Card >
-              <Card p="xl"  style={{ background: "#1d1d29" }} shadow="sm"
+              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
                 radius="lg"
                 withBorder >
                 10
@@ -93,7 +107,7 @@ function infinito({ }: Props) {
             <Group h="100%" position='center'>
 
               <Card
-                h="1050px"
+                h="100%"
                 w="100%"
                 bg="#1d1d29"
                 radius={"xl"}
