@@ -18,6 +18,8 @@ import Reporterifa from './app/pages/Reporterifa'
 import Draws from './app/pages/Draws'
 import Public from './app/pages/PublicDraws'
 import Cuadre from './app/pages/Cuadre'
+import Infinito from './app/pages/Infinito'
+
 
 type AppProps = {
   children: React.ReactNode
@@ -68,6 +70,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <AuthRouter path="/exchange" component={Exchange} isPrivate />
           <AuthRouter path="/draws" component={Draws} isPrivate />
           <AuthRouter path="/cuadre" component={Cuadre} isPrivate />
+          <AuthRouter path="/infinito" component={Infinito} isPrivate />
           <AuthRouter path="/" component={Home} isPrivate />
         </Switch>
       </App>

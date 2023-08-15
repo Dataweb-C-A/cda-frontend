@@ -1,4 +1,3 @@
-
 import Navbar from '../components/navbar'
 import { useState, useEffect, useRef } from 'react'
 import { Select, Group, Divider, Text, Title, NumberInputHandlers, ActionIcon, Image, Button, NumberInput, Card } from '@mantine/core';
