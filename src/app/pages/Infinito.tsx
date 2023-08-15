@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/navbar'
 import { links } from '../assets/data/links'
-import { Select, Group, Divider, Text, Title, NumberInputHandlers, ActionIcon, Image, Card, NumberInput, Grid, } from '@mantine/core';
+import { Select, Group, Divider, Text, Title, NumberInputHandlers, ScrollArea, ActionIcon, Image, Card, NumberInput, Grid, } from '@mantine/core';
 type Props = {}
 
 function infinito({ }: Props) {
-  
+
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
   const [value, setValue] = useState<Date | null>(null);
   return (
     <>
-     <style>
+      <style>
         {`
           .hover-card {
             transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
@@ -20,7 +20,8 @@ function infinito({ }: Props) {
           }
           .hover-card:hover {
             transform: scale(1.05); 
-            background-color: #1971C2; 
+            background-color: #a5d8ff;
+            color:black; 
            
           }
         `}
@@ -42,33 +43,33 @@ function infinito({ }: Props) {
             <Divider my="sm" label="TICKETS" labelPosition="center" variant="dashed" />
 
             <Group
-              mt="30%"
+              mt="20%"
               position='center'
             >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder>
-                1
+              >
+                <Text fz="xl">1</Text>
               </Card >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder>
-                2
+              >
+                <Text fz="xl">2</Text>
               </Card >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder>
-                3
+              >
+                <Text fz="xl">3</Text>
               </Card >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder>
-                4
+              >
+                <Text fz="xl">4</Text>
               </Card >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder>
-                5
+              >
+                <Text fz="xl">5</Text>
               </Card >
             </Group>
 
@@ -76,30 +77,30 @@ function infinito({ }: Props) {
               position='center'
               mb='30%'
             >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder>
-                6
+              >
+                <Text fz="xl">6</Text>
               </Card >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder >
-                7
+              >
+                <Text fz="xl">7</Text>
               </Card >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder>
-                8
+              >
+                <Text fz="xl">8</Text>
               </Card >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder>
-                9
+              >
+                <Text fz="xl">9</Text>
               </Card >
-              <Card p="xl" mb={15}  className="hover-card"  shadow="sm"
+              <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                withBorder >
-                10
+              >
+                <Text fz="xl">10</Text>
               </Card >
             </Group>
           </Grid.Col>
@@ -112,7 +113,16 @@ function infinito({ }: Props) {
                 bg="#1d1d29"
                 radius={"xl"}
               >
+                <Card
+                  h="100%"
+                  w="100%"
 
+                  radius={"xl"}
+                >
+                  <ScrollArea w={300} h={200}>
+
+                  </ScrollArea>
+                </Card>
               </Card>
             </Group>
           </Grid.Col>
