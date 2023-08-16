@@ -123,6 +123,9 @@ function infinito() {
                 <Text fz={35}>
                   1
                 </Text>
+                <Text fz={15}>
+                  10$
+                </Text>
 
               </Card >
 
@@ -135,6 +138,9 @@ function infinito() {
                   >
                 <Text fz={35}>
                   2
+                </Text>
+                <Text fz={15}>
+                  20$
                 </Text>
 
               </Card >
@@ -149,6 +155,9 @@ function infinito() {
                 <Text fz={35}>
                   3
                 </Text>
+                <Text fz={15}>
+                  30$
+                </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
@@ -160,6 +169,9 @@ function infinito() {
                 <Text fz={35}>
                   4
                 </Text>
+                <Text fz={15}>
+                  40$
+                </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
@@ -170,6 +182,9 @@ function infinito() {
                   >
                 <Text fz={35}>
                   5
+                </Text>
+                <Text fz={15}>
+                  50$
                 </Text>
               </Card >
 
@@ -192,6 +207,9 @@ function infinito() {
                 <Text fz={35}>
                   6
                 </Text>
+                <Text fz={15}>
+                  60$
+                </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
@@ -202,6 +220,9 @@ function infinito() {
                   >
                 <Text fz={35}>
                   7
+                </Text>
+                <Text fz={15}>
+                  70$
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
@@ -214,6 +235,9 @@ function infinito() {
                 <Text fz={35}>
                   8
                 </Text>
+                <Text fz={15}>
+                  80$
+                </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
@@ -225,6 +249,9 @@ function infinito() {
                 <Text fz={35}>
                   9
                 </Text>
+                <Text fz={15}>
+                  90$
+                </Text>
               </Card >
               <Card px={35} py={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
@@ -235,6 +262,9 @@ function infinito() {
                   >
                 <Text fz={35}>
                   10
+                </Text>
+                <Text fz={15}>
+                  100$
                 </Text>
 
               </Card >
