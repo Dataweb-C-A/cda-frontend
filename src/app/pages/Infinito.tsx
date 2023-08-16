@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Navbar from '../components/navbar'
 import { links } from '../assets/data/links'
 import axios from 'axios';
-import { Group, Flex, Divider, Text, Title, ScrollArea, Card, Grid, } from '@mantine/core';
+import { Group, Flex, Divider, Notification, Text, Title, ScrollArea, Card, Grid, } from '@mantine/core';
 type Props = {}
 
 function infinito({ }: Props) {
@@ -10,26 +10,48 @@ function infinito({ }: Props) {
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
   const [value, setValue] = useState<Date | null>(null)
-  const [quantity, setQuantity] = useState<number>(0)
-  
+  const [quantity, setQuantity] = useState<number | null>(null);
+
+
+  const [selectedQuantities, setSelectedQuantities] = useState<number[]>([]);
+  const [notificationVisible, setNotificationVisible] = useState(false);
+
+  const handleQuantityClick = (selectedQuantity: number) => {
+    axios.post('http://localhost:3000/to-infinity', {
+    id: selectedQuantity
+  })
+  .then(response => {
+    
+    console.log('Response:', response.data);
+  })
+  .catch(error => {
+    console.error('Error sending request:', error);
+  });
+    setSelectedQuantities(prevSelected => [...prevSelected, selectedQuantity]);
+    setNotificationVisible(true);
+    setTimeout(() => {
+      setNotificationVisible(false);
+    }, 2000);
+  }
+
   const apiUrl = 'https://api.rifamax.app/to-infinity';
 
-async function fetchData() {
-  const id = 1; 
+  async function fetchData() {
+    const id = 1;
 
-  try {
-    const response = await axios.get(apiUrl, {
-      params: {
-        id: id
-      }
-    });
+    try {
+      const response = await axios.get(apiUrl, {
+        params: {
+          id: id
+        }
+      });
 
-    const data = response.data;
-    console.log('Data:', data);
-  } catch (error) {
-    console.error('Error fetching data:', error);
+      const data = response.data;
+      console.log('Data:', data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
-}
   return (
     <>
       <style>
@@ -91,9 +113,7 @@ async function fetchData() {
 
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(1)
-                }}
+                onClick={() => handleQuantityClick(1)}
               >
                 <Text fz={35}>
                   1
@@ -103,9 +123,7 @@ async function fetchData() {
 
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(2)
-                }}
+                onClick={() => handleQuantityClick(2)}
               >
                 <Text fz={35}>
                   2
@@ -115,9 +133,7 @@ async function fetchData() {
 
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(3)
-                }}
+                onClick={() => handleQuantityClick(3)}
               >
                 <Text fz={35}>
                   3
@@ -125,9 +141,7 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(4)
-                }}
+                onClick={() => handleQuantityClick(4)}
               >
                 <Text fz={35}>
                   4
@@ -135,9 +149,7 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(5)
-                }}
+                onClick={() => handleQuantityClick(5)}
               >
                 <Text fz={35}>
                   5
@@ -155,9 +167,7 @@ async function fetchData() {
             >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(6)
-                }}
+                onClick={() => handleQuantityClick(6)}
               >
                 <Text fz={35}>
                   6
@@ -165,9 +175,7 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(7)
-                }}
+                onClick={() => handleQuantityClick(7)}
               >
                 <Text fz={35}>
                   7
@@ -175,9 +183,7 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(8)
-                }}
+                onClick={() => handleQuantityClick(8)}
               >
                 <Text fz={35}>
                   8
@@ -185,9 +191,7 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(9)
-                }}
+                onClick={() => handleQuantityClick(9)}
               >
                 <Text fz={35}>
                   9
@@ -195,9 +199,7 @@ async function fetchData() {
               </Card >
               <Card px={35} py={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => {
-                  setQuantity(10)
-                }}
+                onClick={() => handleQuantityClick(10)}
               >
                 <Text fz={35}>
                   10
@@ -227,11 +229,13 @@ async function fetchData() {
                   radius={"xl"}
                 >
                   <Grid>
-                    <Grid.Col span={1}>
+                    <Grid.Col span={12}>
                       <ScrollArea w="100%" h="78vh">
 
-                    </ScrollArea>
-
+                        {selectedQuantities.map((quantity, index) => (
+                          <Text key={index} fz={35}>{`Boton : ${quantity}`}</Text>
+                        ))}
+                      </ScrollArea>
                     </Grid.Col>
 
                     <Grid.Col span={12}>
@@ -241,7 +245,7 @@ async function fetchData() {
                       <Group position="apart">
 
                         <Text fz={25} fw={450}>Jugadas: 0</Text>
-                        
+
                         <Text fz={25} fw={450}>Total: 0$</Text>
                       </Group>
 
@@ -258,8 +262,25 @@ async function fetchData() {
           </Grid.Col>
 
         </Grid>
-
       </Card >
+      {notificationVisible && (
+        <Notification
+          color="green"
+          title="Realizado "
+          w={500}
+
+          onClose={() => setNotificationVisible(false)}
+          style={{
+            borderRadius: '8px',
+            border: '1px solid grey',
+            position: 'fixed',
+            top: '65px',
+            right: '20px'
+          }}
+        >
+          Se han creado tickets satisfactoriamente
+        </Notification>
+      )}
 
     </>
   )
