@@ -27,6 +27,7 @@ function infinito() {
     }).then(response => {
       setSold(prevSold => [...prevSold, ...response.data.places]);
       setNotificationVisible(true);
+      console.log(sold)
     })
       .catch(error => {
         console.error('Error sending request:', error);
@@ -327,7 +328,49 @@ function infinito() {
                       <Group position="apart">
 
                         <Text fz={25} fw={450}>Jugadas: {sold.length}</Text>
-                        <Button color="green">
+                        <Button color="green" onClick={() => {
+                          function send(): void {
+                            try {
+                              const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
+                        
+                              socket.onopen = function (): void {
+                                console.log('Conexión establecida.');
+                        
+                                const mensaje = (): void => {
+                                  const placeNumbersArray = sold.map(place => place.place_numbers);
+                                  const url = `https://api.rifamax.app/places/printer/infinity?draw_id=8&plays=[${placeNumbersArray}]&agency_id=${JSON.parse(localStorage.getItem('user') || '{}').id}`;
+                                
+                                  fetch(url)
+                                    .then(function (response: Response): Promise<string> {
+                                      return response.text();
+                                    })
+                                    .then(function (text: string): void {
+                                      socket.send(text);
+                                      socket.send('cut')
+                                      socket.send('cut')
+                                    });
+                                };
+                                mensaje();
+                              };
+                        
+                              socket.onmessage = function (event: MessageEvent): void {
+                                console.log('Mensaje recibido del servidor:', event.data);
+                              };
+                        
+                              socket.onerror = function (error: Event): void {
+                                console.error('Error en la conexión:', error);
+                              };
+                        
+                              socket.onclose = function (event: CloseEvent): void {
+                                console.log('Conexión cerrada:', event.code, event.reason);
+                              };
+                            } catch (e) {
+                              alert(JSON.stringify(e));
+                            }
+                          }
+
+                          send();
+                        }}>
                           Imprimir
                         </Button>
                         <Text fz={25} fw={450}>Total: {sold.length * 10}$</Text>
