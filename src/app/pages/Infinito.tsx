@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Navbar from '../components/navbar'
 import { links } from '../assets/data/links'
 import axios from 'axios';
-import { Group, Flex, Divider, Notification, Text, Title, ScrollArea, Card, Grid, } from '@mantine/core';
+import { Group, Flex, Divider, Button, Notification, Text, Title, ScrollArea, Card, Grid, } from '@mantine/core';
 
 interface IPlaces {
   draw_id: number,
@@ -13,6 +13,7 @@ interface IPlaces {
 
 function infinito() {
   const [profiles, setProfiles] = useState([])
+  const precio = 10
   const [selectedQuantities, setSelectedQuantities] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0)
   const [notificationVisible, setNotificationVisible] = useState(false);
@@ -20,16 +21,16 @@ function infinito() {
 
   const handleQuantityClick = (selectedQuantity: number) => {
     axios.post(`https://api.rifamax.app/to-infinity?quantity=${selectedQuantity}`, {
-    draw_id: 8,
-    quantity: selectedQuantity,
-    agency_id: JSON.parse(localStorage.getItem('user') || '{}').name
-  }).then(response => {
-    setSold(prevSold => [...prevSold, ...response.data.places]);
-    setNotificationVisible(true);
-  })
-  .catch(error => {
-    console.error('Error sending request:', error);
-  });
+      draw_id: 8,
+      quantity: selectedQuantity,
+      agency_id: JSON.parse(localStorage.getItem('user') || '{}').name
+    }).then(response => {
+      setSold(prevSold => [...prevSold, ...response.data.places]);
+      setNotificationVisible(true);
+    })
+      .catch(error => {
+        console.error('Error sending request:', error);
+      });
     setSelectedQuantities(selectedQuantity);
     setTimeout(() => {
       setNotificationVisible(false);
@@ -116,15 +117,16 @@ function infinito() {
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(1) 
-                  handleQuantityClick(1)}
+                  setQuantity(1)
+                  handleQuantityClick(1)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   1
                 </Text>
                 <Text fz={15}>
-                  10$
+                  {precio}$
                 </Text>
 
               </Card >
@@ -132,15 +134,16 @@ function infinito() {
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(2) 
-                  handleQuantityClick(2)}
+                  setQuantity(2)
+                  handleQuantityClick(2)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   2
                 </Text>
                 <Text fz={15}>
-                  20$
+                  {precio * 2}$
                 </Text>
 
               </Card >
@@ -148,43 +151,46 @@ function infinito() {
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(3) 
-                  handleQuantityClick(3)}
+                  setQuantity(3)
+                  handleQuantityClick(3)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   3
                 </Text>
                 <Text fz={15}>
-                  30$
+                  {precio * 3}$
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(4) 
-                  handleQuantityClick(4)}
+                  setQuantity(4)
+                  handleQuantityClick(4)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   4
                 </Text>
                 <Text fz={15}>
-                  40$
+                  {precio * 4}$
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(5) 
-                  handleQuantityClick(5)}
+                  setQuantity(5)
+                  handleQuantityClick(5)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   5
                 </Text>
                 <Text fz={15}>
-                  50$
+                  {precio * 5}$
                 </Text>
               </Card >
 
@@ -200,71 +206,76 @@ function infinito() {
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(6) 
-                  handleQuantityClick(6)}
+                  setQuantity(6)
+                  handleQuantityClick(6)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   6
                 </Text>
                 <Text fz={15}>
-                  60$
+                  {precio * 6}$
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(7) 
-                  handleQuantityClick(7)}
+                  setQuantity(7)
+                  handleQuantityClick(7)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   7
                 </Text>
                 <Text fz={15}>
-                  70$
+                  {precio * 7}$
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(8) 
-                  handleQuantityClick(8)}
+                  setQuantity(8)
+                  handleQuantityClick(8)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   8
                 </Text>
                 <Text fz={15}>
-                  80$
+                  {precio * 8}$
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(9) 
-                  handleQuantityClick(9)}
+                  setQuantity(9)
+                  handleQuantityClick(9)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   9
                 </Text>
                 <Text fz={15}>
-                  90$
+                  {precio * 9}$
                 </Text>
               </Card >
               <Card px={35} py={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
-                  setQuantity(10) 
-                  handleQuantityClick(10)}
+                  setQuantity(10)
+                  handleQuantityClick(10)
                 }
-                  >
+                }
+              >
                 <Text fz={35}>
                   10
                 </Text>
                 <Text fz={15}>
-                  100$
+                  {precio * 10}$
                 </Text>
 
               </Card >
@@ -294,7 +305,7 @@ function infinito() {
                     <Grid.Col span={12}>
                       <ScrollArea w="100%" h="78vh">
                         <Group position='center'>
-                          { 
+                          {
                             sold.length > 0 ? (
                               sold.map((quantity) => (
                                 <Card w="100%" bg={'#1d1e30'} mb={5}>
@@ -316,7 +327,9 @@ function infinito() {
                       <Group position="apart">
 
                         <Text fz={25} fw={450}>Jugadas: {sold.length}</Text>
-
+                        <Button color="green">
+                          Imprimir
+                        </Button>
                         <Text fz={25} fw={450}>Total: {sold.length * 10}$</Text>
                       </Group>
 
