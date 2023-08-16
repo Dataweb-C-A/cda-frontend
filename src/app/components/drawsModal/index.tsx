@@ -378,7 +378,6 @@ const form = useForm({
                   value="To-Infinity"
                   label="Infinito"
                   checked={checkedIndex === 3}
-                  disabled
                   onChange={() => {
                     form.getInputProps('draw_type').onChange('To-Infinity')
                     setCheckedIndex(3)
