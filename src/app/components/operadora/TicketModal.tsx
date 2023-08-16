@@ -13,7 +13,7 @@ type clientProps = {
   lastname: string
   username: string
   dni: string
-}
+}   
 
 interface IExchange {
   BsD: string;
@@ -266,7 +266,7 @@ function TicketModal({ draw_id }: modalProps) {
     } catch (e) {
       alert(JSON.stringify(e));
 
-      
+
     }
   }
 
@@ -529,26 +529,6 @@ function TicketModal({ draw_id }: modalProps) {
     }, 500)
   }, [currentPage, apiData]);
 
-
-  const loadPageData = async (page: number) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${page}`);
-      const data = await response.json();
-      setApiData(data.places);
-      setTotalPages(data.metadata.pages);
-      deselectSoldTickets();
-      setPaginationLoaded(true);
-    } catch (error) {
-      console.error('Error fetching API data:', error);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    loadPageData(currentPage);
-  }, [currentPage]);
-
   const getRandomTicket = async () => {
     const randomPage = Math.floor(Math.random() * totalPages) + 1;
     setCurrentPage(randomPage);
@@ -559,6 +539,54 @@ function TicketModal({ draw_id }: modalProps) {
     const randomTicket = availableTickets[randomTicketIndex];
     setActive([...active, randomTicket.place_number]);
   };
+  const loadPageData = async (page: number) => {
+    setLoadingPage(true); // Activar el loader
+    try {
+      const response = await fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${page}`);
+      const data = await response.json();
+      setApiData(data.places);
+      setTotalPages(data.metadata.pages);
+      deselectSoldTickets();
+      setPaginationLoaded(true);
+      setCurrentPage(page); // Actualizar la página actual después de cargar los datos
+      setDataLoaded(true); // Indicar que los datos se han cargado
+    } catch (error) {
+      console.error('Error fetching API data:', error);
+    }
+    setLoadingPage(false); // Desactivar el loader después de cargar los datos
+  };
+  
+  
+
+  useEffect(() => {
+    loadPageData(currentPage);
+  }, [currentPage]);
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+  
+  const [loadingPage, setLoadingPage] = useState(false);
+const [dataLoaded, setDataLoaded] = useState(false);
+
+
+useEffect(() => {
+  setLoading(true);
+  const timeout = setTimeout(() => {
+    axios.get(`https://api.rifamax.app/places?id=${draw_id}&page=${currentPage}`)
+      .then((response) => {
+        setApiData(response.data.places);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching API data:', error);
+        setLoading(false);
+      });
+  }, 2000);
+
+  return () => clearTimeout(timeout);
+}, [currentPage, draw_id]);
 
   return (
     <Card
@@ -570,7 +598,7 @@ function TicketModal({ draw_id }: modalProps) {
       style={{
         position: 'absolute',
         top: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? 5 : 70,
-        left: 0,  
+        left: 0,
         height: "100",
         background: theme.colors.dark[7]
       }}
@@ -589,7 +617,7 @@ function TicketModal({ draw_id }: modalProps) {
                   mr={10}
                   py={0}
                   size={40}
-                  onClick={() => setCurrentPage(currentPage - 1)}
+                  onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
                 >
                   <IconChevronLeft />
@@ -597,16 +625,23 @@ function TicketModal({ draw_id }: modalProps) {
 
 
                 {[...Array(totalPages)].map((_, index) => (
-                  <Button
-                    key={index}
-                    mr={10}
-                    variant="default" color="gray" size="xl" compact
-                    py={10}
-                    onClick={() => setCurrentPage(index + 1)}
-                    style={{ opacity: currentPage === index + 1 ? 1 : 0.6, background: currentPage === index + 1 ? theme.colors.blue[6] : 'rgba(0, 0, 0, 0)' }}
-                  >
-                    {index}
-                  </Button>
+                 <Button
+                 key={index}
+                 mr={10}
+                 variant="default"
+                 color="gray"
+                 size="xl"
+                 compact
+                 py={10}
+                 onClick={() => handlePageChange(index + 1)}
+                 style={{
+                   opacity: currentPage === index + 1 ? 1 : 0.6,
+                   background: currentPage === index + 1 ? theme.colors.blue[6] : 'rgba(0, 0, 0, 0)',
+                   cursor: loadingPage ? 'not-allowed' : 'pointer', // Deshabilitar botones si se está cargando
+                 }}
+               >
+                 {index}
+               </Button>
                 ))}
 
                 <ActionIcon
@@ -615,7 +650,7 @@ function TicketModal({ draw_id }: modalProps) {
                   color="gray"
                   py={0}
                   size={40}
-                  onClick={() => setCurrentPage(currentPage + 1)}
+                  onClick={() => handlePageChange(currentPage + 1)} 
                   disabled={currentPage === totalPages}
                 >
                   <IconChevronRight />
@@ -625,7 +660,7 @@ function TicketModal({ draw_id }: modalProps) {
 
 
               {/* buscar numero */}
-              <Input mt={25} 
+              <Input mt={25}
                 placeholder="Buscar Numero"
                 radius="xs"
                 rightSection={
@@ -651,58 +686,66 @@ function TicketModal({ draw_id }: modalProps) {
 
           )
         }
-        {loading && (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100" }}>
-            <Loader />
-            <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
-          </div>
-        )}
+      {loading && (
+        <Card
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            zIndex: 1,
+            position: "fixed",
+            top: 0,
+            left: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.9)",
+          }}
+        >
+          <Loader />
+          <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
+        </Card>
+      )}
       </Group>
       <br />
 
       <div className={classes.container}>
 
         <div className={classes.ticketsFlex}>
-          <Group key={counter}>
-            {/** card  ticket*/}
+        <Group key={counter}>
+  {dataLoaded ? (
+    apiData.map((item, index) => {
+      const cardStyle = {
+        width: `${70 / 9}%`,
+        margin: margin,
+      };
 
-            {apiData.length > 0 ? (
-              apiData.map((item, index) => {
-                const cardStyle = {
-                  width: `${70 / 9}%`,
-                  margin: margin,
-                };
+      return (
+        <>
+        <Card
+          px={8}
+          className={cx(classes.ticket, {
+            [classes.selected]: active.includes(item.place_number),
+            [classes.sold]: item.is_sold,
+          })}
+          key={index}
+          onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
+          style={cardStyle}
+        >
+          <div className={classes.ticketsTop}></div>
+          <Text ta="center" mt='0%'>{formatPlace(item.place_number, draws.tickets_count)}</Text>
+          <div className={classes.ticketsBottom}></div>
+        </Card>
+        </>
+      );
+    })
+  ) : (
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70vh" }}>
+      <Loader />
+      <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
+    </div>
+  )}
+</Group>
 
-                return (
-                  <>
-                    <Card
-                      px={8}
-
-                      className={cx(classes.ticket, {
-                        [classes.selected]: active.includes(item.place_number),
-                        [classes.sold]: item.is_sold,
-                      })}
-                      key={index}
-                      onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
-                      style={cardStyle}
-                    >
-                      <div className={classes.ticketsTop}></div>
-                      <Text ta="center" mt='0%'>{formatPlace(item.place_number, draws.tickets_count)}</Text>
-                      <div className={classes.ticketsBottom}></div>
-                    </Card>
-                  </>
-                );
-
-              })
-            ) : (
-              <>
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70vh" }}>
-                  <Loader />
-                  <Text style={{ marginLeft: "10px" }}>Cargando Sorteo dx...</Text>
-                </div>
-              </>
-            )}
-          </Group>
         </div>
 
 
@@ -710,7 +753,7 @@ function TicketModal({ draw_id }: modalProps) {
           <nav
             className={classes.stickyNav}
           >
-           
+
             {
               false ? (
                 <>
@@ -909,7 +952,6 @@ function TicketModal({ draw_id }: modalProps) {
                                       setCheckedIndex(-1);
                                       form.reset();
                                       setModalOpened(true);
-                                      window.location.reload()
                                     }).catch(err => {
                                       setModalOpen(false);
                                       setActivex(0);

@@ -247,7 +247,7 @@ function Operadora() {
 
     return (
       <Paper className={cx(classes.trigger)} onClick={() => handleLobby(lobby_id, new Date())}>
-        <div style={{ float: "right", top: '0px' }}>
+        <div style={{ float: "right", top: '1000px' }}>
           <Button
             size="xs"
             style={{ marginTop: '-100px', marginLeft: '10px', paddingLeft: 5 }}
