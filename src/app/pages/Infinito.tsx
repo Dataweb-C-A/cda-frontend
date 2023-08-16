@@ -3,32 +3,34 @@ import Navbar from '../components/navbar'
 import { links } from '../assets/data/links'
 import axios from 'axios';
 import { Group, Flex, Divider, Notification, Text, Title, ScrollArea, Card, Grid, } from '@mantine/core';
-type Props = {}
 
-function infinito({ }: Props) {
+interface IPlaces {
+  draw_id: number,
+  place_numbers: number;
+  sold_at: string | Date;
+  client_id: null
+}
 
-  const [users, setUsers] = useState<any>([])
+function infinito() {
   const [profiles, setProfiles] = useState([])
-  const [value, setValue] = useState<Date | null>(null)
-  const [quantity, setQuantity] = useState<number | null>(null);
-
-
-  const [selectedQuantities, setSelectedQuantities] = useState<number[]>([]);
+  const [selectedQuantities, setSelectedQuantities] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(0)
   const [notificationVisible, setNotificationVisible] = useState(false);
+  const [sold, setSold] = useState<IPlaces[] | []>([])
 
   const handleQuantityClick = (selectedQuantity: number) => {
-    axios.post('http://localhost:3000/to-infinity', {
-    id: selectedQuantity
-  })
-  .then(response => {
-    
-    console.log('Response:', response.data);
+    axios.post(`https://api.rifamax.app/to-infinity?quantity=${selectedQuantity}`, {
+    draw_id: 8,
+    quantity: selectedQuantity,
+    agency_id: JSON.parse(localStorage.getItem('user') || '{}').name
+  }).then(response => {
+    setSold(prevSold => [...prevSold, ...response.data.places]);
+    setNotificationVisible(true);
   })
   .catch(error => {
     console.error('Error sending request:', error);
   });
-    setSelectedQuantities(prevSelected => [...prevSelected, selectedQuantity]);
-    setNotificationVisible(true);
+    setSelectedQuantities(selectedQuantity);
     setTimeout(() => {
       setNotificationVisible(false);
     }, 2000);
@@ -113,8 +115,11 @@ function infinito({ }: Props) {
 
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(1)}
-              >
+                onClick={() => {
+                  setQuantity(1) 
+                  handleQuantityClick(1)}
+                }
+                  >
                 <Text fz={35}>
                   1
                 </Text>
@@ -123,8 +128,11 @@ function infinito({ }: Props) {
 
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(2)}
-              >
+                onClick={() => {
+                  setQuantity(2) 
+                  handleQuantityClick(2)}
+                }
+                  >
                 <Text fz={35}>
                   2
                 </Text>
@@ -133,24 +141,33 @@ function infinito({ }: Props) {
 
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(3)}
-              >
+                onClick={() => {
+                  setQuantity(3) 
+                  handleQuantityClick(3)}
+                }
+                  >
                 <Text fz={35}>
                   3
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(4)}
-              >
+                onClick={() => {
+                  setQuantity(4) 
+                  handleQuantityClick(4)}
+                }
+                  >
                 <Text fz={35}>
                   4
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(5)}
-              >
+                onClick={() => {
+                  setQuantity(5) 
+                  handleQuantityClick(5)}
+                }
+                  >
                 <Text fz={35}>
                   5
                 </Text>
@@ -167,40 +184,55 @@ function infinito({ }: Props) {
             >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(6)}
-              >
+                onClick={() => {
+                  setQuantity(6) 
+                  handleQuantityClick(6)}
+                }
+                  >
                 <Text fz={35}>
                   6
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(7)}
-              >
+                onClick={() => {
+                  setQuantity(7) 
+                  handleQuantityClick(7)}
+                }
+                  >
                 <Text fz={35}>
                   7
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(8)}
-              >
+                onClick={() => {
+                  setQuantity(8) 
+                  handleQuantityClick(8)}
+                }
+                  >
                 <Text fz={35}>
                   8
                 </Text>
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(9)}
-              >
+                onClick={() => {
+                  setQuantity(9) 
+                  handleQuantityClick(9)}
+                }
+                  >
                 <Text fz={35}>
                   9
                 </Text>
               </Card >
               <Card px={35} py={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
-                onClick={() => handleQuantityClick(10)}
-              >
+                onClick={() => {
+                  setQuantity(10) 
+                  handleQuantityClick(10)}
+                }
+                  >
                 <Text fz={35}>
                   10
                 </Text>
@@ -231,10 +263,19 @@ function infinito({ }: Props) {
                   <Grid>
                     <Grid.Col span={12}>
                       <ScrollArea w="100%" h="78vh">
-
-                        {selectedQuantities.map((quantity, index) => (
-                          <Text key={index} fz={35}>{`Boton : ${quantity}`}</Text>
-                        ))}
+                        <Group position='center'>
+                          { 
+                            sold.length > 0 ? (
+                              sold.map((quantity) => (
+                                <Card w="100%" bg={'#1d1e30'} mb={5}>
+                                  <Text key={quantity.place_numbers} fz={20} ta="center">{quantity.place_numbers} - 10$</Text>
+                                </Card>
+                              ))
+                            ) : (
+                              <Text ta="center" mt="70%">No hay tickets seleccionados</Text>
+                            )
+                          }
+                        </Group>
                       </ScrollArea>
                     </Grid.Col>
 
@@ -244,9 +285,9 @@ function infinito({ }: Props) {
 
                       <Group position="apart">
 
-                        <Text fz={25} fw={450}>Jugadas: 0</Text>
+                        <Text fz={25} fw={450}>Jugadas: {sold.length}</Text>
 
-                        <Text fz={25} fw={450}>Total: 0$</Text>
+                        <Text fz={25} fw={450}>Total: {sold.length * 10}$</Text>
                       </Group>
 
                     </Grid.Col>
