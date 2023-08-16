@@ -13,7 +13,7 @@ type clientProps = {
   lastname: string
   username: string
   dni: string
-}   
+}
 
 interface IExchange {
   BsD: string;
@@ -458,7 +458,7 @@ function TicketModal({ draw_id }: modalProps) {
     const ticket = apiData.find((item) => item.place_number === ticketNumber);
 
     if (ticket && ticket.is_sold) {
-      setErrorModalOpened(true); // Show error modal for sold ticket
+      setErrorModalOpened(true);
       setSearchTicket("");
       return;
     }
@@ -540,7 +540,7 @@ function TicketModal({ draw_id }: modalProps) {
     setActive([...active, randomTicket.place_number]);
   };
   const loadPageData = async (page: number) => {
-    setLoadingPage(true); // Activar el loader
+    setLoadingPage(true);
     try {
       const response = await fetch(`https://api.rifamax.app/places?id=${draw_id}&page=${page}`);
       const data = await response.json();
@@ -548,15 +548,15 @@ function TicketModal({ draw_id }: modalProps) {
       setTotalPages(data.metadata.pages);
       deselectSoldTickets();
       setPaginationLoaded(true);
-      setCurrentPage(page); // Actualizar la página actual después de cargar los datos
-      setDataLoaded(true); // Indicar que los datos se han cargado
+      setCurrentPage(page);
+      setDataLoaded(true);
     } catch (error) {
       console.error('Error fetching API data:', error);
     }
-    setLoadingPage(false); // Desactivar el loader después de cargar los datos
+    setLoadingPage(false);
   };
-  
-  
+
+
 
   useEffect(() => {
     loadPageData(currentPage);
@@ -566,27 +566,27 @@ function TicketModal({ draw_id }: modalProps) {
       setCurrentPage(newPage);
     }
   };
-  
+
   const [loadingPage, setLoadingPage] = useState(false);
-const [dataLoaded, setDataLoaded] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
 
-useEffect(() => {
-  setLoading(true);
-  const timeout = setTimeout(() => {
-    axios.get(`https://api.rifamax.app/places?id=${draw_id}&page=${currentPage}`)
-      .then((response) => {
-        setApiData(response.data.places);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching API data:', error);
-        setLoading(false);
-      });
-  }, 2000);
+  useEffect(() => {
+    setLoading(true);
+    const timeout = setTimeout(() => {
+      axios.get(`https://api.rifamax.app/places?id=${draw_id}&page=${currentPage}`)
+        .then((response) => {
+          setApiData(response.data.places);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching API data:', error);
+          setLoading(false);
+        });
+    }, 2000);
 
-  return () => clearTimeout(timeout);
-}, [currentPage, draw_id]);
+    return () => clearTimeout(timeout);
+  }, [currentPage, draw_id]);
 
   return (
     <Card
@@ -625,23 +625,23 @@ useEffect(() => {
 
 
                 {[...Array(totalPages)].map((_, index) => (
-                 <Button
-                 key={index}
-                 mr={10}
-                 variant="default"
-                 color="gray"
-                 size="xl"
-                 compact
-                 py={10}
-                 onClick={() => handlePageChange(index + 1)}
-                 style={{
-                   opacity: currentPage === index + 1 ? 1 : 0.6,
-                   background: currentPage === index + 1 ? theme.colors.blue[6] : 'rgba(0, 0, 0, 0)',
-                   cursor: loadingPage ? 'not-allowed' : 'pointer', // Deshabilitar botones si se está cargando
-                 }}
-               >
-                 {index}
-               </Button>
+                  <Button
+                    key={index}
+                    mr={10}
+                    variant="default"
+                    color="gray"
+                    size="xl"
+                    compact
+                    py={10}
+                    onClick={() => handlePageChange(index + 1)}
+                    style={{
+                      opacity: currentPage === index + 1 ? 1 : 0.6,
+                      background: currentPage === index + 1 ? theme.colors.blue[6] : 'rgba(0, 0, 0, 0)',
+                      cursor: loadingPage ? 'not-allowed' : 'pointer', // Deshabilitar botones si se está cargando
+                    }}
+                  >
+                    {index}
+                  </Button>
                 ))}
 
                 <ActionIcon
@@ -650,7 +650,7 @@ useEffect(() => {
                   color="gray"
                   py={0}
                   size={40}
-                  onClick={() => handlePageChange(currentPage + 1)} 
+                  onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
                 >
                   <IconChevronRight />
@@ -686,25 +686,25 @@ useEffect(() => {
 
           )
         }
-      {loading && (
-        <Card
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            zIndex: 1,
-            position: "fixed",
-            top: 0,
-            left: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.9)",
-          }}
-        >
-          <Loader />
-          <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
-        </Card>
-      )}
+        {loading && (
+          <Card
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
+              zIndex: 1,
+              position: "fixed",
+              top: 0,
+              left: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.9)",
+            }}
+          >
+            <Loader />
+            <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
+          </Card>
+        )}
       </Group>
       <br />
 
@@ -713,38 +713,53 @@ useEffect(() => {
         <div className={classes.ticketsFlex}>
         <Group key={counter}>
   {dataLoaded ? (
-    apiData.map((item, index) => {
-      const cardStyle = {
-        width: `${70 / 9}%`,
-        margin: margin,
-      };
+    apiData.length > 0 ? (
+      apiData.map((item, index) => {
+        const cardStyle = {
+          width: `${70 / 9}%`,
+          margin: margin,
+        };
 
-      return (
-        <>
-        <Card
-          px={8}
-          className={cx(classes.ticket, {
-            [classes.selected]: active.includes(item.place_number),
-            [classes.sold]: item.is_sold,
-          })}
-          key={index}
-          onClick={() => item.is_sold ? null : handleTickets(item.place_number)}
-          style={cardStyle}
-        >
-          <div className={classes.ticketsTop}></div>
-          <Text ta="center" mt='0%'>{formatPlace(item.place_number, draws.tickets_count)}</Text>
-          <div className={classes.ticketsBottom}></div>
-        </Card>
-        </>
-      );
-    })
+        return (
+          <>
+            <Card
+              px={8}
+              className={cx(classes.ticket, {
+                [classes.selected]: active.includes(item.place_number),
+                [classes.sold]: item.is_sold,
+              })}
+              key={index}
+              onClick={() => (item.is_sold ? null : handleTickets(item.place_number))}
+              style={cardStyle}
+            >
+              <div className={classes.ticketsTop}></div>
+              <Text ta="center" mt="0%">
+                {formatPlace(item.place_number, draws.tickets_count)}
+              </Text>
+              <div className={classes.ticketsBottom}></div>
+            </Card>
+          </>
+        );
+      })
+    ) : (
+      <Text ta="center">En mantenimiento</Text>
+    )
   ) : (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70vh" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "70vh",
+      }}
+    >
       <Loader />
       <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
     </div>
   )}
 </Group>
+
 
         </div>
 

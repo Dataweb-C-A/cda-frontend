@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Navbar from '../components/navbar'
 import { links } from '../assets/data/links'
+import axios from 'axios';
 import { Group, Flex, Divider, Text, Title, ScrollArea, Card, Grid, } from '@mantine/core';
 type Props = {}
 
@@ -9,6 +10,24 @@ function infinito({ }: Props) {
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
   const [value, setValue] = useState<Date | null>(null);
+  const apiUrl = 'https://api.rifamax.app/to-infinity';
+
+async function fetchData() {
+  const id = 1; 
+
+  try {
+    const response = await axios.get(apiUrl, {
+      params: {
+        id: id
+      }
+    });
+
+    const data = response.data;
+    console.log('Data:', data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
   return (
     <>
       <style>
