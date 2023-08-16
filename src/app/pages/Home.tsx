@@ -14,16 +14,16 @@ const Home: React.FC = () => {
 
   const theme = useMantineTheme();
   const history = useHistory();
-  
+
   useEffect(() => {
     axios.get('https://rifa-max.com/api/v1/rifas/stats', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then(res => {
-        setStats(res.data)
-      })
-      .catch(err => { 
+      setStats(res.data)
+    })
+      .catch(err => {
         console.log(err)
       })
     axios.get('https://rifa-max.com/api/v1/riferos', {
@@ -40,7 +40,7 @@ const Home: React.FC = () => {
 
     JSON.parse(localStorage.getItem('user') || '').id ? null : (
       history.push('/login')
-    ) 
+    )
   }, [])
 
   return (
@@ -100,20 +100,35 @@ const Home: React.FC = () => {
         {
           JSON.parse(localStorage.getItem('user') || '').role === "Taquilla" && (
             <Group ml={15} p={0} position='left' spacing={0}>
-              <Button mb={15} fz={20} variant='filled' bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} size="md" style={{ borderRadius: "5px 0 0 0", zIndex: 9 }}>
+              <Button
+                mb={15}
+             
+                fz={20}
+                radius="md"
+                variant='filled'
+                bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'}
+                c={theme.colorScheme === "dark" ? "#fff" : '#000'}
+                size="md"
+                style={{
+                 
+                  boxShadow: '0px 8px 12px rgba(0, 0, 0, 0.2)',
+                }}
+              >
                 <a
                   style={{
                     width: "100%",
                     height: "100%",
                     textDecoration: "none",
-                    paddingTop: "13px",
-                    color: theme.colorScheme === "dark" ? "#fff" : "#000"
+                    paddingTop: "10px",
+                    color: theme.colorScheme === "dark" ? "#fff" : "#000",
+                  
                   }}
                   href="/lobby"
                 >
-                Taquilla Rifamax
+                  Taquilla Rifamax
                 </a>
               </Button>
+
             </Group>
           )
         }
