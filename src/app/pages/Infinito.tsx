@@ -9,7 +9,9 @@ function infinito({ }: Props) {
 
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
-  const [value, setValue] = useState<Date | null>(null);
+  const [value, setValue] = useState<Date | null>(null)
+  const [quantity, setQuantity] = useState<number>(0)
+  
   const apiUrl = 'https://api.rifamax.app/to-infinity';
 
 async function fetchData() {
@@ -60,7 +62,7 @@ async function fetchData() {
         <Grid>
           <Grid.Col span={8}>
 
-            <Title order={1}>RIFAMAX 50 Y 50</Title>
+            <Title order={1}>Rifamax 50 & 50</Title>
             <Title order={3}>A beneficio de fundacion la salle</Title>
 
             <Divider
@@ -89,6 +91,9 @@ async function fetchData() {
 
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(1)
+                }}
               >
                 <Text fz={35}>
                   1
@@ -98,6 +103,9 @@ async function fetchData() {
 
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(2)
+                }}
               >
                 <Text fz={35}>
                   2
@@ -107,6 +115,9 @@ async function fetchData() {
 
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(3)
+                }}
               >
                 <Text fz={35}>
                   3
@@ -114,6 +125,9 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(4)
+                }}
               >
                 <Text fz={35}>
                   4
@@ -121,6 +135,9 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(5)
+                }}
               >
                 <Text fz={35}>
                   5
@@ -138,6 +155,9 @@ async function fetchData() {
             >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(6)
+                }}
               >
                 <Text fz={35}>
                   6
@@ -145,6 +165,9 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(7)
+                }}
               >
                 <Text fz={35}>
                   7
@@ -152,6 +175,9 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(8)
+                }}
               >
                 <Text fz={35}>
                   8
@@ -159,6 +185,9 @@ async function fetchData() {
               </Card >
               <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(9)
+                }}
               >
                 <Text fz={35}>
                   9
@@ -166,6 +195,9 @@ async function fetchData() {
               </Card >
               <Card px={35} py={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
+                onClick={() => {
+                  setQuantity(10)
+                }}
               >
                 <Text fz={35}>
                   10
