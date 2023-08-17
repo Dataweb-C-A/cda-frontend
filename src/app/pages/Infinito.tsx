@@ -348,7 +348,6 @@ function infinito() {
                                     .then(function (text: string): void {
                                       socket.send(text);
                                       socket.send('cut')
-                                      socket.send('cut')
                                       setSold([])
                                     });
                                 };
