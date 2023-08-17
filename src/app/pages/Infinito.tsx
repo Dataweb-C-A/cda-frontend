@@ -43,7 +43,7 @@ function infinito() {
     setNotificationErrorVisible(true)
     setTimeout(() => {
       setNotificationErrorVisible(false);
-    }, 2000);
+    }, 6000);
   }
 
   const apiUrl = 'https://api.rifamax.app/to-infinity';
