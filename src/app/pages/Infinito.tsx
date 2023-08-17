@@ -369,6 +369,7 @@ function infinito() {
                               socket.onerror = function (error: Event): void {
                                 console.error('Error en la conexión:', error);
                                 handlePrintError();
+                                setSold([])
                               };
                         
                               socket.onclose = function (event: CloseEvent): void {
@@ -405,8 +406,8 @@ function infinito() {
       </Card >
       {notificationErrorVisible && (
         <Notification
-          color="green"
-          title="Realizado "
+          color="red"
+          title="Error al imprimir"
           w={500}
           onClose={() => setNotificationErrorVisible(false)}
           style={{
@@ -416,7 +417,7 @@ function infinito() {
             right: '20px'
           }}
         >
-          No se ha podido imprimir los tickets, descargue el programa de impresion
+          No se ha podido imprimir los tickets, descargue el programa de impresión
         </Notification>
       )}
       {notificationVisible && (
