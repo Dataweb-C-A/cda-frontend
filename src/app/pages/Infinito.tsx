@@ -96,7 +96,7 @@ function infinito() {
               my="sm"
               label={
                 <>
-                  <Text fz={20}>TICKETS</Text>
+                  <Text fz={20}>Tickets</Text>
                 </>
               }
               labelPosition="center"
@@ -291,20 +291,21 @@ function infinito() {
             <Group h="100%" position='center'>
 
               <Card
-                h="100%"
+                h="85vh"
                 w="100%"
+                
                 bg="#1d1d29"
                 radius={"xl"}
               >
                 <Card
                   h="100%"
                   w="100%"
-
+                  
                   radius={"xl"}
                 >
                   <Grid>
                     <Grid.Col span={12}>
-                      <ScrollArea w="100%" h="78vh">
+                      <ScrollArea w="100%" h="70vh">
                         <Group position='center'>
                           {
                             sold.length > 0 ? (
@@ -314,7 +315,7 @@ function infinito() {
                                 </Card>
                               ))
                             ) : (
-                              <Text ta="center" mt="70%">No hay tickets seleccionados</Text>
+                              <Text ta="center" mt="5%">No hay tickets seleccionados</Text>
                             )
                           }
                         </Group>
@@ -348,6 +349,7 @@ function infinito() {
                                       socket.send(text);
                                       socket.send('cut')
                                       socket.send('cut')
+                                      setSold([])
                                     });
                                 };
                                 mensaje();
@@ -370,7 +372,10 @@ function infinito() {
                           }
 
                           send();
-                        }}>
+                          setSelectedQuantities(0);
+                        }}
+                        disabled={selectedQuantities === 0} 
+                        >
                           Imprimir
                         </Button>
                         <Text fz={25} fw={450}>Total: {sold.length * 10}$</Text>
