@@ -17,6 +17,7 @@ function infinito() {
   const [selectedQuantities, setSelectedQuantities] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0)
   const [notificationVisible, setNotificationVisible] = useState(false);
+  const [notificationErrorVisible, setNotificationErrorVisible] = useState(false);
   const [sold, setSold] = useState<IPlaces[] | []>([])
 
   const handleQuantityClick = (selectedQuantity: number) => {
@@ -35,6 +36,13 @@ function infinito() {
     setSelectedQuantities(selectedQuantity);
     setTimeout(() => {
       setNotificationVisible(false);
+    }, 2000);
+  }
+
+  const handlePrintError = () => {
+    setNotificationErrorVisible(true)
+    setTimeout(() => {
+      setNotificationErrorVisible(false);
     }, 2000);
   }
 
@@ -360,6 +368,7 @@ function infinito() {
                         
                               socket.onerror = function (error: Event): void {
                                 console.error('Error en la conexión:', error);
+                                handlePrintError();
                               };
                         
                               socket.onclose = function (event: CloseEvent): void {
@@ -394,6 +403,22 @@ function infinito() {
 
         </Grid>
       </Card >
+      {notificationErrorVisible && (
+        <Notification
+          color="green"
+          title="Realizado "
+          w={500}
+          onClose={() => setNotificationErrorVisible(false)}
+          style={{
+            borderRadius: '8px',
+            position: 'fixed',
+            top: '65px',
+            right: '20px'
+          }}
+        >
+          No se ha podido imprimir los tickets, descargue el programa de impresion
+        </Notification>
+      )}
       {notificationVisible && (
         <Notification
           color="green"
@@ -403,7 +428,6 @@ function infinito() {
           onClose={() => setNotificationVisible(false)}
           style={{
             borderRadius: '8px',
-            border: '1px solid grey',
             position: 'fixed',
             top: '65px',
             right: '20px'
