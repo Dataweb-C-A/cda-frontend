@@ -27,9 +27,9 @@ interface CurrencyData {
   denominations_in_cop: Denomination[];
 }
 const Cuadre = () => {
-
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
+  const [data, setData] = useState<Denomination[] | []>([])
   const [value, setValue] = useState<Date | null>(null);
   const [denominationsInBs, setDenominationsInBs] = useState<Denomination[]>([]);
   const [denominationsIncop, setDenominationsIncop] = useState<Denomination[]>([]);
@@ -47,23 +47,23 @@ const Cuadre = () => {
     });
   }, []);
 
-  
+
   const updateCuadre = () => {
-    
+
     denominationsIndollar.map((item) => {
       console.log(item)
       axios.put(`https://api.rifamax.app/quadres/${item.id}`, item)
-      .then((response) => {
-        console.log(response.data)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
+        .then((response) => {
+          console.log(response.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        });
     })
   };
-  
+
   const handleQuantityChange = (denominationId: number, newValue: number) => {
-    
+
     const index = denominationsInBs.findIndex((item) => item.id === denominationId);
     if (index !== -1) {
       const modifiedArray = [...modifiedDenominationsInBs];
@@ -111,21 +111,49 @@ const Cuadre = () => {
           <Divider my="sm" variant="dashed" />
 
           <Group position="apart" spacing="xl" mt={15}>
-            {denominationsInBs.map((item, index) => {
+            {denominationsInBs.map((item: Denomination) => {
               if (item.category === "CASH") {
                 return (
                   <Group w="100%" position="apart" spacing={0} key={item.id}>
                     <Text fz="xl">{item.label}</Text>
+                   
                     <NumberInput
-                      width="100%"
-                      value={item.quantity || 0}
-                      type="number"
-                      min={0}
-                      onChange={() => {
+  width="100%"
+  value={item.quantity || 0}
+  type="number"
+  min={0}
+  onChange={(changer: number) => {
+    setData((prevSold: Denomination[] | []) => {
+      const updatedData = [...prevSold];
+      const existingIndex = updatedData.findIndex(obj => obj.id === item.id);
 
-                      }}
-                      styles={{ input: { width: '70px', textAlign: 'center' } }}
-                    />
+      if (existingIndex !== -1) {
+        updatedData[existingIndex] = {
+          ...updatedData[existingIndex],
+          quantity: changer
+        };
+      } else {
+        const dataParser = {
+          id: item.id,
+          value: item.value,
+          short_value: item.short_value,
+          quantity: changer,
+          power: item.power,
+          ammount: item.ammount,
+          category: item.category,
+          total: item.total,
+          label: item.label
+        };
+        updatedData.push(dataParser);
+      }
+
+      console.log(updatedData);
+      return updatedData;
+    });
+  }}
+  styles={{ input: { width: '70px', textAlign: 'center' } }}
+/>
+
 
                     <Text fz="xl">{item.total} Bs.</Text>
                   </Group>
@@ -150,15 +178,41 @@ const Cuadre = () => {
 
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
-                        width="100%"
-                        defaultValue={item.ammount || 0}
-                        onChange={(value: number) => handleQuantityChange(item.id, value)}
-                        type='number'
-                        decimalSeparator=","
-                        min={0}
+  width="100%"
+  value={item.quantity || 0}
+  type="number"
+  min={0}
+  onChange={(changer: number) => {
+    setData((prevSold: Denomination[] | []) => {
+      const updatedData = [...prevSold];
+      const existingIndex = updatedData.findIndex(obj => obj.id === item.id);
 
-                        styles={{ input: { width: '150px', textAlign: 'center' } }}
-                      />
+      if (existingIndex !== -1) {
+        updatedData[existingIndex] = {
+          ...updatedData[existingIndex],
+          quantity: changer
+        };
+      } else {
+        const dataParser = {
+          id: item.id,
+          value: item.value,
+          short_value: item.short_value,
+          quantity: changer,
+          power: item.power,
+          ammount: item.ammount,
+          category: item.category,
+          total: item.total,
+          label: item.label
+        };
+        updatedData.push(dataParser);
+      }
+
+      console.log(updatedData);
+      return updatedData;
+    });
+  }}
+  styles={{ input: { width: '70px', textAlign: 'center' } }}
+/>
                     </Group>
                   );
                 }
@@ -208,12 +262,41 @@ const Cuadre = () => {
 
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
-                        width="100%"
-                        defaultValue={item.quantity || 0}
-                        type="number"
-                        min={0}
-                        styles={{ input: { width: '70px', textAlign: 'center' } }}
-                      />
+  width="100%"
+  value={item.quantity || 0}
+  type="number"
+  min={0}
+  onChange={(changer: number) => {
+    setData((prevSold: Denomination[] | []) => {
+      const updatedData = [...prevSold];
+      const existingIndex = updatedData.findIndex(obj => obj.id === item.id);
+
+      if (existingIndex !== -1) {
+        updatedData[existingIndex] = {
+          ...updatedData[existingIndex],
+          quantity: changer
+        };
+      } else {
+        const dataParser = {
+          id: item.id,
+          value: item.value,
+          short_value: item.short_value,
+          quantity: changer,
+          power: item.power,
+          ammount: item.ammount,
+          category: item.category,
+          total: item.total,
+          label: item.label
+        };
+        updatedData.push(dataParser);
+      }
+
+      console.log(updatedData);
+      return updatedData;
+    });
+  }}
+  styles={{ input: { width: '70px', textAlign: 'center' } }}
+/>
                       <Text fz="xl">{item.total} COP</Text>
                     </Group>
                   );
@@ -238,14 +321,41 @@ const Cuadre = () => {
 
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
-                        width="100%"
-                        defaultValue={item.ammount || 0}
-                        type='number'
+  width="100%"
+  value={item.quantity || 0}
+  type="number"
+  min={0}
+  onChange={(changer: number) => {
+    setData((prevSold: Denomination[] | []) => {
+      const updatedData = [...prevSold];
+      const existingIndex = updatedData.findIndex(obj => obj.id === item.id);
 
-                        min={0}
+      if (existingIndex !== -1) {
+        updatedData[existingIndex] = {
+          ...updatedData[existingIndex],
+          quantity: changer
+        };
+      } else {
+        const dataParser = {
+          id: item.id,
+          value: item.value,
+          short_value: item.short_value,
+          quantity: changer,
+          power: item.power,
+          ammount: item.ammount,
+          category: item.category,
+          total: item.total,
+          label: item.label
+        };
+        updatedData.push(dataParser);
+      }
 
-                        styles={{ input: { width: '150px', textAlign: 'center' } }}
-                      />
+      console.log(updatedData);
+      return updatedData;
+    });
+  }}
+  styles={{ input: { width: '70px', textAlign: 'center' } }}
+/>
                     </Group>
                   );
                 }
@@ -281,34 +391,54 @@ const Cuadre = () => {
           </Group>
           <Divider my="sm" variant="dashed" />
           <Group position="apart" spacing="xl" mt={15}>
-  {denominationsIndollar.map((item, index) => {
-    if (item.category === "CASH") {
-      return (
-        <Group w="100%" position="apart" spacing={0} key={item.id}>
-          <Text fz="xl">{item.label}</Text>
-          <NumberInput
-            width="100%"
-            defaultValue={item.quantity !== null ? item.quantity : 0}
-            type="number"
-            onChange={(newQuantity) => {
-              const updatedDenominations = [...denominationsIndollar];
-              updatedDenominations[index] = {
-                ...updatedDenominations[index],
-                quantity: newQuantity !== undefined ? newQuantity : null,
-              };
-              setDenominationsIndollar(updatedDenominations);
-              console.log(denominationsIndollar)
-            }}
-            min={0}
-            styles={{ input: { width: '70px', textAlign: 'center' } }}
-          />
-          <Text fz="xl">{item.total} $</Text>
-        </Group>
-      );
-    }
-    return null;
-  })}
-</Group>
+            {denominationsIndollar.map((item, index) => {
+              if (item.category === "CASH") {
+                return (
+                  <Group w="100%" position="apart" spacing={0} key={item.id}>
+                    <Text fz="xl">{item.label}</Text>
+                    <NumberInput
+  width="100%"
+  value={item.quantity || 0}
+  type="number"
+  min={0}
+  onChange={(changer: number) => {
+    setData((prevSold: Denomination[] | []) => {
+      const updatedData = [...prevSold];
+      const existingIndex = updatedData.findIndex(obj => obj.id === item.id);
+
+      if (existingIndex !== -1) {
+        updatedData[existingIndex] = {
+          ...updatedData[existingIndex],
+          quantity: changer
+        };
+      } else {
+        const dataParser = {
+          id: item.id,
+          value: item.value,
+          short_value: item.short_value,
+          quantity: changer,
+          power: item.power,
+          ammount: item.ammount,
+          category: item.category,
+          total: item.total,
+          label: item.label
+        };
+        updatedData.push(dataParser);
+      }
+
+      console.log(updatedData);
+      return updatedData;
+    });
+  }}
+  styles={{ input: { width: '70px', textAlign: 'center' } }}
+/>
+                    <Text fz="xl">{item.total} $</Text>
+                  </Group>
+                );
+              }
+              return null;
+            })}
+          </Group>
 
 
 
@@ -326,14 +456,41 @@ const Cuadre = () => {
 
                       <Text fz="xl">{item.label}</Text>
                       <NumberInput
-                        width="100%"
-                        defaultValue={item.ammount || 0}
-                        type='number'
-                        decimalSeparator=","
-                        min={0}
+  width="100%"
+  value={item.quantity || 0}
+  type="number"
+  min={0}
+  onChange={(changer: number) => {
+    setData((prevSold: Denomination[] | []) => {
+      const updatedData = [...prevSold];
+      const existingIndex = updatedData.findIndex(obj => obj.id === item.id);
 
-                        styles={{ input: { width: '150px', textAlign: 'center' } }}
-                      />
+      if (existingIndex !== -1) {
+        updatedData[existingIndex] = {
+          ...updatedData[existingIndex],
+          quantity: changer
+        };
+      } else {
+        const dataParser = {
+          id: item.id,
+          value: item.value,
+          short_value: item.short_value,
+          quantity: changer,
+          power: item.power,
+          ammount: item.ammount,
+          category: item.category,
+          total: item.total,
+          label: item.label
+        };
+        updatedData.push(dataParser);
+      }
+
+      console.log(updatedData);
+      return updatedData;
+    });
+  }}
+  styles={{ input: { width: '70px', textAlign: 'center' } }}
+/>
                     </Group>
                   );
                 }
