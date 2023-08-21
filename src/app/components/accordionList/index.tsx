@@ -23,7 +23,7 @@ import moment from "moment";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { IconDots } from "@tabler/icons";
 import { useStyles } from "./accordionList.styles";
-import { Message, Calendar, Printer, Ticket, OneTwoThree, Repeat, Number, Cash  } from "tabler-icons-react";
+import { Message, Calendar, Printer, Ticket, OneTwoThree, Repeat, Number, Cash } from "tabler-icons-react";
 import TicketsMocks from "../../mocks/tickets.mock";
 import axios from "axios";
 import { DatePicker } from "@mantine/dates";
@@ -323,55 +323,55 @@ export default function AccordionList({
           <hr />
           <form>
 
-          <DatePicker
-            mt={20}
-            label='Fecha de la rifa'
-            placeholder='Fecha de la rifa'
-            withAsterisk
-            size='md'
-            value={formAttributes.rifDate}
-            onChange={(date) => {
-              setFormAttributes({...formAttributes, rifDate: date || new Date() });
-            }}
-            fullWidth
-            rightSection={
-              <Calendar 
-                opacity={0.5}
-              />
-            }
-            minDate={new Date(moment().add(1, 'days').format('YYYY-MM-DD'))}
-            maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
-          />
-          <Grid>
-            <Grid.Col xs={6}>
-              <TextInput
-                mt={10}
-                label='Numeros'
-                type='number'
-                placeholder='Numeros'
-                withAsterisk
-                rightSection={<Number opacity={0.5} />}
-                size='md'
-                value={formAttributes.numbers}
-                onChange={(e) => {
-                  setFormAttributes({...formAttributes, numbers: e.target.value });
-                }}
-              />
-            </Grid.Col>
-            <Grid.Col xs={6}>
-              <TextInput
-                mt={10}
-                type="text"
-                disabled
-                placeholder="ZULIA 7A"
-                label="Loteria"
-                size="md"
-                rightSection={
-                  <Cash opacity={0.5} />
-                }
-              />
-            </Grid.Col>
-          </Grid>
+            <DatePicker
+              mt={20}
+              label='Fecha de la rifa'
+              placeholder='Fecha de la rifa'
+              withAsterisk
+              size='md'
+              value={formAttributes.rifDate}
+              onChange={(date) => {
+                setFormAttributes({ ...formAttributes, rifDate: date || new Date() });
+              }}
+              fullWidth
+              rightSection={
+                <Calendar
+                  opacity={0.5}
+                />
+              }
+              minDate={new Date(moment().add(1, 'days').format('YYYY-MM-DD'))}
+              maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
+            />
+            <Grid>
+              <Grid.Col xs={6}>
+                <TextInput
+                  mt={10}
+                  label='Numeros'
+                  type='number'
+                  placeholder='Numeros'
+                  withAsterisk
+                  rightSection={<Number opacity={0.5} />}
+                  size='md'
+                  value={formAttributes.numbers}
+                  onChange={(e) => {
+                    setFormAttributes({ ...formAttributes, numbers: e.target.value });
+                  }}
+                />
+              </Grid.Col>
+              <Grid.Col xs={6}>
+                <TextInput
+                  mt={10}
+                  type="text"
+                  disabled
+                  placeholder="ZULIA 7A"
+                  label="Loteria"
+                  size="md"
+                  rightSection={
+                    <Cash opacity={0.5} />
+                  }
+                />
+              </Grid.Col>
+            </Grid>
           </form>
           <Button
             fullWidth
@@ -449,7 +449,7 @@ export default function AccordionList({
       }).catch((err) => {
         console.log(err);
       })
-      
+
       return sendRifa
     }
 
@@ -640,7 +640,7 @@ export default function AccordionList({
                   c={
                     theme.colorScheme === 'dark' ? 'white' : 'light'
                   }
-                  style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`}}
+                  style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
                   variant="outline"
                   size='md'
                   p={13}
@@ -656,7 +656,7 @@ export default function AccordionList({
                   mt={10}
                   onClick={() => handleRepeatModal()}
                 >
-                  <Repeat size={14} style={{ marginTop: '6px'}} fontWeight={900} />
+                  <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
                 </Chip>
               </div>
             </Grid.Col>
@@ -670,30 +670,39 @@ export default function AccordionList({
             </Grid.Col>
             <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
 
-              <Stepper active={1} breakpoint="xs" w="60%">
+              <Stepper active={0} breakpoint="xs" w="60%">
                 <Stepper.Step>
                   <Group>
-                    <Button size="xs">
-                      Enviar a APP
+
+                    <Group>
+                      <Button ml={-50} size="xs">
+                        Enviar a APP
+                      </Button>
+                      <Button ml={-10} size="xs">
+                        Imprimir
+                      </Button>
+                    </Group>
+                    <NumberInput placeholder="Monto" hideControls w={75}>
+
+                    </NumberInput>
+
+                    <Button ml={65} size="xs">
+                      Pagado
                     </Button>
-                    <Button size="xs">
-                      Imprimir
+                    <Button ml={5} size="xs">
+                      No pagado
                     </Button>
                   </Group>
                 </Stepper.Step>
                 <Stepper.Step>
-                  <Button size="xs">
-                    Monto
-                  </Button>
+
                 </Stepper.Step>
                 <Stepper.Step>
-                  Step 3 content: Get full access
+
                 </Stepper.Step>
                 <Stepper.Step>
-                  Step 3 content: Get full access
                 </Stepper.Step>
                 <Stepper.Completed>
-                  Completed, click back button to get to previous step
                 </Stepper.Completed>
               </Stepper>
 

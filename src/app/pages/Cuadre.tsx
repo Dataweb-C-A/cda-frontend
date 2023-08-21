@@ -30,7 +30,7 @@ const Cuadre = () => {
   const [users, setUsers] = useState<any>([])
   const [profiles, setProfiles] = useState([])
   const [data, setData] = useState<Denomination[] | []>([])
-  const [value, setValue] = useState<Date | null>(null);
+  const [value, setValue] = useState<CurrencyData | any>({});
   const [denominationsInBs, setDenominationsInBs] = useState<Denomination[]>([]);
   const [denominationsIncop, setDenominationsIncop] = useState<Denomination[]>([]);
   const [denominationsIndollar, setDenominationsIndollar] = useState<Denomination[]>([]);
@@ -43,6 +43,7 @@ const Cuadre = () => {
         setDenominationsInBs(res.data[0].denominations_in_bsd.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
         setDenominationsIncop(res.data[0].denominations_in_cop.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
         setDenominationsIndollar(res.data[0].denominations_in_dollar.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
+        setValue(res.data[0])
       }).catch((err) => {
         console.log(err);
       });
@@ -130,7 +131,7 @@ const Cuadre = () => {
             spacing="xl"
           >
             <Text fz="xl">Bolivares </Text>
-            <Text fz="xl"> 200 Bs.  </Text>
+            <Text fz="xl"> {value.total_bsd} Bs.</Text>
           </Group>
 
           <Divider my="sm" variant="dashed" />
@@ -254,7 +255,7 @@ const Cuadre = () => {
           </Group>
           <Group position="apart" spacing="xl" mt={15}>
             <Text fz="xl">Total General</Text>
-            <Text fz="xl">200 Bs.</Text>
+            <Text fz="xl">{value.total_bsd} Bs.</Text>
 
           </Group>
 
