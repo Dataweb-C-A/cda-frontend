@@ -1,6 +1,6 @@
 import Navbar from '../components/navbar'
 import { useState, useEffect, useRef } from 'react'
-import { Select, Group, Divider, Text, Title, NumberInputHandlers, ActionIcon, Image, Button, NumberInput, Card } from '@mantine/core';
+import { Select, Group, Divider, Grid, Text, Title, NumberInputHandlers, ActionIcon, Image, Button, NumberInput, Card } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { links } from '../assets/data/links'
 import { IconCashBanknote } from '@tabler/icons-react';
@@ -39,7 +39,7 @@ const Cuadre = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      axios.get('https://api.rifamax.app/quadres?agency_id=221').then((res) => {
+      axios.get(`https://api.rifamax.app/quadres?agency_id=${JSON.parse(localStorage.getItem('user') || '{}').id}`).then((res) => {
         setDenominationsInBs(res.data[0].denominations_in_bsd.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
         setDenominationsIncop(res.data[0].denominations_in_cop.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
         setDenominationsIndollar(res.data[0].denominations_in_dollar.reverse().sort((a: Denomination, b: Denomination) => b.id - a.id));
@@ -49,19 +49,22 @@ const Cuadre = () => {
     }, 1000);
   }, [denominationsInBs, denominationsIncop, denominationsIndollar]);
 
-
-
   const updateCuadre = () => {
-
-    denominationsIndollar.map((item) => {
+    data.map((item) => {
       console.log(item)
-      axios.put(`https://api.rifamax.app/quadres/${item.id}`, item)
-        .then((response) => {
-          console.log(response.data)
-        })
-        .catch((error) => {
-          console.log(error)
-        });
+      axios.put(`https://api.rifamax.app/denominations/${item.id}`, { user_id: JSON.parse(localStorage.getItem('user') || '').id || 1, ...item }, {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
     })
   };
 
@@ -79,14 +82,34 @@ const Cuadre = () => {
     <>
       <Navbar profiles={profiles} links={links} />
 
-      <DatePicker
-        clearable
-        defaultValue={new Date()}
-        label="Seleccione fecha"
-        placeholder="Seleccione fecha"
-        ml={15}
-        mr={15}
-      />
+      <Grid>
+        <Grid.Col span={10}>
+          <DatePicker
+            clearable
+            defaultValue={new Date()}
+            label="Seleccione fecha"
+            placeholder="Seleccione fecha"
+            px={-1}
+            ml={15}
+          />
+        </Grid.Col>
+        <Grid.Col span={2}>
+
+          <Button
+            color="indigo"
+            size="md"
+            mr={15}
+            mt={25}
+            px={65}
+
+            compact
+            onClick={() => updateCuadre()}
+          >
+            Actualizar Cuadre
+          </Button>
+        </Grid.Col>
+      </Grid>
+
 
       <Group
         grow
@@ -99,7 +122,6 @@ const Cuadre = () => {
 
         <Card
           shadow="sm"
-          radius="lg"
           withBorder
         >
 
@@ -240,7 +262,7 @@ const Cuadre = () => {
 
         <Card
           shadow="sm"
-          radius="lg"
+
           withBorder
         >
           <Group
@@ -382,7 +404,6 @@ const Cuadre = () => {
 
         <Card
           shadow="sm"
-          radius="lg"
           withBorder
         >
           <Group
@@ -518,15 +539,7 @@ const Cuadre = () => {
       </Group>
 
       <Group position="center" mt={15}>
-        <Button
-          color="indigo"
-          size="xl"
-          radius="xl"
-          compact
-          onClick={() => updateCuadre()}
-        >
-          Actualizar Cuadre
-        </Button>
+
 
       </Group>
 
