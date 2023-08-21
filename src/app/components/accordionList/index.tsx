@@ -7,6 +7,7 @@ import {
   Chip,
   Text,
   Grid,
+  Group,
   Title,
   Button,
   Menu,
@@ -16,6 +17,7 @@ import {
   TextInput,
   useMantineTheme,
   NumberInput,
+  Stepper,
 } from "@mantine/core";
 import moment from "moment";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
@@ -512,7 +514,7 @@ export default function AccordionList({
         </Modal>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Accordion.Control {...props} />
-          <ActionIcon size="lg">
+          {/* <ActionIcon size="lg">
             <Menu
               position="top"
               trigger="hover"
@@ -568,8 +570,8 @@ export default function AccordionList({
                 )}
               </Menu.Dropdown>
             </Menu>
-          </ActionIcon>
-          {!status || !Pin ? (
+          </ActionIcon> */}
+          {/* {!status || !Pin ? (
             <Chip
               mr={10}
               ml={10}
@@ -604,7 +606,7 @@ export default function AccordionList({
                 </Text>
               </Chip>
             )
-          )}
+          )} */}
         </Box>
       </>
     );
@@ -629,7 +631,7 @@ export default function AccordionList({
       <Accordion.Item key={data.id} value={data.id.toString()}>
         <AccordionControl>
           <Grid>
-            <Grid.Col xs={12} sm={12} md={3} lg={2} xl={2}>
+            <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>
               <div style={{ display: 'flex', gap: "10px" }}>
                 <Badge
                   bg={
@@ -658,13 +660,43 @@ export default function AccordionList({
                 </Chip>
               </div>
             </Grid.Col>
-            <Grid.Col xs={12} sm={12} md={9} lg={10} xl={10}>
+            <Grid.Col xs={12} sm={12} md={12} lg={4} xl={4}>
               <Title order={5} ta="start" fw={620}>
                 {data.prize}
                 <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
                   {data.rifero}
                 </Text>
               </Title>
+            </Grid.Col>
+            <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
+
+              <Stepper active={1} breakpoint="xs" w="60%">
+                <Stepper.Step>
+                  <Group>
+                    <Button size="xs">
+                      Enviar a APP
+                    </Button>
+                    <Button size="xs">
+                      Imprimir
+                    </Button>
+                  </Group>
+                </Stepper.Step>
+                <Stepper.Step>
+                  <Button size="xs">
+                    Monto
+                  </Button>
+                </Stepper.Step>
+                <Stepper.Step>
+                  Step 3 content: Get full access
+                </Stepper.Step>
+                <Stepper.Step>
+                  Step 3 content: Get full access
+                </Stepper.Step>
+                <Stepper.Completed>
+                  Completed, click back button to get to previous step
+                </Stepper.Completed>
+              </Stepper>
+
             </Grid.Col>
           </Grid>
         </AccordionControl>
