@@ -634,7 +634,9 @@ export default function AccordionList({
     >
       <Accordion.Item key={data.id} value={data.id.toString()} style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
         <AccordionControl >
+        
         <div style={{ display: 'flex', gap: "10px" }}>
+          
                 <Badge
                   bg={
                     theme.colorScheme === 'dark' ? '#34354a' : 'light'
@@ -660,16 +662,13 @@ export default function AccordionList({
                 >
                   <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
                 </Chip>
-                <Title order={5} ta="start" fw={620} >
+                <Title order={5} ta="start" fw={620} mr={15} >
                 {data.prize}
                 <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
                   {data.rifero}
                 </Text>
               </Title>
-              </div>
-          
-              <Group my={15}>
-                <Stepper color="grey" active={0} breakpoint="xs" ml={1} w="100%" >
+                <Stepper color="grey" active={0} breakpoint="xs" w="60%" >
                   <Stepper.Step icon={<IconDeviceMobileMessage />} label={<Text px={10}><strong>Paso 1: </strong>Enviar a APP o Imprimir</Text>} description={
                     <Group px={10}>
                       <Button size="xs">
@@ -688,7 +687,7 @@ export default function AccordionList({
                           borderRadius: '0px 5px 5px 0px'
                         }}>
                           <Button size="xs">
-                            Pagado
+                            Pagar
                           </Button>
                         </Button>
                       </Group>
@@ -698,19 +697,14 @@ export default function AccordionList({
                     </Group>
                   } />
 
-                  <Stepper.Step icon={<IconHandFinger />} label={<Text px={10}><strong>Paso 3: Verificacion Finalizada</strong></Text>} description={
-                    <Group px={10}>
-                      <Input size="xs" type="number" placeholder="Monto" w={95} />
-                      <Button size="xs">
-                        Imprimir
-                      </Button>
-
-                    </Group>
-                  } />
+                 
                 </Stepper>
 
-              </Group>
+              
 
+              </div>
+          
+            
         </AccordionControl>
         <Accordion.Panel>{children}</Accordion.Panel>
       </Accordion.Item>

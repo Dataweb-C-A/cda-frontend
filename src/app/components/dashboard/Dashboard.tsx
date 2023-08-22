@@ -202,7 +202,7 @@ function Dashboard() {
           )}
           <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
             <Grid>
-              <Grid.Col md={5} sm={12}>
+              <Grid.Col md={9} sm={12}>
 
                 <Title>
                   Buscar rifa por fecha
@@ -259,7 +259,7 @@ function Dashboard() {
                   onChange={(value) => setCurrentPage(value)}
                 /> */}
               </Grid.Col>
-              <Grid.Col md={7} sm={12}>
+              <Grid.Col md={2} sm={12}>
                 <FormModal
                   variant="filled"
                   color="blue"
