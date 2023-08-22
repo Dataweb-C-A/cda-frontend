@@ -203,55 +203,53 @@ function Dashboard() {
           <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
             <Grid>
               <Grid.Col md={5} sm={12}>
-               
-                  <Title>
-                   Buscar rifa por fecha
-                  </Title>
-                <Group>
+
+                <Title>
+                  Buscar rifa por fecha
+                </Title>
+                <Group mb={15}>
                   <DatePicker
                     mt={20}
-                    mb={30}
+                    w="150px"
                     placeholder="Seleccionar fecha"
                     inputFormat="YYYY MMM DD"
                     label="Desde"
                     variant="filled"
-                    
+
                   />
-                   <DatePicker
+                  <DatePicker
                     mt={20}
-                    mb={30}
+                    w="150px"
                     placeholder="Seleccionar fecha"
                     inputFormat="YYYY MMM DD"
                     label="Hasta"
                     variant="filled"
-                    
+
                   />
-                  <Flex 
-                  mt={20}
-                   direction="column"
-                   >
-                    <Text >
-                      Filtrar
-                    </Text>
-                  <Input
-                    icon={<Search />}
-                    variant="filled"
-                    placeholder="Buscar por premio, rifero o número de premiado"
-                    radius="sm"
-                    size="sm"
-                    mt={0}
-                    mb={30}
-                    w="360px"
-                    
-                    value={searchValue}
-                    onChange={handleSearchChange}
-                  />
-                   </Flex>
-                   <Button
-                   mt={10}
-                   p={9}>
+
+                  <Input.Wrapper
+                    label="Filtrar por:"
+                    mt={20}
+                  >
+                    <Input
+
+                      variant="filled"
+                      placeholder="premio, rifero o número de premiado"
+                      radius="sm"
+                      size="sm"
+
+                      w="260px"
+
+                      value={searchValue}
+                      onChange={handleSearchChange}
+                    />
+                  </Input.Wrapper>
+
+                  <Button
+                    mt={40}
+                    p={7}>
                     buscar
-                   </Button>
+                  </Button>
                 </Group>
 
 

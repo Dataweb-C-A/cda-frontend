@@ -623,79 +623,6 @@ export default function AccordionList({
     setCurrent(repeat);
   };
 
-  const validateSteppers = () => {
-    if (!repeat.is_send && !repeat.pin) {
-      return(
-        <Stepper color="grey" active={0} breakpoint="xs" w="100%" >
-          <Stepper.Step icon={<IconDeviceMobileMessage />} label={<Text px={10}><strong>Paso 1: </strong>Enviar a APP o Imprimir</Text>} description={
-            <Group px={10}>
-              <Button size="xs">
-                APP
-              </Button>
-              <Button size="xs">
-                PDF
-              </Button>
-            </Group>
-          }/>
-           <Stepper.Step icon={<IconCurrencyDollar />} label={<Text px={10}><strong>Paso 2: </strong>Agregar Monto</Text>} description={
-            <Group px={10}>
-              <Group p={0} spacing={0}>
-                <Input size="xs" type="number" placeholder="Monto"/>
-                <Button size="xs" p={5} style={{
-                  borderRadius: '0px 5px 5px 0px'
-                }}>
-                  <IconChevronRight />
-                </Button>
-              </Group>
-            </Group>
-          }/>
-            <Stepper.Step icon={<IconHandFinger />} label={<Text px={10}><strong>Paso 3: </strong>Verificar pago del rifero</Text>} description={
-            <Group px={10}>
-            <Button size="xs">
-              Pagado
-            </Button>
-            <Button size="xs">
-              No pagado
-            </Button>
-          </Group>
-          }/>
-        </Stepper>
-      )
-    } else if (repeat.is_send && !repeat.pin) {
-      return (
-        <Stepper color="grey" active={0} breakpoint="xs" w="100%">
-          <Stepper.Step icon={<IconCurrencyDollar />} label={<Text px={10}><strong>Paso 2: </strong>Agregar Monto</Text>} description={
-            <Group px={10}>
-              <Group p={0} spacing={0}>
-                <Input size="xs" type="number" placeholder="Monto"/>
-                <Button size="xs" p={5} style={{
-                  borderRadius: '0px 5px 5px 0px'
-                }}>
-                  <IconChevronRight />
-                </Button>
-              </Group>
-            </Group>
-          }/>
-        </Stepper>
-      )
-    } else {
-      return (
-        <Stepper color="grey" active={0} breakpoint="xs" w="100%">
-          <Stepper.Step icon={<IconHandFinger />} label={<Text px={10}><strong>Paso 3: </strong>Verificar pago del rifero</Text>} description={
-            <Group px={10}>
-            <Button size="xs">
-              Pagado
-            </Button>
-            <Button size="xs">
-              No pagado
-            </Button>
-          </Group>
-          }/>
-        </Stepper>
-      )
-    }
-  }
-
   return (
     <Accordion 
       mx="auto"
@@ -737,7 +664,7 @@ export default function AccordionList({
               </div>
             </Grid.Col>
             <Grid.Col xs={12} sm={12} md={12} lg={4} xl={4}>
-              <Title order={5} ta="start" fw={620} ml={-175}>
+              <Title order={5} ta="start" fw={620} ml={-155}>
                 {data.prize}
                 <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
                   {data.rifero}
