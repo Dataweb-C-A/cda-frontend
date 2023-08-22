@@ -17,11 +17,13 @@ import {
   TextInput,
   useMantineTheme,
   NumberInput,
+  Card,
   Stepper,
+  Input,
 } from "@mantine/core";
 import moment from "moment";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
-import { IconDots } from "@tabler/icons";
+import { IconChevronRight, IconCurrencyDollar, IconDeviceMobileMessage, IconDots, IconHandFinger } from "@tabler/icons";
 import { useStyles } from "./accordionList.styles";
 import { Message, Calendar, Printer, Ticket, OneTwoThree, Repeat, Number, Cash } from "tabler-icons-react";
 import TicketsMocks from "../../mocks/tickets.mock";
@@ -621,14 +623,88 @@ export default function AccordionList({
     setCurrent(repeat);
   };
 
+  const validateSteppers = () => {
+    if (!repeat.is_send && !repeat.pin) {
+      return(
+        <Stepper color="grey" active={0} breakpoint="xs" w="100%" >
+          <Stepper.Step icon={<IconDeviceMobileMessage />} label={<Text px={10}><strong>Paso 1: </strong>Enviar a APP o Imprimir</Text>} description={
+            <Group px={10}>
+              <Button size="xs">
+                APP
+              </Button>
+              <Button size="xs">
+                PDF
+              </Button>
+            </Group>
+          }/>
+           <Stepper.Step icon={<IconCurrencyDollar />} label={<Text px={10}><strong>Paso 2: </strong>Agregar Monto</Text>} description={
+            <Group px={10}>
+              <Group p={0} spacing={0}>
+                <Input size="xs" type="number" placeholder="Monto"/>
+                <Button size="xs" p={5} style={{
+                  borderRadius: '0px 5px 5px 0px'
+                }}>
+                  <IconChevronRight />
+                </Button>
+              </Group>
+            </Group>
+          }/>
+            <Stepper.Step icon={<IconHandFinger />} label={<Text px={10}><strong>Paso 3: </strong>Verificar pago del rifero</Text>} description={
+            <Group px={10}>
+            <Button size="xs">
+              Pagado
+            </Button>
+            <Button size="xs">
+              No pagado
+            </Button>
+          </Group>
+          }/>
+        </Stepper>
+      )
+    } else if (repeat.is_send && !repeat.pin) {
+      return (
+        <Stepper color="grey" active={0} breakpoint="xs" w="100%">
+          <Stepper.Step icon={<IconCurrencyDollar />} label={<Text px={10}><strong>Paso 2: </strong>Agregar Monto</Text>} description={
+            <Group px={10}>
+              <Group p={0} spacing={0}>
+                <Input size="xs" type="number" placeholder="Monto"/>
+                <Button size="xs" p={5} style={{
+                  borderRadius: '0px 5px 5px 0px'
+                }}>
+                  <IconChevronRight />
+                </Button>
+              </Group>
+            </Group>
+          }/>
+        </Stepper>
+      )
+    } else {
+      return (
+        <Stepper color="grey" active={0} breakpoint="xs" w="100%">
+          <Stepper.Step icon={<IconHandFinger />} label={<Text px={10}><strong>Paso 3: </strong>Verificar pago del rifero</Text>} description={
+            <Group px={10}>
+            <Button size="xs">
+              Pagado
+            </Button>
+            <Button size="xs">
+              No pagado
+            </Button>
+          </Group>
+          }/>
+        </Stepper>
+      )
+    }
+  }
+
   return (
     <Accordion 
       mx="auto"
       variant="filled"
+      chevronPosition="left"
       classNames={classes}
       className={classes.root}
     >
-      <Accordion.Item key={data.id} value={data.id.toString()}>
+      <Accordion.Item key={data.id} value={data.id.toString()}   style={{ border: `0.5px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}>
         <AccordionControl >
           <Grid>
             <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>
@@ -661,7 +737,7 @@ export default function AccordionList({
               </div>
             </Grid.Col>
             <Grid.Col xs={12} sm={12} md={12} lg={4} xl={4}>
-              <Title order={5} ta="start" fw={620}>
+              <Title order={5} ta="start" fw={620} ml={-175}>
                 {data.prize}
                 <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
                   {data.rifero}
@@ -669,42 +745,48 @@ export default function AccordionList({
               </Title>
             </Grid.Col>
             <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
-
-              <Stepper color="grey" active={0} breakpoint="xs" w="80%">
-                <Stepper.Step>
-                  <Group>
-
-                    <Group>
-                      <Button ml={-70}  size="xs"  color="indigo">
-                        Enviar a APP
-                      </Button>
-                      <Button ml={-10}   size="xs"  color="indigo">
-                        Imprimir
-                      </Button>
-                    </Group>
-
-                    <NumberInput ml={105} placeholder="Monto" hideControls w={105}/>
-
-                    <Button ml={135}  size="xs" color="indigo">
-                      Pagado
-                    </Button>
-                    <Button ml={120}   size="xs" color="indigo">
-                      No pagado
-                    </Button>
-                  </Group>
-                </Stepper.Step>
-                <Stepper.Step>
-
-                </Stepper.Step>
-                <Stepper.Step>
-
-                </Stepper.Step>
-                <Stepper.Step>
-                </Stepper.Step>
-                <Stepper.Completed>
-                </Stepper.Completed>
-              </Stepper>
-
+              <Group ml={-555}>
+              <Stepper color="grey" active={0} breakpoint="xs" w="90%" >
+          <Stepper.Step icon={<IconDeviceMobileMessage />} label={<Text px={10}><strong>Paso 1: </strong>Enviar a APP o Imprimir</Text>} description={
+            <Group px={10}>
+              <Button size="xs">
+                APP
+              </Button>
+              <Button size="xs">
+                PDF
+              </Button>
+            </Group>
+          }/>
+           <Stepper.Step icon={<IconCurrencyDollar />} label={<Text px={10}><strong>Paso 2: </strong>Verificar pago</Text>} description={
+            <Group px={10}>
+              <Group p={0} spacing={0}>
+                <Input size="xs" type="number" placeholder="Monto"/>
+                <Button size="xs" p={5} style={{
+                  borderRadius: '0px 5px 5px 0px'
+                }}>
+                   <Button size="xs">
+              Pagado
+            </Button>
+                </Button>
+              </Group>
+              <Button size="xs">
+              No pagado
+            </Button>
+            </Group>
+          }/>
+           
+           <Stepper.Step icon={<IconHandFinger />} label={<Text px={10}><strong>Paso 3: Verificacion Finalizada</strong></Text>} description={
+            <Group px={10}>
+               <Input size="xs" type="number" placeholder="Monto" w={95}/>
+            <Button size="xs">
+              Imprimir ticket
+            </Button>
+           
+          </Group>
+          }/>
+        </Stepper>
+      
+              </Group>
             </Grid.Col>
           </Grid>
         </AccordionControl>

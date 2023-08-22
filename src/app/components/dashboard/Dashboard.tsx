@@ -9,8 +9,11 @@ import {
   Group,
   Button,
   Pagination,
+  Flex
 } from "@mantine/core";
 import AccordionList from "../accordionList";
+
+import { DatePicker } from '@mantine/dates';
 import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
 import HelpModalBody from "./HelpModal";
@@ -200,23 +203,59 @@ function Dashboard() {
           <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
             <Grid>
               <Grid.Col md={5} sm={12}>
-                <Title order={2} fw={500} mb={20}>
-                  Rifas
-                  <Text fw={300} fz={20}>
-                    Estado de las Rifas mensuales
-                  </Text>
-                </Title>
-                <Input
-                  icon={<Search />}
-                  variant="filled"
-                  placeholder="Buscar por premio, rifero o número de premiado"
-                  radius="sm"
-                  size="sm"
-                  mt={-15}
-                  mb={20}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                />
+               
+                  <Title>
+                   Buscar rifa por fecha
+                  </Title>
+                <Group>
+                  <DatePicker
+                    mt={20}
+                    mb={30}
+                    placeholder="Seleccionar fecha"
+                    inputFormat="YYYY MMM DD"
+                    label="Desde"
+                    variant="filled"
+                    
+                  />
+                   <DatePicker
+                    mt={20}
+                    mb={30}
+                    placeholder="Seleccionar fecha"
+                    inputFormat="YYYY MMM DD"
+                    label="Hasta"
+                    variant="filled"
+                    
+                  />
+                  <Flex 
+                  mt={20}
+                   direction="column"
+                   >
+                    <Text >
+                      Filtrar
+                    </Text>
+                  <Input
+                    icon={<Search />}
+                    variant="filled"
+                    placeholder="Buscar por premio, rifero o número de premiado"
+                    radius="sm"
+                    size="sm"
+                    mt={0}
+                    mb={30}
+                    w="360px"
+                    
+                    value={searchValue}
+                    onChange={handleSearchChange}
+                  />
+                   </Flex>
+                   <Button
+                   mt={10}
+                   p={9}>
+                    buscar
+                   </Button>
+                </Group>
+
+
+
                 <Pagination
                   total={Math.ceil(tickets.length / perPage)}
                   onChange={(value) => setCurrentPage(value)}

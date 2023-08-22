@@ -24,7 +24,7 @@ function infinito() {
     axios.post(`https://api.rifamax.app/to-infinity?quantity=${selectedQuantity}`, {
       draw_id: 8,
       quantity: selectedQuantity,
-      agency_id: JSON.parse(localStorage.getItem('user') || '{}').name
+      agency_id: JSON.parse(localStorage.getItem('user') || '{}').id
     }).then(response => {
       setSold(prevSold => [...prevSold, ...response.data.places]);
       setNotificationVisible(true);
