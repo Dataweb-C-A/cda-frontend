@@ -96,10 +96,6 @@ function Dashboard() {
   const getData = () => {
     axios
       .get(`https://rifa-max.com/api/v1/rifas/actives_no_tickets`, {
-        params: {
-          page: currentPage,
-          perPage: perPage,
-        },
         headers: {
           ContentType: "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -168,7 +164,6 @@ function Dashboard() {
   };
 
   const filteredTickets = tickets
-    .slice((currentPage - 1) * perPage, currentPage * perPage)
     .filter((ticket) => {
       if (!searchValue) {
         return true;
