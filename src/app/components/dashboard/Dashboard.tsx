@@ -93,7 +93,7 @@ function Dashboard() {
   const [perPage, setPerPage] = useState(10);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  
+
 
   const getData = () => {
     axios
@@ -156,6 +156,25 @@ function Dashboard() {
       document.removeEventListener("keydown", keyDownHandler);
     };
   }, []);
+  const filterByDate = () => {
+    const fromDate = startDate ? startDate.toISOString().split('T')[0] : '';
+    const toDate = endDate ? endDate.toISOString().split('T')[0] : '';
+
+    axios
+      .get(`https://rifa-max.com/api/v1/rifas/filter_by_date?from=${fromDate}&to=${toDate}`, {
+        headers: {
+          ContentType: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        setLoading(false);
+        setTickets(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     getData();
@@ -214,7 +233,8 @@ function Dashboard() {
                     inputFormat="YYYY/MM/DD"
                     label="Desde"
                     variant="filled"
-
+                    value={startDate}
+                    onChange={(date) => setStartDate(date)}
                   />
                   <DatePicker
                     w="150px"
@@ -222,7 +242,8 @@ function Dashboard() {
                     inputFormat="YYYY/MM/DD"
                     label="Hasta"
                     variant="filled"
-
+                    value={endDate}
+                    onChange={(date) => setEndDate(date)}
                   />
 
                   <Input.Wrapper
@@ -239,12 +260,13 @@ function Dashboard() {
                     />
                   </Input.Wrapper>
 
-                  {/* <Button
-                    mt={40}
+                  <Button
+                    mt={20}
+                    onClick={filterByDate}
                     p={7}>
-                    buscar
-                  </Button> */}
-                
+                    Filtrar
+                  </Button>
+
                 </Group>
 
 
@@ -255,7 +277,7 @@ function Dashboard() {
                 /> */}
               </Grid.Col>
               <Grid.Col md={2} sm={12}>
-              <FormModal
+                <FormModal
                   variant="filled"
                   color="blue"
                   style={{ float: "left", marginleft: '25px' }}
