@@ -631,7 +631,7 @@ export default function AccordionList({
       classNames={classes}
       className={classes.root}
     >
-      <Accordion.Item key={data.id} value={data.id.toString()}   style={{ border: `0.5px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}>
+      <Accordion.Item key={data.id} value={data.id.toString()}   style={{ border: `0.250pxsolid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
         <AccordionControl >
           <Grid>
             <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>

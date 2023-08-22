@@ -254,10 +254,10 @@ function Dashboard() {
 
 
 
-                <Pagination
+                {/* <Pagination
                   total={Math.ceil(tickets.length / perPage)}
                   onChange={(value) => setCurrentPage(value)}
-                />
+                /> */}
               </Grid.Col>
               <Grid.Col md={7} sm={12}>
                 <FormModal
