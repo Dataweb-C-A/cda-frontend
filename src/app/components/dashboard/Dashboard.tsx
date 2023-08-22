@@ -91,6 +91,8 @@ function Dashboard() {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [perPage, setPerPage] = useState(10);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   
 
   const getData = () => {
@@ -209,7 +211,7 @@ function Dashboard() {
                   <DatePicker
                     w="150px"
                     placeholder="Seleccionar fecha"
-                    inputFormat="YYYY MMM DD"
+                    inputFormat="YYYY/MM/DD"
                     label="Desde"
                     variant="filled"
 
@@ -217,7 +219,7 @@ function Dashboard() {
                   <DatePicker
                     w="150px"
                     placeholder="Seleccionar fecha"
-                    inputFormat="YYYY MMM DD"
+                    inputFormat="YYYY/MM/DD"
                     label="Hasta"
                     variant="filled"
 

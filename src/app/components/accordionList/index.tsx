@@ -637,7 +637,7 @@ export default function AccordionList({
           <div style={{ width: '100%', display: 'flex', gap: "10px" }}>
             <Grid w="100%">
               <Grid.Col xs={12} md={12} lg={4}>
-                <Group p={0} m={0} spacing={5} mb={10}>
+                <Group p={0} m={0} spacing={5} mb={10} mt={15}>
                   <Badge
                     bg={
                       theme.colorScheme === 'dark' ? '#34354a' : 'light'
@@ -663,13 +663,13 @@ export default function AccordionList({
                   >
                     <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
                   </Chip>
-                </Group>
-                <Title order={5} ta="start" fw={620} mr={15} >
+                <Title order={5} ta="start" fw={620} mt={5} ml={55} >
                   {data.prize}
                   <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
                     {data.rifero}
                   </Text>
                 </Title>
+                </Group>
               </Grid.Col>
               <Grid.Col xs={12} md={12} lg={8}>
                 <Stepper color="grey" active={0} breakpoint="xs" w="100%" mt={15}>
