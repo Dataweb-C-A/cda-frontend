@@ -203,13 +203,14 @@ function Dashboard() {
           <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
             <Grid>
               <Grid.Col md={9} sm={12}>
-
-                <Title>
-                  Buscar rifa por fecha
+                <Title order={2} fw={500} mb={20}>
+                  Rifas
+                  <Text fw={300} fz={20}>
+                    Estado de las Rifas diarias
+                  </Text>
                 </Title>
                 <Group mb={15}>
                   <DatePicker
-                    mt={20}
                     w="150px"
                     placeholder="Seleccionar fecha"
                     inputFormat="YYYY MMM DD"
@@ -218,7 +219,6 @@ function Dashboard() {
 
                   />
                   <DatePicker
-                    mt={20}
                     w="150px"
                     placeholder="Seleccionar fecha"
                     inputFormat="YYYY MMM DD"
@@ -229,27 +229,34 @@ function Dashboard() {
 
                   <Input.Wrapper
                     label="Filtrar por:"
-                    mt={20}
                   >
                     <Input
-
                       variant="filled"
                       placeholder="premio, rifero o número de premiado"
                       radius="sm"
                       size="sm"
-
                       w="260px"
-
                       value={searchValue}
                       onChange={handleSearchChange}
                     />
                   </Input.Wrapper>
 
-                  <Button
+                  {/* <Button
                     mt={40}
                     p={7}>
                     buscar
-                  </Button>
+                  </Button> */}
+                <FormModal
+                  variant="filled"
+                  color="blue"
+                  style={{ float: "right", marginTop: '25px' }}
+                  className="btn-rifa"
+                  onClick={() => setOpenForm((prevState) => !prevState)}
+                  onClose={() => closeForm()}
+                  open={openForm}
+                >
+                  Agregar Rifa
+                </FormModal>
                 </Group>
 
 
@@ -260,17 +267,6 @@ function Dashboard() {
                 /> */}
               </Grid.Col>
               <Grid.Col md={2} sm={12}>
-                <FormModal
-                  variant="filled"
-                  color="blue"
-                  style={{ float: "right" }}
-                  className="btn-rifa"
-                  onClick={() => setOpenForm((prevState) => !prevState)}
-                  onClose={() => closeForm()}
-                  open={openForm}
-                >
-                  Agregar Rifa
-                </FormModal>
               </Grid.Col>
             </Grid>
             {tickets.length === 0 ? (

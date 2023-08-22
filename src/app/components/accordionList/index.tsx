@@ -634,41 +634,45 @@ export default function AccordionList({
     >
       <Accordion.Item key={data.id} value={data.id.toString()} style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
         <AccordionControl >
-        
-        <div style={{ display: 'flex', gap: "10px" }}>
-          
-                <Badge
-                  bg={
-                    theme.colorScheme === 'dark' ? '#34354a' : 'light'
-                  }
-                  c={
-                    theme.colorScheme === 'dark' ? 'white' : 'light'
-                  }
-                  style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
-                  variant="outline"
-                  size='md'
-                  p={13}
-                  mt={10}
-                >
-                  {data.id}
-                </Badge>
-                <Chip
-                  color="blue"
-                  variant="outline"
-                  checked={false}
-                  size="sm"
-                  mt={10}
-                  onClick={() => handleRepeatModal()}
-                >
-                  <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
-                </Chip>
+          <div style={{ width: '100%', display: 'flex', gap: "10px" }}>
+            <Grid w="100%">
+              <Grid.Col xs={12} md={12} lg={4}>
+                <Group p={0} m={0} spacing={5} mb={10}>
+                  <Badge
+                    bg={
+                      theme.colorScheme === 'dark' ? '#34354a' : 'light'
+                    }
+                    c={
+                      theme.colorScheme === 'dark' ? 'white' : 'light'
+                    }
+                    style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
+                    variant="outline"
+                    size='md'
+                    p={13}
+                    mt={10}
+                  >
+                    {data.id}
+                  </Badge>
+                  <Chip
+                    color="blue"
+                    variant="outline"
+                    checked={false}
+                    size="sm"
+                    mt={10}
+                    onClick={() => handleRepeatModal()}
+                  >
+                    <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
+                  </Chip>
+                </Group>
                 <Title order={5} ta="start" fw={620} mr={15} >
-                {data.prize}
-                <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
-                  {data.rifero}
-                </Text>
-              </Title>
-                <Stepper color="grey" active={0} breakpoint="xs" w="60%" >
+                  {data.prize}
+                  <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
+                    {data.rifero}
+                  </Text>
+                </Title>
+              </Grid.Col>
+              <Grid.Col xs={12} md={12} lg={8}>
+                <Stepper color="grey" active={0} breakpoint="xs" w="100%" mt={15}>
                   <Stepper.Step icon={<IconDeviceMobileMessage />} label={<Text px={10}><strong>Paso 1: </strong>Enviar a APP o Imprimir</Text>} description={
                     <Group px={10}>
                       <Button size="xs">
@@ -696,15 +700,10 @@ export default function AccordionList({
                       </Button>
                     </Group>
                   } />
-
-                 
                 </Stepper>
-
-              
-
-              </div>
-          
-            
+              </Grid.Col>
+            </Grid>
+          </div>
         </AccordionControl>
         <Accordion.Panel>{children}</Accordion.Panel>
       </Accordion.Item>
