@@ -91,6 +91,7 @@ function Dashboard() {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [perPage, setPerPage] = useState(10);
+  
 
   const getData = () => {
     axios
@@ -246,17 +247,7 @@ function Dashboard() {
                     p={7}>
                     buscar
                   </Button> */}
-                <FormModal
-                  variant="filled"
-                  color="blue"
-                  style={{ float: "right", marginTop: '25px' }}
-                  className="btn-rifa"
-                  onClick={() => setOpenForm((prevState) => !prevState)}
-                  onClose={() => closeForm()}
-                  open={openForm}
-                >
-                  Agregar Rifa
-                </FormModal>
+                
                 </Group>
 
 
@@ -267,6 +258,17 @@ function Dashboard() {
                 /> */}
               </Grid.Col>
               <Grid.Col md={2} sm={12}>
+              <FormModal
+                  variant="filled"
+                  color="blue"
+                  style={{ float: "left", marginleft: '25px' }}
+                  className="btn-rifa"
+                  onClick={() => setOpenForm((prevState) => !prevState)}
+                  onClose={() => closeForm()}
+                  open={openForm}
+                >
+                  Agregar Rifa
+                </FormModal>
               </Grid.Col>
             </Grid>
             {tickets.length === 0 ? (
