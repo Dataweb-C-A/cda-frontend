@@ -622,14 +622,14 @@ export default function AccordionList({
   };
 
   return (
-    <Accordion
+    <Accordion 
       mx="auto"
       variant="filled"
       classNames={classes}
       className={classes.root}
     >
       <Accordion.Item key={data.id} value={data.id.toString()}>
-        <AccordionControl>
+        <AccordionControl >
           <Grid>
             <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>
               <div style={{ display: 'flex', gap: "10px" }}>
@@ -670,26 +670,25 @@ export default function AccordionList({
             </Grid.Col>
             <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
 
-              <Stepper active={0} breakpoint="xs" w="60%">
+              <Stepper color="grey" active={0} breakpoint="xs" w="80%">
                 <Stepper.Step>
                   <Group>
 
                     <Group>
-                      <Button ml={-50} size="xs">
+                      <Button ml={-70}  size="xs"  color="indigo">
                         Enviar a APP
                       </Button>
-                      <Button ml={-10} size="xs">
+                      <Button ml={-10}   size="xs"  color="indigo">
                         Imprimir
                       </Button>
                     </Group>
-                    <NumberInput placeholder="Monto" hideControls w={75}>
 
-                    </NumberInput>
+                    <NumberInput ml={105} placeholder="Monto" hideControls w={105}/>
 
-                    <Button ml={65} size="xs">
+                    <Button ml={135}  size="xs" color="indigo">
                       Pagado
                     </Button>
-                    <Button ml={5} size="xs">
+                    <Button ml={120}   size="xs" color="indigo">
                       No pagado
                     </Button>
                   </Group>
