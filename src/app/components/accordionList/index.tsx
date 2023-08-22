@@ -635,9 +635,9 @@ export default function AccordionList({
       <Accordion.Item key={data.id} value={data.id.toString()} style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
         <AccordionControl >
           <div style={{ width: '100%', display: 'flex', gap: "10px" }}>
-            <Grid w="100%">
+            <Grid p={0} m={0} w="100%">
               <Grid.Col xs={12} md={12} lg={4}>
-                <Group p={0} m={0} spacing={5} mb={10} mt={15}>
+                <Group p={0} ml={-5} m={0} spacing={5} mb={10} mt={15}>
                   <Badge
                     bg={
                       theme.colorScheme === 'dark' ? '#34354a' : 'light'
@@ -645,7 +645,7 @@ export default function AccordionList({
                     c={
                       theme.colorScheme === 'dark' ? 'white' : 'light'
                     }
-                    style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
+                    style={{ zIndex: 9999999, border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
                     variant="outline"
                     size='md'
                     p={13}
@@ -663,7 +663,7 @@ export default function AccordionList({
                   >
                     <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
                   </Chip>
-                <Title order={5} ta="start" fw={620} mt={5} ml={55} >
+                <Title order={5} ta="start" fw={620} mt={5} ml={30} >
                   {data.prize}
                   <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
                     {data.rifero}
