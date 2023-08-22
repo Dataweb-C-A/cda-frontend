@@ -634,10 +634,10 @@ export default function AccordionList({
     >
       <Accordion.Item key={data.id} value={data.id.toString()} style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
         <AccordionControl >
-          <div style={{ width: '100%', display: 'flex', gap: "10px" }}>
-            <Grid p={0} m={0} w="100%">
+          <div style={{ width: '100%', display: 'flex'}}>
+            <Grid p={0} mt={-28} m={0} w="100%">
               <Grid.Col xs={12} md={12} lg={4}>
-                <Group p={0} ml={-5} m={0} spacing={5} mb={10} mt={15}>
+                <Group p={0} m={0} spacing={5}mt={15}>
                   <Badge
                     bg={
                       theme.colorScheme === 'dark' ? '#34354a' : 'light'
