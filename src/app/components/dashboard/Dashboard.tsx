@@ -271,7 +271,7 @@ function Dashboard() {
                       Filtrar
                     </Button>
                     <Button
-                      mt={20.5}
+                      mt={20}
                       color="teal"
                       p={7}
                       fz={14}
