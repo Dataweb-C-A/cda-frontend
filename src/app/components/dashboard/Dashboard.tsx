@@ -156,6 +156,15 @@ function Dashboard() {
       document.removeEventListener("keydown", keyDownHandler);
     };
   }, []);
+
+  useEffect(() => {
+    getData();
+  }, [pageNumber, openForm]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+
   const filterByDate = () => {
     const fromDate = startDate ? startDate.toISOString().split('T')[0] : '';
     const toDate = endDate ? endDate.toISOString().split('T')[0] : '';
@@ -174,14 +183,6 @@ function Dashboard() {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  useEffect(() => {
-    getData();
-  }, [pageNumber, openForm]);
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
   };
 
   const filteredTickets = tickets
