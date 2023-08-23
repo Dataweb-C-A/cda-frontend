@@ -21,6 +21,7 @@ import { Search } from 'tabler-icons-react';
 import axios from "axios";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
+import { IconRepeat } from "@tabler/icons";
 
 interface IRifas {
   id: number;
@@ -89,8 +90,7 @@ function Dashboard() {
   const [openForm, setOpenForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [perPage, setPerPage] = useState(10);
+  const [reset, setReset] = useState<number>(0);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
@@ -159,16 +159,16 @@ function Dashboard() {
 
   useEffect(() => {
     getData();
-  }, [pageNumber, openForm]);
+  }, [openForm, reset]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
   const filterByDate = () => {
-    const fromDate = startDate ? startDate.toISOString().split('T')[0] : '';
-    const toDate = endDate ? endDate.toISOString().split('T')[0] : '';
-
+    const fromDate = startDate ? startDate.toISOString().split('T')[0] : moment().format('YYYY-MM-DD');
+    const toDate = endDate ? endDate.toISOString().split('T')[0] : moment().add(1, 'days').format('YYYY-MM-DD');
+    setLoading(true)
     axios
       .get(`https://rifa-max.com/api/v1/rifas/filter_by_date?from=${fromDate}&to=${toDate}`, {
         headers: {
@@ -231,7 +231,7 @@ function Dashboard() {
                   <DatePicker
                     w="150px"
                     placeholder="Seleccionar fecha"
-                    inputFormat="YYYY/MM/DD"
+                    inputFormat="YYYY-MM-DD"
                     label="Desde"
                     variant="filled"
                     value={startDate}
@@ -240,7 +240,7 @@ function Dashboard() {
                   <DatePicker
                     w="150px"
                     placeholder="Seleccionar fecha"
-                    inputFormat="YYYY/MM/DD"
+                    inputFormat="YYYY-MM-DD"
                     label="Hasta"
                     variant="filled"
                     value={endDate}
@@ -252,7 +252,7 @@ function Dashboard() {
                   >
                     <Input
                       variant="filled"
-                      placeholder="premio, rifero o número de premiado"
+                      placeholder="Premio, Rifero o número de premiado"
                       radius="sm"
                       size="sm"
                       w="260px"
@@ -260,13 +260,31 @@ function Dashboard() {
                       onChange={handleSearchChange}
                     />
                   </Input.Wrapper>
-
-                  <Button
-                    mt={20}
-                    onClick={filterByDate}
-                    p={7}>
-                    Filtrar
-                  </Button>
+                  <Group spacing={0}>
+                    <Button
+                      mt={20}
+                      onClick={() => filterByDate()}
+                      p={7}
+                      fz={14}
+                      style={{ borderRadius: '5px 0 0 5px' }}
+                    >
+                      Filtrar
+                    </Button>
+                    <Button
+                      mt={20.5}
+                      color="teal"
+                      p={7}
+                      fz={14}
+                      style={{ borderRadius: '0 5px 5px 0' }}
+                      onClick={() => {
+                        setEndDate(null)
+                        setStartDate(null)
+                        setReset(reset + 1)
+                      }}
+                    >
+                      <IconRepeat/>
+                    </Button>
+                  </Group>
 
                 </Group>
 
@@ -291,7 +309,7 @@ function Dashboard() {
                 </FormModal>
               </Grid.Col>
             </Grid>
-            {tickets.length === 0 ? (
+            {loading ? (
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
                 <Loader size="lg" />
               </div>
