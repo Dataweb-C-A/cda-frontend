@@ -21,7 +21,7 @@ import { Search } from 'tabler-icons-react';
 import axios from "axios";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
-import { IconRepeat } from "@tabler/icons";
+import { IconPlus, IconRepeat, IconX } from "@tabler/icons";
 
 interface IRifas {
   id: number;
@@ -246,7 +246,6 @@ function Dashboard() {
                     value={endDate}
                     onChange={(date) => setEndDate(date)}
                   />
-
                   <Input.Wrapper
                     label="Filtrar por:"
                   >
@@ -262,7 +261,7 @@ function Dashboard() {
                   </Input.Wrapper>
                   <Group spacing={0}>
                     <Button
-                      mt={20}
+                      mt={25}
                       onClick={() => filterByDate()}
                       p={7}
                       fz={14}
@@ -271,8 +270,8 @@ function Dashboard() {
                       Filtrar
                     </Button>
                     <Button
-                      mt={20}
-                      color="teal"
+                      mt={25}
+                      color="red"
                       p={7}
                       fz={14}
                       style={{ borderRadius: '0 5px 5px 0' }}
@@ -282,8 +281,25 @@ function Dashboard() {
                         setReset(reset + 1)
                       }}
                     >
-                      <IconRepeat/>
+                      <IconRepeat size={16}/>
                     </Button>
+                    <Group position="right" mt={25}>
+                      <FormModal
+                        variant="filled"
+                        color="blue"
+                        style={{ position: 'absolute', right: 155 }}
+                        leftIcon={<IconPlus />}
+                        className="btn-rifa"
+                        onClick={() => setOpenForm((prevState) => !prevState)}
+                        onClose={() => closeForm()}
+                        open={openForm}
+                      >
+                        Agregar Rifa
+                      </FormModal>
+                      <Button leftIcon={<IconX />} color='red' style={{ position: 'absolute', width: '130px', right: 15 }}>
+                        Cerrar día
+                      </Button>
+                    </Group>
                   </Group>
 
                 </Group>
@@ -296,17 +312,6 @@ function Dashboard() {
                 /> */}
               </Grid.Col>
               <Grid.Col md={2} sm={12}>
-                <FormModal
-                  variant="filled"
-                  color="blue"
-                  style={{ float: "left", marginleft: '25px' }}
-                  className="btn-rifa"
-                  onClick={() => setOpenForm((prevState) => !prevState)}
-                  onClose={() => closeForm()}
-                  open={openForm}
-                >
-                  Agregar Rifa
-                </FormModal>
               </Grid.Col>
             </Grid>
             {loading ? (

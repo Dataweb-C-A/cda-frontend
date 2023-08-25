@@ -23,7 +23,7 @@ import {
 } from "@mantine/core";
 import moment from "moment";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
-import { IconChevronRight, IconCurrencyDollar, IconDeviceMobileMessage, IconDots, IconHandFinger } from "@tabler/icons";
+import { IconCheck, IconChevronRight, IconCommand, IconCurrencyDollar, IconDeviceMobileMessage, IconDots, IconHandFinger, IconSkull, IconX } from "@tabler/icons";
 import { useStyles } from "./accordionList.styles";
 import { Message, Calendar, Printer, Ticket, OneTwoThree, Repeat, Number, Cash } from "tabler-icons-react";
 import TicketsMocks from "../../mocks/tickets.mock";
@@ -130,6 +130,12 @@ type AccordionProps = {
   dataPDF: PDFProps;
   children?: React.ReactNode;
 };
+
+interface IAmmoundModal {
+  message: string;
+  reason: 'ACCEPT' | 'REJECT';
+  ammount?: number | string;
+}
 
 export default function AccordionList({
   repeat,
@@ -528,6 +534,8 @@ export default function AccordionList({
   const [printModal, setPrintModal] = useState<boolean>(false)
   const [isAvailable, setIsAvailable] = useState<boolean>(true)
   const [Amount, setAmount] = useState('');
+  const [isAmount, setIsAmount] = useState(false);
+  const [reason, setReason] = useState<'ACCEPT' | 'REJECT'>('REJECT')
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -660,6 +668,46 @@ export default function AccordionList({
     return sendRifa
   }
 
+  const AmmountModal = ({message, reason, ammount}: IAmmoundModal) => {
+    return (
+      <Modal
+        title={<Title order={4}>{reason === 'ACCEPT' ? `Desea pagar la rifa por un monto de ${ammount}?` : 'Desea rechazar la rifa?'}</Title>}
+        size='md'
+        opened={isAmount}
+        centered
+        onClose={() => setIsAmount(false)}
+      >
+        {
+          reason === 'ACCEPT' ? (
+            <>
+              <Text mx={5} mb={20}>
+                {message}
+              </Text>
+              <Group w="100%">
+                <Button leftIcon={<IconCheck />} w="48%" color="teal">
+                  Aceptar
+                </Button>
+                <Button leftIcon={<IconX />} w="48%" color="red">
+                  Rechazar
+                </Button>
+              </Group>
+            </>
+          ) : (
+            <>
+              <Divider label="Estás seguro de tomar esta acción?" labelPosition="center" mb={15} />
+              <Text mx={5} mb={20}>
+                {message}
+              </Text>
+              <Button w="100%" color="red" leftIcon={<IconSkull />} rightIcon={<IconSkull />}>
+                Rechazar pago y bloquear rifero
+              </Button>
+            </>
+          )
+        }
+      </Modal>
+    )
+  }
+
   return (
     <Accordion
       mx="auto"
@@ -669,6 +717,11 @@ export default function AccordionList({
       classNames={classes}
       className={classes.root}
     >
+      <AmmountModal 
+        message={reason === 'ACCEPT' ? "Una vez realizado el pago de la rifa esta no podrá ser modificada, está seguro de realizar esta acción?" : "Una vez realizada el rifero será bloqueado y no podrá crear nuevas rifas hasta nuevo aviso."}
+        reason={reason}
+        ammount={Amount}
+      />
       <Modal
         opened={printModal}
         onClose={() => window.location.reload()}
@@ -792,15 +845,35 @@ export default function AccordionList({
                           value={Amount}
                           onChange={handleInputChange}
                         />
-                        <Button size="xs" disabled={data.verify || !data.status} style={{ borderRadius: '0px 5px 5px 0px' }}>
+                        <Button 
+                          size="xs" 
+                          onClick={() => { 
+                            setReason('ACCEPT')
+                            setIsAmount(true) 
+                          }} 
+                          disabled={data.verify || !data.status} 
+                          style={{ borderRadius: '0px 5px 5px 0px' }} 
+                          color="teal" 
+                          rightIcon={<IconCheck size={16}/>}
+                        >
                           Pagar
                         </Button>
                       </Group>
-                      <Button p={5} size="xs" disabled={data.verify || !data.status}>
+                      <Button 
+                        p={5} 
+                        size="xs" 
+                        disabled={data.verify || !data.status} 
+                        onClick={() => { 
+                          setReason('REJECT')
+                          setIsAmount(true) 
+                        }} 
+                        color='red' 
+                        leftIcon={<IconX size={16} />}
+                      >
                         No pagado
                       </Button>
-                      <Button p={5} size="xs" disabled={data.verify || !data.status}>
-                        de vuelto
+                      <Button p={5} size="xs" disabled={data.verify || !data.status} leftIcon={<IconCommand size={17} />}>
+                        Devuelto
                       </Button>
                     </Group>
                   } />

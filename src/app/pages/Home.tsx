@@ -51,7 +51,7 @@ const Home: React.FC = () => {
           links={links}
           expandScreen={true}
         />
-          {
+          {/* {
           JSON.parse(localStorage.getItem('user') || '').role === "Taquilla" && (
             <Group ml={15} p={0} position='left' mt={15} mb={-15} spacing={0}>
               <Button
@@ -84,7 +84,7 @@ const Home: React.FC = () => {
 
             </Group>
           )
-        }
+        } */}
         {/* <Group position="left" mb={10} mx={12} mt={10} spacing={0}>
           <Button size="sm" variant="filled" bg={theme.colorScheme === "dark" ? theme.colors.dark[6] : '#eee'} c={theme.colorScheme === "dark" ? "#fff" : '#000'} color="blue" disabled style={{
             , zIndex: 99999orderRadius: "5px 0 0 5px",

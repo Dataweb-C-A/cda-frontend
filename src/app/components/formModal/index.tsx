@@ -53,6 +53,11 @@ type FormProps = {
   rifero_id: number | string | null;
 }
 
+type IRiferos = {
+  id: number;
+  name: string;
+}
+
 export default function FormModal({
   variant,
   color,
@@ -68,7 +73,7 @@ export default function FormModal({
   const [formModal, setFormModal] = useState(false)
   const [active, setActive] = useState(0);
   const [money, setMoney] = useState<boolean>(false)
-  const [usersSelect, setUsersSelect] = useState<any>([])
+  const [usersSelect, setUsersSelect] = useState<IRiferos[]>([{id: 0, name: "Cargando..."}])
   const [actualDate, setActualDate] = useState<Date>(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))
   
   const validate = new Date(moment().format('YYYY-MM-DD 19:30:00'))
@@ -86,7 +91,7 @@ export default function FormModal({
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   useEffect(() => {
-    axios.get('https://rifa-max.com/api/v1/riferos', {
+    axios.get('https://rifa-max.com/ui/index', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -340,14 +345,15 @@ export default function FormModal({
                   <Grid.Col span={12}>
                     <Select
                       label='Rifero'
-                      placeholder='Rifero'
+                      placeholder={usersSelect[0].id == 0 ? 'Cargando...' : 'Rifero'}
                       withAsterisk
                       size='md'
+                      disabled={usersSelect[0].id == 0 ? true : false}
                       error={form.errors.rifero_id}
                       data={
                         usersSelect.map((user: any) => {
                           return {
-                            label: user.user.name,
+                            label: user.name,
                             value: user.id
                           }
                         }
