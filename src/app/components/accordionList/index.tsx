@@ -680,18 +680,37 @@ export default function AccordionList({
                 w='100%'
                 label="Monto a pagar"
                 my={10}
-                type="number"
+                type="text"
                 placeholder="Monto"
                 value={Amount}
-                onChange={(e) => {  
-                  setAmount(e.target.value);  
-                  setIsInputEmpty(e.target.value === "");
-                  const numericValue = parseFloat(e.target.value);
-                  setIsInputValid(!isNaN(numericValue) && numericValue > 0);
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+
+
+                  const sanitizedValue = inputValue.replace(/-/g, '');
+
+                  const numericValue = parseFloat(sanitizedValue);
+
+                  if (!isNaN(numericValue) && numericValue > 0) {
+                    setAmount(sanitizedValue);
+                    setIsInputEmpty(false);
+                    setIsInputValid(true);
+                  } else {
+                    setAmount('');
+                    setIsInputEmpty(true);
+                    setIsInputValid(false);
+                  }
                 }}
               />
+
+
               <Group w="100%">
-                <Button leftIcon={<IconCheck />} w="48%" color="teal" disabled={isNaN(parseFloat(Amount)) && parseFloat(Amount) < 0}>
+                <Button
+                  leftIcon={<IconCheck />}
+                  w="48%"
+                  color="teal"
+                  disabled={isInputEmpty || !isInputValid}
+                >
                   Aceptar
                 </Button>
                 <Button leftIcon={<IconX />} w="48%" color="red">
@@ -850,7 +869,7 @@ export default function AccordionList({
                             setReason('ACCEPT');
                             setIsAmount(true);
                           }}
-                          disabled={data.verify || !data.status }
+                          disabled={data.verify || !data.status}
                           color="teal"
                           leftIcon={<IconCheck size={16} />}
                         >
