@@ -675,6 +675,7 @@ export default function AccordionList({
               <Text mx={5} mb={0}>
                 {message}
               </Text>
+              
               <TextInput
                 size="xs"
                 w='100%'
@@ -686,8 +687,13 @@ export default function AccordionList({
                 onChange={(e) => {
                   const inputValue = e.target.value;
 
+                  let sanitizedValue = inputValue.replace(/[^0-9.]/g, '');
 
-                  const sanitizedValue = inputValue.replace(/-/g, '');
+                  const parts = sanitizedValue.split('.');
+                  if (parts.length > 2) {
+                    parts.pop();
+                    sanitizedValue = parts.join('.');
+                  }
 
                   const numericValue = parseFloat(sanitizedValue);
 
