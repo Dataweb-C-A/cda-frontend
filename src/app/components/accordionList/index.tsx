@@ -706,8 +706,6 @@ export default function AccordionList({
                   type="number"
                   onChange={(e) => { 
                     setValue(parseFloat(e.target.value))
-                    console.log(value)
-                    console.log()
                   }}
                 />
                 <Group w="100%">
