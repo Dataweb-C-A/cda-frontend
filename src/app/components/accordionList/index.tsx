@@ -135,7 +135,7 @@ type AccordionProps = {
 interface IAmmoundModal {
   message: string;
   reason: 'ACCEPT' | 'REJECT';
-  ammount?: number | string;
+  draw_id: string | number;
 }
 
 export default function AccordionList({
@@ -534,12 +534,8 @@ export default function AccordionList({
   const [openSendModal, setOpenSendModal] = useState<boolean>(false)
   const [printModal, setPrintModal] = useState<boolean>(false)
   const [isAvailable, setIsAvailable] = useState<boolean>(true)
-  const [Amount, setAmount] = useState('');
   const [isAmount, setIsAmount] = useState(false);
   const [reason, setReason] = useState<'ACCEPT' | 'REJECT'>('REJECT')
-  const [isInputEmpty, setIsInputEmpty] = useState(true);
-  const [isInputValid, setIsInputValid] = useState(false);
-
 
   const [rifaTicket, setRifaTicket] = useState<RifaTicketsProps[]>([
     {
@@ -660,10 +656,12 @@ export default function AccordionList({
     return sendRifa
   }
 
-  const AmmountModal = ({ message, reason, ammount }: IAmmoundModal) => {
+  const AmmountModal = ({ message, reason, draw_id }: IAmmoundModal) => {
+    const [value, setValue] = useState<number>(0)
+    
     return (
       <Modal
-        title={<Title order={4}>{reason === 'ACCEPT' ? `Desea pagar la rifa por un monto de ${ammount}?` : 'Desea rechazar la rifa?'}</Title>}
+        title={<Title order={4}>{reason === 'ACCEPT' ? `Desea pagar la rifa?` : 'Desea rechazar la rifa?'}</Title>}
         size='md'
         opened={isAmount}
         centered
@@ -675,54 +673,58 @@ export default function AccordionList({
               <Text mx={5} mb={0}>
                 {message}
               </Text>
-              
-              <TextInput
-                size="xs"
-                w='100%'
-                label="Monto a pagar"
-                my={10}
-                type="text"
-                placeholder="Monto"
-                value={Amount}
-                onChange={(e) => {
-                  const inputValue = e.target.value;
-
-                  let sanitizedValue = inputValue.replace(/[^0-9.]/g, '');
-
-                  const parts = sanitizedValue.split('.');
-                  if (parts.length > 2) {
-                    parts.pop();
-                    sanitizedValue = parts.join('.');
-                  }
-
-                  const numericValue = parseFloat(sanitizedValue);
-
-                  if (!isNaN(numericValue) && numericValue > 0) {
-                    setAmount(sanitizedValue);
-                    setIsInputEmpty(false);
-                    setIsInputValid(true);
-                  } else {
-                    setAmount('');
-                    setIsInputEmpty(true);
-                    setIsInputValid(false);
-                  }
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  axios
+                    .put(
+                      `https://rifa-max.com/api/v1/rifas/pin/${draw_id}`,
+                      {
+                        pin: value,
+                      },
+                      {
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        },
+                      }
+                    )
+                    .then(() => {
+                      setIsAmount(false);
+                      window.location.reload();
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
                 }}
-              />
-
-
-              <Group w="100%">
-                <Button
-                  leftIcon={<IconCheck />}
-                  w="48%"
-                  color="teal"
-                  disabled={isInputEmpty || !isInputValid}
-                >
-                  Aceptar
-                </Button>
-                <Button leftIcon={<IconX />} w="48%" color="red">
-                  Rechazar
-                </Button>
-              </Group>
+              >
+                <TextInput
+                  placeholder="PIN"
+                  maxLength={12}
+                  my={15}
+                  value={value}
+                  type="number"
+                  onChange={(e) => { 
+                    setValue(parseFloat(e.target.value))
+                    console.log(value)
+                    console.log()
+                  }}
+                />
+                <Group w="100%">
+                  <Button
+                    type="submit"
+                    leftIcon={<IconCheck />}
+                    w="48%"
+                    color="teal"
+                    disabled={value <= 0 || isNaN(value)}
+                  >
+                    Aceptar
+                  </Button>
+                  <Button leftIcon={<IconX />} w="48%" color="red">
+                    Rechazar
+                  </Button>
+                </Group>
+              </form>
             </>
           ) : (
             <>
@@ -752,7 +754,7 @@ export default function AccordionList({
       <AmmountModal
         message={reason === 'ACCEPT' ? "Una vez realizado el pago de la rifa esta no podrá ser modificada, está seguro de realizar esta acción?" : "Una vez realizada el rifero será bloqueado y no podrá crear nuevas rifas hasta nuevo aviso."}
         reason={reason}
-        ammount={Amount}
+        draw_id={data.id}
       />
       <Modal
         opened={printModal}
