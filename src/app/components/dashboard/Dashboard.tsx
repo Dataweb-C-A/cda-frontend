@@ -117,7 +117,7 @@ function Dashboard() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [closeDay, setCloseDay] = useState<boolean>(false);
-  const [closedData, setClosedData] = useState<IClosed | {}>({})
+  const [closedData, setClosedData] = useState<IClosed | {}>({});
 
   useEffect(() => {
     axios.get("https://rifa-max.com/api/v1/rifas/closed", {
@@ -223,19 +223,17 @@ function Dashboard() {
         console.log(error);
       });
   };
-  const elements = [
-    { serie: 6, app_status: 12.011, verification: 'C', amount: 'Carbon' },
-  
-  ];
+  const elements = ('rifa' in closedData ? closedData.rifa : []) as IClosed['rifa'];
 
-  const rows = elements.map((element) => (
-    <tr >
+ const rows = elements.map((element: any, index: number) => (
+    <tr key={index}>
       <td>{element.serie}</td>
-      <td>{element.amount}</td>
-      <td>{element.verification}</td>
       <td>{element.app_status}</td>
+      <td>{element.verification}</td>
+      <td>{element.amount}</td>
     </tr>
   ));
+
   const filteredTickets = tickets
     .filter((ticket) => {
       if (!searchValue) {
@@ -264,18 +262,18 @@ function Dashboard() {
         <Text>Desea cerrar el día, esta acción no le permitirá crear más rifas por hoy</Text>
 
         <Divider label="Cuadre de hoy" my={20} labelPosition="center" variant="dashed" />
-        <Paper w="100%" py={200}>
+        <Paper w="100%" py={50}>
         <Table>
-      <thead>
-        <tr>
-          <th>Element position</th>
-          <th>Element name</th>
-          <th>Symbol</th>
-          <th>Atomic mass</th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </Table>
+        <thead>
+          <tr>
+            <th>Serie</th>
+            <th>Enviado</th>
+            <th>Verificacion</th>
+            <th>Monto</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </Table>
         </Paper>
         <Group w="100%">
           <Button color="green" w="48%" leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button>
