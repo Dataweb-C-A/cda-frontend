@@ -732,7 +732,22 @@ export default function AccordionList({
               <Text mx={5} mb={20}>
                 {message}
               </Text>
-              <Button w="100%" color="red" leftIcon={<IconSkull />} rightIcon={<IconSkull />}>
+              <Button w="100%" color="red" leftIcon={<IconSkull />} rightIcon={<IconSkull />} onClick={(e) => {
+                e.preventDefault();
+                axios.put(`https://rifa-max.com/api/v1/rifas/unpayed/${data.id}`, {},
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                  }).then(() => {
+                    setIsAmount(false);
+                    window.location.reload();
+                  }).catch((err) => {
+                    console.error(err)
+                  })
+                }}
+              >
                 Rechazar pago y bloquear rifero
               </Button>
             </>
@@ -838,6 +853,7 @@ export default function AccordionList({
                     size="sm"
                     mt={10}
                     onClick={() => handleRepeatModal()}
+                    disabled={!repeat.user.status}
                   >
                     <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
                   </Chip>

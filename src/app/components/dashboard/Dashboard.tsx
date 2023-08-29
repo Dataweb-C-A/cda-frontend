@@ -10,7 +10,9 @@ import {
   Button,
   Pagination,
   Flex,
-  Modal
+  Modal,
+  Divider,
+  Paper
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 
@@ -22,7 +24,7 @@ import { Search } from 'tabler-icons-react';
 import axios from "axios";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
-import { IconPlus, IconRepeat, IconX } from "@tabler/icons";
+import { IconCheck, IconPlus, IconRepeat, IconX } from "@tabler/icons";
 
 interface IRifas {
   id: number;
@@ -84,6 +86,24 @@ interface IRifas {
   };
 }
 
+interface IClosed {
+  rifa: {
+    serie: number;
+    app_status: 'Enviado APP' | 'No enviado';
+    rifero: {
+      name: string;
+      is_block: "Bloqueado" | "Activo";
+    };
+    verification: "Pagado" | "Devuelto" | "No pagado";
+    denomination: "$" | "Bs" | "COP";
+  };
+  total: {
+    bsd: number;
+    dolar: number;
+    cop: number;
+  }
+}
+
 function Dashboard() {
   const [helpModal, setHelpModal] = useState(false);
   const [tickets, setTickets] = useState<IRifas[]>([]);
@@ -94,7 +114,23 @@ function Dashboard() {
   const [reset, setReset] = useState<number>(0);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [closeDay, setCloseDay] = useState<boolean>(false);
+  const [closedData, setClosedData] = useState<IClosed | {}>({})
 
+  useEffect(() => {
+    axios.get("https://rifa-max.com/api/v1/rifas/closed", {
+      headers: {
+        ContentType: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((response) => {
+      setClosedData(response.data)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+  }, [closeDay])
 
   const getData = () => {
     axios
@@ -202,19 +238,24 @@ function Dashboard() {
       );
     });
 
-  const closeDayModal = () => {
+  const CloseDayModal = () => {
     return (
       <Modal
-        size="md"
+        size="lg"
         title="Cerrar día"
-        onClose={() => window.location.reload()}
-        opened={true}
+        onClose={() => setCloseDay(false)}
+        centered
+        opened={closeDay}
       >
         <Text>Desea cerrar el día, esta acción no le permitirá crear más rifas por hoy</Text>
 
-        <Group>
-          <Button></Button>
-          <Button></Button>
+        <Divider label="Cuadre de hoy" my={20} labelPosition="center" variant="dashed" />
+        <Paper w="100%" py={200}>
+
+        </Paper>
+        <Group w="100%">
+          <Button color="green" w="48%" leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button>
+          <Button color="red" w="48%" leftIcon={<IconX />} onClick={() => setCloseDay(false)}>Cerrar</Button>
         </Group>
       </Modal>
     )
@@ -238,6 +279,7 @@ function Dashboard() {
             />
           )}
           <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+            <CloseDayModal />
             <Grid>
               <Grid.Col md={9} sm={12}>
                 <Title order={2} fw={500} mb={20}>
@@ -315,7 +357,7 @@ function Dashboard() {
                       >
                         Agregar Rifa
                       </FormModal>
-                      <Button leftIcon={<IconX />} color='red' style={{ position: 'absolute', width: '130px', right: 15 }}>
+                      <Button onClick={() => setCloseDay(true)} leftIcon={<IconX />} color='red' style={{ position: 'absolute', width: '130px', right: 15 }}>
                         Cerrar día
                       </Button>
                     </Group>
