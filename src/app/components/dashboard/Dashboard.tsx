@@ -10,6 +10,7 @@ import {
   Button,
   Pagination,
   Flex,
+  Table ,
   Modal,
   Divider,
   Paper
@@ -90,13 +91,14 @@ interface IClosed {
   rifa: {
     serie: number;
     app_status: 'Enviado APP' | 'No enviado';
+    amount: number
     rifero: {
       name: string;
       is_block: "Bloqueado" | "Activo";
     };
     verification: "Pagado" | "Devuelto" | "No pagado";
     denomination: "$" | "Bs" | "COP";
-  };
+  }[];
   total: {
     bsd: number;
     dolar: number;
@@ -221,7 +223,19 @@ function Dashboard() {
         console.log(error);
       });
   };
+  const elements = [
+    { serie: 6, app_status: 12.011, verification: 'C', amount: 'Carbon' },
+  
+  ];
 
+  const rows = elements.map((element) => (
+    <tr >
+      <td>{element.serie}</td>
+      <td>{element.amount}</td>
+      <td>{element.verification}</td>
+      <td>{element.app_status}</td>
+    </tr>
+  ));
   const filteredTickets = tickets
     .filter((ticket) => {
       if (!searchValue) {
@@ -251,7 +265,17 @@ function Dashboard() {
 
         <Divider label="Cuadre de hoy" my={20} labelPosition="center" variant="dashed" />
         <Paper w="100%" py={200}>
-
+        <Table>
+      <thead>
+        <tr>
+          <th>Element position</th>
+          <th>Element name</th>
+          <th>Symbol</th>
+          <th>Atomic mass</th>
+        </tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </Table>
         </Paper>
         <Group w="100%">
           <Button color="green" w="48%" leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button>
