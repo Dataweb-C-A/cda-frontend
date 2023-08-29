@@ -9,7 +9,8 @@ import {
   Group,
   Button,
   Pagination,
-  Flex
+  Flex,
+  Modal
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 
@@ -201,6 +202,24 @@ function Dashboard() {
       );
     });
 
+  const closeDayModal = () => {
+    return (
+      <Modal
+        size="md"
+        title="Cerrar día"
+        onClose={() => window.location.reload()}
+        opened={true}
+      >
+        <Text>Desea cerrar el día, esta acción no le permitirá crear más rifas por hoy</Text>
+
+        <Group>
+          <Button></Button>
+          <Button></Button>
+        </Group>
+      </Modal>
+    )
+  }
+
   return (
     <>
       {loading ? (
@@ -251,7 +270,7 @@ function Dashboard() {
                   >
                     <Input
                       variant="filled"
-                      placeholder="Premio, Rifero o número de premiado"
+                      placeholder="Premio, rifero o número de premiado"
                       radius="sm"
                       size="sm"
                       w="260px"

@@ -192,7 +192,7 @@ export default function AccordionList({
         });
     };
 
-    const SendModal = (id: any) => {
+    const SendModal = () => {
       return (
         <Modal
           opened={sendModal}
@@ -210,7 +210,7 @@ export default function AccordionList({
             onClick={() => {
               axios
                 .put(
-                  `https://rifa-max.com/api/v1/rifas/${id.id}`,
+                  `https://rifa-max.com/api/v1/rifas/${data.id}`,
                   {
                     is_send: true,
                   },
@@ -464,7 +464,7 @@ export default function AccordionList({
 
     return (
       <>
-        <SendModal id={data.id} />
+        <SendModal />
         <AddPinModal id={data.id} />
         <PinModal pinNumber={data.pinNumber} />
         <RepeatModal />
@@ -589,7 +589,7 @@ export default function AccordionList({
           onClick={() => {
             axios
               .put(
-                `https://rifa-max.com/api/v1/rifas/${id}`,
+                `https://rifa-max.com/api/v1/rifas/${data.id}`,
                 {
                   is_send: true,
                 },
@@ -634,7 +634,7 @@ export default function AccordionList({
       )
     })
 
-    const sendRifa = await axios.put(`https://rifa-max.com/api/v1/rifas/${id.id}`,
+    const sendRifa = await axios.put(`https://rifa-max.com/api/v1/rifas/${data.id}`,
       {
         is_send: true,
       },
@@ -680,7 +680,9 @@ export default function AccordionList({
                     .put(
                       `https://rifa-max.com/api/v1/rifas/pin/${draw_id}`,
                       {
-                        pin: value,
+                        amount: value,
+                        is_closed: true,
+                        verify: true
                       },
                       {
                         headers: {
@@ -807,7 +809,7 @@ export default function AccordionList({
           </Button>
         )}
       </Modal>
-      <SendModal id={data.id} />
+      <SendModal />
       <Accordion.Item key={data.id} value={data.id.toString()} style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
         <AccordionControl >
           <div style={{ width: '100%', display: 'flex' }}>
