@@ -13,7 +13,9 @@ import {
   Table ,
   Modal,
   Divider,
-  Paper
+  Paper,
+  Chip,
+  Badge
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 
@@ -25,7 +27,8 @@ import { Search } from 'tabler-icons-react';
 import axios from "axios";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
-import { IconCheck, IconPlus, IconRepeat, IconX } from "@tabler/icons";
+import { IconCheck, IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
+import { IconMoodEmpty } from "@tabler/icons-react";
 
 interface IRifas {
   id: number;
@@ -117,7 +120,24 @@ function Dashboard() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [closeDay, setCloseDay] = useState<boolean>(false);
-  const [closedData, setClosedData] = useState<IClosed | {}>({});
+  const [closedData, setClosedData] = useState<IClosed>({
+    rifa: [{
+      serie: 1,
+      app_status: 'Enviado APP',
+      amount: 1.0,
+      rifero: {
+        name: 'Cargando...',
+        is_block: "Bloqueado"
+      },
+      verification: 'No pagado',
+      denomination: '$',
+    }],
+    total: {
+      bsd: 1.0,
+      dolar: 1.0,
+      cop: 1.0
+    }
+  });
 
   useEffect(() => {
     axios.get("https://rifa-max.com/api/v1/rifas/closed", {
@@ -227,10 +247,11 @@ function Dashboard() {
 
  const rows = elements.map((element: any, index: number) => (
     <tr key={index}>
-      <td>{element.serie}</td>
-      <td>{element.app_status}</td>
-      <td>{element.verification}</td>
-      <td>{element.amount}</td>
+      <td style={{ textAlign: 'center' }}>{element.serie}</td>
+      <td style={{ textAlign: 'center' }}>{element.app_status}</td>
+      <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'orange' : element.rifero.is_block === 'Activo' ? 'yellow' : 'red'}>{element.verification == 'Pagado' ? 'Pagado' : element.verification == 'Devuelto' ? 'Devuelto' : element.rifero.is_block === 'Activo' ? 'Pendiente' : 'No Pagado'}</Badge></td>
+      <td style={{ textAlign: 'center' }}>{element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}</td>
+      <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
     </tr>
   ));
 
@@ -259,26 +280,63 @@ function Dashboard() {
         centered
         opened={closeDay}
       >
-        <Text>Desea cerrar el día, esta acción no le permitirá crear más rifas por hoy</Text>
-
-        <Divider label="Cuadre de hoy" my={20} labelPosition="center" variant="dashed" />
+        <Divider label="Cuadre de hoy" mt={20} labelPosition="center" variant="dashed" />
         <Paper w="100%" py={50}>
-        <Table>
+        <Table striped highlightOnHover>
         <thead>
           <tr>
-            <th>Serie</th>
-            <th>Enviado</th>
-            <th>Verificacion</th>
-            <th>Monto</th>
+            <th style={{ textAlign: 'center' }}>Serie</th>
+            <th style={{ textAlign: 'center' }}>Enviado</th>
+            <th style={{ textAlign: 'center' }}>Verificación</th>
+            <th style={{ textAlign: 'center' }}>Monto</th>
+            <th style={{ textAlign: 'center' }}>Rifero</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
       </Table>
+        {
+          closedData.rifa.length === 0 && (
+            <>
+              <Text ta='center' pt={55} pb={0} fw={500} fz={20}>
+                No hay rifas para mostrar
+              </Text>
+              <Text ta="center" pb={10} mt={5}>
+                <IconZoomQuestion size={40}/>
+              </Text>
+            </>
+          )
+        }
         </Paper>
-        <Group w="100%">
-          <Button color="green" w="48%" leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button>
-          <Button color="red" w="48%" leftIcon={<IconX />} onClick={() => setCloseDay(false)}>Cerrar</Button>
-        </Group>
+        <Divider label="Total" labelPosition="center" variant="dashed" mt={-20} mb={40}/>
+        <Card w="100%" p={50} mb={40}>
+          <Group w="100%">
+            <div style={{ width: '30.33%' }}>
+              <Text fw={200} ta="center">
+                Bolivares
+              </Text>
+              <Title ta="center" order={6} fw={700}>
+                {closedData.total.bsd} Bs.D
+              </Title>
+            </div>
+            <div style={{ width: '31.33%' }}>
+              <Text fw={200} ta="center">
+                Dólares
+              </Text>
+              <Title ta="center" order={6} fw={700}>
+                {closedData.total.dolar} $
+              </Title>
+            </div>
+            <div style={{ width: '31.33%' }}>
+              <Text fw={200} ta="center">
+                Pesos Colombianos
+              </Text>
+              <Title ta="center" order={6} fw={700}>
+                {closedData.total.cop} COP
+              </Title>
+            </div>
+          </Group>
+        </Card>
+        <Button color="blue" w="100%" leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button>
       </Modal>
     )
   }

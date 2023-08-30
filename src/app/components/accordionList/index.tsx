@@ -20,6 +20,7 @@ import {
   Card,
   Stepper,
   Input,
+  Select,
 } from "@mantine/core";
 import moment from "moment";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
@@ -658,6 +659,7 @@ export default function AccordionList({
 
   const AmmountModal = ({ message, reason, draw_id }: IAmmoundModal) => {
     const [value, setValue] = useState<number>(0)
+    const [denomination, setDenomation] = useState<string>("$")
     
     return (
       <Modal
@@ -681,6 +683,7 @@ export default function AccordionList({
                       `https://rifa-max.com/api/v1/rifas/pin/${draw_id}`,
                       {
                         amount: value,
+                        buy_money: denomination,
                         is_closed: true,
                         verify: true
                       },
@@ -700,16 +703,47 @@ export default function AccordionList({
                     });
                 }}
               >
-                <TextInput
-                  placeholder="PIN"
-                  maxLength={12}
-                  my={15}
-                  value={value}
-                  type="number"
-                  onChange={(e) => { 
-                    setValue(parseFloat(e.target.value))
-                  }}
-                />
+                <Group w="100%" spacing={0}>
+                  <TextInput
+                    placeholder="PIN"
+                    maxLength={12}
+                    my={15}
+                    w="75%"
+                    value={value}
+                    type="number"
+                    style={{
+                      borderRadius: '5px 0px 0px 5px'
+                    }}
+                    onChange={(e) => { 
+                      setValue(parseFloat(e.target.value))
+                    }}
+                  />
+                  <Select
+                    w="25%"
+                    data={[
+                      {
+                        label: '$',
+                        value: '$'
+                      }, 
+                      {
+                        label: 'Bs',
+                        value: 'Bs.D'
+                      }, 
+                      {
+                        label: 'COP',
+                        value: 'COP'
+                      }
+                    ]}
+                    value={denomination}
+                    style={{
+                      borderRadius: '0px 5px 5px 0px'
+                    }}
+                    defaultValue={denomination}
+                    onChange={(e) => {
+                      setDenomation(e || '$')
+                    }}
+                  />
+                </Group>
                 <Group w="100%">
                   <Button
                     type="submit"
