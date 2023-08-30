@@ -39,9 +39,13 @@ interface IRifas {
   rifDate: Date;
   price: number;
   loteria: string;
+  refund: boolean;
+  buy_money: string;
+  amount: number;
   numbers: number;
   serial: string;
   withSigns: any;
+  is_closed: boolean;
   expired: string;
   is_send: boolean;
   rifero_id: number;
@@ -99,7 +103,7 @@ interface IClosed {
       name: string;
       is_block: "Bloqueado" | "Activo";
     };
-    verification: "Pagado" | "Devuelto" | "No pagado";
+    verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente";
     denomination: "$" | "Bs" | "COP";
   }[];
   total: {
@@ -249,7 +253,7 @@ function Dashboard() {
     <tr key={index}>
       <td style={{ textAlign: 'center' }}>{element.serie}</td>
       <td style={{ textAlign: 'center' }}>{element.app_status}</td>
-      <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'orange' : element.rifero.is_block === 'Activo' ? 'yellow' : 'red'}>{element.verification == 'Pagado' ? 'Pagado' : element.verification == 'Devuelto' ? 'Devuelto' : element.rifero.is_block === 'Activo' ? 'Pendiente' : 'No Pagado'}</Badge></td>
+      <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'blue' : element.app_status === 'No enviado' ? 'yellow' : 'red'}>{element.app_status == 'No enviado' ? 'Pendiente' : element.verification}</Badge></td>
       <td style={{ textAlign: 'center' }}>{element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}</td>
       <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
     </tr>

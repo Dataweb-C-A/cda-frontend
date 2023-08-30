@@ -21,15 +21,17 @@ import {
   Stepper,
   Input,
   Select,
+  Avatar,
 } from "@mantine/core";
 import moment from "moment";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
-import { IconCheck, IconChevronRight, IconCommand, IconCurrencyDollar, IconDeviceMobileMessage, IconDots, IconHandFinger, IconSkull, IconX } from "@tabler/icons";
+import { IconCheck, IconChevronRight, IconCommand, IconCurrencyDollar, IconDeviceMobileMessage, IconDots, IconHandFinger, IconSkull, IconWindow, IconX } from "@tabler/icons";
 import { useStyles } from "./accordionList.styles";
 import { Message, Calendar, Printer, Ticket, OneTwoThree, Repeat, Number, Cash } from "tabler-icons-react";
 import TicketsMocks from "../../mocks/tickets.mock";
 import axios from "axios";
 import { useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 import { DatePicker } from "@mantine/dates";
 
 type RifaTicketsProps = {
@@ -793,7 +795,7 @@ export default function AccordionList({
       </Modal>
     )
   }
-
+  const [opened, { open, close }] = useDisclosure(false);
   return (
     <Accordion
       mx="auto"
@@ -924,60 +926,92 @@ export default function AccordionList({
                   <Stepper.Step icon={<IconCurrencyDollar />} label={<Text px={10}><strong>Paso 2: </strong>Verificar pago</Text>} description={
                     <Group px={10}>
                       <Group p={0} spacing={0}>
-                        <Button
-                          size="xs"
-                          onClick={() => {
-                            setReason('ACCEPT');
-                            setIsAmount(true);
-                          }}
+                        {
+                          repeat.amount != null && repeat.amount > 0 && repeat.verify ? (
+                            <Badge color='teal'>
+                              Pagado
+                            </Badge>
+                          ) : (
+                            <Button
+                              size="xs"
+                              onClick={() => {
+                                setReason('ACCEPT');
+                                setIsAmount(true);
+                              }}
 
-                          disabled={data.verify || !data.status}
-                          color="teal"
-                          style={{
-                            border: '1px solid ' + (data.verify || !data.status ? 'teal' : 'transparent'),
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: (data.verify || !data.status) ? 'center' : 'flex-start'
-                          }}
-                        >
-                          {(data.verify || !data.status) && <IconCheck size={16} style={{ color: 'teal', marginRight: '5px' }} />}
-                          Pagado
-                        </Button>
+                              disabled={data.verify || !data.status}
+                              color="teal"
+                              style={{
+                                // border: '1px solid ' + (data.verify || !data.status ? 'teal' : 'transparent'),
+                                display: 'flex',
+                                alignItems: 'center',
 
+                              }}
+                            >
+                              Pagar
+                            </Button>
+                          )
+                        }
 
                       </Group>
-                      <Button
-                        p={5}
-                        size="xs"
-                        disabled={data.verify || !data.status}
-                        onClick={() => {
-                          setReason('REJECT')
-                          setIsAmount(true)
-                        }}
-                        color='red'
-                        style={{
-                          border: '1px solid ' + (data.verify || !data.status ? 'red' : 'transparent'),
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: (data.verify || !data.status) ? 'center' : 'flex-start'
-                        }}
-                      >
-                        {(data.verify || !data.status) && <IconX size={16} style={{ color: 'red', marginRight: '5px' }} />}
-                        No pagado
-                      </Button>
-                      <Button
-                        p={5}
-                        size="xs"
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: (data.verify || !data.status) ? 'center' : 'flex-start'
-                        }}
-                        disabled={data.verify || !data.status} 
-                      >
-                        {(data.verify || !data.status || repeat.amount != null) && <IconCommand size={16} />}
-                        Devuelto
-                      </Button>
+
+                      {
+                        (repeat.amount == null || repeat.amount == 0) && repeat.verify && !repeat.refund ? (
+                          <Badge color='red'>
+                            Rifa no pagada
+                          </Badge>
+                        ) : (
+                          <Button
+                            p={5}
+                            size="xs"
+                            disabled={data.verify || !data.status}
+                            onClick={() => {
+                              setReason('REJECT')
+                              setIsAmount(true)
+                            }}
+                            color='red'
+                            style={{
+                              // border: '1px solid ' + (data.verify || !data.status ? 'red' : 'transparent'),
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            {/* {(data.verify || !data.status) && <IconX size={16} style={{ color: 'red', marginRight: '5px' }} />} */}
+                            Rifa no pagada
+                          </Button>
+                        )
+                      }
+                      {
+                        repeat.refund ? (
+                          <Badge color='blue'>
+                            Devuelto
+                          </Badge>
+                        ) : (
+                          <>
+                            <Button
+                              p={5}
+                              size="xs"
+                              onClick={open}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
+                              disabled={repeat.amount == null || repeat.amount == 0}
+                            >
+                              {(repeat.refund) && <IconCommand size={16} />}
+                              Devolver Rifa
+                            </Button>
+                            <Modal opened={opened} onClose={close} size='md' centered title="Devolver rifa">
+                              <Button
+                                w="100%"
+                                color="blue"
+                              >
+                                Devolver rifa
+                              </Button>
+                            </Modal>
+                          </>
+                        )
+                      }
                     </Group>
                   } />
                 </Stepper>
