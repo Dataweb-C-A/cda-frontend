@@ -253,7 +253,7 @@ function Dashboard() {
     <tr key={index}>
       <td style={{ textAlign: 'center' }}>{element.serie}</td>
       <td style={{ textAlign: 'center' }}>{element.app_status}</td>
-      <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'blue' : element.app_status === 'No enviado' ? 'yellow' : 'red'}>{element.app_status == 'No enviado' ? 'Pendiente' : element.verification}</Badge></td>
+      <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'blue' : element.app_status === 'No enviado' ? 'yellow' : element.verification == 0 ? 'grape' : 'red'}>{element.app_status == 'No enviado' ? 'Pendiente' : element.verification == 0 ? "Enviado APP" : element.verification}</Badge></td>
       <td style={{ textAlign: 'center' }}>{element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}</td>
       <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
     </tr>

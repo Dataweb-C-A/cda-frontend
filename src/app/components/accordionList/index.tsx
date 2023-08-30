@@ -954,64 +954,82 @@ export default function AccordionList({
                         }
 
                       </Group>
-
-                      {
-                        (repeat.amount == null || repeat.amount == 0) && repeat.verify && !repeat.refund ? (
-                          <Badge color='red'>
-                            Rifa no pagada
-                          </Badge>
-                        ) : (
-                          <Button
-                            p={5}
-                            size="xs"
-                            disabled={data.verify || !data.status}
-                            onClick={() => {
-                              setReason('REJECT')
-                              setIsAmount(true)
-                            }}
-                            color='red'
-                            style={{
-                              // border: '1px solid ' + (data.verify || !data.status ? 'red' : 'transparent'),
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                          >
-                            {/* {(data.verify || !data.status) && <IconX size={16} style={{ color: 'red', marginRight: '5px' }} />} */}
-                            Rifa no pagada
-                          </Button>
-                        )
-                      }
-                      {
-                        repeat.refund ? (
-                          <Badge color='blue'>
-                            Devuelto
-                          </Badge>
-                        ) : (
-                          <>
+                      <Group w={200}>
+                        {
+                          (repeat.amount == null || repeat.amount == 0) && repeat.verify && !repeat.refund ? (
+                            <Badge color='red'>
+                              No pagada
+                            </Badge>
+                          ) : (
                             <Button
                               p={5}
                               size="xs"
-                              onClick={open}
+                              disabled={data.verify || !data.status}
+                              onClick={() => {
+                                setReason('REJECT')
+                                setIsAmount(true)
+                              }}
+                              color='red'
                               style={{
+                                // border: '1px solid ' + (data.verify || !data.status ? 'red' : 'transparent'),
                                 display: 'flex',
                                 alignItems: 'center',
                               }}
-                              disabled={repeat.amount == null || repeat.amount == 0}
                             >
-                              {(repeat.refund) && <IconCommand size={16} />}
-                              Devolver Rifa
+                              {/* {(data.verify || !data.status) && <IconX size={16} style={{ color: 'red', marginRight: '5px' }} />} */}
+                              Rifa no pagada
                             </Button>
-                            <Modal opened={opened} onClose={close} size='md' centered title="Devolver rifa">
+                          )
+                        }
+                        {
+                          repeat.refund ? (
+                            <Badge color='blue'>
+                              Devuelto
+                            </Badge>
+                          ) : (
+                            <>
                               <Button
-                                w="100%"
-                                color="blue"
+                                p={5}
+                                size="xs"
+                                onClick={open}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                }}
+                                disabled={repeat.amount == null || repeat.amount == 0}
                               >
-                                Devolver rifa
+                                {(repeat.refund) && <IconCommand size={16} />}
+                                Devolver Rifa
                               </Button>
-                            </Modal>
-                          </>
-                        )
-                      }
+                              <Modal opened={opened} onClose={close} size='md' centered title="Devolver rifa">
+                                <Text mb={20}>
+                                  Desea devolver el dinero pagado al rifero? Esta acción no tiene vuelta atrás una vez realizada.
+                                </Text>
+                                <Button
+                                  w="100%"
+                                  color="blue"
+                                  onClick={(e) => {
+                                    e.defaultPrevented
+                                    axios.put(`https://rifa-max.com/api/v1/rifas/refund?id=${repeat.id}`, {}, {
+                                      headers: {
+                                        "Content-Type": "application/json",
+                                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                                      }
+                                    }).then(() => {
+                                      close()
+                                      window.location.reload()
+                                    }).catch((e) => {
+                                      console.log(e)
+                                    })
+                                  }}
+                                >
+                                  Devolver rifa
+                                </Button>
+                              </Modal>
+                            </>
+                          )
+                        }
+                      </Group>
                     </Group>
                   } />
                 </Stepper>
