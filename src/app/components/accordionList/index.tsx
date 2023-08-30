@@ -84,6 +84,9 @@ interface IRifas {
   created_at: string;
   updated_at: string;
   money: string;
+  amount: null | number;
+  refund: boolean;
+  is_closed: boolean;
   pin: any;
   verify: boolean;
   tickets_are_sold: boolean;
@@ -660,7 +663,7 @@ export default function AccordionList({
   const AmmountModal = ({ message, reason, draw_id }: IAmmoundModal) => {
     const [value, setValue] = useState<number>(0)
     const [denomination, setDenomation] = useState<string>("$")
-    
+
     return (
       <Modal
         title={<Title order={4}>{reason === 'ACCEPT' ? `Desea pagar la rifa?` : 'Desea rechazar la rifa?'}</Title>}
@@ -714,7 +717,7 @@ export default function AccordionList({
                     style={{
                       borderRadius: '5px 0px 0px 5px'
                     }}
-                    onChange={(e) => { 
+                    onChange={(e) => {
                       setValue(parseFloat(e.target.value))
                     }}
                   />
@@ -724,11 +727,11 @@ export default function AccordionList({
                       {
                         label: '$',
                         value: '$'
-                      }, 
+                      },
                       {
                         label: 'Bs',
                         value: 'Bs.D'
-                      }, 
+                      },
                       {
                         label: 'COP',
                         value: 'COP'
@@ -780,7 +783,7 @@ export default function AccordionList({
                   }).catch((err) => {
                     console.error(err)
                   })
-                }}
+              }}
               >
                 Rechazar pago y bloquear rifero
               </Button>
@@ -927,10 +930,17 @@ export default function AccordionList({
                             setReason('ACCEPT');
                             setIsAmount(true);
                           }}
+
                           disabled={data.verify || !data.status}
                           color="teal"
-                          leftIcon={<IconCheck size={16} />}
+                          style={{
+                            border: '1px solid ' + (data.verify || !data.status ? 'teal' : 'transparent'),
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: (data.verify || !data.status) ? 'center' : 'flex-start'
+                          }}
                         >
+                          {(data.verify || !data.status) && <IconCheck size={16} style={{ color: 'teal', marginRight: '5px' }} />}
                           Pagado
                         </Button>
 
@@ -945,11 +955,27 @@ export default function AccordionList({
                           setIsAmount(true)
                         }}
                         color='red'
-                        leftIcon={<IconX size={16} />}
+                        style={{
+                          border: '1px solid ' + (data.verify || !data.status ? 'red' : 'transparent'),
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: (data.verify || !data.status) ? 'center' : 'flex-start'
+                        }}
                       >
+                        {(data.verify || !data.status) && <IconX size={16} style={{ color: 'red', marginRight: '5px' }} />}
                         No pagado
                       </Button>
-                      <Button p={5} size="xs" disabled={data.verify || !data.status} leftIcon={<IconCommand size={17} />}>
+                      <Button
+                        p={5}
+                        size="xs"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: (data.verify || !data.status) ? 'center' : 'flex-start'
+                        }}
+                        disabled={data.verify || !data.status} 
+                      >
+                        {(data.verify || !data.status || repeat.amount != null) && <IconCommand size={16} />}
                         Devuelto
                       </Button>
                     </Group>
