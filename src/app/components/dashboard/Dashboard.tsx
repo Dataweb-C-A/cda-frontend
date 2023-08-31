@@ -105,7 +105,9 @@ interface IClosed {
     };
     verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente";
     denomination: "$" | "Bs" | "COP";
+    rifDate: string;
   }[];
+  pendings: number;
   total: {
     bsd: number;
     dolar: number;
@@ -124,6 +126,7 @@ function Dashboard() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [closeDay, setCloseDay] = useState<boolean>(false);
+  const [counter, setCounter] = useState<number>(0);
   const [closedData, setClosedData] = useState<IClosed>({
     rifa: [{
       serie: 1,
@@ -135,7 +138,9 @@ function Dashboard() {
       },
       verification: 'No pagado',
       denomination: '$',
+      rifDate: '2002-20-22'
     }],
+    pendings: 0,
     total: {
       bsd: 1.0,
       dolar: 1.0,
@@ -144,35 +149,40 @@ function Dashboard() {
   });
 
   useEffect(() => {
-    axios.get("https://rifa-max.com/api/v1/rifas/closed", {
-      headers: {
-        ContentType: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response) => {
-      setClosedData(response.data)
-    })
-    .catch((err) => {
-      console.error(err)
-    })
-  }, [closeDay])
-
-  const getData = () => {
-    axios
-      .get(`https://rifa-max.com/api/v1/rifas/actives_no_tickets`, {
+    setTimeout(() => {
+      axios.get("https://rifa-max.com/api/v1/rifas/closed", {
         headers: {
           ContentType: "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .then((response) => {
-        setLoading(false);
-        setTickets(response.data);
+        setClosedData(response.data)
+        setCounter(counter + 1)
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((err) => {
+        console.error(err)
+      })
+    }, 1000);
+  }, [closeDay])
+
+  const getData = () => {
+    setTimeout(() => {
+      axios
+        .get(`https://rifa-max.com/api/v1/rifas/actives_no_tickets`, {
+          headers: {
+            ContentType: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          setLoading(false);
+          setTickets(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, 3000)
   };
 
   const closeForm = () => {
@@ -256,6 +266,7 @@ function Dashboard() {
       <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'blue' : element.app_status === 'No enviado' ? 'yellow' : element.verification == 0 ? 'grape' : 'red'}>{element.app_status == 'No enviado' ? 'Pendiente' : element.verification == 0 ? "Enviado APP" : element.verification}</Badge></td>
       <td style={{ textAlign: 'center' }}>{element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}</td>
       <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
+      <td style={{ textAlign: 'center' }}>{moment(element.rifDate).format('DD/MM/YYYY')}</td>
     </tr>
   ));
 
@@ -279,7 +290,7 @@ function Dashboard() {
     return (
       <Modal
         size="lg"
-        title="Cerrar día"
+        title={`Cierre del dia de hoy: ${moment().format('DD/MM/YYYY')}`}
         onClose={() => setCloseDay(false)}
         centered
         opened={closeDay}
@@ -294,6 +305,7 @@ function Dashboard() {
             <th style={{ textAlign: 'center' }}>Verificación</th>
             <th style={{ textAlign: 'center' }}>Monto</th>
             <th style={{ textAlign: 'center' }}>Rifero</th>
+            <th style={{ textAlign: 'center' }}>Fecha</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
@@ -310,6 +322,9 @@ function Dashboard() {
             </>
           )
         }
+        <Text ta="center" fw={700} fz={18} mt={25}>
+          Rifas pendientes: {closedData.pendings}
+        </Text>
         </Paper>
         <Divider label="Total" labelPosition="center" variant="dashed" mt={-20} mb={40}/>
         <Card w="100%" p={50} mb={40}>
@@ -340,7 +355,7 @@ function Dashboard() {
             </div>
           </Group>
         </Card>
-        <Button color="blue" w="100%" leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button>
+        <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button>
       </Modal>
     )
   }
@@ -438,6 +453,7 @@ function Dashboard() {
                         onClick={() => setOpenForm((prevState) => !prevState)}
                         onClose={() => closeForm()}
                         open={openForm}
+                        disabled={closedData.pendings > 0}
                       >
                         Agregar Rifa
                       </FormModal>

@@ -739,13 +739,12 @@ export default function AccordionList({
                         value: 'COP'
                       }
                     ]}
-                    value={denomination}
                     style={{
                       borderRadius: '0px 5px 5px 0px'
                     }}
-                    defaultValue={denomination}
-                    onChange={(e) => {
-                      setDenomation(e || '$')
+                    value={denomination}
+                    onChange={(e: string) => {
+                      setDenomation(e)
                     }}
                   />
                 </Group>
