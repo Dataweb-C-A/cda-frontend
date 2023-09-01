@@ -28,7 +28,8 @@ import axios from "axios";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { IconCheck, IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
-import { IconMoodEmpty } from "@tabler/icons-react";
+import ClosedMocks from "../../mocks/closed.mock";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 interface IRifas {
   id: number;
@@ -127,6 +128,7 @@ function Dashboard() {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [closeDay, setCloseDay] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0);
+  const [isAvailable, setIsAvailable] = useState<boolean>(false)
   const [closedData, setClosedData] = useState<IClosed>({
     rifa: [{
       serie: 1,
@@ -148,7 +150,13 @@ function Dashboard() {
     }
   });
 
+  const closeForm = () => {
+    setPageNumber(1);
+    setOpenForm(false);
+  };
+  
   useEffect(() => {
+    setIsAvailable(false)
     setTimeout(() => {
       axios.get("https://rifa-max.com/api/v1/rifas/closed", {
         headers: {
@@ -159,12 +167,18 @@ function Dashboard() {
       .then((response) => {
         setClosedData(response.data)
         setCounter(counter + 1)
+        if (response.data.pendings > 0) {
+          closeForm()
+        }
+        setTimeout(() => {
+          setIsAvailable(true)
+        }, 2000)
       })
       .catch((err) => {
         console.error(err)
       })
     }, 1000);
-  }, [closeDay])
+  }, [closeDay, openForm])
 
   const getData = () => {
     setTimeout(() => {
@@ -185,10 +199,6 @@ function Dashboard() {
     }, 3000)
   };
 
-  const closeForm = () => {
-    setPageNumber(1);
-    setOpenForm(false);
-  };
 
   const handleScrollEvent = async () => {
     const totalHeight = document.documentElement.scrollHeight;
@@ -263,7 +273,7 @@ function Dashboard() {
     <tr key={index}>
       <td style={{ textAlign: 'center' }}>{element.serie}</td>
       <td style={{ textAlign: 'center' }}>{element.app_status}</td>
-      <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'blue' : element.app_status === 'No enviado' ? 'yellow' : element.verification == 0 ? 'grape' : 'red'}>{element.app_status == 'No enviado' ? 'Pendiente' : element.verification == 0 ? "Enviado APP" : element.verification}</Badge></td>
+      <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'blue' : element.app_status === 'No enviado' ? 'yellow' : element.verification == 0 ? 'grape' : 'red'}>{element.app_status == 'No enviado' || (moment(moment().format('DD-MM-YYYY')) > moment(element.rifDate)) ? 'Pendiente' : element.verification == 0 ? "Enviado APP" : element.verification}</Badge></td>
       <td style={{ textAlign: 'center' }}>{element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}</td>
       <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
       <td style={{ textAlign: 'center' }}>{moment(element.rifDate).format('DD/MM/YYYY')}</td>
@@ -326,7 +336,7 @@ function Dashboard() {
           Rifas pendientes: {closedData.pendings}
         </Text>
         </Paper>
-        <Divider label="Total" labelPosition="center" variant="dashed" mt={-20} mb={40}/>
+        <Divider label="Total" labelPosition="center" variant="dashed" mt={-20} mb={40} />
         <Card w="100%" p={50} mb={40}>
           <Group w="100%">
             <div style={{ width: '30.33%' }}>
@@ -355,7 +365,45 @@ function Dashboard() {
             </div>
           </Group>
         </Card>
-        <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button>
+        <PDFDownloadLink
+          document={<ClosedMocks />}
+          className={isAvailable === false ? "hide" : "tickets-link-pdf"}
+          fileName={`cierre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD-MM-YYYY')}.pdf`}
+          style={{
+            textDecoration: "none",
+          }}
+        >
+          {isAvailable && (
+            <Button
+              mt={10}
+              variant="filled"
+              color="blue"
+              size="sm"
+              fullWidth
+              onClick={() => {
+                setCloseDay(false)
+                // setInterval(() => {
+                //   window.location.reload();
+                // }, 2500);
+              }}
+            >
+              Descargar
+            </Button>
+          )}
+        </PDFDownloadLink>
+        {isAvailable === false && (
+          <Button
+            mt={10}
+            variant="filled"
+            color="blue"
+            size="sm"
+            fullWidth
+            loading
+          >
+            Descargar
+          </Button>
+        )}
+        {/* <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button> */}
       </Modal>
     )
   }

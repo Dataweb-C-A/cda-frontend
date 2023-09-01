@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Page, Text, View, Document, StyleSheet, Image, Svg } from '@react-pdf/renderer';
 import RifamaxLogo from "../assets/images/rifamax-logo-bw.png"
 import Firma from "../assets/images/firma-ticket.png"
