@@ -10,7 +10,7 @@ import {
   Button,
   Pagination,
   Flex,
-  Table ,
+  Table,
   Modal,
   Divider,
   Paper,
@@ -30,6 +30,8 @@ import { useHistory } from "react-router-dom";
 import { IconCheck, IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
 import ClosedMocks from "../../mocks/closed.mock";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Document, Page, Text as PdfText, View, StyleSheet, PDFViewer, BlobProvider } from '@react-pdf/renderer';
+
 
 interface IRifas {
   id: number;
@@ -154,7 +156,27 @@ function Dashboard() {
     setPageNumber(1);
     setOpenForm(false);
   };
-  
+  const styles = StyleSheet.create({
+    page: {
+      flexDirection: 'row',
+      backgroundColor: '#E4E4E4',
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1,
+    },
+  });
+
+  const MyDocument = () => (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.section}>
+          <PdfText>1 2 3 </PdfText>
+        </View>
+      </Page>
+    </Document>
+  );
   useEffect(() => {
     setIsAvailable(false)
     setTimeout(() => {
@@ -164,19 +186,19 @@ function Dashboard() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
-      .then((response) => {
-        setClosedData(response.data)
-        setCounter(counter + 1)
-        if (response.data.pendings > 0) {
-          closeForm()
-        }
-        setTimeout(() => {
-          setIsAvailable(true)
-        }, 2000)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+        .then((response) => {
+          setClosedData(response.data)
+          setCounter(counter + 1)
+          if (response.data.pendings > 0) {
+            closeForm()
+          }
+          setTimeout(() => {
+            setIsAvailable(true)
+          }, 2000)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }, 1000);
   }, [closeDay, openForm])
 
@@ -269,7 +291,7 @@ function Dashboard() {
   };
   const elements = ('rifa' in closedData ? closedData.rifa : []) as IClosed['rifa'];
 
- const rows = elements.map((element: any, index: number) => (
+  const rows = elements.map((element: any, index: number) => (
     <tr key={index}>
       <td style={{ textAlign: 'center' }}>{element.serie}</td>
       <td style={{ textAlign: 'center' }}>{element.app_status}</td>
@@ -307,34 +329,34 @@ function Dashboard() {
       >
         <Divider label="Cuadre de hoy" mt={20} labelPosition="center" variant="dashed" />
         <Paper w="100%" py={50}>
-        <Table striped highlightOnHover>
-        <thead>
-          <tr>
-            <th style={{ textAlign: 'center' }}>Serie</th>
-            <th style={{ textAlign: 'center' }}>Enviado</th>
-            <th style={{ textAlign: 'center' }}>Verificación</th>
-            <th style={{ textAlign: 'center' }}>Monto</th>
-            <th style={{ textAlign: 'center' }}>Rifero</th>
-            <th style={{ textAlign: 'center' }}>Fecha</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
-        {
-          closedData.rifa.length === 0 && (
-            <>
-              <Text ta='center' pt={55} pb={0} fw={500} fz={20}>
-                No hay rifas para mostrar
-              </Text>
-              <Text ta="center" pb={10} mt={5}>
-                <IconZoomQuestion size={40}/>
-              </Text>
-            </>
-          )
-        }
-        <Text ta="center" fw={700} fz={18} mt={25}>
-          Rifas pendientes: {closedData.pendings}
-        </Text>
+          <Table striped highlightOnHover>
+            <thead>
+              <tr>
+                <th style={{ textAlign: 'center' }}>Serie</th>
+                <th style={{ textAlign: 'center' }}>Enviado</th>
+                <th style={{ textAlign: 'center' }}>Verificación</th>
+                <th style={{ textAlign: 'center' }}>Monto</th>
+                <th style={{ textAlign: 'center' }}>Rifero</th>
+                <th style={{ textAlign: 'center' }}>Fecha</th>
+              </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+          </Table>
+          {
+            closedData.rifa.length === 0 && (
+              <>
+                <Text ta='center' pt={55} pb={0} fw={500} fz={20}>
+                  No hay rifas para mostrar
+                </Text>
+                <Text ta="center" pb={10} mt={5}>
+                  <IconZoomQuestion size={40} />
+                </Text>
+              </>
+            )
+          }
+          <Text ta="center" fw={700} fz={18} mt={25}>
+            Rifas pendientes: {closedData.pendings}
+          </Text>
         </Paper>
         <Divider label="Total" labelPosition="center" variant="dashed" mt={-20} mb={40} />
         <Card w="100%" p={50} mb={40}>
@@ -374,34 +396,65 @@ function Dashboard() {
           }}
         >
           {isAvailable && (
-            <Button
-              mt={10}
-              variant="filled"
-              color="blue"
-              size="sm"
-              fullWidth
-              onClick={() => {
-                setCloseDay(false)
-                // setInterval(() => {
-                //   window.location.reload();
-                // }, 2500);
+            <BlobProvider document={<MyDocument />}>
+              {({ url, loading, error }) => {
+                if (loading) {
+                  return <p>Loading...</p>;
+                }
+                if (error) {
+                  return <p>Error: {error.toString()}</p>;
+                }
+                if (url) {
+                  return (
+                    <div>
+                      <a href={url} target="_blank" rel="noopener noreferrer" download="Cuadre.pdf">
+                        <Button
+                          mt={10}
+                          variant="filled"
+                          color="blue"
+                          size="sm"
+                          fullWidth
+                        >
+                          Descargar
+                        </Button>
+                      </a>
+                    </div>
+                  );
+                }
+                return null;
               }}
-            >
-              Descargar
-            </Button>
+            </BlobProvider>
           )}
         </PDFDownloadLink>
         {isAvailable === false && (
-          <Button
-            mt={10}
-            variant="filled"
-            color="blue"
-            size="sm"
-            fullWidth
-            loading
-          >
-            Descargar
-          </Button>
+          <BlobProvider document={<MyDocument />}>
+            {({ url, loading, error }) => {
+              if (loading) {
+                return <p>Loading...</p>;
+              }
+              if (error) {
+                return <p>Error: {error.toString()}</p>;
+              }
+              if (url) {
+                return (
+                  <div>
+                    <a href={url} target="_blank" rel="noopener noreferrer" download="hello.pdf">
+                      <Button
+                        mt={10}
+                        variant="filled"
+                        color="blue"
+                        size="sm"
+                        fullWidth
+                      >
+                        Descargar
+                      </Button>
+                    </a>
+                  </div>
+                );
+              }
+              return null;
+            }}
+          </BlobProvider>
         )}
         {/* <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button> */}
       </Modal>
@@ -489,7 +542,7 @@ function Dashboard() {
                         setReset(reset + 1)
                       }}
                     >
-                      <IconRepeat size={16}/>
+                      <IconRepeat size={16} />
                     </Button>
                     <Group position="right" mt={25}>
                       <FormModal
