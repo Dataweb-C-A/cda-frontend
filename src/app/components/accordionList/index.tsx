@@ -947,7 +947,7 @@ export default function AccordionList({
 
                               }}
                             >
-                              Pagar
+                              Pagar rifa
                             </Button>
                           )
                         }
@@ -995,7 +995,7 @@ export default function AccordionList({
                                   display: 'flex',
                                   alignItems: 'center',
                                 }}
-                                disabled={repeat.amount == null || repeat.amount == 0}
+                                disabled={data.verify || !data.status}
                               >
                                 {(repeat.refund) && <IconCommand size={16} />}
                                 Devolver Rifa

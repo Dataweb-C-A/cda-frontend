@@ -15,7 +15,8 @@ import {
   Divider,
   Paper,
   Chip,
-  Badge
+  Badge,
+  ScrollArea
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 
@@ -28,8 +29,8 @@ import axios from "axios";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { IconCheck, IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
-import ClosedMocks from "../../mocks/closed.mock";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+// import ClosedMocks from "../../mocks/closed.mock";
+import { PDFDownloadLink, BlobProvider, Page, Text as Textwo, View, Document, StyleSheet, Image, Font  } from "@react-pdf/renderer";
 
 interface IRifas {
   id: number;
@@ -99,12 +100,12 @@ interface IClosed {
   rifa: {
     serie: number;
     app_status: 'Enviado APP' | 'No enviado';
-    amount: number
+    amount: number;
     rifero: {
       name: string;
       is_block: "Bloqueado" | "Activo";
     };
-    verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente";
+    verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente" | 0;
     denomination: "$" | "Bs" | "COP";
     rifDate: string;
   }[];
@@ -114,6 +115,19 @@ interface IClosed {
     dolar: number;
     cop: number;
   }
+}
+
+interface ICloseModal {
+    serie: number;
+    app_status: 'Enviado APP' | 'No enviado';
+    amount: number;
+    rifero: {
+      name: string;
+      is_block: "Bloqueado" | "Activo";
+    };
+    verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente" | 0;
+    denomination: "$" | "Bs" | "COP";
+    rifDate: string;
 }
 
 function Dashboard() {
@@ -148,6 +162,55 @@ function Dashboard() {
       dolar: 1.0,
       cop: 1.0
     }
+  });
+
+  const styles = StyleSheet.create({
+    body: {
+      paddingTop: 35,
+      paddingBottom: 65,
+      paddingHorizontal: 35,
+    },
+    text: {
+      margin: 12,
+      fontSize: 14,
+      textAlign: 'justify',
+    },
+    image: {
+      marginVertical: 15,
+      marginHorizontal: 100,
+    },
+    header: {
+      fontSize: 12,
+      marginBottom: 20,
+      textAlign: 'center',
+      color: 'grey',
+    },
+    pageNumber: {
+      position: 'absolute',
+      fontSize: 12,
+      bottom: 30,
+      left: 0,
+      right: 0,
+      textAlign: 'center',
+      color: 'grey',
+    },
+    table: {
+      // display: 'table',
+      width: 'auto',
+      marginVertical: 15,
+    },
+    tableRow: {
+      margin: 'auto',
+      flexDirection: 'row',
+    },
+    tableCell: {
+      margin: 5,
+      padding: 5,
+      fontSize: 12,
+    },
+    tableHeaderCell: {
+      backgroundColor: '#f2f2f2',
+    },
   });
 
   const closeForm = () => {
@@ -269,8 +332,8 @@ function Dashboard() {
   };
   const elements = ('rifa' in closedData ? closedData.rifa : []) as IClosed['rifa'];
 
- const rows = elements.map((element: any, index: number) => (
-    <tr key={index}>
+ const rows = elements.map((element: ICloseModal) => (
+    <tr key={element.serie}>
       <td style={{ textAlign: 'center' }}>{element.serie}</td>
       <td style={{ textAlign: 'center' }}>{element.app_status}</td>
       <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'blue' : element.app_status === 'No enviado' ? 'yellow' : element.verification == 0 ? 'grape' : 'red'}>{element.app_status == 'No enviado' || (moment(moment().format('DD-MM-YYYY')) > moment(element.rifDate)) ? 'Pendiente' : element.verification == 0 ? "Enviado APP" : element.verification}</Badge></td>
@@ -297,6 +360,56 @@ function Dashboard() {
     });
 
   const CloseDayModal = () => {
+    const TableMock = () => {
+      return (
+        <Document>
+          <Page style={styles.body}>
+            {/* <Image style={styles.image} src={RifamaxLogo} /> */}
+  
+            <Textwo>Rifas Pendientes: {closedData.pendings}</Textwo>
+  
+            <View style={styles.table}>
+              <View style={styles.tableRow}>
+                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+                  <Textwo>Serie</Textwo>
+                </View>
+                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+                  <Textwo>Estado</Textwo>
+                </View>
+                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+                  <Textwo>Monto</Textwo>
+                </View>
+                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+                  <Textwo>Rifero</Textwo>
+                </View>
+                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+                  <Textwo>Fecha</Textwo>
+                </View>
+              </View>
+              {closedData.rifa.map((rif, index) => (
+                <View style={styles.tableRow} key={index}>
+                  <View style={styles.tableCell}>
+                    <Textwo>{rif.serie}</Textwo>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Textwo>{rif.app_status == 'No enviado' || (moment(moment().format('DD-MM-YYYY')) > moment(rif.rifDate)) ? 'Pendiente' : rif.verification == 0 ? "Enviado APP" : rif.verification}</Textwo>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Textwo>{rif.verification === 'No pagado' ? 'No ha pagado' : `${rif.amount} ${rif.denomination}`}</Textwo>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Textwo>{rif.rifero.name}</Textwo>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Textwo>{moment(rif.rifDate).format('DD/MM/YYYY')}</Textwo>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </Page>
+        </Document>
+      )
+    }
     return (
       <Modal
         size="lg"
@@ -308,18 +421,20 @@ function Dashboard() {
         <Divider label="Cuadre de hoy" mt={20} labelPosition="center" variant="dashed" />
         <Paper w="100%" py={50}>
         <Table striped highlightOnHover>
-        <thead>
-          <tr>
-            <th style={{ textAlign: 'center' }}>Serie</th>
-            <th style={{ textAlign: 'center' }}>Enviado</th>
-            <th style={{ textAlign: 'center' }}>Verificación</th>
-            <th style={{ textAlign: 'center' }}>Monto</th>
-            <th style={{ textAlign: 'center' }}>Rifero</th>
-            <th style={{ textAlign: 'center' }}>Fecha</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
+          <ScrollArea h={400}>
+            <thead>
+              <tr>
+                <th style={{ textAlign: 'center' }}>Serie</th>
+                <th style={{ textAlign: 'center' }}>Enviado</th>
+                <th style={{ textAlign: 'center' }}>Verificación</th>
+                <th style={{ textAlign: 'center' }}>Monto</th>
+                <th style={{ textAlign: 'center' }}>Rifero</th>
+                <th style={{ textAlign: 'center' }}>Fecha</th>
+              </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+          </ScrollArea>
+        </Table>
         {
           closedData.rifa.length === 0 && (
             <>
@@ -366,43 +481,42 @@ function Dashboard() {
           </Group>
         </Card>
         <PDFDownloadLink
-          document={<ClosedMocks />}
-          className={isAvailable === false ? "hide" : "tickets-link-pdf"}
+          document={<TableMock />}
+          className={"tickets-link-pdf"}
           fileName={`cierre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD-MM-YYYY')}.pdf`}
           style={{
             textDecoration: "none",
           }}
         >
-          {isAvailable && (
-            <Button
-              mt={10}
-              variant="filled"
-              color="blue"
-              size="sm"
-              fullWidth
-              onClick={() => {
-                setCloseDay(false)
-                // setInterval(() => {
-                //   window.location.reload();
-                // }, 2500);
+            <BlobProvider document={<TableMock />}>
+              {({ url, loading, error }) => {
+                // if (loading) {
+                //   return <Button w='100%' loading>Loading...</Button>;
+                // }
+                if (error) {
+                  return <p>Error: {error.toString()}</p>;
+                }
+                if (url) {
+                  return (
+                    <div>
+                      <a href={url} target="_blank" rel="noopener noreferrer" download={`cuadre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD/MM/YYYY')}.pdf`}>
+                        <Button
+                          mt={10}
+                          variant="filled"
+                          color="blue"
+                          size="sm"
+                          fullWidth
+                        >
+                          Descargar
+                        </Button>
+                      </a>
+                    </div>
+                  );
+                }
+                return null;
               }}
-            >
-              Descargar
-            </Button>
-          )}
+            </BlobProvider>
         </PDFDownloadLink>
-        {isAvailable === false && (
-          <Button
-            mt={10}
-            variant="filled"
-            color="blue"
-            size="sm"
-            fullWidth
-            loading
-          >
-            Descargar
-          </Button>
-        )}
         {/* <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button> */}
       </Modal>
     )
