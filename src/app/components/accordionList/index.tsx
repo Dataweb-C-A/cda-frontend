@@ -66,6 +66,7 @@ type AccordionItem = {
   pin: boolean;
   pinNumber: string | null;
   verify: boolean;
+  created_at: string | Date;
 };
 
 interface IRifas {
@@ -896,7 +897,7 @@ export default function AccordionList({
                     <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
                   </Chip>
                   <Title order={5} ta="start" fw={620} mt={5} ml={30} >
-                    {data.prize}
+                  <Text fw={250}>{moment(data.created_at).format('DD/MM/YYYY')}</Text>{data.prize}
                     <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
                       {data.rifero}
                     </Text>
@@ -947,7 +948,7 @@ export default function AccordionList({
 
                               }}
                             >
-                              Pagar
+                              Pagar rifa
                             </Button>
                           )
                         }
@@ -995,7 +996,7 @@ export default function AccordionList({
                                   display: 'flex',
                                   alignItems: 'center',
                                 }}
-                                disabled={repeat.amount == null || repeat.amount == 0}
+                                disabled={data.verify || !data.status}
                               >
                                 {(repeat.refund) && <IconCommand size={16} />}
                                 Devolver Rifa
