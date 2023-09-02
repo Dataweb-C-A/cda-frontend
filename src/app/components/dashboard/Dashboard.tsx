@@ -10,7 +10,7 @@ import {
   Button,
   Pagination,
   Flex,
-  Table ,
+  Table,
   Modal,
   Divider,
   Paper,
@@ -29,7 +29,8 @@ import axios from "axios";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { IconCheck, IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
-import { PDFDownloadLink, BlobProvider, Page, Text as Textwo, View, Document, StyleSheet, Image, Font  } from "@react-pdf/renderer";
+import { PDFDownloadLink, BlobProvider, Page, Text as Textwo, View, Document, StyleSheet, Image, Font } from "@react-pdf/renderer";
+import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 
 interface IRifas {
   id: number;
@@ -117,16 +118,16 @@ interface IClosed {
 }
 
 interface ICloseModal {
-    serie: number;
-    app_status: 'Enviado APP' | 'No enviado';
-    amount: number;
-    rifero: {
-      name: string;
-      is_block: "Bloqueado" | "Activo";
-    };
-    verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente" | 0;
-    denomination: "$" | "Bs" | "COP";
-    rifDate: string;
+  serie: number;
+  app_status: 'Enviado APP' | 'No enviado';
+  amount: number;
+  rifero: {
+    name: string;
+    is_block: "Bloqueado" | "Activo";
+  };
+  verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente" | 0;
+  denomination: "$" | "Bs" | "COP";
+  rifDate: string;
 }
 
 function Dashboard() {
@@ -170,14 +171,18 @@ function Dashboard() {
       paddingHorizontal: 35,
     },
     text: {
+      paddingTop: 35,
+      paddingBottom: 65,
       margin: 12,
       fontSize: 14,
       textAlign: 'justify',
     },
     image: {
-      marginVertical: 15,
-      marginHorizontal: 100,
+      width: 100,
+      height: 100,
+      alignSelf: 'flex-end',
     },
+
     header: {
       fontSize: 12,
       marginBottom: 20,
@@ -194,21 +199,25 @@ function Dashboard() {
       color: 'grey',
     },
     table: {
-      // display: 'table',
-      width: 'auto',
+      width: '100%',
+      borderCollapse: 'collapse',
       marginVertical: 15,
     },
     tableRow: {
-      margin: 'auto',
       flexDirection: 'row',
+      borderBottom: '1px solid #000',
     },
     tableCell: {
       margin: 5,
       padding: 5,
       fontSize: 12,
+
+      border: '1px solid #000',
     },
     tableHeaderCell: {
       backgroundColor: '#f2f2f2',
+
+      border: '1px solid #000',
     },
   });
 
@@ -216,7 +225,7 @@ function Dashboard() {
     setPageNumber(1);
     setOpenForm(false);
   };
-  
+
   useEffect(() => {
     setIsAvailable(false)
     setTimeout(() => {
@@ -226,19 +235,19 @@ function Dashboard() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
-      .then((response) => {
-        setClosedData(response.data)
-        setCounter(counter + 1)
-        if (response.data.pendings > 0) {
-          closeForm()
-        }
-        setTimeout(() => {
-          setIsAvailable(true)
-        }, 2000)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+        .then((response) => {
+          setClosedData(response.data)
+          setCounter(counter + 1)
+          if (response.data.pendings > 0) {
+            closeForm()
+          }
+          setTimeout(() => {
+            setIsAvailable(true)
+          }, 2000)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }, 1000);
   }, [closeDay, openForm])
 
@@ -331,7 +340,7 @@ function Dashboard() {
   };
   const elements = ('rifa' in closedData ? closedData.rifa : []) as IClosed['rifa'];
 
- const rows = elements.map((element: ICloseModal) => (
+  const rows = elements.map((element: ICloseModal) => (
     <tr key={element.serie}>
       <td style={{ textAlign: 'center' }}>{element.serie}</td>
       <td style={{ textAlign: 'center' }}>{element.app_status}</td>
@@ -363,10 +372,11 @@ function Dashboard() {
       return (
         <Document>
           <Page style={styles.body}>
-            {/* <Image style={styles.image} src={RifamaxLogo} /> */}
-  
-            <Textwo>Rifas Pendientes: {closedData.pendings}</Textwo>
-  
+            <Image style={styles.image} src={RifamaxLogo} />
+            <Textwo>Taquilla: {`${JSON.parse(localStorage.getItem('user') || '{}').name}`}</Textwo>
+            <Textwo>Fecha de cierre: {moment().format('DD-MM-YYYY')}</Textwo>
+
+
             <View style={styles.table}>
               <View style={styles.tableRow}>
                 <View style={[styles.tableCell, styles.tableHeaderCell]}>
@@ -405,6 +415,7 @@ function Dashboard() {
                 </View>
               ))}
             </View>
+            <Textwo>Rifas Pendientes: {closedData.pendings}</Textwo>
           </Page>
         </Document>
       )
@@ -419,36 +430,36 @@ function Dashboard() {
       >
         <Divider label="Cuadre de hoy" mt={20} labelPosition="center" variant="dashed" />
         <Paper w="100%" py={50}>
-        <Table striped highlightOnHover>
-          <ScrollArea h={400}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: 'center' }}>Serie</th>
-                <th style={{ textAlign: 'center' }}>Enviado</th>
-                <th style={{ textAlign: 'center' }}>Verificación</th>
-                <th style={{ textAlign: 'center' }}>Monto</th>
-                <th style={{ textAlign: 'center' }}>Rifero</th>
-                <th style={{ textAlign: 'center' }}>Fecha</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </ScrollArea>
-        </Table>
-        {
-          closedData.rifa.length === 0 && (
-            <>
-              <Text ta='center' pt={55} pb={0} fw={500} fz={20}>
-                No hay rifas para mostrar
-              </Text>
-              <Text ta="center" pb={10} mt={5}>
-                <IconZoomQuestion size={40}/>
-              </Text>
-            </>
-          )
-        }
-        <Text ta="center" fw={700} fz={18} mt={25}>
-          Rifas pendientes: {closedData.pendings}
-        </Text>
+          <Table striped highlightOnHover>
+            <ScrollArea h={400}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: 'center' }}>Serie</th>
+                  <th style={{ textAlign: 'center' }}>Enviado</th>
+                  <th style={{ textAlign: 'center' }}>Verificación</th>
+                  <th style={{ textAlign: 'center' }}>Monto</th>
+                  <th style={{ textAlign: 'center' }}>Rifero</th>
+                  <th style={{ textAlign: 'center' }}>Fecha</th>
+                </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+            </ScrollArea>
+          </Table>
+          {
+            closedData.rifa.length === 0 && (
+              <>
+                <Text ta='center' pt={55} pb={0} fw={500} fz={20}>
+                  No hay rifas para mostrar
+                </Text>
+                <Text ta="center" pb={10} mt={5}>
+                  <IconZoomQuestion size={40} />
+                </Text>
+              </>
+            )
+          }
+          <Text ta="center" fw={700} fz={18} mt={25}>
+            Rifas pendientes: {closedData.pendings}
+          </Text>
         </Paper>
         <Divider label="Total" labelPosition="center" variant="dashed" mt={-20} mb={40} />
         <Card w="100%" p={50} mb={40}>
@@ -487,34 +498,34 @@ function Dashboard() {
             textDecoration: "none",
           }}
         >
-            <BlobProvider document={<TableMock />}>
-              {({ url, loading, error }) => {
-                // if (loading) {
-                //   return <Button w='100%' loading>Loading...</Button>;
-                // }
-                if (error) {
-                  return <p>Error: {error.toString()}</p>;
-                }
-                if (url) {
-                  return (
-                    <div>
-                      <a href={url} target="_blank" rel="noopener noreferrer" download={`cuadre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD/MM/YYYY')}.pdf`}>
-                        <Button
-                          mt={10}
-                          variant="filled"
-                          color="blue"
-                          size="sm"
-                          fullWidth
-                        >
-                          Descargar
-                        </Button>
-                      </a>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            </BlobProvider>
+          <BlobProvider document={<TableMock />}>
+            {({ url, loading, error }) => {
+              // if (loading) {
+              //   return <Button w='100%' loading>Loading...</Button>;
+              // }
+              if (error) {
+                return <p>Error: {error.toString()}</p>;
+              }
+              if (url) {
+                return (
+                  <div>
+                    <a href={url} target="_blank" rel="noopener noreferrer" download={`cuadre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD/MM/YYYY')}.pdf`}>
+                      <Button
+                        mt={10}
+                        variant="filled"
+                        color="blue"
+                        size="sm"
+                        fullWidth
+                      >
+                        Descargar
+                      </Button>
+                    </a>
+                  </div>
+                );
+              }
+              return null;
+            }}
+          </BlobProvider>
         </PDFDownloadLink>
         {/* <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button> */}
       </Modal>
@@ -602,7 +613,7 @@ function Dashboard() {
                         setReset(reset + 1)
                       }}
                     >
-                      <IconRepeat size={16}/>
+                      <IconRepeat size={16} />
                     </Button>
                     <Group position="right" mt={25}>
                       <FormModal
