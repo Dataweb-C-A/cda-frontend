@@ -654,7 +654,8 @@ function Dashboard() {
                       status: ticket.is_send,
                       pin: !!ticket.pin,
                       pinNumber: ticket.pin || null,
-                      verify: ticket.verify
+                      verify: ticket.verify,
+                      created_at: ticket.rifDate
                     }}
                     dataPDF={{
                       agency: ticket.user.name,
