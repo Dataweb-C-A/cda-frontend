@@ -166,61 +166,39 @@ function Dashboard() {
 
   const styles = StyleSheet.create({
     body: {
-      paddingTop: 35,
-      paddingBottom: 65,
-      paddingHorizontal: 35,
+      paddingTop: 30,
+      paddingBottom: 30,
+      paddingLeft: 30,
+      paddingRight: 30,
     },
-    text: {
-      paddingTop: 35,
-      paddingBottom: 65,
-      margin: 12,
-      fontSize: 14,
-      textAlign: 'justify',
-    },
-    image: {
-      width: 100,
-      height: 100,
+    footer:{
       alignSelf: 'flex-end',
     },
-
-    header: {
-      fontSize: 12,
-      marginBottom: 20,
-      textAlign: 'center',
-      color: 'grey',
-    },
-    pageNumber: {
-      position: 'absolute',
-      fontSize: 12,
-      bottom: 30,
-      left: 0,
-      right: 0,
-      textAlign: 'center',
-      color: 'grey',
+    image: {
+      width: 200,
+      height: 100,
+      marginTop: 10,
+      alignSelf: 'flex-end',
     },
     table: {
+      flexDirection: 'column',
       width: '100%',
-      borderCollapse: 'collapse',
-      marginVertical: 15,
+      borderStyle: 'solid',
+      borderWidth: 1,
     },
     tableRow: {
       flexDirection: 'row',
-      borderBottom: '1px solid #000',
     },
     tableCell: {
-      margin: 5,
-      padding: 5,
-      fontSize: 12,
-
-      border: '1px solid #000',
+      width: '20%',
+      borderStyle: 'solid',
+      borderWidth: 1,
+      padding: 4,
     },
     tableHeaderCell: {
-      backgroundColor: '#f2f2f2',
-
-      border: '1px solid #000',
+      backgroundColor: '#f0f0f0',
     },
   });
-
   const closeForm = () => {
     setPageNumber(1);
     setOpenForm(false);
@@ -372,26 +350,27 @@ function Dashboard() {
       return (
         <Document>
           <Page style={styles.body}>
-            <Image style={styles.image} src={RifamaxLogo} />
-            <Textwo>Taquilla: {`${JSON.parse(localStorage.getItem('user') || '{}').name}`}</Textwo>
-            <Textwo>Fecha de cierre: {moment().format('DD-MM-YYYY')}</Textwo>
-
+            <View >
+              <Image style={styles.image} src={RifamaxLogo} />
+              <Textwo>Taquilla: {`${JSON.parse(localStorage.getItem('user') || '{}').name}`}</Textwo>
+              <Textwo>Fecha de cierre: {moment().format('DD-MM-YYYY')}</Textwo>
+            </View>
 
             <View style={styles.table}>
-              <View style={styles.tableRow}>
-                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+              <View style={[styles.tableRow, styles.tableHeaderCell]}>
+                <View style={styles.tableCell}>
                   <Textwo>Serie</Textwo>
                 </View>
-                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+                <View style={styles.tableCell}>
                   <Textwo>Estado</Textwo>
                 </View>
-                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+                <View style={styles.tableCell}>
                   <Textwo>Monto</Textwo>
                 </View>
-                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+                <View style={styles.tableCell}>
                   <Textwo>Rifero</Textwo>
                 </View>
-                <View style={[styles.tableCell, styles.tableHeaderCell]}>
+                <View style={styles.tableCell}>
                   <Textwo>Fecha</Textwo>
                 </View>
               </View>
@@ -401,10 +380,18 @@ function Dashboard() {
                     <Textwo>{rif.serie}</Textwo>
                   </View>
                   <View style={styles.tableCell}>
-                    <Textwo>{rif.app_status == 'No enviado' || (moment(moment().format('DD-MM-YYYY')) > moment(rif.rifDate)) ? 'Pendiente' : rif.verification == 0 ? "Enviado APP" : rif.verification}</Textwo>
+                    <Textwo>
+                      {rif.app_status === 'No enviado' || (moment(moment().format('DD-MM-YYYY')) > moment(rif.rifDate))
+                        ? 'Pendiente'
+                        : rif.verification === 0
+                          ? 'Enviado APP'
+                          : rif.verification}
+                    </Textwo>
                   </View>
                   <View style={styles.tableCell}>
-                    <Textwo>{rif.verification === 'No pagado' ? 'No ha pagado' : `${rif.amount} ${rif.denomination}`}</Textwo>
+                    <Textwo>
+                      {rif.verification === 'No pagado' ? 'No ha pagado' : `${rif.amount} ${rif.denomination}`}
+                    </Textwo>
                   </View>
                   <View style={styles.tableCell}>
                     <Textwo>{rif.rifero.name}</Textwo>
@@ -415,7 +402,7 @@ function Dashboard() {
                 </View>
               ))}
             </View>
-            <Textwo>Rifas Pendientes: {closedData.pendings}</Textwo>
+            <Textwo style={styles.footer}>Rifas Pendientes: {closedData.pendings}</Textwo>
           </Page>
         </Document>
       )
