@@ -871,9 +871,9 @@ export default function AccordionList({
             <Grid p={0} mt={-28} m={0} w="100%">
               <Grid.Col xs={12} md={12} lg={4}>
                 <Group p={0} m={0} spacing={5} mt={15}>
-                  <Flex gap="md" direction="column">
-                    <Group>
-                      <Text >
+                  <Flex direction="column">
+                    <Group >
+                      <Text ml={10} >
                         Serie
                       </Text>
                       <Text >
