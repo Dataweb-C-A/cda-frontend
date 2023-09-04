@@ -19,6 +19,7 @@ import {
   NumberInput,
   Card,
   Stepper,
+  Flex,
   Input,
   Select,
   Avatar,
@@ -870,50 +871,68 @@ export default function AccordionList({
             <Grid p={0} mt={-28} m={0} w="100%">
               <Grid.Col xs={12} md={12} lg={4}>
                 <Group p={0} m={0} spacing={5} mt={15}>
+                  <Flex gap="md" direction="column">
+                    <Group>
+                      <Text >
+                        Serie
+                      </Text>
+                      <Text >
+                        Numero
+                      </Text>
+                      <Text >
+                        Repetir
+                      </Text>
+                    </Group>
+                    <Group>
 
-                  <Badge
-                    bg={
-                      theme.colorScheme === 'dark' ? '#34354a' : 'light'
-                    }
-                    c={
-                      theme.colorScheme === 'dark' ? 'white' : 'light'
-                    }
-                    style={{ zIndex: 9999999, border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
-                    variant="outline"
-                    size='md'
-                    p={13}
-                    mt={10}
-                  >
-                    {data.id}
-                  </Badge>
-                 <Badge
-                  bg={
-                    theme.colorScheme === 'dark' ? '#34354a' : 'light'
-                  }
-                  c={
-                    theme.colorScheme === 'dark' ? 'white' : 'light'
-                  }
-                  style={{ zIndex: 9999999, border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
-                  variant="outline"
-                  size='md'
-                  p={13}
-                  mt={10}
-                  >
-                  {repeat.numbers}
-                 </Badge>
-                  <Chip
-                    color="blue"
-                    variant="outline"
-                    checked={false}
-                    size="sm"
-                    mt={10}
-                    onClick={() => handleRepeatModal()}
-                    disabled={!repeat.user.status}
-                  >
-                    <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
-                  </Chip>
+                      <Badge
+                        bg={
+                          theme.colorScheme === 'dark' ? '#34354a' : 'light'
+                        }
+                        c={
+                          theme.colorScheme === 'dark' ? 'white' : 'light'
+                        }
+                        style={{ zIndex: 9999999, border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
+                        variant="outline"
+                        size='md'
+                        p={13}
+                        mt={10}
+                      >
+                        {data.id}
+                      </Badge>
+                      <Badge
+                        bg={
+                          theme.colorScheme === 'dark' ? '#34354a' : 'light'
+                        }
+                        c={
+                          theme.colorScheme === 'dark' ? 'white' : 'light'
+                        }
+                        style={{ zIndex: 9999999, border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
+                        variant="outline"
+                        size='md'
+                        p={13}
+                        mt={10}
+                      >
+                        {repeat.numbers}
+                      </Badge>
+                      <Chip
+                        color="blue"
+                        variant="outline"
+                        checked={false}
+                        size="sm"
+                        mt={10}
+                        onClick={() => handleRepeatModal()}
+                        disabled={!repeat.user.status}
+                      >
+                        <Repeat size={14} style={{ marginTop: '6px' }} fontWeight={900} />
+                      </Chip>
+                    </Group>
+
+
+                  </Flex>
+
                   <Title order={5} ta="start" fw={620} mt={5} ml={30} >
-                  <Text fw={250}>{moment(data.created_at).format('DD/MM/YYYY')}</Text>{data.prize}
+                    <Text fw={250}>{moment(data.created_at).format('DD/MM/YYYY')}</Text>{data.prize}
                     <Text c="blue" inherit style={{ overflow: 'auto', textOverflow: 'clip' }}>
                       {data.rifero}
                     </Text>
@@ -958,7 +977,7 @@ export default function AccordionList({
                               disabled={data.verify || !data.status}
                               color="teal"
                               style={{
-                              
+
                                 display: 'flex',
                                 alignItems: 'center',
 
@@ -987,7 +1006,7 @@ export default function AccordionList({
                               }}
                               color='red'
                               style={{
-                             
+
                                 display: 'flex',
                                 alignItems: 'center',
                               }}
