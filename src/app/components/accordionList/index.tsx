@@ -870,6 +870,7 @@ export default function AccordionList({
             <Grid p={0} mt={-28} m={0} w="100%">
               <Grid.Col xs={12} md={12} lg={4}>
                 <Group p={0} m={0} spacing={5} mt={15}>
+
                   <Badge
                     bg={
                       theme.colorScheme === 'dark' ? '#34354a' : 'light'
@@ -885,6 +886,21 @@ export default function AccordionList({
                   >
                     {data.id}
                   </Badge>
+                 <Badge
+                  bg={
+                    theme.colorScheme === 'dark' ? '#34354a' : 'light'
+                  }
+                  c={
+                    theme.colorScheme === 'dark' ? 'white' : 'light'
+                  }
+                  style={{ zIndex: 9999999, border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}` }}
+                  variant="outline"
+                  size='md'
+                  p={13}
+                  mt={10}
+                  >
+                  {repeat.numbers}
+                 </Badge>
                   <Chip
                     color="blue"
                     variant="outline"
@@ -942,7 +958,7 @@ export default function AccordionList({
                               disabled={data.verify || !data.status}
                               color="teal"
                               style={{
-                                // border: '1px solid ' + (data.verify || !data.status ? 'teal' : 'transparent'),
+                              
                                 display: 'flex',
                                 alignItems: 'center',
 
@@ -971,7 +987,7 @@ export default function AccordionList({
                               }}
                               color='red'
                               style={{
-                                // border: '1px solid ' + (data.verify || !data.status ? 'red' : 'transparent'),
+                             
                                 display: 'flex',
                                 alignItems: 'center',
                               }}
