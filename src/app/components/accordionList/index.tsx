@@ -757,6 +757,19 @@ export default function AccordionList({
                     w="48%"
                     color="teal"
                     disabled={value <= 0 || isNaN(value)}
+                    onClick={() => {
+                      setReason('ACCEPT');
+                      setIsAmount(true);
+                      console.log(` 
+                      PREMIO CON SIGNO: ${repeat.awardSign}
+                      \n Sin Signo: ${repeat.awardNoSign}
+                      \n Precio: ${repeat.price}
+                      \n Serie Numero: ${repeat.id}
+                      \n Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}
+                      \n Loteria: ${repeat.loteria}
+                      \n Fecha venta: ${repeat.rifDate}
+                      \n Rifero: ${repeat.user.name}`);
+                    }}
                   >
                     Aceptar
                   </Button>
@@ -969,19 +982,7 @@ export default function AccordionList({
                           ) : (
                             <Button
                               size="xs"
-                              onClick={() => {
-                                setReason('ACCEPT');
-                                setIsAmount(true);
-                                console.log(` 
-                                PREMIO CON SIGNO: ${repeat.awardSign}
-                                \n Sin Signo: ${repeat.awardNoSign}
-                                \n Precio: ${repeat.price}
-                                \n Serie Numero: ${repeat.id}
-                                \n Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}
-                                \n Loteria: ${repeat.loteria}
-                                \n Fecha venta: ${repeat.rifDate}
-                                \n Rifero: ${repeat.user.name}`);
-                              }}
+                              
                               disabled={repeat.is_closed}
                               color="teal"
                               style={{
