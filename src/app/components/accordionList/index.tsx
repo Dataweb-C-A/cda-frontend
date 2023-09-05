@@ -1008,17 +1008,8 @@ export default function AccordionList({
                               onClick={() => {
                                 setReason('ACCEPT');
                                 setIsAmount(true);
-                                console.log(` 
-                                PREMIO CON SIGNO: ${repeat.awardSign}
-                                \n Sin Signo: ${repeat.awardNoSign}
-                                \n Precio: ${repeat.price}
-                                \n Serie Numero: ${repeat.id}
-                                \n Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}
-                                \n Loteria: ${repeat.loteria}
-                                \n Fecha venta: ${repeat.rifDate}
-                                \n Rifero: ${repeat.user.name}`);
                               }}
-                              disabled={repeat.is_closed}
+                              disabled={repeat.is_closed || repeat.is_send == false}
                               color="teal"
                               style={{
                                 display: 'flex',
@@ -1041,7 +1032,7 @@ export default function AccordionList({
                             <Button
                               p={5}
                               size="xs"
-                              disabled={repeat.is_closed}
+                              disabled={repeat.is_closed || repeat.is_send == false}
                               onClick={() => {
                                 setReason('REJECT')
                                 setIsAmount(true)
@@ -1073,7 +1064,7 @@ export default function AccordionList({
                                   display: 'flex',
                                   alignItems: 'center',
                                 }}
-                                disabled={repeat.is_closed}
+                                disabled={repeat.is_closed || repeat.is_send == false}
                               >
                                 {(repeat.refund) && <IconCommand size={16} />}
                                 Devolver Rifa
