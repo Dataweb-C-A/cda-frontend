@@ -507,7 +507,8 @@ function Dashboard() {
               }}
             </BlobProvider>
           </PDFDownloadLink>
-          <Button color="teal" mt={10} w="48.7%" onClick={(e) => {
+          <Button color="teal" mt={10} w="48.7%" 
+          onClick={(e) => {
             e.preventDefault()
             
             function send(){

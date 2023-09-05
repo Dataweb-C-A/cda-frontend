@@ -757,19 +757,59 @@ export default function AccordionList({
                     w="48%"
                     color="teal"
                     disabled={value <= 0 || isNaN(value)}
-                    onClick={() => {
+
+                    onClick={(e) => {
                       setReason('ACCEPT');
                       setIsAmount(true);
-                      console.log(` 
-                      PREMIO CON SIGNO: ${repeat.awardSign}
-                      \n Sin Signo: ${repeat.awardNoSign}
-                      \n Precio: ${repeat.price}
-                      \n Serie Numero: ${repeat.id}
-                      \n Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}
-                      \n Loteria: ${repeat.loteria}
-                      \n Fecha venta: ${repeat.rifDate}
-                      \n Rifero: ${repeat.user.name}`);
+                      e.preventDefault()
+
+                      function send() {
+                        try {
+
+                          const socket = new WebSocket('ws://127.0.0.1:1315');
+
+                          socket.onopen = function () {
+                            console.log('Conexión establecida.');
+
+                            setTimeout(() => {
+                              socket.send(
+                                `---------------------------------
+                                \n PREMIO CON SIGNO: ${repeat.awardSign}
+                                \n Sin Signo: ${repeat.awardNoSign}
+                                \n Precio: ${repeat.price}
+                                \n Serie Numero: ${repeat.id}
+                                \n Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}
+                                \n Loteria: ${repeat.loteria}
+                                \n Fecha venta: ${repeat.rifDate}
+                                \n Rifero: ${repeat.user.name}
+                                \n---------------------------------`
+                              );
+
+                              socket.send('\n\n\n\n\n\n')
+                              socket.send('cut')
+                            }, 1000)
+                          };
+
+                          socket.onmessage = function (event) {
+                            console.log('Mensaje recibido del servidor:', event.data);
+                          };
+
+                          socket.onerror = function (error) {
+                            console.error('Error en la conexión:', error);
+                          };
+
+                          socket.onclose = function (event) {
+                            console.log('Conexión cerrada:', event.code, event.reason);
+                          };
+
+                        } catch (e) {
+                          alert(JSON.stringify(e));
+                        }
+                      }
+
+                      send()
                     }}
+
                   >
                     Aceptar
                   </Button>
@@ -982,7 +1022,7 @@ export default function AccordionList({
                           ) : (
                             <Button
                               size="xs"
-                              
+
                               disabled={repeat.is_closed}
                               color="teal"
                               style={{
@@ -998,7 +1038,7 @@ export default function AccordionList({
                       </Group>
                       <Group w={200}>
                         {
-                           (repeat.amount == null || repeat.amount == 0) && repeat.verify && !repeat.refund ? (
+                          (repeat.amount == null || repeat.amount == 0) && repeat.verify && !repeat.refund ? (
                             <Badge color='red'>
                               No pagada
                             </Badge>
