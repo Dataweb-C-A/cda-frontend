@@ -8,28 +8,22 @@ import {
   Input,
   Group,
   Button,
-  Pagination,
-  Flex,
   Table,
   Modal,
   Divider,
   Paper,
-  Chip,
   Badge,
   ScrollArea
 } from "@mantine/core";
 import AccordionList from "../accordionList";
-
 import { DatePicker } from '@mantine/dates';
 import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
 import HelpModalBody from "./HelpModal";
-import { Search } from 'tabler-icons-react';
 import axios from "axios";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
-import { IconCheck, IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
-import { PDFDownloadLink, BlobProvider, Page, Text as Textwo, View, Document, StyleSheet, Image, Font } from "@react-pdf/renderer";
+import { IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
+import { PDFDownloadLink, BlobProvider, Page, Text as Textwo, View, Document, StyleSheet, Image } from "@react-pdf/renderer";
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
 
 interface IRifas {
@@ -232,7 +226,7 @@ function Dashboard() {
   const getData = () => {
     setTimeout(() => {
       axios
-        .get(`https://rifa-max.com/api/v1/rifas/actives_no_tickets`, {
+        .get(`https://rifa-max.com/api/v1/rifas/actives`, {
           headers: {
             ContentType: "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -268,8 +262,6 @@ function Dashboard() {
 
     return () => window.removeEventListener("scroll", handleScrollEvent);
   }, []);
-
-  const history = useHistory();
 
   function compareById(a: IRifas, b: IRifas) {
     return b.id - a.id;
@@ -477,43 +469,99 @@ function Dashboard() {
             </div>
           </Group>
         </Card>
-        <PDFDownloadLink
-          document={<TableMock />}
-          className={"tickets-link-pdf"}
-          fileName={`cierre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD-MM-YYYY')}.pdf`}
-          style={{
-            textDecoration: "none",
-          }}
-        >
-          <BlobProvider document={<TableMock />}>
-            {({ url, loading, error }) => {
-              // if (loading) {
-              //   return <Button w='100%' loading>Loading...</Button>;
-              // }
-              if (error) {
-                return <p>Error: {error.toString()}</p>;
-              }
-              if (url) {
-                return (
-                  <div>
-                    <a href={url} target="_blank" rel="noopener noreferrer" download={`cuadre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD/MM/YYYY')}.pdf`}>
-                      <Button
-                        mt={10}
-                        variant="filled"
-                        color="blue"
-                        size="sm"
-                        fullWidth
-                      >
-                        Descargar
-                      </Button>
-                    </a>
-                  </div>
-                );
-              }
-              return null;
+        <Group mt={-40} w="100%">
+          <PDFDownloadLink
+            document={<TableMock />}
+            fileName={`cierre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD-MM-YYYY')}.pdf`}
+            style={{
+              width: '48.5%',
+              textDecoration: "none",
             }}
-          </BlobProvider>
-        </PDFDownloadLink>
+          >
+            <BlobProvider document={<TableMock />}>
+              {({ url, loading, error }) => {
+                if (loading) {
+                  return <Button loading w="48.7%">Descargar</Button>;
+                }
+                if (error) {
+                  return <p>Error: {error.toString()}</p>;
+                }
+                if (url) {
+                  return (
+                    <div>
+                      <a href={url} target="_blank" rel="noopener noreferrer" download={`cuadre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD/MM/YYYY')}.pdf`}>
+                        <Button
+                          mt={10}
+                          variant="filled"
+                          color="blue"
+                          size="sm"
+                          fullWidth
+                        >
+                          Descargar
+                        </Button>
+                      </a>
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            </BlobProvider>
+          </PDFDownloadLink>
+          <Button color="teal" mt={10} w="48.7%" onClick={(e) => {
+            e.preventDefault()
+            
+            function send(){
+              try{
+
+                // Crear una instancia del WebSocket
+                const socket = new WebSocket('ws://127.0.0.1:1315');
+
+                // Evento que se dispara cuando la conexión se establece correctamente
+                socket.onopen = function() {
+                  console.log('Conexión establecida.');
+
+                  setTimeout(() => {
+                    socket.send(
+                      `${closedData.rifa.map((item) => {
+                        let temp = `---------------------------------\nSerie: ${item.serie}\nMonto: ${item.amount}${item.denomination}\nRifero: ${item.rifero.name}\nFecha: ${item.rifDate}\n---------------------------------`
+                        const sent = () => {
+                          return (
+                            socket.send(temp)
+                          )
+                        }
+                        sent()
+                      })
+                    }`)
+                    socket.send('\n\n\n\n\n\n')
+                    socket.send('cut')
+                  }, 1000)
+                };
+
+                // Evento que se dispara cuando se recibe un mensaje del servidor
+                socket.onmessage = function(event) {
+                  console.log('Mensaje recibido del servidor:', event.data);
+                };
+
+                // Evento que se dispara cuando se produce un error en la conexión
+                socket.onerror = function(error) {
+                  console.error('Error en la conexión:', error);
+                };
+
+                // Evento que se dispara cuando la conexión se cierra
+                socket.onclose = function(event) {
+                  console.log('Conexión cerrada:', event.code, event.reason);
+                };
+
+              }catch(e){
+                alert(JSON.stringify(e));
+              }
+            }	
+
+            send()
+          }}>
+            Imprimir
+          </Button>
+        </Group>
         {/* <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button> */}
       </Modal>
     )
