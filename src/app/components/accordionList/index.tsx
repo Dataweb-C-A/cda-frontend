@@ -876,10 +876,10 @@ export default function AccordionList({
                       <Text ml={10} >
                         Serie
                       </Text>
-                      <Text >
-                        Numero
+                      <Text ml={18} >
+                        Num
                       </Text>
-                      <Text >
+                      <Text ml={12}>
                         Repetir
                       </Text>
                     </Group>
@@ -972,15 +972,21 @@ export default function AccordionList({
                               onClick={() => {
                                 setReason('ACCEPT');
                                 setIsAmount(true);
+                                console.log(` 
+                                PREMIO CON SIGNO: ${repeat.awardSign}
+                                \n Sin Signo: ${repeat.awardNoSign}
+                                \n Precio: ${repeat.price}
+                                \n Serie Numero: ${repeat.id}
+                                \n Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}
+                                \n Loteria: ${repeat.loteria}
+                                \n Fecha venta: ${repeat.rifDate}
+                                \n Rifero: ${repeat.user.name}`);
                               }}
-
-                              disabled={data.verify || !data.status}
+                              disabled={repeat.is_closed}
                               color="teal"
                               style={{
-
                                 display: 'flex',
                                 alignItems: 'center',
-
                               }}
                             >
                               Pagar rifa
@@ -991,7 +997,7 @@ export default function AccordionList({
                       </Group>
                       <Group w={200}>
                         {
-                          (repeat.amount == null || repeat.amount == 0) && repeat.verify && !repeat.refund ? (
+                           (repeat.amount == null || repeat.amount == 0) && repeat.verify && !repeat.refund ? (
                             <Badge color='red'>
                               No pagada
                             </Badge>
@@ -999,7 +1005,7 @@ export default function AccordionList({
                             <Button
                               p={5}
                               size="xs"
-                              disabled={data.verify || !data.status}
+                              disabled={repeat.is_closed}
                               onClick={() => {
                                 setReason('REJECT')
                                 setIsAmount(true)
@@ -1031,7 +1037,7 @@ export default function AccordionList({
                                   display: 'flex',
                                   alignItems: 'center',
                                 }}
-                                disabled={data.verify || !data.status}
+                                disabled={repeat.is_closed}
                               >
                                 {(repeat.refund) && <IconCommand size={16} />}
                                 Devolver Rifa
