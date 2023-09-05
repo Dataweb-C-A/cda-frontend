@@ -108,11 +108,6 @@ function Login() {
       borderRadius: 0,
       height: '100vh'
     }}>
-      <ThemeSwitcher style={{
-        position: 'absolute',
-        top: 10,
-        right: 10,
-      }}/>
       <Container size={420} mt='20vh'>
         <Paper withBorder shadow='md' p={30} mt={30} radius='md' bg={
           theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.blue[0]

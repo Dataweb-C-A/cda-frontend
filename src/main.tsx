@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider, useSelector } from 'react-redux' // Import useSelector
-import { MantineProvider as Mantine } from '@mantine/core'
+import { Card, Divider, MantineProvider as Mantine, Text, Title } from '@mantine/core'
 import { store, RootState } from './app/config/store'
 import Home from './app/pages/Home'
 import './app/assets/scss/styles.scss'
@@ -19,6 +19,7 @@ import Draws from './app/pages/Draws'
 import Public from './app/pages/PublicDraws'
 import Cuadre from './app/pages/Cuadre'
 import Infinito from './app/pages/Infinito'
+import axios from 'axios'
 
 
 type AppProps = {
@@ -26,7 +27,34 @@ type AppProps = {
 }
 
 function App({children}: AppProps) {
-  const colorScheme = useSelector((state: RootState) => state.theme.mode) 
+
+  const [version, setVersion] = useState(localStorage.getItem('version'))
+  const [isOutdate, setIsOutdate] = useState(false)
+
+  useEffect(() => {
+    const keyDownHandler = (event: KeyboardEvent) => {
+      if ((event.ctrlKey && event.key === "y") || event.key === "Y") {
+        window.location.reload()
+      }
+    };
+
+    document.addEventListener("keydown", keyDownHandler);
+
+    axios.get('https://rifa-max.com/').then((res) => {
+      const version = res.data.web_version
+      if (version !== localStorage.getItem('version')) {
+        setIsOutdate(true)
+        setVersion(version)
+        localStorage.removeItem('version')
+        localStorage.setItem('version', version)
+      }
+    })
+
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+
+  }, [])
 
   return (
     <Mantine
@@ -50,6 +78,17 @@ function App({children}: AppProps) {
       }}
     >
       <Router>
+        {
+          isOutdate && (
+            <div className="outdate" style={{ position: 'absolute', width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.8)', zIndex: 10 }}>
+              <Card w="400px" top={'45%'} left={'40%'}>
+                <Title ta="center" order={3} fw={600} fz={19}>
+                  Nueva version detectada. Presione Ctrl + Y
+                </Title>
+              </Card>
+            </div>
+          )
+        }
         {children}
       </Router>
     </Mantine>
