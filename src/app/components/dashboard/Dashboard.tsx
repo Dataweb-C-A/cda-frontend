@@ -513,19 +513,16 @@ function Dashboard() {
             
             function send(){
               try{
-
-                // Crear una instancia del WebSocket
                 const socket = new WebSocket('ws://127.0.0.1:1315');
 
-                // Evento que se dispara cuando la conexión se establece correctamente
                 socket.onopen = function() {
                   console.log('Conexión establecida.');
 
                   setTimeout(() => {
-                    socket.send(`CUADRE/CIERRE\n ${moment().format('DD-MM-YYYY')}\n`)
+                    socket.send(`       CUADRE/CIERRE\n        ${moment().format('DD-MM-YYYY')}\n---------------------------------\nSerie   Montos   Accion\n---------------------------------`)
                     socket.send(
                       `${closedData.rifa.map((item) => {
-                        let temp = `---------------------------------\nSerie: ${item.serie} Monto: ${item.amount}${item.denomination} Accion: ${item.verification}\n---------------------------------`
+                        let temp = `\n${item.serie}     ${item.amount}${item.denomination}     ${item.verification}`
                         const sent = () => {
                           return (
                             socket.send(temp)
@@ -534,22 +531,22 @@ function Dashboard() {
                         sent()
                       })
                     }`)
+                    socket.send(`\n---------------------------------\nTotal Bolivares: ${closedData.total.bsd} Bs.D`)
+                    socket.send(`\n---------------------------------\nTotal Dolares: ${closedData.total.dolar} $`)
+                    socket.send(`\n---------------------------------\nTotal Pesos: ${closedData.total.cop} COP`)
                     socket.send('\n\n\n\n\n\n')
                     socket.send('cut')
                   }, 1000)
                 };
 
-                // Evento que se dispara cuando se recibe un mensaje del servidor
                 socket.onmessage = function(event) {
                   console.log('Mensaje recibido del servidor:', event.data);
                 };
 
-                // Evento que se dispara cuando se produce un error en la conexión
                 socket.onerror = function(error) {
                   console.error('Error en la conexión:', error);
                 };
 
-                // Evento que se dispara cuando la conexión se cierra
                 socket.onclose = function(event) {
                   console.log('Conexión cerrada:', event.code, event.reason);
                 };
