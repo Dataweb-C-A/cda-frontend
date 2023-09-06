@@ -713,7 +713,7 @@ export default function AccordionList({
 
                             setTimeout(() => {
                               socket.send(
-                                `---------------------------------\n Premio con Signo: ${repeat.awardSign}\n Sin Signo: ${repeat.awardNoSign}\n Precio: ${repeat.price}\n Serie Numero: ${repeat.id}\n Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}\n Loteria: ${repeat.loteria}\n Fecha venta: ${repeat.rifDate}\n Rifero: ${repeat.user.name}\n---------------------------------`
+                                `Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}\n COMPRA RIFA\n---------------------------------\n Numero: ${repeat.numbers} ${(typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) >= 0 && (typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) <= 9 ? 'Terminal' : (typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) >= 10 && (typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) <= 99 ? 'Triple' : 'Normal'}\nPremio con Signo: ${repeat.awardSign}\n Sin Signo: ${repeat.awardNoSign}\n Precio: ${repeat.price}$\n Serie Numero: ${repeat.id}\n \n Loteria: ${repeat.loteria}\n Fecha venta: ${repeat.rifDate}\n Rifero: ${repeat.user.name}\n Rifero: ${repeat.rifero.phone} \n---------------------------------`
                               );
                               socket.send('\n\n\n\n\n\n')
                               socket.send('cut')
@@ -729,7 +729,6 @@ export default function AccordionList({
                             console.error('Error en la conexión:', error);
                           };
 
-                          // Evento que se dispara cuando la conexión se cierra
                           socket.onclose = function (event) {
                             console.log('Conexión cerrada:', event.code, event.reason);
                           };

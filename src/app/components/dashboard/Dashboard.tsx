@@ -522,9 +522,10 @@ function Dashboard() {
                   console.log('Conexión establecida.');
 
                   setTimeout(() => {
+                    socket.send(`CUADRE/CIERRE\n ${moment().format('DD-MM-YYYY')}\n`)
                     socket.send(
                       `${closedData.rifa.map((item) => {
-                        let temp = `---------------------------------\nSerie: ${item.serie}\nMonto: ${item.amount}${item.denomination}\nRifero: ${item.rifero.name}\nFecha: ${item.rifDate}\n---------------------------------`
+                        let temp = `---------------------------------\nSerie: ${item.serie} Monto: ${item.amount}${item.denomination} Accion: ${item.verification}\n---------------------------------`
                         const sent = () => {
                           return (
                             socket.send(temp)
