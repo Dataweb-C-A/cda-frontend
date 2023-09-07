@@ -9,6 +9,7 @@ import {
   Group,
   Button,
   Table,
+  Pagination,
   Modal,
   Divider,
   Paper,
@@ -137,6 +138,9 @@ function Dashboard() {
   const [closeDay, setCloseDay] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0);
   const [isAvailable, setIsAvailable] = useState<boolean>(false)
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 10; // Cambia esto al número deseado de elementos por página
+
   const [closedData, setClosedData] = useState<IClosed>({
     rifa: [{
       serie: 1,
@@ -165,7 +169,7 @@ function Dashboard() {
       paddingLeft: 30,
       paddingRight: 30,
     },
-    footer:{
+    footer: {
       alignSelf: 'flex-end',
     },
     image: {
@@ -507,57 +511,57 @@ function Dashboard() {
               }}
             </BlobProvider>
           </PDFDownloadLink>
-          <Button color="teal" mt={10} w="48.7%" 
-          onClick={(e) => {
-            e.preventDefault()
-            
-            function send(){
-              try{
-                const socket = new WebSocket('ws://127.0.0.1:1315');
+          <Button color="teal" mt={10} w="48.7%"
+            onClick={(e) => {
+              e.preventDefault()
 
-                socket.onopen = function() {
-                  console.log('Conexión establecida.');
+              function send() {
+                try {
+                  const socket = new WebSocket('ws://127.0.0.1:1315');
 
-                  setTimeout(() => {
-                    socket.send(`       CUADRE/CIERRE\n        ${moment().format('DD-MM-YYYY')}\n---------------------------------\nSerie   Montos   Accion\n---------------------------------`)
-                    socket.send(
-                      `${closedData.rifa.map((item) => {
-                        let temp = `\n${item.serie}     ${item.amount}${item.denomination}     ${item.verification}`
-                        const sent = () => {
-                          return (
-                            socket.send(temp)
-                          )
-                        }
-                        sent()
-                      })
-                    }`)
-                    socket.send(`\n---------------------------------\nTotal Bolivares: ${closedData.total.bsd} Bs.D`)
-                    socket.send(`\n---------------------------------\nTotal Dolares: ${closedData.total.dolar} $`)
-                    socket.send(`\n---------------------------------\nTotal Pesos: ${closedData.total.cop} COP`)
-                    socket.send('\n\n\n\n\n\n')
-                    socket.send('cut')
-                  }, 1000)
-                };
+                  socket.onopen = function () {
+                    console.log('Conexión establecida.');
 
-                socket.onmessage = function(event) {
-                  console.log('Mensaje recibido del servidor:', event.data);
-                };
+                    setTimeout(() => {
+                      socket.send(`       CUADRE/CIERRE\n        ${moment().format('DD-MM-YYYY')}\n---------------------------------\nSerie   Montos   Accion\n---------------------------------`)
+                      socket.send(
+                        `${closedData.rifa.map((item) => {
+                          let temp = `\n${item.serie}     ${item.amount}${item.denomination}     ${item.verification}`
+                          const sent = () => {
+                            return (
+                              socket.send(temp)
+                            )
+                          }
+                          sent()
+                        })
+                        }`)
+                      socket.send(`\n---------------------------------\nTotal Bolivares: ${closedData.total.bsd} Bs.D`)
+                      socket.send(`\n---------------------------------\nTotal Dolares: ${closedData.total.dolar} $`)
+                      socket.send(`\n---------------------------------\nTotal Pesos: ${closedData.total.cop} COP`)
+                      socket.send('\n\n\n\n\n\n')
+                      socket.send('cut')
+                    }, 1000)
+                  };
 
-                socket.onerror = function(error) {
-                  console.error('Error en la conexión:', error);
-                };
+                  socket.onmessage = function (event) {
+                    console.log('Mensaje recibido del servidor:', event.data);
+                  };
 
-                socket.onclose = function(event) {
-                  console.log('Conexión cerrada:', event.code, event.reason);
-                };
+                  socket.onerror = function (error) {
+                    console.error('Error en la conexión:', error);
+                  };
 
-              }catch(e){
-                alert(JSON.stringify(e));
+                  socket.onclose = function (event) {
+                    console.log('Conexión cerrada:', event.code, event.reason);
+                  };
+
+                } catch (e) {
+                  alert(JSON.stringify(e));
+                }
               }
-            }	
 
-            send()
-          }}>
+              send()
+            }}>
             Imprimir
           </Button>
         </Group>
@@ -565,6 +569,9 @@ function Dashboard() {
       </Modal>
     )
   }
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const visibleTickets = filteredTickets.slice(startIndex, endIndex);
 
   return (
     <>
@@ -687,7 +694,13 @@ function Dashboard() {
               </div>
             ) : (
               <>
-                {filteredTickets.sort(compareById).map((ticket: IRifas) => (
+                <Pagination
+                 radius="lg"
+                  total={Math.ceil(filteredTickets.length / itemsPerPage)}
+                  onChange={(value) => setCurrentPage(value)}
+                />
+
+                {visibleTickets.sort(compareById).map((ticket: IRifas) => (
                   <AccordionList
                     key={ticket.id}
                     repeat={ticket}

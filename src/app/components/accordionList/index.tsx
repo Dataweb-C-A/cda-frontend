@@ -9,6 +9,7 @@ import {
   Grid,
   Group,
   Title,
+  Pagination, 
   Button,
   Menu,
   Modal,
@@ -902,6 +903,7 @@ export default function AccordionList({
       <SendModal />
       <Accordion.Item key={data.id} value={data.id.toString()} style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
         <AccordionControl >
+          
           <div style={{ width: '100%', display: 'flex' }}>
             <Grid p={0} mt={-28} m={0} w="100%">
               <Grid.Col xs={12} md={12} lg={4}>
