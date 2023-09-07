@@ -406,6 +406,7 @@ function Dashboard() {
     return (
       <Modal
         size="lg"
+        mt={-44}
         title={`Cierre del dia de hoy: ${moment().format('DD/MM/YYYY')}`}
         onClose={() => setCloseDay(false)}
         centered
@@ -414,7 +415,7 @@ function Dashboard() {
         <Divider label="Cuadre de hoy" mt={20} labelPosition="center" variant="dashed" />
         <Paper w="100%" py={50}>
           <Table striped highlightOnHover>
-            <ScrollArea h={400}>
+            <ScrollArea h={225}>
               <thead>
                 <tr>
                   <th style={{ textAlign: 'center' }}>Serie</th>
@@ -444,8 +445,8 @@ function Dashboard() {
             Rifas pendientes: {closedData.pendings}
           </Text>
         </Paper>
-        <Divider label="Total" labelPosition="center" variant="dashed" mt={-20} mb={40} />
-        <Card w="100%" p={50} mb={40}>
+        <Divider label="Total" labelPosition="center" variant="dashed" mt={-30} mb={20} />
+        <Card w="100%" p={30} mb={40}>
           <Group w="100%">
             <div style={{ width: '30.33%' }}>
               <Text fw={200} ta="center">
@@ -656,27 +657,10 @@ function Dashboard() {
                     >
                       <IconRepeat size={16} />
                     </Button>
-                    <Group position="right" mt={25}>
-                      <FormModal
-                        variant="filled"
-                        color="blue"
-                        style={{ position: 'absolute', right: 155 }}
-                        leftIcon={<IconPlus />}
-                        className="btn-rifa"
-                        onClick={() => setOpenForm((prevState) => !prevState)}
-                        onClose={() => closeForm()}
-                        open={openForm}
-                        disabled={closedData.pendings > 0}
-                      >
-                        Agregar Rifa
-                      </FormModal>
-                      <Button onClick={() => setCloseDay(true)} leftIcon={<IconX />} color='red' style={{ position: 'absolute', width: '130px', right: 15 }}>
-                        Cerrar día
-                      </Button>
-                    </Group>
                   </Group>
 
                 </Group>
+                 
 
 
 
@@ -686,6 +670,24 @@ function Dashboard() {
                 /> */}
               </Grid.Col>
               <Grid.Col md={2} sm={12}>
+              <Group position="right" mt={25}>
+                        <FormModal
+                          variant="filled"
+                          color="blue"
+                          style={{ position: 'absolute', right: 155 }}
+                          leftIcon={<IconPlus />}
+                          className="btn-rifa"
+                          onClick={() => setOpenForm((prevState) => !prevState)}
+                          onClose={() => closeForm()}
+                          open={openForm}
+                          disabled={closedData.pendings > 0}
+                        >
+                          Agregar Rifa
+                        </FormModal>
+                        <Button onClick={() => setCloseDay(true)} leftIcon={<IconX />} color='red' style={{ position: 'absolute', width: '130px', right: 15 }}>
+                          Cerrar día
+                        </Button>
+                      </Group>
               </Grid.Col>
             </Grid>
             {loading ? (
