@@ -695,11 +695,10 @@ function Dashboard() {
             ) : (
               <>
                 <Pagination
-                 radius="lg"
                   total={Math.ceil(filteredTickets.length / itemsPerPage)}
                   onChange={(value) => setCurrentPage(value)}
+                  mb={10}
                 />
-
                 {visibleTickets.sort(compareById).map((ticket: IRifas) => (
                   <AccordionList
                     key={ticket.id}
@@ -737,6 +736,11 @@ function Dashboard() {
                     />
                   </AccordionList>
                 ))}
+                <Pagination
+                  total={Math.ceil(filteredTickets.length / itemsPerPage)}
+                  onChange={(value) => setCurrentPage(value)}
+                  mt={10}
+                />
               </>
             )}
             {tickets.length === 0 && (
