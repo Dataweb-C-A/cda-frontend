@@ -267,10 +267,6 @@ function Dashboard() {
     return () => window.removeEventListener("scroll", handleScrollEvent);
   }, []);
 
-  function compareById(a: IRifas, b: IRifas) {
-    return b.id - a.id;
-  }
-
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
       if ((event.ctrlKey && event.key === "m") || event.key === "M") {
@@ -479,7 +475,7 @@ function Dashboard() {
             document={<TableMock />}
             fileName={`cierre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD-MM-YYYY')}.pdf`}
             style={{
-              width: '48.5%',
+              width: '100%', // 48.5%
               textDecoration: "none",
             }}
           >
@@ -512,7 +508,7 @@ function Dashboard() {
               }}
             </BlobProvider>
           </PDFDownloadLink>
-          <Button color="teal" mt={10} w="48.7%"
+          {/* <Button color="teal" mt={10} w="48.7%"
             onClick={(e) => {
               e.preventDefault()
 
@@ -564,7 +560,7 @@ function Dashboard() {
               send()
             }}>
             Imprimir
-          </Button>
+          </Button> */}
         </Group>
         {/* <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button> */}
       </Modal>
@@ -572,7 +568,7 @@ function Dashboard() {
   }
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const visibleTickets = filteredTickets.slice(startIndex, endIndex);
+  const visibleTickets = filteredTickets.reverse().slice(startIndex, endIndex);
 
   return (
     <>
@@ -698,10 +694,12 @@ function Dashboard() {
               <>
                 <Pagination
                   total={Math.ceil(filteredTickets.length / itemsPerPage)}
+                  page={currentPage}
                   onChange={(value) => setCurrentPage(value)}
                   mb={10}
+                  siblings={100}
                 />
-                {visibleTickets.sort(compareById).map((ticket: IRifas) => (
+                {visibleTickets.map((ticket: IRifas) => (
                   <AccordionList
                     key={ticket.id}
                     repeat={ticket}
@@ -740,8 +738,10 @@ function Dashboard() {
                 ))}
                 <Pagination
                   total={Math.ceil(filteredTickets.length / itemsPerPage)}
+                  page={currentPage}
                   onChange={(value) => setCurrentPage(value)}
                   mt={10}
+                  siblings={100}
                 />
               </>
             )}

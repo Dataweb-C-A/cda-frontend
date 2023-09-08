@@ -704,42 +704,42 @@ export default function AccordionList({
                     )
                     .then(() => {
                       setIsAmount(false);
-                      function send() {
-                        try {
+                      // function send() {
+                      //   try {
 
-                          const socket = new WebSocket('ws://127.0.0.1:1315');
+                      //     const socket = new WebSocket('ws://127.0.0.1:1315');
 
-                          socket.onopen = function () {
-                            console.log('Conexión establecida.');
+                      //     socket.onopen = function () {
+                      //       console.log('Conexión establecida.');
 
-                            setTimeout(() => {
-                              socket.send(
-                                `Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}\nCOMPRA RIFA\n---------------------------------\nNumero: ${repeat.numbers} - ${(typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) >= 0 && (typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) <= 9 ? 'Terminal' : (typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) >= 10 && (typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) <= 99 ? 'Triple' : 'Normal'}\nPremio con Signo: ${repeat.awardSign}\nSin Signo: ${repeat.awardNoSign}\nPrecio: ${repeat.price} ${repeat.money}\nSerie Numero: ${repeat.id}\nLoteria: ${repeat.loteria}\nFecha venta: ${repeat.rifDate}\nRifero: ${repeat.user.name}\nTelefono: ${repeat.rifero.phone} \n---------------------------------`
-                              );
-                              socket.send('\n\n\n\n\n\n')
-                              socket.send('cut')
-                              window.location.reload();
-                            }, 1000)
-                          };
+                      //       setTimeout(() => {
+                      //         socket.send(
+                      //           `Agencia: ${JSON.parse(localStorage.getItem('user') || '{}').name}\nCOMPRA RIFA\n---------------------------------\nNumero: ${repeat.numbers} - ${(typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) >= 0 && (typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) <= 9 ? 'Terminal' : (typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) >= 10 && (typeof repeat.numbers === 'string' ? parseInt(repeat.numbers, 10) : repeat.numbers) <= 99 ? 'Triple' : 'Normal'}\nPremio con Signo: ${repeat.awardSign}\nSin Signo: ${repeat.awardNoSign}\nPrecio: ${repeat.price} ${repeat.money}\nSerie Numero: ${repeat.id}\nLoteria: ${repeat.loteria}\nFecha venta: ${repeat.rifDate}\nRifero: ${repeat.user.name}\nTelefono: ${repeat.rifero.phone} \n---------------------------------`
+                      //         );
+                      //         socket.send('\n\n\n\n\n\n')
+                      //         socket.send('cut')
+                      //         window.location.reload();
+                      //       }, 1000)
+                      //     };
 
-                          socket.onmessage = function (event) {
-                            console.log('Mensaje recibido del servidor:', event.data);
-                          };
+                      //     socket.onmessage = function (event) {
+                      //       console.log('Mensaje recibido del servidor:', event.data);
+                      //     };
 
-                          socket.onerror = function (error) {
-                            console.error('Error en la conexión:', error);
-                          };
+                      //     socket.onerror = function (error) {
+                      //       console.error('Error en la conexión:', error);
+                      //     };
 
-                          socket.onclose = function (event) {
-                            console.log('Conexión cerrada:', event.code, event.reason);
-                          };
+                      //     socket.onclose = function (event) {
+                      //       console.log('Conexión cerrada:', event.code, event.reason);
+                      //     };
 
-                        } catch (e) {
-                          alert(JSON.stringify(e));
-                        }
-                      }
+                      //   } catch (e) {
+                      //     alert(JSON.stringify(e));
+                      //   }
+                      // }
 
-                      send()
+                      // send()
                     })
                     .catch((err) => {
                       console.log(err);
