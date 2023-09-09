@@ -19,7 +19,7 @@ enum Role {
 }
 
 type PermissionMap = {
-  [role in Role]: string[];
+  [role in Role]: string[]
 };
 
 const permissions: PermissionMap = {
