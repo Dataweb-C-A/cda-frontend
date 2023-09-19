@@ -131,14 +131,14 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const [reset, setReset] = useState<number>(0);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [closeDay, setCloseDay] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0);
   const [isAvailable, setIsAvailable] = useState<boolean>(false)
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(localStorage.getItem("last_page") ? Number(localStorage.getItem("last_page")) : 1);
   const itemsPerPage = 10; // Cambia esto al número deseado de elementos por página
 
   const [closedData, setClosedData] = useState<IClosed>({
@@ -321,8 +321,7 @@ function Dashboard() {
     </tr>
   ));
 
-  const filteredTickets = tickets
-    .filter((ticket) => {
+  const filteredTickets = tickets.filter((ticket) => {
       if (!searchValue) {
         return true;
       }
@@ -695,7 +694,10 @@ function Dashboard() {
                 <Pagination
                   total={Math.ceil(filteredTickets.length / itemsPerPage)}
                   page={currentPage}
-                  onChange={(value) => setCurrentPage(value)}
+                  onChange={(value) => {
+                    setCurrentPage(value)
+                    localStorage.setItem('last_page', String(value))
+                  }}
                   mb={10}
                   siblings={100}
                 />
