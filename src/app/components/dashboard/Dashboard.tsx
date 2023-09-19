@@ -104,7 +104,7 @@ interface IClosed {
     denomination: "$" | "Bs" | "COP";
     rifDate: string;
   }[];
-  pendings_rifas: {
+  pengings_rifas: {
     serie: number;
     app_status: 'Enviado APP' | 'No enviado';
     amount: number;
@@ -167,7 +167,7 @@ function Dashboard() {
       denomination: '$',
       rifDate: '2002-20-22'
     }],
-    pendings_rifas: [{
+    pengings_rifas: [{
       serie: 1,
       app_status: 'Enviado APP',
       amount: 1.0,
@@ -346,41 +346,41 @@ function Dashboard() {
     </tr>
   ));
 
-  const blockRifas = ('pendings_rifas' in closedData ? closedData.pendings_rifas : []) as IClosed['pendings_rifas'];
+  const blockRifas = ('pengings_rifas' in closedData ? closedData.pengings_rifas : []) as IClosed['rifa'];
 
-  // const rowspending = closedData.pendings_rifas.map((element) => (
-  //   <tr key={element.serie}>
-  //     <td style={{ textAlign: 'center' }}>{element.serie}</td>
-  //     <td style={{ textAlign: 'center' }}>{element.app_status}</td>
-  //     <td style={{ textAlign: 'center' }}>
-  //       <Badge
-  //         color={
-  //           element.verification === 'Pagado'
-  //             ? 'teal'
-  //             : element.verification === 'Devuelto'
-  //               ? 'blue'
-  //               : element.app_status === 'No enviado'
-  //                 ? 'yellow'
-  //                 : element.verification === 0
-  //                   ? 'grape'
-  //                   : 'red'
-  //         }
-  //       >
-  //         {element.app_status === 'No enviado' ||
-  //           moment(moment().format('DD-MM-YYYY')) > moment(element.rifDate)
-  //           ? 'Pendiente'
-  //           : element.verification === 0
-  //             ? 'Enviado APP'
-  //             : element.verification}
-  //       </Badge>
-  //     </td>
-  //     <td style={{ textAlign: 'center' }}>
-  //       {element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}
-  //     </td>
-  //     <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
-  //     <td style={{ textAlign: 'center' }}>{moment(element.rifDate).format('DD/MM/YYYY')}</td>
-  //   </tr>
-  // ));
+  const rowspending = blockRifas.map((element: ICloseModal) => (
+    <tr key={element.serie}>
+      <td style={{ textAlign: 'center' }}>{element.serie}</td>
+      <td style={{ textAlign: 'center' }}>{element.app_status}</td>
+      <td style={{ textAlign: 'center' }}>
+        <Badge
+          color={
+            element.verification === 'Pagado'
+              ? 'teal'
+              : element.verification === 'Devuelto'
+                ? 'blue'
+                : element.app_status === 'No enviado'
+                  ? 'yellow'
+                  : element.verification === 0
+                    ? 'grape'
+                    : 'red'
+          }
+        >
+          {element.app_status === 'No enviado' ||
+            moment(moment().format('DD-MM-YYYY')) > moment(element.rifDate)
+            ? 'Pendiente'
+            : element.verification === 0
+              ? 'Enviado APP'
+              : element.verification}
+        </Badge>
+      </td>
+      <td style={{ textAlign: 'center' }}>
+        {element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}
+      </td>
+      <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
+      <td style={{ textAlign: 'center' }}>{moment(element.rifDate).format('DD/MM/YYYY')}</td>
+    </tr>
+  ));
 
   const filteredTickets = tickets.filter((ticket) => {
     if (!searchValue) {
@@ -471,7 +471,7 @@ function Dashboard() {
         <Divider label="Cuadre de hoy" mt={20} labelPosition="center" variant="dashed" />
         <Paper w="100%" py={50}>
           <Table striped highlightOnHover>
-            <ScrollArea h={225}>
+            <ScrollArea h={185}>
               <thead>
                 <tr>
                   <th style={{ textAlign: 'center' }}>Serie</th>
@@ -501,7 +501,7 @@ function Dashboard() {
             Rifas pendientes: {closedData.pendings}
           </Text>
           <Table striped highlightOnHover>
-            <ScrollArea h={225}>
+            <ScrollArea h={105}>
               <thead>
                 <tr>
                   <th style={{ textAlign: 'center' }}>Serie</th>
@@ -512,8 +512,8 @@ function Dashboard() {
                   <th style={{ textAlign: 'center' }}>Fecha</th>
                 </tr>
               </thead>
-              <tbody>  
-                {/* {rowspending} */}
+              <tbody>
+                {rowspending}
               </tbody>
             </ScrollArea>
           </Table>
