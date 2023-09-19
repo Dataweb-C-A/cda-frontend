@@ -104,6 +104,18 @@ interface IClosed {
     denomination: "$" | "Bs" | "COP";
     rifDate: string;
   }[];
+  pendings_rifas: {
+    serie: number;
+    app_status: 'Enviado APP' | 'No enviado';
+    amount: number;
+    rifero: {
+      name: string;
+      is_block: "Bloqueado" | "Activo";
+    };
+    verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente" | 0;
+    denomination: "$" | "Bs" | "COP";
+    rifDate: string;
+  }[];
   pendings: number;
   total: {
     bsd: number;
@@ -111,6 +123,7 @@ interface IClosed {
     cop: number;
   }
 }
+
 
 interface ICloseModal {
   serie: number;
@@ -143,6 +156,18 @@ function Dashboard() {
 
   const [closedData, setClosedData] = useState<IClosed>({
     rifa: [{
+      serie: 1,
+      app_status: 'Enviado APP',
+      amount: 1.0,
+      rifero: {
+        name: 'Cargando...',
+        is_block: "Bloqueado"
+      },
+      verification: 'No pagado',
+      denomination: '$',
+      rifDate: '2002-20-22'
+    }],
+    pendings_rifas: [{
       serie: 1,
       app_status: 'Enviado APP',
       amount: 1.0,
@@ -321,20 +346,56 @@ function Dashboard() {
     </tr>
   ));
 
+  const blockRifas = ('pendings_rifas' in closedData ? closedData.pendings_rifas : []) as IClosed['pendings_rifas'];
+
+  // const rowspending = closedData.pendings_rifas.map((element) => (
+  //   <tr key={element.serie}>
+  //     <td style={{ textAlign: 'center' }}>{element.serie}</td>
+  //     <td style={{ textAlign: 'center' }}>{element.app_status}</td>
+  //     <td style={{ textAlign: 'center' }}>
+  //       <Badge
+  //         color={
+  //           element.verification === 'Pagado'
+  //             ? 'teal'
+  //             : element.verification === 'Devuelto'
+  //               ? 'blue'
+  //               : element.app_status === 'No enviado'
+  //                 ? 'yellow'
+  //                 : element.verification === 0
+  //                   ? 'grape'
+  //                   : 'red'
+  //         }
+  //       >
+  //         {element.app_status === 'No enviado' ||
+  //           moment(moment().format('DD-MM-YYYY')) > moment(element.rifDate)
+  //           ? 'Pendiente'
+  //           : element.verification === 0
+  //             ? 'Enviado APP'
+  //             : element.verification}
+  //       </Badge>
+  //     </td>
+  //     <td style={{ textAlign: 'center' }}>
+  //       {element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}
+  //     </td>
+  //     <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
+  //     <td style={{ textAlign: 'center' }}>{moment(element.rifDate).format('DD/MM/YYYY')}</td>
+  //   </tr>
+  // ));
+
   const filteredTickets = tickets.filter((ticket) => {
-      if (!searchValue) {
-        return true;
-      }
-      const searchString = searchValue.toLowerCase();
-      const awardSign = ticket.awardSign?.toLowerCase() || "";
-      const riferoName = ticket.user.name.toLowerCase() || "";
-      const awardNoSign = ticket.awardNoSign?.toLowerCase() || "";
-      return (
-        awardSign.includes(searchString) ||
-        riferoName.includes(searchString) ||
-        awardNoSign.includes(searchString)
-      );
-    });
+    if (!searchValue) {
+      return true;
+    }
+    const searchString = searchValue.toLowerCase();
+    const awardSign = ticket.awardSign?.toLowerCase() || "";
+    const riferoName = ticket.user.name.toLowerCase() || "";
+    const awardNoSign = ticket.awardNoSign?.toLowerCase() || "";
+    return (
+      awardSign.includes(searchString) ||
+      riferoName.includes(searchString) ||
+      awardNoSign.includes(searchString)
+    );
+  });
 
   const CloseDayModal = () => {
     const TableMock = () => {
@@ -439,6 +500,23 @@ function Dashboard() {
           <Text ta="center" fw={700} fz={18} mt={25}>
             Rifas pendientes: {closedData.pendings}
           </Text>
+          <Table striped highlightOnHover>
+            <ScrollArea h={225}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: 'center' }}>Serie</th>
+                  <th style={{ textAlign: 'center' }}>Enviado</th>
+                  <th style={{ textAlign: 'center' }}>Verificación</th>
+                  <th style={{ textAlign: 'center' }}>Monto</th>
+                  <th style={{ textAlign: 'center' }}>Rifero</th>
+                  <th style={{ textAlign: 'center' }}>Fecha</th>
+                </tr>
+              </thead>
+              <tbody>  
+                {/* {rowspending} */}
+              </tbody>
+            </ScrollArea>
+          </Table>
         </Paper>
         <Divider label="Total" labelPosition="center" variant="dashed" mt={-30} mb={20} />
         <Card w="100%" p={30} mb={40}>
@@ -655,7 +733,7 @@ function Dashboard() {
                   </Group>
 
                 </Group>
-                 
+
 
 
 
@@ -665,24 +743,24 @@ function Dashboard() {
                 /> */}
               </Grid.Col>
               <Grid.Col md={2} sm={12}>
-              <Group position="right" mt={25}>
-                        <FormModal
-                          variant="filled"
-                          color="blue"
-                          style={{ position: 'absolute', right: 155 }}
-                          leftIcon={<IconPlus />}
-                          className="btn-rifa"
-                          onClick={() => setOpenForm((prevState) => !prevState)}
-                          onClose={() => closeForm()}
-                          open={openForm}
-                          disabled={closedData.pendings > 0}
-                        >
-                          Agregar Rifa
-                        </FormModal>
-                        <Button onClick={() => setCloseDay(true)} leftIcon={<IconX />} color='red' style={{ position: 'absolute', width: '130px', right: 15 }}>
-                          Cerrar día
-                        </Button>
-                      </Group>
+                <Group position="right" mt={25}>
+                  <FormModal
+                    variant="filled"
+                    color="blue"
+                    style={{ position: 'absolute', right: 155 }}
+                    leftIcon={<IconPlus />}
+                    className="btn-rifa"
+                    onClick={() => setOpenForm((prevState) => !prevState)}
+                    onClose={() => closeForm()}
+                    open={openForm}
+                    disabled={closedData.pendings > 0}
+                  >
+                    Agregar Rifa
+                  </FormModal>
+                  <Button onClick={() => setCloseDay(true)} leftIcon={<IconX />} color='red' style={{ position: 'absolute', width: '130px', right: 15 }}>
+                    Cerrar día
+                  </Button>
+                </Group>
               </Grid.Col>
             </Grid>
             {loading ? (
