@@ -14,7 +14,8 @@ import {
   Divider,
   Paper,
   Badge,
-  ScrollArea
+  ScrollArea,
+  ActionIcon
 } from "@mantine/core";
 import AccordionList from "../accordionList";
 import { DatePicker } from '@mantine/dates';
@@ -22,11 +23,12 @@ import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
 import HelpModalBody from "./HelpModal";
 import axios from "axios";
+import Axios from 'axios';
 import moment from "moment";
 import { IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
 import { PDFDownloadLink, BlobProvider, Page, Text as Textwo, View, Document, StyleSheet, Image } from "@react-pdf/renderer";
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
-
+import { IconTrashX } from '@tabler/icons-react';
 interface IRifas {
   id: number;
   awardSign: string;
@@ -308,11 +310,36 @@ function Dashboard() {
 
   useEffect(() => {
     getData();
-  }, [openForm, reset]);
+  }, [openForm, reset, closeDay]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
+
+
+
+
+
+  const handleDelete = (id: number) => {
+    const url = `https://rifa-max.com/api/v1/rifas/${id}`;
+  
+    axios.delete(url, {
+      headers: {
+        ContentType: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+      .then((response) => {
+        console.log('Elemento eliminado con éxito', response);
+        setCloseDay(false)
+      })
+      .catch((error) => {
+        console.error('Error al eliminar el elemento', error);
+      });
+  };
+
+
+
 
   const filterByDate = () => {
     const fromDate = startDate ? startDate.toISOString().split('T')[0] : moment().format('YYYY-MM-DD');
@@ -368,17 +395,28 @@ function Dashboard() {
         >
           {element.app_status === 'No enviado' ||
             moment(moment().format('DD-MM-YYYY')) > moment(element.rifDate)
-            ? 'Pendiente'
+            ? 'Nulo'
             : element.verification === 0
-              ? 'Enviado APP'
-              : element.verification}
+              ? 'Pendiente'
+              // : element.rifero.is_send === false && moment(moment().format('DD-MM-YYYY')) > moment(element.rifDate)
+              // ? 'NULO'
+              : ''}
         </Badge>
       </td>
       <td style={{ textAlign: 'center' }}>
         {element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}
       </td>
       <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
-      <td style={{ textAlign: 'center' }}>{moment(element.rifDate).format('DD/MM/YYYY')}</td>
+      <td >{moment(element.rifDate).format('DD/MM/YYYY')}</td>
+      <td> 
+      {
+        element.app_status === 'No enviado' ? (
+          <ActionIcon mt={5} h={1} ml={25} color="red" variant="filled" onClick={() => handleDelete(element.serie)}>
+            <IconTrashX size={16} />
+          </ActionIcon>
+        ) : null
+      }
+      </td>
     </tr>
   ));
 
@@ -461,7 +499,7 @@ function Dashboard() {
     }
     return (
       <Modal
-        size="lg"
+        size="xl"
         mt={-44}
         title={`Cierre del dia de hoy: ${moment().format('DD/MM/YYYY')}`}
         onClose={() => setCloseDay(false)}
@@ -509,7 +547,8 @@ function Dashboard() {
                   <th style={{ textAlign: 'center' }}>Verificación</th>
                   <th style={{ textAlign: 'center' }}>Monto</th>
                   <th style={{ textAlign: 'center' }}>Rifero</th>
-                  <th style={{ textAlign: 'center' }}>Fecha</th>
+                  <th  >Fecha</th>
+                  <th style={{ textAlign: 'center' }}>Anular</th>
                 </tr>
               </thead>
               <tbody>
@@ -517,18 +556,9 @@ function Dashboard() {
               </tbody>
             </ScrollArea>
           </Table>
-          <Button
-          mt={15}
-          mb={15}
-          variant="filled"
-          color="red"
-          size="sm"
-          fullWidth
-        >
-          Cerrar rifas sin enviar
-        </Button>
+
         </Paper>
-        
+
         <Divider label="Total" labelPosition="center" variant="dashed" mt={-30} mb={20} />
         <Card w="100%" p={30} mb={40}>
           <Group w="100%">
@@ -559,19 +589,20 @@ function Dashboard() {
           </Group>
         </Card>
 
-        <Group mt={-40} >
-          <PDFDownloadLink
+        
+       < Grid>
+      <Grid.Col md={6} lg={6}>
+      <PDFDownloadLink
             document={<TableMock />}
             fileName={`cierre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD-MM-YYYY')}.pdf`}
             style={{
-              width: '100%', // 48.5%
               textDecoration: "none",
             }}
           >
             <BlobProvider document={<TableMock />}>
               {({ url, loading, error }) => {
                 if (loading) {
-                  return <Button loading w="48.7%">Descargar</Button>;
+                  return <Button loading  fullWidth >Descargar</Button>;
                 }
                 if (error) {
                   return <p>Error: {error.toString()}</p>;
@@ -579,14 +610,14 @@ function Dashboard() {
                 if (url) {
                   return (
                     <div>
-                     
+
                       <a href={url} target="_blank" rel="noopener noreferrer" download={`cuadre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD/MM/YYYY')}.pdf`}>
                         <Button
                           mt={10}
                           variant="filled"
                           color="blue"
                           size="sm"
-                         
+                          fullWidth
                         >
                           Descargar
                         </Button>
@@ -598,7 +629,13 @@ function Dashboard() {
               }}
             </BlobProvider>
           </PDFDownloadLink>
-          <Button color="teal" mt={10} 
+
+      </Grid.Col>
+
+      <Grid.Col md={6} lg={6}>
+
+      <Button color="teal" mt={10}
+      fullWidth
             onClick={(e) => {
               e.preventDefault()
 
@@ -651,7 +688,12 @@ function Dashboard() {
             }}>
             Imprimir
           </Button>
-        </Group>
+      </Grid.Col>
+     
+    </Grid>
+          
+          
+        
         {/* <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button> */}
       </Modal>
     )

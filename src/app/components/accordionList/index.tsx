@@ -9,7 +9,7 @@ import {
   Grid,
   Group,
   Title,
-  Pagination, 
+  Pagination,
   Button,
   Menu,
   Modal,
@@ -35,6 +35,7 @@ import axios from "axios";
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { DatePicker } from "@mantine/dates";
+import { IconReload } from '@tabler/icons-react';
 
 type RifaTicketsProps = {
   id: number;
@@ -171,7 +172,16 @@ export default function AccordionList({
       },
     ]);
     const [addPin, setAddPin] = useState(false);
+    const form = useForm({
+      initialValues: {
+        email: '',
+        termsOfService: false,
+      },
 
+      validate: {
+        email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      },
+    });
     useEffect(() => {
       const handleContextmenu = (e: MouseEvent) => {
         e.preventDefault();
@@ -832,6 +842,21 @@ export default function AccordionList({
       </Modal>
     )
   }
+  const form = useForm({
+    initialValues: {
+      serial: '',
+    },
+
+    validate: {
+      serial: (value) => {
+        if (value.length !== 8) {
+          return 'El serial debe tener exactamente 8 caracteres';
+        }
+        return null;
+      },
+    },
+  });
+
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <Accordion
@@ -903,7 +928,7 @@ export default function AccordionList({
       <SendModal />
       <Accordion.Item key={data.id} value={data.id.toString()} style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
         <AccordionControl >
-          
+
           <div style={{ width: '100%', display: 'flex' }}>
             <Grid p={0} mt={-28} m={0} w="100%">
               <Grid.Col xs={12} md={12} lg={4}>
@@ -1025,7 +1050,7 @@ export default function AccordionList({
                       </Group>
                       <Group w={200}>
                         {
-                           (repeat.amount == null || repeat.amount == 0) && repeat.verify && !repeat.refund ? (
+                          (repeat.amount == null || repeat.amount == 0) && repeat.verify && !repeat.refund ? (
                             <Badge color='red'>
                               No pagada
                             </Badge>
@@ -1071,29 +1096,51 @@ export default function AccordionList({
                                 Devolver Rifa
                               </Button>
                               <Modal opened={opened} onClose={close} size='md' centered title="Devolver rifa">
-                                <Text mb={20}>
-                                  Desea devolver el dinero pagado al rifero? Esta acción no tiene vuelta atrás una vez realizada.
-                                </Text>
-                                <Button
-                                  w="100%"
-                                  color="blue"
-                                  onClick={(e) => {
-                                    e.defaultPrevented
-                                    axios.put(`https://rifa-max.com/api/v1/rifas/refund?id=${repeat.id}`, {}, {
-                                      headers: {
-                                        "Content-Type": "application/json",
-                                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                                <form onSubmit={form.onSubmit((values) => console.log(values))}>
+                                  <Text mb={20}>
+                                    Desea devolver el dinero pagado al rifero? Esta acción no tiene vuelta atrás una vez realizada.
+                                  </Text>
+                                  <Group>
+                                    
+                                  <TextInput
+                                    mb={15}
+                                    w={400}
+                                    label={"Ingrese el serial de leo"}
+                                    placeholder="Verificar serial"
+                                    {...form.getInputProps('serial')}
+                                  />
+                                  <ActionIcon mt={10} ml={-45} c='blue' variant="subtle">
+                                    <IconReload size={20}/>
+                                  </ActionIcon>
+                                  </Group>
+
+                                  <Button
+                                    w="100%"
+                                    color="blue"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      const validationError = form.validate();
+                                      if (!validationError) {
+                                        axios.put(`https://rifa-max.com/api/v1/rifas/refund?id=${repeat.id}`, {}, {
+                                          headers: {
+                                            "Content-Type": "application/json",
+                                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                                          }
+                                        }).then(() => {
+                                          close();
+                                          window.location.reload();
+                                        }).catch((e) => {
+                                          console.log(e);
+                                        });
                                       }
-                                    }).then(() => {
-                                      close()
-                                      window.location.reload()
-                                    }).catch((e) => {
-                                      console.log(e)
-                                    })
-                                  }}
-                                >
-                                  Devolver rifa
-                                </Button>
+                                    }}
+                                    type="submit"
+                                    disabled={!!form.errors.serial}
+                                  >
+                                    Devolver rifa
+                                  </Button>
+
+                                </form>
                               </Modal>
                             </>
                           )
