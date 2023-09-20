@@ -75,9 +75,9 @@ function TicketsModal({serial}: TicketsModalProps) {
                   <Text size="md" weight={300}>
                     {ticket.sign}
                   </Text>
-                  <Text size="md" weight={300}>
+                  {/* <Text size="md" weight={300}>
                     {ticket.serial}
-                  </Text>
+                  </Text> */}
                 </Text>
               </Card>
             </Grid.Col>
