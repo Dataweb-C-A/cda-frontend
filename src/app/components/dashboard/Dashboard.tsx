@@ -517,7 +517,18 @@ function Dashboard() {
               </tbody>
             </ScrollArea>
           </Table>
+          <Button
+          mt={15}
+          mb={15}
+          variant="filled"
+          color="red"
+          size="sm"
+          fullWidth
+        >
+          Cerrar rifas sin enviar
+        </Button>
         </Paper>
+        
         <Divider label="Total" labelPosition="center" variant="dashed" mt={-30} mb={20} />
         <Card w="100%" p={30} mb={40}>
           <Group w="100%">
@@ -547,7 +558,8 @@ function Dashboard() {
             </div>
           </Group>
         </Card>
-        <Group mt={-40} w="100%">
+
+        <Group mt={-40} >
           <PDFDownloadLink
             document={<TableMock />}
             fileName={`cierre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD-MM-YYYY')}.pdf`}
@@ -567,13 +579,14 @@ function Dashboard() {
                 if (url) {
                   return (
                     <div>
+                     
                       <a href={url} target="_blank" rel="noopener noreferrer" download={`cuadre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD/MM/YYYY')}.pdf`}>
                         <Button
                           mt={10}
                           variant="filled"
                           color="blue"
                           size="sm"
-                          fullWidth
+                         
                         >
                           Descargar
                         </Button>
@@ -585,7 +598,7 @@ function Dashboard() {
               }}
             </BlobProvider>
           </PDFDownloadLink>
-          {/* <Button color="teal" mt={10} w="48.7%"
+          <Button color="teal" mt={10} 
             onClick={(e) => {
               e.preventDefault()
 
@@ -637,7 +650,7 @@ function Dashboard() {
               send()
             }}>
             Imprimir
-          </Button> */}
+          </Button>
         </Group>
         {/* <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button> */}
       </Modal>
