@@ -26,6 +26,8 @@ type AppProps = {
   children: React.ReactNode
 }
 
+// LTS Refund
+
 function App({children}: AppProps) {
 
   const [version, setVersion] = useState(localStorage.getItem('version'))
