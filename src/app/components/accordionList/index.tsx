@@ -9,6 +9,7 @@ import {
   Grid,
   Group,
   Title,
+  HoverCard,
   Pagination,
   Button,
   Menu,
@@ -36,6 +37,7 @@ import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { DatePicker } from "@mantine/dates";
 import { IconReload } from '@tabler/icons-react';
+import { useUncontrolled } from '@mantine/hooks';
 
 type RifaTicketsProps = {
   id: number;
@@ -135,6 +137,12 @@ interface IRifas {
   };
 }
 
+interface CustomInputProps {
+  value?: string;
+  defaultValue?: string;
+  onChange?(value: string): void;
+}
+
 type AccordionProps = {
   repeat: IRifas;
   data: AccordionItem;
@@ -191,6 +199,7 @@ export default function AccordionList({
         document.removeEventListener("contextmenu", handleContextmenu);
       };
     }, []);
+
 
     const handlePrint = async () => {
       await axios
@@ -555,6 +564,7 @@ export default function AccordionList({
   const [isAvailable, setIsAvailable] = useState<boolean>(true)
   const [isAmount, setIsAmount] = useState(false);
   const [reason, setReason] = useState<'ACCEPT' | 'REJECT'>('REJECT')
+  const [serial, setSerial] = useState<string>('')
   const [rifaTicket, setRifaTicket] = useState<RifaTicketsProps[]>([
     {
       id: 0,
@@ -567,10 +577,41 @@ export default function AccordionList({
   const [currentSign, setCurrentSign] = useState<string>('')
   const [loader, setLoader] = useState<boolean>(true)
 
+  function CustomInput({ value, defaultValue, onChange }: CustomInputProps) {
+    const [_value, handleChange] = useUncontrolled({
+      value,
+      defaultValue,
+      onChange,
+    });
+
+    return (
+      <TextInput
+        mb={15}
+        w={400}
+        label={<Group w="100%" align="apart"><Text>Ingrese el serial del signo:</Text><Text fw={700} fz={17} mt={-3} italic>{currentSign.toUpperCase()}</Text></Group>}
+        placeholder="Verificar serial"
+        onChange={(event) => {
+          handleChange(event.currentTarget.value)
+          axios.post(`https://rifa-max.com/api/v1/refund_rifa?id=${repeat.id}&serial=${event.currentTarget.value}`, {
+            id: repeat.id,
+            serial: event.currentTarget.value
+          }, {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            }
+          }).then(() => {
+            window.location.reload()
+          })
+        }}
+      />
+    );
+  }
+
   const updateChecker = (id: number) => {
     axios.put(`https://rifa-max.com/api/v1/update_sign/${id}`, {}, {
       headers: {
-        ContentType:"application/json" ,
+        ContentType: "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       }
     }).then((res) => {
@@ -877,21 +918,6 @@ export default function AccordionList({
       </Modal>
     )
   }
-  const form = useForm({
-    initialValues: {
-      serial: '',
-    },
-
-    validate: {
-      serial: (value) => {
-        if (value.length !== 8) {
-          return 'El serial debe tener exactamente 8 caracteres';
-        }
-        return null;
-      },
-    },
-  });
-
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <Accordion
@@ -1138,54 +1164,29 @@ export default function AccordionList({
                                 setLoader(false)
                                 close()
                               }} size='md' centered title="Devolver rifa">
-                                <form onSubmit={form.onSubmit((values) => console.log(values))}>
-                                  <Text mb={20}>
-                                    Desea devolver el dinero pagado al rifero? Esta acción no tiene vuelta atrás una vez realizada.
-                                  </Text>
-                                  <Group>
+                                <Text mb={20}>
+                                  Desea devolver el dinero pagado al rifero? Esta acción no tiene vuelta atrás una vez realizada.
+                                </Text>
+                                <Group>
+                                  <CustomInput />
 
-                                    <TextInput
-                                      mb={15}
-                                      w={400}
-                                      label={`Ingrese el serial de ${currentSign}`}
-                                      placeholder="Verificar serial"
-                                      {...form.getInputProps('serial')}
-                                    />
-                                    <ActionIcon mt={10} ml={-45} c='blue' variant="subtle" onClick={() => {
-                                      updateChecker(repeat.id)
-                                      setLoader(true)
-                                    }}>
+                                  <ActionIcon mt={10} ml={-60} c='blue' variant="subtle" onClick={() => {
+                                    updateChecker(repeat.id)
+                                    setLoader(true)
+                                  }}>
                                       <IconReload size={20} />
-                                    </ActionIcon>
-                                  </Group>
+                                     
+                                  </ActionIcon>
+                                </Group>
 
-                                  <Button
+                                {/* <Button
                                     w="100%"
                                     color="blue"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      const validationError = form.validate();
-                                      if (!validationError) {
-                                        axios.put(`https://rifa-max.com/api/v1/rifas/refund?id=${repeat.id}`, {}, {
-                                          headers: {
-                                            "Content-Type": "application/json",
-                                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                                          }
-                                        }).then(() => {
-                                          close();
-                                          window.location.reload();
-                                        }).catch((e) => {
-                                          console.log(e);
-                                        });
-                                      }
-                                    }}
+                                    disabled={.length < 8 && '1'.length > 8 ? true : false}
                                     type="submit"
-                                    disabled={!!form.errors.serial}
                                   >
                                     Devolver rifa
-                                  </Button>
-
-                                </form>
+                                  </Button> */}
                               </Modal>
                             </>
                           )
