@@ -273,7 +273,6 @@ function Dashboard() {
     }, 3000)
   };
 
-
   const handleScrollEvent = async () => {
     const totalHeight = document.documentElement.scrollHeight;
     const innerHeight = window.innerHeight;
@@ -315,10 +314,6 @@ function Dashboard() {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
-
-
-
-
 
   const handleDelete = (id: number) => {
     const url = `https://rifa-max.com/api/v1/rifas/${id}`;

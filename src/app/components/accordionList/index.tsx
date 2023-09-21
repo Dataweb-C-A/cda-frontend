@@ -555,7 +555,6 @@ export default function AccordionList({
   const [isAvailable, setIsAvailable] = useState<boolean>(true)
   const [isAmount, setIsAmount] = useState(false);
   const [reason, setReason] = useState<'ACCEPT' | 'REJECT'>('REJECT')
-
   const [rifaTicket, setRifaTicket] = useState<RifaTicketsProps[]>([
     {
       id: 0,
@@ -564,7 +563,43 @@ export default function AccordionList({
     },
   ]);
   const [error, setError] = useState<boolean>(false);
+  const [currentRifa, setCurrentRifa] = useState<IRifas | null>(null)
+  const [currentSign, setCurrentSign] = useState<string>('')
+  const [loader, setLoader] = useState<boolean>(true)
 
+  const updateChecker = (id: number) => {
+    axios.put(`https://www.rifa-max.com/api/v1/update_sign/${id}`, {}, {
+      headers: {
+        ContentType:"application/json" ,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+    }).then((res) => {
+      console.log(res)
+      setLoader(true)
+    }).then((err) => {
+      console.log(err)
+    })
+  }
+
+  const refundUI = (id: number) => {
+    axios.get(`https://www.rifa-max.com/api/v1/refund/ui?id=${id}`, {
+      headers: {
+        "Content-Type": 'application/json',
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+    }).then((res) => {
+      setCurrentSign(res.data.sign)
+      setLoader(false)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  useEffect(() => {
+    if (currentRifa !== null) {
+      refundUI(currentRifa.id)
+    }
+  }, [loader])
 
   const handleRepeatModal = () => {
     setRepeatModal(true);
@@ -1085,7 +1120,11 @@ export default function AccordionList({
                               <Button
                                 p={5}
                                 size="xs"
-                                onClick={open}
+                                onClick={() => {
+                                  setLoader(true)
+                                  setCurrentRifa(repeat)
+                                  open()
+                                }}
                                 style={{
                                   display: 'flex',
                                   alignItems: 'center',
@@ -1095,23 +1134,28 @@ export default function AccordionList({
                                 {(repeat.refund) && <IconCommand size={16} />}
                                 Devolver Rifa
                               </Button>
-                              <Modal opened={opened} onClose={close} size='md' centered title="Devolver rifa">
+                              <Modal opened={opened} onClose={() => {
+                                setLoader(false)
+                                close()
+                              }} size='md' centered title="Devolver rifa">
                                 <form onSubmit={form.onSubmit((values) => console.log(values))}>
                                   <Text mb={20}>
                                     Desea devolver el dinero pagado al rifero? Esta acción no tiene vuelta atrás una vez realizada.
                                   </Text>
                                   <Group>
-                                    
-                                  <TextInput
-                                    mb={15}
-                                    w={400}
-                                    label={"Ingrese el serial de leo"}
-                                    placeholder="Verificar serial"
-                                    {...form.getInputProps('serial')}
-                                  />
-                                  <ActionIcon mt={10} ml={-45} c='blue' variant="subtle">
-                                    <IconReload size={20}/>
-                                  </ActionIcon>
+
+                                    <TextInput
+                                      mb={15}
+                                      w={400}
+                                      label={`Ingrese el serial de ${currentSign}`}
+                                      placeholder="Verificar serial"
+                                      {...form.getInputProps('serial')}
+                                    />
+                                    <ActionIcon mt={10} ml={-45} c='blue' variant="subtle" onClick={() => {
+                                      updateChecker(repeat.id)
+                                    }}>
+                                      <IconReload size={20} />
+                                    </ActionIcon>
                                   </Group>
 
                                   <Button
