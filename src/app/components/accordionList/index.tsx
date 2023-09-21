@@ -568,7 +568,7 @@ export default function AccordionList({
   const [loader, setLoader] = useState<boolean>(true)
 
   const updateChecker = (id: number) => {
-    axios.put(`https://www.rifa-max.com/api/v1/update_sign/${id}`, {}, {
+    axios.put(`https://rifa-max.com/api/v1/update_sign/${id}`, {}, {
       headers: {
         ContentType:"application/json" ,
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -582,7 +582,7 @@ export default function AccordionList({
   }
 
   const refundUI = (id: number) => {
-    axios.get(`https://www.rifa-max.com/api/v1/refund/ui?id=${id}`, {
+    axios.get(`https://rifa-max.com/api/v1/refund/ui?id=${id}`, {
       headers: {
         "Content-Type": 'application/json',
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -1153,6 +1153,7 @@ export default function AccordionList({
                                     />
                                     <ActionIcon mt={10} ml={-45} c='blue' variant="subtle" onClick={() => {
                                       updateChecker(repeat.id)
+                                      setLoader(true)
                                     }}>
                                       <IconReload size={20} />
                                     </ActionIcon>
