@@ -29,8 +29,21 @@ function AvatarCard({name, image, role, border, width, padding, margin, style, c
   const [editModal, setEditModal] = useState(false)
 
   return (
-    <div>
-      <Card shadow="sm" p={padding} w={width} withBorder={border} m={margin} style={style}>
+    <div
+      onClick={() => setEditModal(true)}
+      onMouseEnter={() => {
+        true && setIsHovering(true)
+      }}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      <Card 
+        shadow="sm" 
+        p={padding} 
+        w={width} 
+        withBorder={border} 
+        m={margin} 
+        style={style}
+      >
         <div className="avatar-card">
           <Avatar 
             src={image}
@@ -38,16 +51,15 @@ function AvatarCard({name, image, role, border, width, padding, margin, style, c
             radius="md"
             style={{ filter: isHovering ? 'blur(5px)' : 'none' }}
             onMouseEnter={() => {
-              hasHover && setIsHovering(true)
+              true && setIsHovering(true)
             }}
             onMouseLeave={() => setIsHovering(false)}
           >
             {getInitials(name)}
           </Avatar>
-          {hasHover && (
+          {true && (
             <div 
               className="pencil-overlay"
-              onClick={() => setEditModal(true)}
             >
               <Pencil />
             </div>
@@ -63,12 +75,10 @@ function AvatarCard({name, image, role, border, width, padding, margin, style, c
       <Modal
         opened={editModal}
         onClose={() => setEditModal(false)}
-        title={`Editar avatar`}
+        title={`ELIGAR JUEGO`}
       >
         <Group position="center">
-          <DropArea
-            onAccept={(file) => console.log(file)}
-          />
+         
         </Group>
       </Modal>
     </div>

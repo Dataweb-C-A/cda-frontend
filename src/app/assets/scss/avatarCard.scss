@@ -10,7 +10,7 @@
     left: 0;
     width: 56px;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +18,7 @@
     transition: opacity 0.3s ease-in-out;
 
     svg {
-      color: #666;
+      color: whitesmoke;
       font-size: 3rem;
     }
   }

@@ -568,8 +568,9 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
           }}
         >
           {search.value !== ""
-            ? filteredProfiles.map((profile, index) => (
+            ? filteredProfiles.filter((item) => item.user.role === 'Taquilla').map((profile, index) => (
               <AvatarCard
+                hasHover
                 key={index}
                 name={profile.user.name}
                 role={profile.user.role === 'Admin' ? 'Rifero' : profile.user.role}
