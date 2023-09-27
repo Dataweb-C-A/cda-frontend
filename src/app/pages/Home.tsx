@@ -26,7 +26,7 @@ const Home: React.FC = () => {
       .catch(err => {
         console.log(err)
       })
-    axios.get('https://rifa-max.com/api/v1/riferos', {
+    axios.get('https://rifa-max.com/api/v1/sidebar/agencies', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
