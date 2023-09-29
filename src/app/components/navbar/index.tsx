@@ -147,7 +147,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
   }, [lastsRifasModal.open])
 
   // Filter profiles by name or cedula
-  const filteredProfiles = profiles.filter(
+  const filteredProfiles = agencies.filter(
     (profile) =>
       profile.user.name.toLowerCase().includes(search.value.toLowerCase()) ||
       profile.user.cedula.toLowerCase().includes(search.value.toLowerCase())
@@ -590,6 +590,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
                 hasHover
                 key={index}
                 name={profile.user.name}
+                access_permissions={profile.user.access_permissions}
                 role={profile.user.role === 'Admin' ? 'Rifero' : profile.user.role}
                 border={true}
                 cedula={profile.user.cedula}
@@ -608,10 +609,11 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
             </Card>
           ) : null}
           <Text fw={700}>Lista de Riferos</Text>
-          {profiles.map((profile, index) => (
+          {agencies.map((profile, index) => (
             <AvatarCard
               key={index}
               name={profile.user.name}
+              access_permissions={profile.user.access_permissions}
               role={profile.user.role === 'Admin' ? 'Rifero' : profile.user.role}
               border={true}
               cedula={profile.user.cedula}

@@ -7,6 +7,7 @@ import RifamaxLogo from "../../assets/images/rifamax-logo.png";
 
 type AvatarProps = {
   image?: string | '';
+  access_permissions?: string[]
   name: string;
   role: string;
   cedula?: string;
@@ -18,18 +19,20 @@ type AvatarProps = {
   hasHover?: boolean | false;
   style?: React.CSSProperties;
 };
+
 interface juegosProps {
   src: string;
+  nameg: string;
+  iconoc: 'check' | 'x'; 
 }
-
 const getInitials = (name: string) => {
   const names = name.split(' ');
   if (names.length === 1) return names[0].charAt(0);
   return `${names[0].charAt(0)}${names[names.length - 1].charAt(0)}`.toUpperCase();
 };
 
-function TarjetaConAlternanciaDeIconos({ src }: juegosProps) {
-  const [icono, setIcono] = useState('check');
+function TarjetaConAlternanciaDeIconos({ src , nameg,iconoc}: juegosProps) {
+  const [icono, setIcono] = useState(iconoc);
 
   const alternarIcono = () => {
     setIcono(icono === 'check' ? 'x' : 'check');
@@ -37,6 +40,9 @@ function TarjetaConAlternanciaDeIconos({ src }: juegosProps) {
 
   return (
     <Card style={{ width: 240, height: 190 }} onClick={alternarIcono}>
+      <Text>
+        {nameg}
+      </Text>
       <Group position='right'>
         {icono === 'check' ? (
           <IconCheck color='green' size={18} />
@@ -49,7 +55,7 @@ function TarjetaConAlternanciaDeIconos({ src }: juegosProps) {
   );
 }
 
-function AvatarCard({ name, image, role, border, width, padding, margin, style, children, hasHover }: AvatarProps) {
+function AvatarCard({ name, image, role, border, width, padding, margin, style, children, hasHover, access_permissions }: AvatarProps) {
   const [isHovering, setIsHovering] = useState(false);
   const [editModal, setEditModal] = useState(false);
 
@@ -103,10 +109,11 @@ function AvatarCard({ name, image, role, border, width, padding, margin, style, 
         size="xl"
         title={`ELEGIR JUEGO`}
       >
+        <Text>{access_permissions ? access_permissions : null}</Text>
         <Group position="center">
-          <TarjetaConAlternanciaDeIconos src={RifamaxLogo} />
-          <TarjetaConAlternanciaDeIconos src={RifamaxLogo} />
-          <TarjetaConAlternanciaDeIconos src={RifamaxLogo} />
+          <TarjetaConAlternanciaDeIconos iconoc={"check"} nameg={"Rifamax"} src={RifamaxLogo} />
+          <TarjetaConAlternanciaDeIconos iconoc={"x"}  nameg={"x100"} src={RifamaxLogo} />
+          <TarjetaConAlternanciaDeIconos iconoc={"check"}  nameg={"50/50"} src={RifamaxLogo} />
 
         </Group>
       </Modal>
