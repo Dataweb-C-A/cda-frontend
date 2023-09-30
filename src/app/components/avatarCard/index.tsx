@@ -40,9 +40,7 @@ function TarjetaConAlternanciaDeIconos({ src , nameg,iconoc}: juegosProps) {
 
   return (
     <Card style={{ width: 240, height: 190 }} onClick={alternarIcono}>
-      <Text>
-        {nameg}
-      </Text>
+     
       <Group position='right'>
         {icono === 'check' ? (
           <IconCheck color='green' size={18} />
@@ -58,7 +56,9 @@ function TarjetaConAlternanciaDeIconos({ src , nameg,iconoc}: juegosProps) {
 function AvatarCard({ name, image, role, border, width, padding, margin, style, children, hasHover, access_permissions }: AvatarProps) {
   const [isHovering, setIsHovering] = useState(false);
   const [editModal, setEditModal] = useState(false);
-
+  const getIconoc = (permission: string) => {
+    return access_permissions?.includes(permission) ? 'check' : 'x';
+  };
   return (
     <div
       onClick={() => setEditModal(true)}
@@ -109,13 +109,14 @@ function AvatarCard({ name, image, role, border, width, padding, margin, style, 
         size="xl"
         title={`ELEGIR JUEGO`}
       >
-        <Text>{access_permissions ? access_permissions : null}</Text>
-        <Group position="center">
-          <TarjetaConAlternanciaDeIconos iconoc={"check"} nameg={"Rifamax"} src={RifamaxLogo} />
-          <TarjetaConAlternanciaDeIconos iconoc={"x"}  nameg={"x100"} src={RifamaxLogo} />
-          <TarjetaConAlternanciaDeIconos iconoc={"check"}  nameg={"50/50"} src={RifamaxLogo} />
+      <Text>{access_permissions ? access_permissions.join(', ') : null}</Text>
+      <Group position="center">
+        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("Rifamax")} nameg={"Rifamax"} src={RifamaxLogo} />
+        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("x100")} nameg={"x100"} src={RifamaxLogo} />
+        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("50/50")} nameg={"50/50"} src={RifamaxLogo} />
+      </Group>
 
-        </Group>
+
       </Modal>
     </div>
   );
