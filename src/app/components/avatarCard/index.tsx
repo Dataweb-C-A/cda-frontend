@@ -21,9 +21,8 @@ type AvatarProps = {
 };
 
 interface juegosProps {
-  src: string;
-  nameg: string;
   iconoc: 'check' | 'x'; 
+  permission: string;
 }
 const getInitials = (name: string) => {
   const names = name.split(' ');
@@ -31,24 +30,24 @@ const getInitials = (name: string) => {
   return `${names[0].charAt(0)}${names[names.length - 1].charAt(0)}`.toUpperCase();
 };
 
-function TarjetaConAlternanciaDeIconos({ src , nameg,iconoc}: juegosProps) {
+function TarjetaConAlternanciaDeIconos({iconoc, permission}: juegosProps) {
   const [icono, setIcono] = useState(iconoc);
+  const [hovering, setHovering] = useState<boolean>(false)
 
   const alternarIcono = () => {
     setIcono(icono === 'check' ? 'x' : 'check');
   };
 
   return (
-    <Card style={{ width: 240, height: 190 }} onClick={alternarIcono}>
-     
-      <Group position='right'>
+    <Card style={{ width: '100%', cursor: 'pointer', backgroundColor: hovering ? 'rgba(100, 190, 255, 0.105)' : undefined }} onClick={alternarIcono} onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
+      <Group position='apart'>
+      <Title order={3} fw={300} italic>{permission}</Title>
         {icono === 'check' ? (
-          <IconCheck color='green' size={18} />
+          <IconCheck style={{background: 'green', padding: '2px', borderRadius: '100%'}} color='white' size={22} />
         ) : (
-          <IconX color='red' size={18} />
+          <IconX style={{background: 'red', padding: '2px', borderRadius: '100%'}} color="white" size={22} />
         )}
       </Group>
-      <Image radius="md" src={src} alt="Random unsplash image" />
     </Card>
   );
 }
@@ -107,13 +106,12 @@ function AvatarCard({ name, image, role, border, width, padding, margin, style, 
         opened={editModal}
         onClose={() => setEditModal(false)}
         size="xl"
-        title={`ELEGIR JUEGO`}
+        title={<Title order={3} italic>Modificar permisos de acceso</Title>}
       >
-      <Text>{access_permissions ? access_permissions.join(', ') : null}</Text>
-      <Group position="center">
-        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("Rifamax")} nameg={"Rifamax"} src={RifamaxLogo} />
-        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("x100")} nameg={"x100"} src={RifamaxLogo} />
-        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("50/50")} nameg={"50/50"} src={RifamaxLogo} />
+      <Group position="center" my={50}>
+        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("Rifamax")} permission={"Rifamax"} />
+        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("x100")} permission={"Rifamax X100"} />
+        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("50/50")} permission={"Rifamax 50/50"} />
       </Group>
 
 
