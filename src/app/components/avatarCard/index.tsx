@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Text, Avatar, Card, Modal, Image, Group, Title } from '@mantine/core';
 import '../../assets/scss/avatarCard.scss';
 import { BsPencil as Pencil } from 'react-icons/bs';
@@ -22,7 +22,7 @@ interface AvatarProps {
   style?: React.CSSProperties;
 };
 
-interface juegosProps {
+interface JuegosProps {
   iconoc: 'check' | 'x'; 
   permission: string;
 }
@@ -35,22 +35,39 @@ const getInitials = (name: string) => {
 function AvatarCard({ id, name, image, role, border, width, padding, margin, style, children, hasHover, access_permissions }: AvatarProps) {
   const [isHovering, setIsHovering] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [iconStatus, setIconStatus] = useState<{ [permission: string]: 'check' | 'x' }>({});
+
   const getIconoc = (permission: string) => {
     return access_permissions?.includes(permission) ? 'check' : 'x';
   };
+  useEffect(() => {
+    // Initialize iconStatus based on access_permissions when the component mounts
+    const initialIconStatus: { [permission: string]: 'check' | 'x' } = {};
+    access_permissions?.forEach((permission) => {
+      initialIconStatus[permission] = getIconoc(permission);
+    });
+    setIconStatus(initialIconStatus);
+  }, [access_permissions]);
 
-  function TarjetaConAlternanciaDeIconos({iconoc, permission}: juegosProps) {
-    const [icono, setIcono] = useState(iconoc);
-    const [hovering, setHovering] = useState<boolean>(false)
-  
-    
+  const updateIconStatus = (permission: string, newIconoc: 'check' | 'x') => {
+    setIconStatus((prevIconStatus) => ({
+      ...prevIconStatus,
+      [permission]: newIconoc,
+    }));
+  };
+
+  function TarjetaConAlternanciaDeIconos({ iconoc, permission }: JuegosProps) {
+    const icono = iconStatus[permission] || iconoc;
+    const [hovering, setHovering] = useState<boolean>(false);
+
     const alternarIcono = () => {
-      setIcono(icono === 'check' ? 'x' : 'check');
+      const newIcono = icono === 'check' ? 'x' : 'check';
+      updateIconStatus(permission, newIcono); // Update the icon status in AvatarCard
     };
-  
+
     return (
-      <Card 
-        style={{ width: '100%', cursor: 'pointer', backgroundColor: hovering ? 'rgba(100, 190, 255, 0.105)' : undefined }} 
+      <Card
+        style={{ width: '100%', cursor: 'pointer', backgroundColor: hovering ? 'rgba(100, 190, 255, 0.105)' : undefined }}
         onClick={() => {
           axios.get(`https://rifa-max.com/api/v1/users/access_permissions/${id}?_id=${id}&permission=${permission}`, {
             headers: {
@@ -58,24 +75,25 @@ function AvatarCard({ id, name, image, role, border, width, padding, margin, sty
               Authorization: `Bearer ${localStorage.getItem('token')}`
             }
           }).then(() => {
-            alternarIcono()
-          })
-        }} 
-        onMouseEnter={() => setHovering(true)} 
+            alternarIcono();
+          });
+        }}
+        onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
       >
         <Group position='apart'>
-        <Title order={3} fw={300} italic>{permission}</Title>
+          <Title order={3} fw={300} italic>{permission}</Title>
           {icono === 'check' ? (
-            <IconCheck style={{background: 'green', padding: '2px', borderRadius: '100%'}} color='white' size={22} />
+            <IconCheck style={{ background: 'green', padding: '2px', borderRadius: '100%' }} color='white' size={22} />
           ) : (
-            <IconX style={{background: 'red', padding: '2px', borderRadius: '100%'}} color="white" size={22} />
+            <IconX style={{ background: 'red', padding: '2px', borderRadius: '100%' }} color="white" size={22} />
           )}
         </Group>
       </Card>
     );
   }
-  
+
+
   return (
     <div
       onClick={() => true ? setEditModal(true) : null}

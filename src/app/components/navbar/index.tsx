@@ -257,6 +257,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
         }
         profile={
           <AvatarCard
+          
             id={user ? user.id : 0}
             name={user ? user.name : 'Usuario'}
             role={user ? user.role : 'Usuario'}
