@@ -7,10 +7,43 @@ import { links } from '../assets/data/links'
 import { Link, useHistory } from "react-router-dom";
 import axios from 'axios'
 import Dashboard from '../components/dashboard/Dashboard'
+import { IconMoodSadDizzy } from '@tabler/icons-react'
+
+interface IUser {
+  id: number;
+  name: string;
+  email: string;
+  username: string;
+  cedula: string;
+  role: string;
+  status: boolean;
+  access_permissions: string[];
+}
+
+interface ILoading {
+  loaded: boolean;
+  isFirstLoad: boolean;
+  persistantTime: number
+} 
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<any>([])
   const [stats, setStats] = useState<any>({})
+  const [profile, setProfile] = useState<IUser>({
+    id: 0,
+    name: '',
+    email: '',
+    username: '',
+    cedula: '',
+    role: '',
+    status: false,
+    access_permissions: ['Rifamax']
+  })
+  const [loadingDump, setLoadingDump] = useState<ILoading>({
+    loaded: false,
+    isFirstLoad: true,
+    persistantTime: 3000
+  })
 
   const theme = useMantineTheme();
   const history = useHistory();
@@ -43,8 +76,60 @@ const Home: React.FC = () => {
     )
   }, [])
 
+  useEffect(() => {
+    loadingDump.isFirstLoad ? (
+      axios.get('https://rifa-max.com/current', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }).then(res => {
+        setLoadingDump({
+          loaded: true,
+          isFirstLoad: false,
+          persistantTime: 3000
+        })
+        setProfile(res.data)
+      }).catch((err) => {
+        console.log(err)
+        setLoadingDump({
+          loaded: false,
+          isFirstLoad: false,
+          persistantTime: 3000
+        })
+      })
+    ) : (
+      setTimeout(() => {
+        setLoadingDump({
+          loaded: false,
+          isFirstLoad: false,
+          persistantTime: 3000
+        })
+        axios.get('https://rifa-max.com/current', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }).then(res => {
+        setLoadingDump({
+          loaded: true,
+          isFirstLoad: false,
+          persistantTime: 3000
+        })
+        setProfile(res.data)
+      }).catch((err) => {
+        console.log(err)
+        setLoadingDump({
+          loaded: false,
+          isFirstLoad: false,
+          persistantTime: 3000
+        })
+      })
+      }, loadingDump.persistantTime)
+    )
+  }, [loadingDump])
+
   return (
-    <Paper className='home' style={{ display: 'flex', height: '100vh' }}>
+    profile.access_permissions.includes('Rifamax') ? (
+      <Paper className='home' style={{ display: 'flex', height: '100vh' }}>
       <div style={{ flex: 1 }}>
         <Navbar
           profiles={users}
@@ -135,6 +220,23 @@ const Home: React.FC = () => {
         <Dashboard />
       </div>
     </Paper>
+    ) : (
+      <Paper className='home' style={{ display: 'flex', height: '100vh'}}>
+        <div style={{ flex: 1 }}>
+          <Navbar
+            profiles={users}
+            links={links}
+            expandScreen={true}
+          />
+          <Text ta="center" mt={100} fw={700} fz={50}>
+            Acceso restringido
+          </Text>
+          <Text ta="center" fw={100} fz={80}>
+            <IconMoodSadDizzy stroke={1} size={250}/>
+          </Text>
+        </div>
+      </Paper>
+    )
   )
 }
 
