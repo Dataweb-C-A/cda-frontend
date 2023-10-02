@@ -43,11 +43,11 @@ function AvatarCard({ id, name, image, role, border, width, padding, margin, sty
   useEffect(() => {
     
     const initialIconStatus: { [permission: string]: 'check' | 'x' } = {};
-    access_permissions?.forEach((permission) => {
+    access_permissions?.map((permission) => {
       initialIconStatus[permission] = getIconoc(permission);
     });
     setIconStatus(initialIconStatus);
-  }, [access_permissions]);
+  }, []);
 
   const updateIconStatus = (permission: string, newIconoc: 'check' | 'x') => {
     setIconStatus((prevIconStatus) => ({

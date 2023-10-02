@@ -106,9 +106,7 @@ function Lobby() {
       })
     }, loadingDump.persistantTime)
   }, [loadingDump])
-
   const games = ["Rifamax", "X100", "50/50"];
-  
   return (
     <>
       <Navbar
