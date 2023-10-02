@@ -41,7 +41,7 @@ function AvatarCard({ id, name, image, role, border, width, padding, margin, sty
     return access_permissions?.includes(permission) ? 'check' : 'x';
   };
   useEffect(() => {
-    // Initialize iconStatus based on access_permissions when the component mounts
+    
     const initialIconStatus: { [permission: string]: 'check' | 'x' } = {};
     access_permissions?.forEach((permission) => {
       initialIconStatus[permission] = getIconoc(permission);
