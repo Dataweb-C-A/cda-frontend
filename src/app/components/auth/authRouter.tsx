@@ -25,7 +25,7 @@ type PermissionMap = {
 const permissions: PermissionMap = {
   [Role.Admin]: ['/','/rifamax' , '/users', '/reports', '/exchange', '/draws','/infinito'],
   [Role.Rifero]: ['/'],
-  [Role.Taquilla]: ['/', '/riferos', '/lobby', '/reportes-rifa','/cuadre','/infinito'],
+  [Role.Taquilla]: ['/','/rifamax','/riferos', '/lobby', '/reportes-rifa','/cuadre','/infinito'],
   [Role.Agencia]: ['/'],
   [Role.Auto]: ['/lobby'],
   [Role.Undefined]: ['/login'],
