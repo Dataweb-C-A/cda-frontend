@@ -1,15 +1,16 @@
 import { FaHome } from "react-icons/fa";
-import { BsWallet2, BsBuilding } from "react-icons/bs";
+import { BsWallet2, BsBuilding, BsJoystick} from "react-icons/bs";
 import { BiMoney } from "react-icons/bi";
 import { TbBrandAppleArcade } from "react-icons/tb";
 import { FiUsers } from 'react-icons/fi'
 import { MdAttachMoney, MdSupportAgent } from "react-icons/md";
 import { IconNotes } from '@tabler/icons-react';
 import { IconBrandGoogleAnalytics } from '@tabler/icons-react';
-import { IconPokerChip } from "@tabler/icons";
+import { IconPokerChip } from "@tabler/icons"; 
 
 export const links = [
-  { name: 'Inicio', url: '/', chevron: false, icon: <FaHome size={20} strokeWidth={0} /> },
+  { name: 'Lobby', url: '/', chevron: false, icon: <FaHome size={20} strokeWidth={0} /> },
+  { name: 'Rifamax', url: '/rifamax', chevron: false, icon: <BsJoystick size={20} strokeWidth={0} /> },
   { name: 'Riferos', url: '/riferos', chevron: false, icon: <FiUsers size={20} strokeWidth={1.5} />, role: 'Taquilla' },
   { name: 'Reportes de rifas', url: '/reportes-rifa', chevron: false, icon: <IconNotes size={20} strokeWidth={1.5} />, role: 'Taquilla' },
   // { name: 'Taquilla Rifamax', url: '/lobby', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <TbBrandAppleArcade size={20} strokeWidth={1.3} />, role: 'Taquilla' },

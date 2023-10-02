@@ -19,6 +19,7 @@ import Draws from './app/pages/Draws'
 import Public from './app/pages/PublicDraws'
 import Cuadre from './app/pages/Cuadre'
 import Infinito from './app/pages/Infinito'
+import Lobby from './app/pages/Lobby'
 import axios from 'axios'
 
 
@@ -111,7 +112,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <AuthRouter path="/draws" component={Draws} isPrivate />
           <AuthRouter path="/cuadre" component={Cuadre} isPrivate />
           <AuthRouter path="/infinito" component={Infinito} isPrivate />
-          <AuthRouter path="/" component={Home} isPrivate />
+          <AuthRouter path="/rifamax" component={Home} isPrivate />
+          <AuthRouter path="/" component={Lobby} isPrivate />
         </Switch>
       </App>
     </Provider>
