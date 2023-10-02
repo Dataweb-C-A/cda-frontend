@@ -85,19 +85,16 @@ function infinito() {
 
       <Card
         shadow="sm"
-        radius="lg"
-        h="calc(100vh - 110px)"
+        h="calc(100vh - 82px)"
         withBorder
-
-        mt={15}
-        mr={15}
-        ml={15}
+        mt={10}
+        mx={10}
       >
         <Grid>
           <Grid.Col span={8}>
 
-            <Title order={1}>Rifamax 50 & 50</Title>
-            <Title order={3}>A beneficio de fundacion la salle</Title>
+            <Title order={2} fw={700}>Rifamax 50/50</Title>
+            <Title order={3} fw={200}>A beneficio de fundacion La Salle</Title>
 
             <Divider
 
@@ -217,8 +214,7 @@ function infinito() {
                 onClick={() => {
                   setQuantity(6)
                   handleQuantityClick(6)
-                }
-                }
+                }}
               >
                 <Text fz={35}>
                   6
@@ -299,7 +295,7 @@ function infinito() {
             <Group h="100%" position='center'>
 
               <Card
-                h="85vh"
+                h="88vh"
                 w="100%"
                 
                 bg="#1d1d29"
@@ -313,7 +309,7 @@ function infinito() {
                 >
                   <Grid>
                     <Grid.Col span={12}>
-                      <ScrollArea w="100%" h="70vh">
+                      <ScrollArea w="100%" h="71vh">
                         <Group position='center'>
                           {
                             sold.length > 0 ? (
