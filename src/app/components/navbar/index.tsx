@@ -257,6 +257,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
         }
         profile={
           <AvatarCard
+            id={user ? user.id : 0}
             name={user ? user.name : 'Usuario'}
             role={user ? user.role : 'Usuario'}
             border={true}
@@ -588,6 +589,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
             ? filteredProfiles.filter((item) => item.user.role === 'Taquilla').map((profile, index) => (
               <AvatarCard
                 hasHover
+                id={profile.user.id}
                 key={index}
                 name={profile.user.name}
                 access_permissions={profile.user.access_permissions}
@@ -616,6 +618,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
               access_permissions={profile.user.access_permissions}
               role={profile.user.role === 'Admin' ? 'Rifero' : profile.user.role}
               border={true}
+              id={profile.user.id}
               cedula={profile.user.cedula}
               image={profile.image || ""}
               style={{ marginBottom: 10 }}
