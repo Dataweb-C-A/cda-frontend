@@ -84,6 +84,7 @@ const App: React.FC = () => {
       /> */}
       <Paper my='15%' mx='44%'>
         <AvatarCard
+          id={1}
           cedula="V-29543140"
           image="https://avatars.githubusercontent.com/u/25126241?v=4"
           name="Javier Diaz"

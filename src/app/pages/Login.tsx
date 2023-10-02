@@ -172,6 +172,7 @@ function Login() {
                 }
               }>
                 <AvatarCard
+                  id={1}
                   style={{
                     marginTop: 20,
                     cursor: 'pointer',

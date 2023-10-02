@@ -42,7 +42,7 @@ const Home: React.FC = () => {
   const [loadingDump, setLoadingDump] = useState<ILoading>({
     loaded: false,
     isFirstLoad: true,
-    persistantTime: 3000
+    persistantTime: 250
   })
 
   const theme = useMantineTheme();
@@ -77,7 +77,12 @@ const Home: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    loadingDump.isFirstLoad ? (
+    setTimeout(() => {
+      setLoadingDump({
+        loaded: false,
+        isFirstLoad: false,
+        persistantTime: 10000
+      })
       axios.get('https://rifa-max.com/current', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -86,7 +91,7 @@ const Home: React.FC = () => {
         setLoadingDump({
           loaded: true,
           isFirstLoad: false,
-          persistantTime: 3000
+          persistantTime: 10000
         })
         setProfile(res.data)
       }).catch((err) => {
@@ -94,37 +99,10 @@ const Home: React.FC = () => {
         setLoadingDump({
           loaded: false,
           isFirstLoad: false,
-          persistantTime: 3000
+          persistantTime: 10000
         })
       })
-    ) : (
-      setTimeout(() => {
-        setLoadingDump({
-          loaded: false,
-          isFirstLoad: false,
-          persistantTime: 3000
-        })
-        axios.get('https://rifa-max.com/current', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      }).then(res => {
-        setLoadingDump({
-          loaded: true,
-          isFirstLoad: false,
-          persistantTime: 3000
-        })
-        setProfile(res.data)
-      }).catch((err) => {
-        console.log(err)
-        setLoadingDump({
-          loaded: false,
-          isFirstLoad: false,
-          persistantTime: 3000
-        })
-      })
-      }, loadingDump.persistantTime)
-    )
+    }, loadingDump.persistantTime)
   }, [loadingDump])
 
   return (

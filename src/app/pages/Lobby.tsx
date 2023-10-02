@@ -44,7 +44,7 @@ function Lobby() {
   const [loadingDump, setLoadingDump] = useState<ILoading>({
     loaded: false,
     isFirstLoad: true,
-    persistantTime: 3000
+    persistantTime: 250
   })
 
   const theme = useMantineTheme();
@@ -79,7 +79,12 @@ function Lobby() {
   }, [])
 
   useEffect(() => {
-    loadingDump.isFirstLoad ? (
+    setTimeout(() => {
+      setLoadingDump({
+        loaded: false,
+        isFirstLoad: false,
+        persistantTime: 10000
+      })
       axios.get('https://rifa-max.com/current', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -88,7 +93,7 @@ function Lobby() {
         setLoadingDump({
           loaded: true,
           isFirstLoad: false,
-          persistantTime: 3000
+          persistantTime: 10000
         })
         setProfile(res.data)
       }).catch((err) => {
@@ -96,39 +101,14 @@ function Lobby() {
         setLoadingDump({
           loaded: false,
           isFirstLoad: false,
-          persistantTime: 3000
+          persistantTime: 10000
         })
       })
-    ) : (
-      setTimeout(() => {
-        setLoadingDump({
-          loaded: false,
-          isFirstLoad: false,
-          persistantTime: 3000
-        })
-        axios.get('https://rifa-max.com/current', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        }).then(res => {
-          setLoadingDump({
-            loaded: true,
-            isFirstLoad: false,
-            persistantTime: 3000
-          })
-          setProfile(res.data)
-        }).catch((err) => {
-          console.log(err)
-          setLoadingDump({
-            loaded: false,
-            isFirstLoad: false,
-            persistantTime: 3000
-          })
-        })
-      }, loadingDump.persistantTime)
-    )
+    }, loadingDump.persistantTime)
   }, [loadingDump])
+
   const games = ["Rifamax", "X100", "50/50"];
+  
   return (
     <>
       <Navbar
@@ -138,7 +118,7 @@ function Lobby() {
       />
       <Group position="center" mt={10} >
         {games.map((game, index) => (
-          <Card  shadow="sm" p="lg" radius="md" withBorder>
+          <Card shadow="sm" p="lg" radius="md" withBorder style={ !profile.access_permissions.includes(game) ? {opacity: 0.2, cursor: 'not-allowed'} : {cursor: 'pointer'} }>
             <Image
               key={index}
               radius="md"
