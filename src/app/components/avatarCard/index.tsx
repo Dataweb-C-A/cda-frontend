@@ -128,7 +128,7 @@ function AvatarCard({ id, name, image, role, border, width, padding, margin, sty
       >
       <Group position="center" my={50}>
         <TarjetaConAlternanciaDeIconos iconoc={getIconoc("Rifamax")} permission={"Rifamax"} />
-        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("x100")} permission={"X100"} />
+        <TarjetaConAlternanciaDeIconos iconoc={getIconoc("X100")} permission={"X100"} />
         <TarjetaConAlternanciaDeIconos iconoc={getIconoc("50/50")} permission={"50/50"} />
       </Group>
 
