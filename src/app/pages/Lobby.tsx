@@ -106,7 +106,11 @@ function Lobby() {
       })
     }, loadingDump.persistantTime)
   }, [loadingDump])
-  const games = ["Rifamax", "X100", "50/50"];
+  const games = [
+    { label: "Rifamax", redirect: '/' }, 
+    { label: "X100", redirect: '/' }, 
+    { label: "50/50", redirect: '/' }
+  ];
   return (
     <>
       <Navbar
@@ -116,7 +120,7 @@ function Lobby() {
       />
       <Group position="center" mt={10} >
         {games.map((game, index) => (
-          <Card shadow="sm" p="lg" radius="md" withBorder style={ !profile.access_permissions.includes(game) ? {opacity: 0.2, cursor: 'not-allowed'} : {cursor: 'pointer'} }>
+          <Card shadow="sm" p="lg" radius="md" withBorder style={ !profile.access_permissions.includes(game.label) ? {opacity: 0.2, cursor: 'not-allowed'} : {cursor: 'pointer'} }>
             <Image
               key={index}
               radius="md"
@@ -124,7 +128,7 @@ function Lobby() {
               mt={25}
               width={300}
               height={120}
-              caption={game}
+              caption={game.label}
             />
         </Card>
 
