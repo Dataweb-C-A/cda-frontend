@@ -107,8 +107,8 @@ function Lobby() {
     }, loadingDump.persistantTime)
   }, [loadingDump])
   const games = [
-    { label: "Rifamax", redirect: '/' }, 
-    { label: "X100", redirect: '/' }, 
+    { label: "Rifamax", redirect: '/rifamax' },
+    { label: "X100", redirect: '/' },
     { label: "50/50", redirect: '/' }
   ];
   return (
@@ -120,17 +120,20 @@ function Lobby() {
       />
       <Group position="center" mt={10} >
         {games.map((game, index) => (
-          <Card shadow="sm" p="lg" radius="md" withBorder style={ !profile.access_permissions.includes(game.label) ? {opacity: 0.2, cursor: 'not-allowed'} : {cursor: 'pointer'} }>
-            <Image
-              key={index}
-              radius="md"
-              src={RifamaxLogo}
-              mt={25}
-              width={300}
-              height={120}
-              caption={game.label}
-            />
-        </Card>
+          <a href={game.redirect}>
+
+            <Card shadow="sm" p="lg" radius="md" withBorder style={!profile.access_permissions.includes(game.label) ? { opacity: 0.2, cursor: 'not-allowed' } : { cursor: 'pointer' }}>
+              <Image
+                key={index}
+                radius="md"
+                src={RifamaxLogo}
+                mt={25}
+                width={300}
+                height={120}
+                caption={game.label}
+              />
+            </Card>
+          </a>
 
         ))}
       </Group>
