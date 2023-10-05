@@ -138,7 +138,7 @@ function Draws({ }: IDraws) {
               </Text>
             </Title>
           </Grid.Col>
-          <Grid.Col md={7} sm={12}>
+          <Grid.Col md={7} sm={8}>
             <DrawsModal
               variant="filled"  
               color="blue"
@@ -147,8 +147,9 @@ function Draws({ }: IDraws) {
               onClick={() => setOpenForm(!openForm)}
               onClose={() => closeForm()}
               open={openForm}
+              
             >
-              Agregar rifa de moto
+              Agregar rifa Especiales
             </DrawsModal>
           </Grid.Col>
         </Grid>

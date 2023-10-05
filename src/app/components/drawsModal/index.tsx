@@ -1,12 +1,34 @@
 import { useState, useEffect } from 'react'
-import { Stepper, Switch, Select, CloseButton, NumberInput, Image, SimpleGrid, Modal, Button, Slider, TextInput, Checkbox, Text, Grid, useMantineTheme, Group, Divider, MultiSelect } from '@mantine/core'
+import {
+  Stepper,
+  Switch,
+  Select,
+  createStyles,
+  CloseButton,
+  NumberInput,
+  Image,
+  SimpleGrid,
+  Modal,
+  Button,
+  Slider,
+  TextInput,
+  Checkbox,
+  Text,
+  Grid,
+  useMantineTheme,
+  Group,
+  Divider,
+  MultiSelect,
+  ActionIcon,
+
+} from '@mantine/core'
 import moment from 'moment'
 import { useForm } from '@mantine/form';
 import axios from 'axios'
 import { useUser } from '../../hooks/useUser'
 import { Calendar } from 'tabler-icons-react'
 import { DatePicker } from "@mantine/dates"
-import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
+import { IconUpload, IconPhoto, IconX, IconPlus, IconMinus } from '@tabler/icons-react';
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 
 
@@ -34,7 +56,7 @@ type IFile = {
 
 type FormProps = {
   title: null | string;
-  draw_type: string | 'End-To-Date' | 'To-Infinity' | 'Progressive';
+  draw_type: string | 'End-To-Date' | 'To-Infinity' | 'Progressive' | '50/50';
   limit: null | number;
   price_unit: null | number;
   loteria: string;
@@ -99,10 +121,10 @@ function DrawsModal({
 
   useEffect(() => {
     axios.get("https://api.rifamax.app/whitelists").then((res) => {
-      
+
     }).catch((e) => {
       console.log(e)
-    }) 
+    })
   }, [])
 
   useEffect(() => {
@@ -124,103 +146,131 @@ function DrawsModal({
       )
     })
   }, [])
+  const useStyles = createStyles((theme) => ({
+    disabled: {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+      borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2],
+      cursor: 'not-allowed',
 
-const form = useForm({
-  initialValues: {
-    title: '',
-    draw_type: 'Progressive',
-    limit: null,
-    price_unit: null,
-    loteria: 'ZULIA 7A',
-    tickets_count: 0,
-    first_prize: '',
-    numbers: null,
-    second_prize: null,
-    init_date: null,
-    visible_taquillas_ids: [],
-    expired_date: null,
-    money: '$',
-    ads: null,
-    award: null,
-    owner_id: null,
-    user_id: JSON.parse(localStorage.getItem('user') || '').id || 1
-  },
-  validate: {
-    title: (value: string) => {
-      if (!value) return 'Titulo de rifa requerido';
-      if (value.length < 5) return 'El titulo debe tener al menos 5 caracteres';
-      if (value.length > 50) return 'El titulo debe tener menos de 50 caracteres';
+      '& *': {
+        color: theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[5],
+      },
     },
-    limit: (value: number) => {
-      if (form.values.draw_type === 'Progressive') {
-        if (value < 1) return 'El limite debe ser mayor a 0';
-        if (value > 100) return 'El limite debe ser menor a 100';
-      } else {
-        form.setFieldValue('limit', null);
-      }
+    disabled2: {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+      borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2],
+      cursor: 'not-allowed',
+
+      '& *': {
+        color: theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[5],
+      },
     },
-    first_prize: (value: string) => {
-      if (!value) return 'Premio requerido';
-      if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
-      if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
+  }));
+
+
+
+  const form = useForm({
+    initialValues: {
+      title: '',
+      draw_type: 'Progressive',
+      limit: null,
+      price_unit: null,
+      loteria: 'ZULIA 7A',
+      tickets_count: 0,
+      first_prize: '',
+      numbers: null,
+      second_prize: null,
+      init_date: null,
+      visible_taquillas_ids: [],
+      expired_date: null,
+      money: '$',
+      ads: null,
+      award: null,
+      owner_id: null,
+      user_id: JSON.parse(localStorage.getItem('user') || '').id || 1
     },
-    second_prize: (value: string) => {
-      if (!value) {
-        if (isSecondPrizeEnabled) return 'Premio requerido';
-      } else {
+    validate: {
+      title: (value: string) => {
+        if (!value) return 'Titulo de rifa requerido';
+        if (value.length < 5) return 'El titulo debe tener al menos 5 caracteres';
+        if (value.length > 50) return 'El titulo debe tener menos de 50 caracteres';
+      },
+      limit: (value: number) => {
+        if (form.values.draw_type === 'Progressive') {
+          if (value < 1) return 'El limite debe ser mayor a 0';
+          if (value > 100) return 'El limite debe ser menor a 100';
+        } else {
+          form.setFieldValue('limit', null);
+        }
+      },
+      first_prize: (value: string) => {
+        if (!value) return 'Premio requerido';
         if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
         if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
+      },
+      second_prize: (value: string) => {
+        if (!value) {
+          if (isSecondPrizeEnabled) return 'Premio requerido';
+        } else {
+          if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
+          if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
+        }
+      },
+      init_date: (value: Date) => {
+        if (!value) return 'Fecha de inicio requerida';
+      },
+      expired_date: (value: Date) => {
+        if (form.values.draw_type === 'Progressive') {
+          form.setFieldValue('expired_date', null);
+        } else {
+          if (!value) return 'Fecha de finalización requerida';
+          if (value < actualDate) return 'La fecha de finalización debe ser mayor a la fecha actual';
+        }
+      },
+      draw_type: (value: string) => {
+        if (!value) return 'Tipo de rifa requerido';
+      },
+      tickets_count: (value: number) => {
+        if (form.values.draw_type === 'To-Infinity' || '50/50') { } else {
+          if (!value) return 'Cantidad de tickets requerida';
+          if (value < 100 || value > 1000) return 'La cantidad de tickets debe ser mayor o igual a 100 y menor o igual a 1000';
+        }
+      },
+      price_unit: (value: number) => {
+        if (!value) return 'Precio unitario requerido';
+        if (value <= 0) return 'El precio unitario debe ser mayor a 0';
+      },
+      numbers: (value: number) => {
+        if (!value) return 'Numeros de la rifa requeridos';
+        if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
+      },
+      owner_id: (value: number | string | null) => {
+        if (value === null) return 'Agencia requerida'
+      },
+      money: (value: string) => {
+        if (!value) return 'Moneda requerida';
+      },
+      visible_taquillas_ids: (value: number[]) => {
+        if (allTaquillas) {
+          null
+        } else {
+          if (value.length < 1) return 'Taquillas requeridas';
+        }
+      },
+      award: (value: string) => {
+        if (form.values.draw_type != '50/50') {
+
+          if (!value) return 'Premio requerido';
+        }
+      },
+      ads: (value: string) => {
+        if (form.values.draw_type != '50/50') {
+          if (!value) return 'Anuncio requerido';
+
+        }
       }
     },
-    init_date: (value: Date) => {
-      if (!value) return 'Fecha de inicio requerida';
-    },
-    expired_date: (value: Date) => {
-      if (form.values.draw_type === 'Progressive') {
-        form.setFieldValue('expired_date', null);
-      } else {
-        if (!value) return 'Fecha de finalización requerida';
-        if (value < actualDate) return 'La fecha de finalización debe ser mayor a la fecha actual';
-      }
-    },
-    draw_type: (value: string) => {
-      if (!value) return 'Tipo de rifa requerido';
-    },
-    tickets_count: (value: number) => {
-      if (form.values.draw_type === 'To-Infinity') { } else {
-        if (!value) return 'Cantidad de tickets requerida';
-        if (value < 100 || value > 1000) return 'La cantidad de tickets debe ser mayor o igual a 100 y menor o igual a 1000';
-      }
-    },
-    price_unit: (value: number) => {
-      if (!value) return 'Precio unitario requerido';
-      if (value <= 0) return 'El precio unitario debe ser mayor a 0';
-    },
-    numbers: (value: number) => {
-      if (!value) return 'Numeros de la rifa requeridos';
-      if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
-    },
-    owner_id: (value: number | string | null) => {
-      if (value === null) return 'Agencia requerida'
-    },
-    money: (value: string) => {
-      if (!value) return 'Moneda requerida';
-    },
-    visible_taquillas_ids: (value: number[]) => {
-      if (allTaquillas) { 
-        null
-      } else { 
-        if (value.length < 1) return 'Taquillas requeridas';
-      }
-    },
-    award: (value: string) => {
-      if (!value) return 'Premio requerido';
-    },
-    ads: (value: string) => {
-      if (!value) return 'Anuncio requerido';
-    }
-  },
-});
+  });
 
   const closeModal = () => {
     setActive(0)
@@ -228,12 +278,49 @@ const form = useForm({
     onClose()
   }
 
+  const [premioNumber, setPremioNumber] = useState(2);
+  const [premios, setPremios] = useState<string[]>([]);
+  const [inputValues, setInputValues] = useState<string[]>([]);
+
+  const agregarPremio = () => {
+    const nuevaEtiqueta = `Premio #${premioNumber}`;
+    setPremioNumber(premioNumber + 1);
+    setPremios([...premios, nuevaEtiqueta]);
+    setInputValues([...inputValues, '']); // Agregar un valor inicial vacío al array de valores de los TextInput
+  };
+
+  const eliminarUltimoPremio = () => {
+    if (premios.length > 0) {
+      const nuevosPremios = [...premios];
+      nuevosPremios.pop();
+      setPremios(nuevosPremios);
+      setPremioNumber(premioNumber - 1);
+      const nuevosInputValues = [...inputValues];
+      nuevosInputValues.pop(); // Eliminar el último valor del array de valores de los TextInput
+      setInputValues(nuevosInputValues);
+    } else {
+      setPremioNumber(2);
+    }
+  };
+
+  const handleInputChange = (index: number, value: string) => {
+    const nuevosInputValues = [...inputValues];
+    nuevosInputValues[index] = value;
+    setInputValues(nuevosInputValues);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Aquí puedes usar el array inputValues para acceder a los valores ingresados en los TextInput.
+    console.log(inputValues);
+  };
+
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
 
-    axios.post('https://api.rifamax.app/draws', {draw: values}, {
+    axios.post('https://api.rifamax.app/draws', { draw: values }, {
       headers: {
         "Content-Type": ["application/json", "multipart/form-data"],
         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
@@ -254,6 +341,7 @@ const form = useForm({
     }
   }
 
+  const { classes } = useStyles();
   const onSubmit = (values?: FormProps) => {
     nextStep(values)
     console.log(values)
@@ -279,7 +367,7 @@ const form = useForm({
       </div>
     )
   }
-  
+
   const removeFile = (index: number, dropzone: number) => {
     if (dropzone === 1) {
       const updatedFiles = [...files];
@@ -321,7 +409,7 @@ const form = useForm({
       <Modal
         opened={open}
         onClose={() => closeModal()}
-        title="Crear rifas de moto"
+        title="Agregar Rifa Especiales"
         size="xl"
       >
         <Stepper size="md" active={active}>
@@ -384,9 +472,19 @@ const form = useForm({
                   }}
                   {...form.getInputProps('draw_type').value === 'To-Infinity' && { checked: true }}
                 />
+                <Checkbox
+                  value="50/50"
+                  label="50/50"
+                  checked={checkedIndex === 4}
+                  onChange={() => {
+                    form.getInputProps('draw_type').onChange('50/50')
+                    setCheckedIndex(4)
+                  }}
+                  {...form.getInputProps('draw_type').value === '50/50' && { checked: true }}
+                />
               </Group>
               <Grid>
-                <Grid.Col span={6}>
+                <Grid.Col span={10}>
                   <TextInput
                     size='md'
                     label="Primer premio"
@@ -394,29 +492,37 @@ const form = useForm({
                     error={form.errors.first_prize}
                     withAsterisk
                     mt="md"
+                    mb={15}
                     {...form.getInputProps('first_prize')}
                   />
                 </Grid.Col>
-                <Grid.Col span={6}>
-                  <TextInput
-                    size="md"
-                    label="Segundo premio"
-                    placeholder="Segundo premio"
-                    disabled={!isSecondPrizeEnabled}
-                    mt="md"
-                    error={form.errors.second_prize}
-                    {...form.getInputProps('second_prize')}
-                  />
+                <Grid.Col span={2}>
+                  <Group>
+                    <ActionIcon mt={48} variant="filled" onClick={agregarPremio}>
+                      <IconPlus size={30} />
+                    </ActionIcon>
+
+                    <ActionIcon mt={48} variant="filled" onClick={eliminarUltimoPremio}>
+                      <IconMinus size={30} />
+                    </ActionIcon>
+                  </Group>
                 </Grid.Col>
               </Grid>
-              <Switch
-                mt={15}
-                mb={15}
-                ml="51%"
-                label="Segundo premio"
-                checked={isSecondPrizeEnabled}
-                onChange={handleSecondPrizeSwitchChange}
-              />
+              <Grid>
+                {premios.map((etiqueta, index) => (
+                  <Grid.Col span={4}>
+                    <TextInput
+                      key={index}
+                      size='md'
+                      label={etiqueta}
+                      mt={15}
+                      mb={10}
+                      placeholder={etiqueta}
+                      
+                    />
+                  </Grid.Col>
+                ))}
+              </Grid>
               <Grid>
                 <Grid.Col span={6}>
                   <DatePicker
@@ -451,7 +557,7 @@ const form = useForm({
                       form.getInputProps('draw_type').value === 'Progressive'
                     }
                     withAsterisk={
-                      form.getInputProps('draw_type').value === 'To-Infinity' || form.getInputProps('draw_type').value === 'End-To-Date'
+                      form.getInputProps('draw_type').value === 'To-Infinity' || form.getInputProps('draw_type').value === '50/50' || form.getInputProps('draw_type').value === 'End-To-Date'
                     }
                     rightSection={<Calendar opacity={0.8} />}
                     {...form.getInputProps('expired_date')}
@@ -478,7 +584,7 @@ const form = useForm({
                   value={
                     checkedIndex === 3 ? 100 : 0
                   }
-                  disabled={checkedIndex === 3}
+                  disabled={checkedIndex === 3 || checkedIndex === 4}
                   onChange={() => {
                     form.getInputProps('tickets_count').onChange(100)
                     setTicketsCountState(100)
@@ -490,7 +596,7 @@ const form = useForm({
                     checkedIndex === 3 ? 1000 : 0
                   }
                   label="1000 tickets triples"
-                  disabled={checkedIndex === 3}
+                  disabled={checkedIndex === 3 || checkedIndex === 4}
                   onChange={() => {
                     form.getInputProps('tickets_count').onChange(1000)
                     setTicketsCountState(1000)
@@ -534,9 +640,13 @@ const form = useForm({
                 ]}
                 {...form.getInputProps('limit')}
               />
-              <Text fz="sm" ta="center" c='red' inline>
-                {form.errors.limit}
-              </Text>
+
+              {checkedIndex === 2 && (
+                <Text fz="sm" ta="center" c='red' inline>
+                  {form.errors.limit}
+                </Text>
+              )}
+
               <Grid>
                 <Grid.Col span={6}>
                   <NumberInput
@@ -567,6 +677,32 @@ const form = useForm({
                   />
                 </Grid.Col>
               </Grid>
+              <Grid mb={10}>
+                <Grid.Col span={6}>
+                  <Select
+                    size='md'
+                    mb="md"
+                    label="Localidad"
+                    placeholder="Elige la Localidad"
+                    withAsterisk
+                    error={form.errors.owner_id}
+                    data={[
+                      { value: 'BsF', label: 'Monumental' },
+                    ]}
+                    {...form.getInputProps('owner_id')}
+                  />
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <TextInput
+                    size='md'
+                    label="Fundacion"
+                    placeholder="Fundacion"
+                    withAsterisk
+
+                  />
+                </Grid.Col>
+              </Grid>
+
               <Grid mb={15}>
                 <Grid.Col span={6}>
                   <Select
@@ -597,31 +733,42 @@ const form = useForm({
                   />
                 </Grid.Col>
               </Grid>
-              <Group 
-                mt={-25} 
+              <Group
+                mt={-25}
                 position='right'
               >
-                <Switch 
-                  label="Seleccionar todas" 
+                <Switch
+                  label="Seleccionar todas"
                   checked={true}
-                  // onChange={(e) => {
-                  //   if (e.target.checked) {
-                  //     form.getInputProps('visible_taquillas_ids').onChange([])
-                  //   }
-                  //   setAllTaquillas(e.target.checked)
-                  // }} 
+                // onChange={(e) => {
+                //   if (e.target.checked) {
+                //     form.getInputProps('visible_taquillas_ids').onChange([])
+                //   }
+                //   setAllTaquillas(e.target.checked)
+                // }} 
                 />
               </Group>
               <Grid>
                 <Grid.Col span={6}>
-                  <Text size="xl" fz="md" mb={15} inline>
-                    Imagenes del premio
-                  </Text>
+                  <Group>
+
+
+                    <Text size="xl" fz="md" mb={15} inline>
+                      Imagenes del premio
+
+                    </Text>
+
+                    {checkedIndex === 4 ? <Text inline c='red' mt={-17} ml={-12}></Text> : <Text inline c='red' mt={-17} ml={-12}>*</Text>}
+                  </Group>
                   <Dropzone
+                    disabled={checkedIndex === 4}
+
+
+                    className={checkedIndex === 4 ? classes.disabled2 : 'activopapi'}
                     accept={IMAGE_MIME_TYPE}
                     multiple={true}
-                    maxFiles={1} 
-                    onDrop={(files) => { 
+                    maxFiles={1}
+                    onDrop={(files) => {
                       form.getInputProps('award').onChange(files)
                       setFiles(files)
                     }}
@@ -636,9 +783,11 @@ const form = useForm({
                       presione la imagen en este area
                     </Text>
                   </Dropzone>
-                  <Text fz="sm" ta="center" c='red' mt={10} inline>
-                    {form.errors.award}
-                  </Text>
+                  {checkedIndex !== 4 && (
+                    <Text fz="sm" ta="center" c='red' mt={10} inline>
+                      {form.errors.award}
+                    </Text>
+                  )}
                   <SimpleGrid
                     cols={4}
                     breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
@@ -651,18 +800,21 @@ const form = useForm({
                 <Grid.Col span={6}>
                   <Group>
                     <Text size="xl" fz="md" mb={15} inline>
-                      Imagen de premio
+                      Imagen de Publicidad
                     </Text>
-                    <Text inline c='red' mt={-17} ml={-12}>*</Text>
+                    {checkedIndex === 4 ? <Text inline c='red' mt={-17} ml={-12}></Text> : <Text inline c='red' mt={-17} ml={-12}>*</Text>}
                   </Group>
-                  <Dropzone 
-                    accept={IMAGE_MIME_TYPE} 
+
+                  <Dropzone
+                    disabled={checkedIndex === 4}
+                    className={checkedIndex === 4 ? classes.disabled : 'activopapi'}
+                    accept={IMAGE_MIME_TYPE}
                     onDrop={(files) => {
                       handleDrop2(files)
                       form.getInputProps('ads').onChange(files[0])
                       console.log(files)
                     }}
-                    maxFiles={1} 
+                    maxFiles={1}
                     multiple={true}
                     color={form.errors.ads ? 'red' : ''}
                     {...form.getInputProps('ads')}
@@ -674,10 +826,14 @@ const form = useForm({
                     <Text size="sm" color="dimmed" inline mt={7}>
                       presione la imagen a publicar en este area
                     </Text>
+
                   </Dropzone>
-                  <Text fz="sm" ta="center" c='red' mt={10} inline>
-                    {form.errors.ads}
-                  </Text>
+                  {checkedIndex !== 4 && (
+                    <Text fz="sm" ta="center" c='red' mt={10} inline>
+                      {form.errors.ads}
+                    </Text>
+                  )}
+
                   <SimpleGrid
                     cols={4}
                     breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
