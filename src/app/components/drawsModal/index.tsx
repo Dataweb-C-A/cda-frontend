@@ -71,6 +71,8 @@ type FormProps = {
   ads: IFile | null;
   award: IFile | null;
   owner_id: number | string | null;
+  local_id: number | string | null;
+  fundation_id:number | string | null;
   user_id: number;
 }
 
@@ -187,6 +189,8 @@ function DrawsModal({
       ads: null,
       award: null,
       owner_id: null,
+      fundation_id: null,
+      local_id: null,
       user_id: JSON.parse(localStorage.getItem('user') || '').id || 1
     },
     validate: {
@@ -230,8 +234,18 @@ function DrawsModal({
       draw_type: (value: string) => {
         if (!value) return 'Tipo de rifa requerido';
       },
+      local_id: (value: string) => {
+        if (form.values.draw_type === '50/50') {
+          if (!value) return 'Localidad Requerida';
+        }
+      },
+      fundation_id:(value: string) => {
+        if (form.values.draw_type === '50/50') {
+          if (!value) return 'Fundacion Requerida';
+        }
+      },
       tickets_count: (value: number) => {
-        if (form.values.draw_type === 'To-Infinity' || '50/50') { } else {
+        if (form.values.draw_type === 'To-Infinity' || form.values.draw_type === '50/50') { } else {
           if (!value) return 'Cantidad de tickets requerida';
           if (value < 100 || value > 1000) return 'La cantidad de tickets debe ser mayor o igual a 100 y menor o igual a 1000';
         }
@@ -245,11 +259,15 @@ function DrawsModal({
         if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
       },
       owner_id: (value: number | string | null) => {
-        if (value === null) return 'Agencia requerida'
+        if (form.values.draw_type != '50/50') {
+          if (value === null) return 'Agencia requerida'
+        }
+
       },
       money: (value: string) => {
         if (!value) return 'Moneda requerida';
       },
+
       visible_taquillas_ids: (value: number[]) => {
         if (allTaquillas) {
           null
@@ -518,7 +536,7 @@ function DrawsModal({
                       mt={15}
                       mb={10}
                       placeholder={etiqueta}
-                      
+
                     />
                   </Grid.Col>
                 ))}
@@ -682,22 +700,36 @@ function DrawsModal({
                   <Select
                     size='md'
                     mb="md"
+                    disabled={
+                      form.getInputProps('draw_type').value != '50/50'
+                    }
                     label="Localidad"
                     placeholder="Elige la Localidad"
-                    withAsterisk
-                    error={form.errors.owner_id}
+                    withAsterisk={
+                      form.getInputProps('draw_type').value === '50/50'
+                    }
+                    error={form.errors.local_id}
                     data={[
                       { value: 'BsF', label: 'Monumental' },
                     ]}
-                    {...form.getInputProps('owner_id')}
+                    {...form.getInputProps('local_id')}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
                   <TextInput
                     size='md'
                     label="Fundacion"
+                    disabled={
+                      form.getInputProps('draw_type').value != '50/50'
+                    }
+                    withAsterisk={
+                      form.getInputProps('draw_type').value === '50/50'
+                    }
                     placeholder="Fundacion"
-                    withAsterisk
+
+                    error={form.errors.fundation_id}
+                    {...form.getInputProps('fundation_id')}
+
 
                   />
                 </Grid.Col>
@@ -709,8 +741,14 @@ function DrawsModal({
                     size='md'
                     mb="md"
                     label="Taquilla patrocinante"
+                    disabled={
+                      form.getInputProps('draw_type').value === '50/50'
+                    }
                     placeholder="Elige una taquilla disponible"
-                    withAsterisk
+                    withAsterisk={
+                      form.getInputProps('draw_type').value === 'To-Infinity' || form.getInputProps('draw_type').value === 'Progressive' || form.getInputProps('draw_type').value === 'End-To-Date'
+                    }
+
                     error={form.errors.owner_id}
                     data={visibleTaquillas.map((item: any) => {
                       return { value: item.value, label: item.label }
