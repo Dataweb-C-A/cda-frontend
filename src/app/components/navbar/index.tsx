@@ -18,6 +18,7 @@ import { Link } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
 import { ChevronRight } from "tabler-icons-react"
 import axios from "axios"
+import Newtaquilla from "./Newtaquilla"
 import useLastRifas from "./rifas.module"
 
 // Interface for the props of the Navbar component
@@ -611,9 +612,8 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
               </Text>
             </Card>
           ) : null}
-         <Card>
-         Agregar taquilla
-         </Card>
+        <Newtaquilla/>
+      
           <Text fw={700}>Lista de Riferos</Text>
           {agencies.map((profile, index) => (
             <AvatarCard
