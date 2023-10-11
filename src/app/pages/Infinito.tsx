@@ -19,7 +19,7 @@ function infinito() {
   const [notificationVisible, setNotificationVisible] = useState(false);
   const [notificationErrorVisible, setNotificationErrorVisible] = useState(false);
   const [sold, setSold] = useState<IPlaces[] | []>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0); // Nuevo estado para el total
+  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const handleQuantityClick = (selectedQuantity: number) => {
     axios.post(`https://api.rifamax.app/to-infinity?quantity=${selectedQuantity}`, {
@@ -30,7 +30,6 @@ function infinito() {
       setSold(prevSold => [...prevSold, ...response.data.places]);
       setNotificationVisible(true);
       console.log(sold);
-      // Actualiza el total cuando se realiza una venta
       setTotalPrice(prevTotal => prevTotal + getPrice(selectedQuantity));
     })
       .catch(error => {
@@ -43,12 +42,16 @@ function infinito() {
     }, 2000);
   }
 
-  // Función para calcular el precio según la cantidad seleccionada
   const getPrice = (quantity: number) => {
     if (quantity === 1) return 1;
     if (quantity === 6) return 5;
     if (quantity === 15) return 10;
-    return 0; // Puedes manejar otros valores aquí si es necesario
+    return 0;
+  }
+
+  const handleClearClick = () => {
+    setSold([]);
+    setTotalPrice(0);
   }
 
   const handlePrintError = () => {
@@ -359,6 +362,9 @@ function infinito() {
                       <Group position="apart">
 
                         <Text fz={25} fw={450}>Jugadas: {sold.length}</Text>
+                        <Button onClick={handleClearClick}>
+                          Limpiar
+                        </Button>
                         <Button color="green" onClick={() => {
                           function send(): void {
                             try {
