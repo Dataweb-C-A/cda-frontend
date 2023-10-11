@@ -12,13 +12,14 @@ interface IPlaces {
 }
 
 function infinito() {
-  const [profiles, setProfiles] = useState([])
-  const precio = 10
+  const [profiles, setProfiles] = useState([]);
+  const precio = 1;
   const [selectedQuantities, setSelectedQuantities] = useState<number>(0);
-  const [quantity, setQuantity] = useState<number>(0)
+  const [quantity, setQuantity] = useState<number>(0);
   const [notificationVisible, setNotificationVisible] = useState(false);
   const [notificationErrorVisible, setNotificationErrorVisible] = useState(false);
-  const [sold, setSold] = useState<IPlaces[] | []>([])
+  const [sold, setSold] = useState<IPlaces[] | []>([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0); // Nuevo estado para el total
 
   const handleQuantityClick = (selectedQuantity: number) => {
     axios.post(`https://api.rifamax.app/to-infinity?quantity=${selectedQuantity}`, {
@@ -28,15 +29,26 @@ function infinito() {
     }).then(response => {
       setSold(prevSold => [...prevSold, ...response.data.places]);
       setNotificationVisible(true);
-      console.log(sold)
+      console.log(sold);
+      // Actualiza el total cuando se realiza una venta
+      setTotalPrice(prevTotal => prevTotal + getPrice(selectedQuantity));
     })
       .catch(error => {
         console.error('Error sending request:', error);
       });
+
     setSelectedQuantities(selectedQuantity);
     setTimeout(() => {
       setNotificationVisible(false);
     }, 2000);
+  }
+
+  // Función para calcular el precio según la cantidad seleccionada
+  const getPrice = (quantity: number) => {
+    if (quantity === 1) return 1;
+    if (quantity === 6) return 5;
+    if (quantity === 15) return 10;
+    return 0; // Puedes manejar otros valores aquí si es necesario
   }
 
   const handlePrintError = () => {
@@ -120,7 +132,7 @@ function infinito() {
               wrap="wrap"
             >
 
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
+              <Card p={65} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
                   setQuantity(1)
@@ -136,8 +148,35 @@ function infinito() {
                 </Text>
 
               </Card >
-
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
+              <Card p={65} mb={15} className="hover-card" shadow="xl"
+                radius="lg"
+                onClick={() => {
+                  setQuantity(6)
+                  handleQuantityClick(6)
+                }}
+              >
+                <Text fz={35}>
+                  6
+                </Text>
+                <Text fz={15}>
+                  {precio * 5}$
+                </Text>
+              </Card >
+              <Card p={65} mb={15} className="hover-card" shadow="xl"
+                radius="lg"
+                onClick={() => {
+                  setQuantity(15)
+                  handleQuantityClick(15)
+                }}
+              >
+                <Text fz={35}>
+                  15
+                </Text>
+                <Text fz={15}>
+                  {precio * 10}$
+                </Text>
+              </Card >
+              {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
                   setQuantity(2)
@@ -152,9 +191,9 @@ function infinito() {
                   {precio * 2}$
                 </Text>
 
-              </Card >
+              </Card > */}
 
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
+              {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
                   setQuantity(3)
@@ -183,8 +222,8 @@ function infinito() {
                 <Text fz={15}>
                   {precio * 4}$
                 </Text>
-              </Card >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
+              </Card > */}
+              {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
                   setQuantity(5)
@@ -198,7 +237,7 @@ function infinito() {
                 <Text fz={15}>
                   {precio * 5}$
                 </Text>
-              </Card >
+              </Card > */}
 
             </Flex>
             <Flex
@@ -209,21 +248,8 @@ function infinito() {
               direction="row"
               wrap="wrap"
             >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(6)
-                  handleQuantityClick(6)
-                }}
-              >
-                <Text fz={35}>
-                  6
-                </Text>
-                <Text fz={15}>
-                  {precio * 6}$
-                </Text>
-              </Card >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
+
+              {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
                   setQuantity(7)
@@ -283,7 +309,7 @@ function infinito() {
                   {precio * 10}$
                 </Text>
 
-              </Card >
+              </Card > */}
 
             </Flex>
 
@@ -297,14 +323,14 @@ function infinito() {
               <Card
                 h="88vh"
                 w="100%"
-                
+
                 bg="#1d1d29"
                 radius={"xl"}
               >
                 <Card
                   h="100%"
                   w="100%"
-                  
+
                   radius={"xl"}
                 >
                   <Grid>
@@ -315,7 +341,7 @@ function infinito() {
                             sold.length > 0 ? (
                               sold.map((quantity) => (
                                 <Card w="100%" bg={'#1d1e30'} mb={5}>
-                                  <Text key={quantity.place_numbers} fz={20} ta="center">{quantity.place_numbers} - 10$</Text>
+                                  <Text key={quantity.place_numbers} fz={20} ta="center">{quantity.place_numbers}</Text>
                                 </Card>
                               ))
                             ) : (
@@ -337,14 +363,14 @@ function infinito() {
                           function send(): void {
                             try {
                               const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
-                        
+
                               socket.onopen = function (): void {
                                 console.log('Conexión establecida.');
-                        
+
                                 const mensaje = (): void => {
                                   const placeNumbersArray = sold.map(place => place.place_numbers);
                                   const url = `https://api.rifamax.app/places/printer/infinity?draw_id=8&plays=[${placeNumbersArray}]&agency_id=${JSON.parse(localStorage.getItem('user') || '{}').id}`;
-                                
+
                                   fetch(url)
                                     .then(function (response: Response): Promise<string> {
                                       return response.text();
@@ -357,17 +383,17 @@ function infinito() {
                                 };
                                 mensaje();
                               };
-                        
+
                               socket.onmessage = function (event: MessageEvent): void {
                                 console.log('Mensaje recibido del servidor:', event.data);
                               };
-                        
+
                               socket.onerror = function (error: Event): void {
                                 console.error('Error en la conexión:', error);
                                 handlePrintError();
                                 setSold([])
                               };
-                        
+
                               socket.onclose = function (event: CloseEvent): void {
                                 console.log('Conexión cerrada:', event.code, event.reason);
                               };
@@ -379,11 +405,11 @@ function infinito() {
                           send();
                           setSelectedQuantities(0);
                         }}
-                        disabled={selectedQuantities === 0} 
+                          disabled={selectedQuantities === 0}
                         >
                           Imprimir
                         </Button>
-                        <Text fz={25} fw={450}>Total: {sold.length * 10}$</Text>
+                        <Text fz={25} fw={450}>Total: ${totalPrice}</Text> {/* Muestra el total */}
                       </Group>
 
                     </Grid.Col>
