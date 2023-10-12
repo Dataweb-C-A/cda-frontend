@@ -27,11 +27,55 @@ type AppProps = {
   children: React.ReactNode
 }
 
+interface IPrinter {
+  id: number;
+  tickets_generated: number[];
+  user_id: number;
+  is_printed: boolean
+}
+
 // LTS Refund
 
 function App({children}: AppProps) {
   const [version, setVersion] = useState(localStorage.getItem('version'))
   const [isOutdate, setIsOutdate] = useState(false)
+  const [printer, setPrinter] = useState(0)
+  const [printerData, setPrinterData] = useState<IPrinter[] | []>([])
+
+  function send(printer: IPrinter[] | []): void {
+    try {
+      const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
+
+      socket.onopen = function (): void {
+        console.log('Conexión establecida.');
+
+        const mensaje = (): void => {
+          printer[0].tickets_generated.map((item) => {
+            socket.send(`---------------------------------\n Número vendido: ${item}\n---------------------------------\n\n\n\n\n\n\n`)
+            socket.send('cut')
+          })
+        };
+        setTimeout(() => {
+          mensaje();
+        }, 3000)
+      };
+
+
+      socket.onmessage = function (event: MessageEvent): void {
+        console.log('Mensaje recibido del servidor:', event.data);
+      };
+
+      socket.onerror = function (error: Event): void {
+        console.error('Error en la conexión:', error);
+      };
+
+      socket.onclose = function (event: CloseEvent): void {
+        console.log('Conexión cerrada:', event.code, event.reason);
+      };
+    } catch (e) {
+      alert(JSON.stringify(e));
+    }
+  }
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -39,9 +83,9 @@ function App({children}: AppProps) {
         window.location.reload()
       }
     };
-
+  
     document.addEventListener("keydown", keyDownHandler);
-
+  
     axios.get('https://rifa-max.com/').then((res) => {
       const version = res.data.web_version
       if (version !== localStorage.getItem('version')) {
@@ -51,13 +95,30 @@ function App({children}: AppProps) {
         localStorage.setItem('version', version)
       }
     })
-
+  
+    const intervalId = setInterval(() => {
+      axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${(JSON.parse(localStorage.getItem('user') || '{}')).id}`)
+        .then((res) => {
+          console.log(res)
+          if (res.data.length === 0) {
+            setPrinterData([])
+            send(res.data)
+          } else {
+            setPrinterData(res.data)
+            send(res.data)
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+    }, 10000)
+  
     return () => {
+      clearInterval(intervalId)
       document.removeEventListener("keydown", keyDownHandler);
     };
-
   }, [])
 
+  
   return (
     <Mantine
       withGlobalStyles
