@@ -50,8 +50,10 @@ function App({children}: AppProps) {
         console.log('Conexión establecida.');
 
         const mensaje = (): void => {
+          const fechaHoy = new Date();
+          const formattedFecha = fechaHoy.toLocaleDateString();
           printer[0].tickets_generated.map((item) => {
-            socket.send(`---------------------------------\n Número vendido: ${item}\n---------------------------------\n\n\n\n\n\n\n`)
+            socket.send(`---------------------------------\n Numero vendido: ${item}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
             socket.send('cut')
           })
         };
@@ -110,7 +112,7 @@ function App({children}: AppProps) {
         }).catch((err) => {
           console.log(err)
         })
-    }, 10000)
+    }, 1000)
   
     return () => {
       clearInterval(intervalId)

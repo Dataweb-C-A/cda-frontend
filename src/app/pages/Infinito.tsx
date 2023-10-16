@@ -385,6 +385,7 @@ function infinito() {
                                       socket.send(text);
                                       socket.send('cut')
                                       setSold([])
+    setTotalPrice(0);
                                     });
                                 };
                                 mensaje();
