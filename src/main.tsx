@@ -20,6 +20,7 @@ import Public from './app/pages/PublicDraws'
 import Cuadre from './app/pages/Cuadre'
 import Infinito from './app/pages/Infinito'
 import Lobby from './app/pages/Lobby'
+import Reportes50y50 from './app/pages/Reportes50y50'
 import axios from 'axios'
 
 
@@ -175,6 +176,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <AuthRouter path="/draws" component={Draws} isPrivate />
           <AuthRouter path="/cuadre" component={Cuadre} isPrivate />
           <AuthRouter path="/infinito" component={Infinito} isPrivate />
+          <AuthRouter path="/reportes50y50" component={Reportes50y50} isPrivate />
           <AuthRouter path="/rifamax" component={Home} isPrivate />
           <AuthRouter path="/" component={Lobby} isPrivate />
         </Switch>
