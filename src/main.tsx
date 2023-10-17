@@ -21,6 +21,7 @@ import Cuadre from './app/pages/Cuadre'
 import Infinito from './app/pages/Infinito'
 import Lobby from './app/pages/Lobby'
 import Reportes50y50 from './app/pages/Reportes50y50'
+import Pot from './app/pages/Pot'
 import axios from 'axios'
 
 
@@ -168,6 +169,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/public_draws" component={Public} />
+          <Route path="/Pot" component={Pot} />
           <AuthRouter path="/riferos" component={Riferos} isPrivate />
           <AuthRouter path="/lobby" component={Operadora} isPrivate />
           <AuthRouter path="/reports" component={Reports} isPrivate />
