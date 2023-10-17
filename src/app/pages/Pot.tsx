@@ -9,7 +9,7 @@ import {
   Flex,
   ActionIcon
 } from '@mantine/core';
-import { IconOvalVerticalFilled } from '@tabler/icons-react';
+import { IconOvalVerticalFilled, IconPig } from '@tabler/icons-react';
 
 type Props = {}
 
@@ -18,6 +18,7 @@ type Partido = {
   titulo: string;
   fecha: string;
   pote: number;
+  piggy_acc: number;
 };
 
 type Localidades = {
@@ -33,19 +34,22 @@ function Pot({ }: Props) {
         "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
         "titulo": "Partido 1",
         "fecha": "2023-10-17",
-        "pote": 1000.50
+        "pote": 1000.50,
+        "piggy_acc": 50 
       },
       {
         "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
         "titulo": "Partido 2",
         "fecha": "2023-10-18",
-        "pote": 750.25
+        "pote": 750.25,
+        "piggy_acc": 100
       },
       {
         "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
         "titulo": "Partido 3",
         "fecha": "2023-10-19",
-        "pote": 10200.75
+        "pote": 10200.75,
+        "piggy_acc": 12
       }
     ],
     "Aparicio": [
@@ -53,13 +57,15 @@ function Pot({ }: Props) {
         "imagen": "https://media.noticiaalminuto.com/2019/08/estadio-luis-aparicio.jpg",
         "titulo": "Partido 1",
         "fecha": "2023-10-17",
-        "pote": 1000.50
+        "pote": 1000.50,
+        "piggy_acc": 12
       },
       {
         "imagen": "https://media.noticiaalminuto.com/2019/08/estadio-luis-aparicio.jpg",
         "titulo": "Partido 2",
         "fecha": "2023-10-18",
-        "pote": 750.25
+        "pote": 750.25,
+        "piggy_acc": 12
       }
     ]
   };
@@ -126,10 +132,13 @@ function Pot({ }: Props) {
             </Text>
 
             <div style={{ width: 240, marginLeft: 270, marginTop: 30 }}>
-              <ActionIcon variant="transparent" mt={-36} style={{ color: partido.pote >= 10000 ? "#1d870c" : "inherit" }}  >
+              <Text>
+                <IconPig color={`linear-gradient(#fff ${100 - partido.piggy_acc}%, #1d870c ${partido.piggy_acc}%)`}/>
+              </Text>
+              {/* <ActionIcon variant="transparent" mt={-36} style={{ color: partido.pote >= 10000 ? "#1d870c" : "inherit" }}  >
                 <IconOvalVerticalFilled />
-              </ActionIcon>
-
+              </ActionIcon> */}
+{/* 
               <ActionIcon variant="transparent" mt={-17} style={{ color: partido.pote >= 7000 ? "#1d870c" : "inherit" }} >
                 <IconOvalVerticalFilled />
               </ActionIcon>
@@ -140,7 +149,7 @@ function Pot({ }: Props) {
 
               <ActionIcon variant="transparent" style={{ color: partido.pote >= 1000 ? "#1d870c" : "inherit" }} mt={-17}>
                 <IconOvalVerticalFilled />
-              </ActionIcon>
+              </ActionIcon> */}
             </div>
           </Card>
         ))}
