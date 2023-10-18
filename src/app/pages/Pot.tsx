@@ -7,9 +7,10 @@ import {
   Title,
   Text,
   Flex,
-  ActionIcon
+  ActionIcon,
+  ThemeIcon
 } from '@mantine/core';
-import { IconOvalVerticalFilled, IconPig } from '@tabler/icons-react';
+import { IconOvalVerticalFilled, IconPig, IconRectangleFilled, IconBeer } from '@tabler/icons-react';
 
 type Props = {}
 
@@ -17,6 +18,8 @@ type Partido = {
   imagen: string;
   titulo: string;
   fecha: string;
+  tickets_vendidos: number;
+  monto_recaudado: number;
   pote: number;
   piggy_acc: number;
 };
@@ -34,20 +37,36 @@ function Pot({ }: Props) {
         "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
         "titulo": "Partido 1",
         "fecha": "2023-10-17",
+        "tickets_vendidos":1000,
+        "monto_recaudado":3000,
         "pote": 1000.50,
-        "piggy_acc": 50 
+        "piggy_acc": 50
       },
       {
         "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
         "titulo": "Partido 2",
         "fecha": "2023-10-18",
-        "pote": 750.25,
+        "tickets_vendidos":1000,
+        "monto_recaudado":10000,
+        "pote": 3050.25,
         "piggy_acc": 100
       },
       {
         "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
         "titulo": "Partido 3",
         "fecha": "2023-10-19",
+        "tickets_vendidos":1000,
+        "monto_recaudado":14000,
+        "pote": 8200.75,
+        "piggy_acc": 12
+      },
+
+      {
+        "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
+        "titulo": "Partido 3",
+        "fecha": "2023-10-19",
+        "tickets_vendidos":1000,
+        "monto_recaudado":50000,
         "pote": 10200.75,
         "piggy_acc": 12
       }
@@ -57,6 +76,8 @@ function Pot({ }: Props) {
         "imagen": "https://media.noticiaalminuto.com/2019/08/estadio-luis-aparicio.jpg",
         "titulo": "Partido 1",
         "fecha": "2023-10-17",
+        "tickets_vendidos":1000,
+        "monto_recaudado":10000,
         "pote": 1000.50,
         "piggy_acc": 12
       },
@@ -64,7 +85,9 @@ function Pot({ }: Props) {
         "imagen": "https://media.noticiaalminuto.com/2019/08/estadio-luis-aparicio.jpg",
         "titulo": "Partido 2",
         "fecha": "2023-10-18",
-        "pote": 750.25,
+        "tickets_vendidos":1000,
+        "monto_recaudado":10000,
+        "pote": 7650.25,
         "piggy_acc": 12
       }
     ]
@@ -115,45 +138,57 @@ function Pot({ }: Props) {
                 {partido.titulo}
               </Title>
             </Group>
-            <Text weight={500}>
+
+            <Text mt={5} weight={500}>
               Fecha: {partido.fecha}
             </Text>
 
-            <Text weight={500}>
-              p
+            <Text mt={10} weight={500}>
+              Tickets vendidos: {partido.tickets_vendidos}
             </Text>
 
-            <Text weight={500}>
-              p
+            <Text mt={10} weight={500}>
+              Monto a repartir: {partido.monto_recaudado * 0.5}
             </Text>
 
-            <Text weight={500}>
-              p
-            </Text>
+            
 
             <div style={{ width: 240, marginLeft: 270, marginTop: 30 }}>
-              <Text>
-                <IconPig color={`linear-gradient(#fff ${100 - partido.piggy_acc}%, #1d870c ${partido.piggy_acc}%)`}/>
-              </Text>
-              {/* <ActionIcon variant="transparent" mt={-36} style={{ color: partido.pote >= 10000 ? "#1d870c" : "inherit" }}  >
-                <IconOvalVerticalFilled />
-              </ActionIcon> */}
-{/* 
-              <ActionIcon variant="transparent" mt={-17} style={{ color: partido.pote >= 7000 ? "#1d870c" : "inherit" }} >
-                <IconOvalVerticalFilled />
+
+            
+
+            {/* <ActionIcon mt={-53} ml={-49} w={80} variant="transparent" style={{ color: "inherit" }}>
+
+
+            <IconPig size="180px" />
+            </ActionIcon>  */}
+
+
+              <ActionIcon ml={-52} w={100} variant="transparent" mt={-50} mb={-10} style={{ color: (partido.monto_recaudado * 0.5) >= 10000 ? "#1d870c" : "inherit" }}  >
+                <IconRectangleFilled size="40px" />
               </ActionIcon>
 
-              <ActionIcon variant="transparent" mt={-17} style={{ color: partido.pote >= 3000 ? "#1d870c" : "inherit" }}>
-                <IconOvalVerticalFilled />
+              <ActionIcon ml={-45} w={85} variant="transparent" mb={-15} style={{ color: (partido.monto_recaudado * 0.5) >= 7000 ? "#1d870c" : "inherit" }} >
+                <IconRectangleFilled size="40px" />
+
               </ActionIcon>
 
-              <ActionIcon variant="transparent" style={{ color: partido.pote >= 1000 ? "#1d870c" : "inherit" }} mt={-17}>
-                <IconOvalVerticalFilled />
-              </ActionIcon> */}
+              <ActionIcon ml={-45} w={85} variant="transparent" mb={-15} style={{ color: (partido.monto_recaudado * 0.5) >= 3000 ? "#1d870c" : "inherit" }} >
+                <IconRectangleFilled />
+              </ActionIcon>
+
+              <ActionIcon ml={-45} w={85} variant="transparent" style={{ color: (partido.monto_recaudado * 0.5) >= 1000 ? "#1d870c" : "inherit" }} >
+                <IconRectangleFilled />
+              </ActionIcon>
+              <ActionIcon mt={-53} ml={-42} w={80} variant="transparent" style={{ color: "inherit" }}>
+                <IconBeer size="180px" />
+              </ActionIcon>
             </div>
           </Card>
+
         ))}
       </Group>
+
     </>
   )
 }
