@@ -21,7 +21,6 @@ type Partido = {
   tickets_vendidos: number;
   monto_recaudado: number;
   pote: number;
-  piggy_acc: number;
 };
 
 type Localidades = {
@@ -38,9 +37,8 @@ function Pot({ }: Props) {
         "titulo": "Partido 1",
         "fecha": "2023-10-17",
         "tickets_vendidos": 1000,
-        "monto_recaudado": 35000,
+        "monto_recaudado": 21400,
         "pote": 1000.50,
-        "piggy_acc": 50
       }
       // ,
       // {
@@ -78,18 +76,16 @@ function Pot({ }: Props) {
         "titulo": "Partido 1",
         "fecha": "2023-10-17",
         "tickets_vendidos": 1000,
-        "monto_recaudado": 10000,
+        "monto_recaudado": 1000,
         "pote": 1000.50,
-        "piggy_acc": 12
       },
       {
         "imagen": "https://media.noticiaalminuto.com/2019/08/estadio-luis-aparicio.jpg",
         "titulo": "Partido 2",
         "fecha": "2023-10-18",
         "tickets_vendidos": 1000,
-        "monto_recaudado": 10000,
+        "monto_recaudado": 1000,
         "pote": 7650.25,
-        "piggy_acc": 12
       }
     ]
   };
@@ -120,6 +116,9 @@ function Pot({ }: Props) {
           <Card
             key={index}
             w={750}
+            styles={{
+              background:"#5f5f5f3d"
+            }}
             mt={55}
             h={600}
             radius="md"
@@ -150,7 +149,7 @@ function Pot({ }: Props) {
               </Text>
 
               <Text mt={10} >
-                Monto a repartir: {partido.monto_recaudado * 0.5}
+                Monto a repartir: {partido.monto_recaudado * 0.5}$
               </Text>
             </Group>
 
@@ -162,31 +161,24 @@ function Pot({ }: Props) {
             <IconPig size="180px" />
             </ActionIcon>  */}
 
-            <div style={{ marginLeft: 230 }}>
+
+            <ActionIcon ml={240} w={250} mt={60} mb={-110} variant="transparent" style={{ color: (partido.monto_recaudado * 0.5) >= 7000 ? "#1d870c" : "#2B2C3D", zIndex: 99 }}  >
+              <IconRectangleFilled size="155px" />
+            </ActionIcon>
+
+            <ActionIcon ml={240} mt={150} mb={-10} w={250} variant="transparent" style={{ color: (partido.monto_recaudado * 0.5) >= 3000 ? "#1d870c" : "#2B2C3D" }} >
+              <IconRectangleFilled size="150px" />
+            </ActionIcon>
 
 
-             
+            <ActionIcon ml={240} mt={55} w={250} style={{ color: (partido.monto_recaudado * 0.5) >= 1000 ? "#1d870c" : "#2B2C3D" }}>
+              <IconRectangleFilled size="100px" />
+            </ActionIcon>
 
-              <ActionIcon ml={1} w={250} mt={55} variant="transparent" style={{ color: (partido.monto_recaudado * 0.5) >= 10000 ? "#1d870c" : "inherit" }}  >
-                <IconRectangleFilled size="150px" />
-              </ActionIcon>
+            <ActionIcon ml={140} mt={-110} w={450} variant="transparent" style={{ color: "inherit" }}>
+              <IconBeer size="295px" />
+            </ActionIcon>
 
-               <ActionIcon ml={1} w={250} variant="transparent" style={{ color: (partido.monto_recaudado * 0.5) >= 3000 || (partido.monto_recaudado * 0.5) <= 7000 ? "#1d870c" : "inherit" }} >
-                <IconRectangleFilled size="95px" />
-
-              </ActionIcon>
-
-
-{/*
-              <ActionIcon ml={25} w={200} mt={40} variant="transparent" style={{ color: (partido.monto_recaudado * 0.5) < 3000 ? "#1d870c" : "inherit" }} >
-                <IconRectangleFilled size="95px" />
-              </ActionIcon> */}
-
-              <ActionIcon ml={-99} mt={40} w={450} variant="transparent" style={{ color: "inherit" }}>
-                <IconBeer size="295px" />
-              </ActionIcon>
-
-            </div>
           </Card>
 
         ))}
