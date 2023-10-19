@@ -108,7 +108,7 @@ function Lobby() {
   }, [loadingDump])
   const games = [
     { label: "Rifamax", redirect: '/rifamax' },
-    { label: "X100", redirect: '/' },
+    { label: "X100", redirect: '/draws' },
     { label: "50/50", redirect: '/infinito' }
   ];
   return (
