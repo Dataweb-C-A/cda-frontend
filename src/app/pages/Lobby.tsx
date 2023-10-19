@@ -109,7 +109,7 @@ function Lobby() {
   const games = [
     { label: "Rifamax", redirect: '/rifamax' },
     { label: "X100", redirect: '/' },
-    { label: "50/50", redirect: '/' }
+    { label: "50/50", redirect: '/infinito' }
   ];
   return (
     <>
