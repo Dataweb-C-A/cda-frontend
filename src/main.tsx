@@ -101,20 +101,22 @@ function App({children}: AppProps) {
     })
   
     const intervalId = setInterval(() => {
-      axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${(JSON.parse(localStorage.getItem('user') || '{}')).id}`)
+      axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${(JSON.parse(localStorage.getItem('user') || '{}')).id}&verifier=${(JSON.parse(localStorage.getItem('user') || '{}')).expires}`)
         .then((res) => {
           console.log(res)
           if (res.data.length === 0) {
             setPrinterData([])
             send(res.data)
+            // res.data.verifier === JSON.parse(localStorage.getItem('user') || '{}')).expires ? send(res.data) : null    
           } else {
             setPrinterData(res.data)
             send(res.data)
+            // res.data.verifier === JSON.parse(localStorage.getItem('user') || '{}')).expires ? send(res.data) : null
           }
         }).catch((err) => {
           console.log(err)
         })
-    }, 1000)
+    }, 2500)
   
     return () => {
       clearInterval(intervalId)
