@@ -362,10 +362,10 @@ function infinito() {
                       <Group position="apart">
 
                         <Text fz={25} fw={450}>Jugadas: {sold.length}</Text>
-                        <Button onClick={handleClearClick}>
+                        {/* <Button onClick={handleClearClick}>
                           Limpiar
-                        </Button>
-                        <Button color="green" onClick={() => {
+                        </Button> */}
+                        <Button color="green" w={200} onClick={() => {
                           function send(): void {
                             try {
                               const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
