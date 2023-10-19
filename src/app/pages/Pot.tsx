@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Select,
   Group,
@@ -15,12 +16,11 @@ import { IconOvalVerticalFilled, IconPig, IconRectangleFilled, IconBeer } from '
 type Props = {}
 
 type Partido = {
-  imagen: string;
   titulo: string;
-  fecha: string;
-  tickets_vendidos: number;
-  monto_recaudado: number;
-  pote: number;
+  playdate: string;
+  tickets_sold: number;
+  founds: number;
+  pot_founds: number;
 };
 
 type Localidades = {
@@ -28,96 +28,38 @@ type Localidades = {
 };
 
 function Pot({ }: Props) {
-  const [selectedLocalidad, setSelectedLocalidad] = useState<string>('');
+  const [data, setData] = useState<Partido | null>(null);
 
-  const localidad: Localidades = {
-    "Monumental": [
-      {
-        "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
-        "titulo": "Partido 1",
-        "fecha": "2023-10-17",
-        "tickets_vendidos": 1000,
-        "monto_recaudado": 21400,
-        "pote": 1000.50,
-      }
-      // ,
-      // {
-      //   "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
-      //   "titulo": "Partido 2",
-      //   "fecha": "2023-10-18",
-      //   "tickets_vendidos":1000,
-      //   "monto_recaudado":10000,
-      //   "pote": 3050.25,
-      //   "piggy_acc": 100
-      // },
-      // {
-      //   "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
-      //   "titulo": "Partido 3",
-      //   "fecha": "2023-10-19",
-      //   "tickets_vendidos":1000,
-      //   "monto_recaudado":14000,
-      //   "pote": 8200.75,
-      //   "piggy_acc": 12
-      // },
-
-      // {
-      //   "imagen": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg",
-      //   "titulo": "Partido 3",
-      //   "fecha": "2023-10-19",
-      //   "tickets_vendidos":1000,
-      //   "monto_recaudado":50000,
-      //   "pote": 10200.75,
-      //   "piggy_acc": 12
-      // }
-    ],
-    "Aparicio": [
-      {
-        "imagen": "https://media.noticiaalminuto.com/2019/08/estadio-luis-aparicio.jpg",
-        "titulo": "Partido 1",
-        "fecha": "2023-10-17",
-        "tickets_vendidos": 1000,
-        "monto_recaudado": 1000,
-        "pote": 1000.50,
-      },
-      {
-        "imagen": "https://media.noticiaalminuto.com/2019/08/estadio-luis-aparicio.jpg",
-        "titulo": "Partido 2",
-        "fecha": "2023-10-18",
-        "tickets_vendidos": 1000,
-        "monto_recaudado": 1000,
-        "pote": 7650.25,
-      }
-    ]
+  const fetchData = () => {
+    axios.get('https://api.rifamax.app/pot/stadium')
+      .then((response) => {
+        setData(response.data.monumental);
+      })
+      .catch((error) => {
+        console.error('Error al obtener los datos:', error);
+      });
   };
 
-  const handleLocalidadChange = (value: string) => {
-    setSelectedLocalidad(value);
-  };
+  useEffect(() => {
+    fetchData();
 
-  const selectedLocalidadData = localidad[selectedLocalidad] || [] as Partido[];
+    const intervalId = setInterval(() => {
+      fetchData(); 
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <>
-      <Select
-        mt={15}
-        w={550}
-        ml={15}
-        placeholder="Escoga su localidad"
-        data={[
-          { value: 'Monumental', label: 'Monumental' },
-          { value: 'Aparicio', label: 'Aparicio' },
-        ]}
-        value={selectedLocalidad}
-        onChange={handleLocalidadChange}
-      />
-
-      <Group position='center'>
-        {selectedLocalidadData.map((partido, index) => (
+      {data && (
+        <Group position='center'>
           <Card
-            key={index}
             w={750}
             styles={{
-              background:"#5f5f5f3d"
+              background: "#5f5f5f3d"
             }}
             mt={55}
             h={600}
@@ -125,53 +67,38 @@ function Pot({ }: Props) {
             shadow="sm"
             withBorder
           >
-            <Card.Section>
-              <Image
-                src={partido.imagen}
-                height={260}
-                alt={`Imagen del partido ${partido.titulo}`}
-              />
-            </Card.Section>
-
+              <Card.Section>
+                <Image
+                  src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg"
+                  height={260}
+                />
+              </Card.Section> 
             <Group position='center'>
               <Title order={3}>
-                {partido.titulo}
+                {data.titulo}
               </Title>
             </Group>
             <Group position="apart">
-
               <Text mt={5} >
-                Fecha: {partido.fecha}
+                Fecha: {data.playdate}
               </Text>
-
               <Text mt={10} >
-                Tickets vendidos: {partido.tickets_vendidos}
+                Tickets vendidos: {data.tickets_sold}
               </Text>
-
               <Text mt={10} >
-                Monto a repartir: {partido.monto_recaudado * 0.5}$
+                Monto a repartir: {data.pot_founds}
               </Text>
             </Group>
 
-
-
-            {/* <ActionIcon mt={-53} ml={-49} w={80} variant="transparent" style={{ color: "inherit" }}>
-
-
-            <IconPig size="180px" />
-            </ActionIcon>  */}
-
-
-            <ActionIcon ml={240} w={250} mt={60} mb={-110} variant="transparent" style={{ color: (partido.monto_recaudado * 0.5) >= 7000 ? "#1d870c" : "#2B2C3D", zIndex: 99 }}  >
+            <ActionIcon ml={240} w={250} mt={80} mb={-110} variant="transparent" style={{ color: (data.pot_founds * 0.5) >= 7000 ? "#1d870c" : "#2B2C3D", zIndex: 99 }}  >
               <IconRectangleFilled size="155px" />
             </ActionIcon>
 
-            <ActionIcon ml={240} mt={150} mb={-10} w={250} variant="transparent" style={{ color: (partido.monto_recaudado * 0.5) >= 3000 ? "#1d870c" : "#2B2C3D" }} >
+            <ActionIcon ml={240} mt={150} mb={-10} w={250} variant="transparent" style={{ color: (data.pot_founds * 0.5) >= 3000 ? "#1d870c" : "#2B2C3D" }} >
               <IconRectangleFilled size="150px" />
             </ActionIcon>
 
-
-            <ActionIcon ml={240} mt={55} w={250} style={{ color: (partido.monto_recaudado * 0.5) >= 1000 ? "#1d870c" : "#2B2C3D" }}>
+            <ActionIcon ml={240} mt={55} w={250} style={{ color: (data.pot_founds * 0.5) >= 1000 ? "#1d870c" : "#2B2C3D" }}>
               <IconRectangleFilled size="100px" />
             </ActionIcon>
 
@@ -180,12 +107,10 @@ function Pot({ }: Props) {
             </ActionIcon>
 
           </Card>
-
-        ))}
-      </Group>
-
+        </Group>
+      )}
     </>
-  )
+  );
 }
 
 export default Pot;
