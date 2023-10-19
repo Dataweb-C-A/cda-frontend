@@ -22,15 +22,19 @@ type PermissionMap = {
   [role in Role]: string[]
 };
 
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+const taquillaPermissions = user.name === "50-50-001" ? ['/reportes50y50'] : [];
+
 const permissions: PermissionMap = {
   [Role.Admin]: ['/','/rifamax' , '/users', '/riferos', '/reportes-rifa','/cuadre' ,'/lobby','/reports', '/exchange', '/draws','/infinito','/reportes50y50'],
   [Role.Rifero]: ['/'],
-  [Role.Taquilla]: ['/','/rifamax','/riferos', '/lobby', '/reportes-rifa','/cuadre','/infinito'],
+  [Role.Taquilla]: ['/','/rifamax','/riferos', '/lobby', '/reportes-rifa','/cuadre','/infinito', ...taquillaPermissions],
   [Role.Agencia]: ['/'],
   [Role.Auto]: ['/lobby'],
   [Role.Undefined]: ['/login'],
   [Role.Null]: ['/login'],
 };
+
 
 const AuthRouter: React.FC<AuthRouterProps> = ({ component: Component, path, isPrivate, ...rest }) => {
   const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') || '{}') : useUser();
