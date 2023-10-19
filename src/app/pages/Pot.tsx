@@ -103,15 +103,15 @@ function Pot({ }: Props) {
 
               <div>
 
-                <ActionIcon ml={180} w={450}  mb={20} variant="transparent" style={{ color: (data.pot_founds * 0.5) >= 7000 ? "#1d870c" : "#1d870c", zIndex: 99 }}  >
+                <ActionIcon ml={180} w={450}  mb={20} variant="transparent" style={{ color: (data.pot_founds * 0.5) >= 7000 ? "#1d870c" : "#2B2C3D", zIndex: 99 }}  >
                   <IconRectangleFilled size="410px" />
                 </ActionIcon>
 
-                <ActionIcon ml={180} mt={180} mb={-20} w={450} variant="transparent" style={{ color: (data.pot_founds * 0.5) >= 3000 ? "#1d870c" : "#1d870c" }} >
+                <ActionIcon ml={180} mt={180} mb={-20} w={450} variant="transparent" style={{ color: (data.pot_founds * 0.5) >= 3000 ? "#1d870c" : "#2B2C3D" }} >
                   <IconRectangleFilled size="405px" />
                 </ActionIcon>
 
-                <ActionIcon ml={180} mt={190} w={450} style={{ color: (data.pot_founds * 0.5) >= 1000 ? "#1d870c" : "#1d870c" }}>
+                <ActionIcon ml={180} mt={190} w={450} style={{ color: (data.pot_founds * 0.5) >= 1000 ? "#1d870c" : "#2B2C3D" }}>
                   <IconRectangleFilled size="300px" />
                 </ActionIcon>
 {/* #2B2C3D */ }
