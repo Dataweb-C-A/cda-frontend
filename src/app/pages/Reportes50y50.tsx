@@ -16,10 +16,13 @@ import {
 } from '@mantine/core';
 
 interface IPrinter {
-  id?: number;
-  tickets_generated: number[];
-  user_id: number;
-  is_printed: boolean
+  notification : {
+    id?: number;
+    tickets_generated: number[];
+    user_id: number;
+    is_printed: boolean
+    current_id?: number
+  }
 }
 
 type Props = {}
@@ -130,7 +133,7 @@ const Reportes50y50 = (props: Props) => {
       const mensaje = (): void => {
         const fechaHoy = new Date();
         const formattedFecha = fechaHoy.toLocaleDateString();
-        printer[0].tickets_generated.map((item) => {
+        printer[0].notification.tickets_generated.map((item) => {
           let paddedItem = String(item);
           if (paddedItem.length === 2) {
             paddedItem = `00${paddedItem}`;
@@ -138,7 +141,7 @@ const Reportes50y50 = (props: Props) => {
             paddedItem = `0${paddedItem}`;
           }
   
-          socket.send(`---------------------------------\n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
+          socket.send(`---------------------------------\n Numero de ticket: ${printer[0].notification.current_id} \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
           socket.send('cut');
         });
       };
@@ -163,11 +166,11 @@ const Reportes50y50 = (props: Props) => {
             color="indigo"
             size="lg"
             variant="filled"
-            onClick={() => send([{
+            onClick={() => send([{notification: {
               tickets_generated: [number],
               user_id: 369,
               is_printed: true
-            }])}
+            }}])}
           >
             <IconPrinter size={26} />
           </ActionIcon>

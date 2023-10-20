@@ -31,10 +31,13 @@ type AppProps = {
 }
 
 interface IPrinter {
-  id: number;
-  tickets_generated: number[];
-  user_id: number;
-  is_printed: boolean
+  notification : {
+    id: number;
+    tickets_generated: number[];
+    user_id: number;
+    is_printed: boolean
+    current_id: number
+  }
 }
 
 // LTS Refund
@@ -70,7 +73,7 @@ function App({ children }: AppProps) {
       const mensaje = (): void => {
         const fechaHoy = new Date();
         const formattedFecha = fechaHoy.toLocaleDateString();
-        printer[0].tickets_generated.map((item) => {
+        printer[0].notification.tickets_generated.map((item) => {
           let paddedItem = String(item);
           if (paddedItem.length === 2) {
             paddedItem = `00${paddedItem}`;
@@ -78,7 +81,7 @@ function App({ children }: AppProps) {
             paddedItem = `0${paddedItem}`;
           }
   
-          socket.send(`---------------------------------\n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
+          socket.send(`---------------------------------\n Numero de ticket: ${printer[0].notification.current_id} \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
           socket.send('cut');
         });
       };
