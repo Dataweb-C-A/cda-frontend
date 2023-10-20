@@ -108,7 +108,7 @@ function App({children}: AppProps) {
 
         const user = JSON.parse(localStorage.getItem('user') || '{}')
         socket.onopen = function (): void {
-          if (user.name === '50-50-001') {
+          if (user.username === '50-50-001') {
             axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${(JSON.parse(localStorage.getItem('user') || '{}')).id}&verifier=${(JSON.parse(localStorage.getItem('user') || '{}')).expires}`)
             .then((res) => {
               console.log(res)
