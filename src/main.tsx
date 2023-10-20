@@ -39,105 +39,157 @@ interface IPrinter {
 
 // LTS Refund
 
-function App({children}: AppProps) {
+function App({ children }: AppProps) {
   const [version, setVersion] = useState(localStorage.getItem('version'))
   const [isOutdate, setIsOutdate] = useState(false)
   const [printer, setPrinter] = useState(0)
   const [printerData, setPrinterData] = useState<IPrinter[] | []>([])
   const [error, setError] = useState<any>(null)
+  const [print, setPrint] = useState<number>(1)
+
+  const socket = new WebSocket('ws://127.0.0.1:1315');
+
+  socket.onopen = function () {
+    console.log('Conexión establecida.');
+  };
+
+  socket.onmessage = function (event) {
+    console.log('Mensaje recibido del servidor:', event.data);
+  };
+
+  socket.onerror = function (error) {
+    console.error('Error en la conexión:', error);
+  };
+
+  socket.onclose = function (event) {
+    console.log('Conexión cerrada:', event.code, event.reason);
+  };
 
   function send(printer: IPrinter[] | []): void {
-    try {
-      const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
-
-      socket.onopen = function (): void {
-        console.log('Conexión establecida.');
-
-        const mensaje = (): void => {
-          const fechaHoy = new Date();
-          const formattedFecha = fechaHoy.toLocaleDateString();
-          printer[0].tickets_generated.map((item) => {
-            socket.send(`---------------------------------\n Numero vendido: ${item}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
-            socket.send('cut')
-          })
-        };
-        setTimeout(() => {
-          mensaje();
-        }, 3000)
+    if (socket.readyState === WebSocket.OPEN) {
+      // Verificar que el socket esté abierto antes de enviar mensajes.
+      const mensaje = (): void => {
+        const fechaHoy = new Date();
+        const formattedFecha = fechaHoy.toLocaleDateString();
+        printer[0].tickets_generated.map((item) => {
+          socket.send(`---------------------------------\n Numero vendido: ${item}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
+          socket.send('cut');
+          setPrint(print + 1);
+        });
       };
-
-
-      socket.onmessage = function (event: MessageEvent): void {
-        console.log('Mensaje recibido del servidor:', event.data);
-      };
-
-      socket.onerror = function (error: Event): void {
-        console.error('Error en la conexión:', error);
-      };
-
-      socket.onclose = function (event: CloseEvent): void {
-        console.log('Conexión cerrada:', event.code, event.reason);
-      };
-    } catch (e) {
-      alert(JSON.stringify(e));
+      setTimeout(() => {
+        mensaje();
+      }, 3000);
+    } else {
+      console.error('El socket no está abierto.');
     }
   }
+
+  // function send(printer: IPrinter[] | []): void {
+  //   try {
+  //     const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
+
+  //     socket.onopen = function (): void {
+  //       console.log('Conexión establecida.');
+
+  //       const mensaje = (): void => {
+  //         const fechaHoy = new Date();
+  //         const formattedFecha = fechaHoy.toLocaleDateString();
+  //         printer[0].tickets_generated.map((item) => {
+  //           socket.send(`---------------------------------\n Numero vendido: ${item}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
+  //           socket.send('cut')
+  //           setPrint(print + 1)
+  //         })
+  //       };
+  //       setTimeout(() => {
+  //         mensaje();
+  //       }, 3000)
+  //     };
+
+
+  //     socket.onmessage = function (event: MessageEvent): void {
+  //       console.log('Mensaje recibido del servidor:', event.data);
+  //     };
+
+  //     socket.onerror = function (error: Event): void {
+  //       console.error('Error en la conexión:', error);
+  //     };
+
+  //     socket.onclose = function (event: CloseEvent): void {
+  //       console.log('Conexión cerrada:', event.code, event.reason);
+  //     };
+  //   } catch (e) {
+  //     alert(JSON.stringify(e));
+  //   }
+  // }
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
       if ((event.ctrlKey && event.key === "y") || event.key === "Y") {
-        window.location.reload()
+        window.location.reload();
       }
     };
   
     document.addEventListener("keydown", keyDownHandler);
   
     axios.get('https://rifa-max.com/').then((res) => {
-      const version = res.data.web_version
+      const version = res.data.web_version;
       if (version !== localStorage.getItem('version')) {
-        setIsOutdate(true)
-        setVersion(version)
-        localStorage.removeItem('version')
-        localStorage.setItem('version', version)
+        setIsOutdate(true);
+        setVersion(version);
+        localStorage.removeItem('version');
+        localStorage.setItem('version', version);
       }
-    })
+    });
+  
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.email === '50-50-001@gmail.com') {
+      axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${user.id}&verifier=${user.expires}`)
+        .then((res) => {
+          console.log(res);
+          if (res.data.length === 0) {
+            setPrinterData([]);
+            // Llama a send cuando se abre la conexión WebSocket y tienes los datos.
+            send(res.data);
+          } else {
+            setPrinterData(res.data);
+            // Llama a send cuando se abre la conexión WebSocket y tienes los datos.
+            send(res.data);
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+    }
   
     const intervalId = setInterval(() => {
-      try {
-        const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
-
-        const user = JSON.parse(localStorage.getItem('user') || '{}')
-        socket.onopen = function (): void {
-          if (user.username === '50-50-001') {
-            axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${(JSON.parse(localStorage.getItem('user') || '{}')).id}&verifier=${(JSON.parse(localStorage.getItem('user') || '{}')).expires}`)
-            .then((res) => {
-              console.log(res)
-              if (res.data.length === 0) {
-                setPrinterData([])
-                send(res.data)
-                // res.data.verifier === JSON.parse(localStorage.getItem('user') || '{}')).expires ? send(res.data) : null    
-              } else {
-                setPrinterData(res.data)
-                send(res.data)
-                // res.data.verifier === JSON.parse(localStorage.getItem('user') || '{}')).expires ? send(res.data) : null
-              }
-            }).catch((err) => {
-              console.log(err)
-            })
-          }
-        }
-      } catch (e) {
-        setError(e)
+      // Tu código aquí...
+    
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user.email === '50-50-001@gmail.com') {
+        axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${user.id}&verifier=${user.expires}`)
+          .then((res) => {
+            console.log(res);
+            if (res.data.length === 0) {
+              setPrinterData([]);
+              // Llama a send dentro del intervalo cuando tienes los datos.
+              send(res.data);
+            } else {
+              setPrinterData(res.data);
+              // Llama a send dentro del intervalo cuando tienes los datos.
+              send(res.data);
+            }
+          }).catch((err) => {
+            console.log(err);
+          });
       }
-    }, 2500)
-  
+    }, 5000);
+    
     return () => {
-      clearInterval(intervalId)
+      clearInterval(intervalId);
       document.removeEventListener("keydown", keyDownHandler);
     };
-  }, [])
+  }, []);
 
-  
   return (
     <Mantine
       withGlobalStyles
