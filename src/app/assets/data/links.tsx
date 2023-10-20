@@ -10,7 +10,7 @@ import { IconPokerChip } from "@tabler/icons";
 import { IconHomePlus } from '@tabler/icons-react';
 import { IconMath1Divide2 } from '@tabler/icons-react';
 const user = JSON.parse(localStorage.getItem('user') || '{}');
-const is5050User = user.name === "50-50-001";
+const is5050User = user.name === "50 50 001";
 
 export const links = [
   { name: 'Lobby', url: '/', chevron: false, icon: <FaHome size={20} strokeWidth={0} /> },

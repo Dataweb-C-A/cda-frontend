@@ -160,7 +160,7 @@ function Newtaquilla({ }: Props) {
       </Modal>
 
 
-      <Button mb={10} w={350} leftIcon={<IconHomePlus size={14} />} fullWidth variant="default" color="gray" onClick={() => setOpened(true)}>Agregar taquilla</Button>
+      <Button mb={10} w={350} leftIcon={<IconHomePlus size={14} />} fullWidth color='blue'  onClick={() => setOpened(true)}>Agregar taquilla</Button>
 
     </>
   )

@@ -68,7 +68,12 @@ const Reportes50y50 = (props: Props) => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 19;
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  let is5050User = false;
 
+  if (typeof user.name === 'string') {
+    is5050User = user.name.substring(0, 5) === "50 50";
+  }
   const fetchData = () => {
     axios.get('https://api.rifamax.app/report_tickets?id=8')
       .then((response) => {
@@ -84,7 +89,9 @@ const Reportes50y50 = (props: Props) => {
 
   useEffect(() => {
     fetchData();
-
+    if (!is5050User) {
+      return; // No hagas la solicitud si el usuario no coincide con "50 50"
+    }
     const interval = setInterval(() => {
       fetchData();
     }, 1000);
@@ -120,7 +127,6 @@ const Reportes50y50 = (props: Props) => {
 
   function send(printer: IPrinter[] | []): void {
     if (socket.readyState === WebSocket.OPEN) {
-      // Verificar que el socket esté abierto antes de enviar mensajes.
       const mensaje = (): void => {
         const fechaHoy = new Date();
         const formattedFecha = fechaHoy.toLocaleDateString();
@@ -141,14 +147,14 @@ const Reportes50y50 = (props: Props) => {
       <td>{number}</td>
       <td>Monumental</td>
       <td>1$</td>
-      <td style={{width:"205px"}}>
+      <td style={{ width: "205px" }}>
 
         <Group position='center'>
 
-          <ActionIcon 
-            color="indigo" 
-            size="lg" 
-            variant="filled" 
+          <ActionIcon
+            color="indigo"
+            size="lg"
+            variant="filled"
             onClick={() => send([{
               tickets_generated: [number],
               user_id: 369,
@@ -167,34 +173,51 @@ const Reportes50y50 = (props: Props) => {
 
   return (
     <>
-      <Navbar
-        profiles={users}
-        links={links}
-        expandScreen={true}
-      />
-      <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
-        <Title mb={15}>Reportes 50 y 50</Title>
-        <Pagination
-          total={totalPages}
-          color="indigo"
-          onChange={setCurrentPage}
-        />
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
-            <thead>
-              <tr>
-                <th>Numeros</th>
-                <th>Localidad</th>
-                <th>Total</th>
-                <th>Reimprimir Ticket</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </Table>
-        )}
-      </Card>
+      {is5050User ? (
+        <>
+          <Navbar
+            profiles={users}
+            links={links}
+            expandScreen={true}
+          />
+          <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
+            <Title mb={15}>Reportes 50 y 50</Title>
+            <Pagination
+              total={totalPages}
+              color="indigo"
+              onChange={setCurrentPage}
+            />
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
+                <thead>
+                  <tr>
+                    <th>Numeros</th>
+                    <th>Localidad</th>
+                    <th>Total</th>
+                    <th>Reimprimir Ticket</th>
+                  </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+              </Table>
+            )}
+          </Card>
+        </>
+      ) : (
+        <>
+          <Navbar
+            profiles={users}
+            links={links}
+            expandScreen={true}
+          />
+          <Card mt={15} ml={15} mr={15} h={10}>
+            <Title mt={55} ml={15} order={3}>
+              Sin acceso
+            </Title>
+          </Card>
+        </>
+      )}
     </>
   );
 };
