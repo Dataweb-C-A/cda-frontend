@@ -44,6 +44,7 @@ function App({children}: AppProps) {
   const [isOutdate, setIsOutdate] = useState(false)
   const [printer, setPrinter] = useState(0)
   const [printerData, setPrinterData] = useState<IPrinter[] | []>([])
+  const [error, setError] = useState<any>(null)
 
   function send(printer: IPrinter[] | []): void {
     try {
@@ -102,21 +103,29 @@ function App({children}: AppProps) {
     })
   
     const intervalId = setInterval(() => {
-      axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${(JSON.parse(localStorage.getItem('user') || '{}')).id}&verifier=${(JSON.parse(localStorage.getItem('user') || '{}')).expires}`)
-        .then((res) => {
-          console.log(res)
-          if (res.data.length === 0) {
-            setPrinterData([])
-            send(res.data)
-            // res.data.verifier === JSON.parse(localStorage.getItem('user') || '{}')).expires ? send(res.data) : null    
-          } else {
-            setPrinterData(res.data)
-            send(res.data)
-            // res.data.verifier === JSON.parse(localStorage.getItem('user') || '{}')).expires ? send(res.data) : null
-          }
-        }).catch((err) => {
-          console.log(err)
-        })
+      try {
+        const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
+
+        socket.onopen = function (): void {
+          axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${(JSON.parse(localStorage.getItem('user') || '{}')).id}&verifier=${(JSON.parse(localStorage.getItem('user') || '{}')).expires}`)
+            .then((res) => {
+              console.log(res)
+              if (res.data.length === 0) {
+                setPrinterData([])
+                send(res.data)
+                // res.data.verifier === JSON.parse(localStorage.getItem('user') || '{}')).expires ? send(res.data) : null    
+              } else {
+                setPrinterData(res.data)
+                send(res.data)
+                // res.data.verifier === JSON.parse(localStorage.getItem('user') || '{}')).expires ? send(res.data) : null
+              }
+            }).catch((err) => {
+              console.log(err)
+            })
+        }
+      } catch (e) {
+        setError(e)
+      }
     }, 2500)
   
     return () => {
