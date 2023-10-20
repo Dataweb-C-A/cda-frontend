@@ -23,6 +23,7 @@ import Lobby from './app/pages/Lobby'
 import Reportes50y50 from './app/pages/Reportes50y50'
 import Pot from './app/pages/Pot'
 import axios from 'axios'
+import New50y50t from './app/pages/New50y50t'
 
 
 type AppProps = {
@@ -180,6 +181,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <AuthRouter path="/draws" component={Draws} isPrivate />
           <AuthRouter path="/cuadre" component={Cuadre} isPrivate />
           <AuthRouter path="/infinito" component={Infinito} isPrivate />
+          <AuthRouter path="/New50y50t" component={New50y50t} isPrivate />
           <AuthRouter path="/reportes50y50" component={Reportes50y50} isPrivate />
           <AuthRouter path="/rifamax" component={Home} isPrivate />
           <AuthRouter path="/" component={Lobby} isPrivate />

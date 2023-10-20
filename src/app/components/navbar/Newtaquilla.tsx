@@ -18,9 +18,7 @@ function Newtaquilla({ }: Props) {
         centered
         onClose={() => setOpened(false)}
       >
-        <Stepper active={active} onStepClick={setActive} breakpoint="sm" allowNextStepsSelect={false}>
-
-          <Stepper.Step label="Paso 1 Usuario" description="Crear Usuario">
+       
             <Group grow>
               <TextInput
                 placeholder="Nombre"
@@ -29,8 +27,8 @@ function Newtaquilla({ }: Props) {
               />
 
               <TextInput
-                placeholder="Apellido"
-                label="Apellido"
+                placeholder="Telefono"
+                label="Telefono"
                 mb={10}
               />
 
@@ -67,26 +65,13 @@ function Newtaquilla({ }: Props) {
 
             </Group>
             
-          </Stepper.Step>
-
-          <Stepper.Step label="Paso 2 Taquilla" description="Crear Taquilla">
-
-          </Stepper.Step>
-
-          <Stepper.Completed>
-            Completed, click back button to get to previous step
-          </Stepper.Completed>
-
-        </Stepper>
-
-        <Group position="center" mt="xl">
-          <Button variant="default" onClick={prevStep}>Devolver</Button>
-          <Button onClick={nextStep}>Siguiente</Button>
-        </Group>
+        
+          <Button fullWidth >Continuar</Button>
+       
       </Modal>
 
 
-      <Button mb={10} leftIcon={<IconHomePlus size={14} />} fullWidth variant="default" color="gray" onClick={() => setOpened(true)}>Agregar taquilla</Button>
+      <Button mb={10} w={350} leftIcon={<IconHomePlus size={14} />} fullWidth variant="default" color="gray" onClick={() => setOpened(true)}>Agregar taquilla</Button>
 
     </>
   )
