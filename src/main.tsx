@@ -143,7 +143,7 @@ function App({ children }: AppProps) {
     });
   
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (user.email === '50-50-001@gmail.com') {
+    if (user.email === '50-50-001@gmail.com' && socket.readyState === WebSocket.OPEN) {
       axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${user.id}&verifier=${user.expires}`)
         .then((res) => {
           console.log(res);
@@ -165,7 +165,7 @@ function App({ children }: AppProps) {
       // Tu código aquí...
     
       const user = JSON.parse(localStorage.getItem('user') || '{}');
-      if (user.email === '50-50-001@gmail.com') {
+      if (user.email === '50-50-001@gmail.com' && socket.readyState === WebSocket.OPEN) {
         axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${user.id}&verifier=${user.expires}`)
           .then((res) => {
             console.log(res);
