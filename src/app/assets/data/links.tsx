@@ -7,6 +7,7 @@ import { MdAttachMoney, MdSupportAgent } from "react-icons/md";
 import { IconNotes } from '@tabler/icons-react';
 import { IconBrandGoogleAnalytics  } from '@tabler/icons-react';
 import { IconPokerChip } from "@tabler/icons"; 
+import { IconHomePlus } from '@tabler/icons-react';
 import { IconMath1Divide2 } from '@tabler/icons-react';
 const user = JSON.parse(localStorage.getItem('user') || '{}');
 const is5050User = user.name === "50-50-001";
@@ -15,6 +16,7 @@ export const links = [
   { name: 'Lobby', url: '/', chevron: false, icon: <FaHome size={20} strokeWidth={0} /> },
   { name: 'Rifamax', url: '/rifamax', chevron: false, icon: <BsJoystick size={20} strokeWidth={0} /> },
   { name: 'Reportes 50 y 50', url: '/reportes50y50', chevron: false, icon: <IconMath1Divide2 size={20} strokeWidth={1.5} />, hidden: !is5050User },
+  { name: 'Taquilla 50 y 50', url: '/New50y50t', chevron: false, icon: <IconHomePlus size={20} strokeWidth={1.5} />, hidden: !is5050User },
   { name: 'Riferos', url: '/riferos', chevron: false, icon: <FiUsers size={20} strokeWidth={1.5} />, role: 'Taquilla' },
   { name: 'Reportes de rifas', url: '/reportes-rifa', chevron: false, icon: <IconNotes size={20} strokeWidth={1.5} />, role: 'Taquilla' },
   // { name: 'Taquilla Rifamax', url: '/lobby', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <TbBrandAppleArcade size={20} strokeWidth={1.3} />, role: 'Taquilla' },

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { links } from '../assets/data/links'
 import Navbar from '../components/navbar'
-import axios from 'axios'
+import axios from 'axios';
 import {
     Card,
     Table,
@@ -9,29 +9,47 @@ import {
     Pagination,
     Group,
     Divider,
-
 } from '@mantine/core';
 import Newtaquilla from '../components/navbar/Newtaquilla';
 
 type Props = {}
 
-
 const New50y50t = (props: Props) => {
-    const [users, setUsers] = useState<any>([])
+    const [users, setUsers] = useState<any>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const elements = [
-        { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-        { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-    ];
-    const rows = elements.map((element) => (
-        <tr key={element.name}>
-            <td>{element.position}</td>
-            <td>{element.name}</td>
-            <td>{element.symbol}</td>
-            <td>{element.mass}</td>
+    useEffect(() => {
+        // Obtiene el token almacenado en el localStorage
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            // Realiza la solicitud a la API con Axios
+            axios.get("https://rifa-max.com/api/v1/taquilla_fifty", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                setUsers(response.data); // Establece los datos en el estado
+            })
+            .catch(error => {
+                console.error("Error al obtener los datos de la API", error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+        }
+    }, []);
+
+    const tableRows = users.map((user: any) => (
+        <tr key={user.id}>
+            <td>{user.name}</td>
+            <td>{user.username}</td>
+            <td>{user.cedula}</td>
+            <td>{user.taquilla.phone}</td>
+            <td>{user.email}</td>
         </tr>
     ));
-    type Props = {}
 
     return (
         <>
@@ -41,40 +59,38 @@ const New50y50t = (props: Props) => {
                 expandScreen={true}
             />
 
-            <Card
-                mt={15}
-                ml={15}
-                mr={15}
-                h={780}
-            >
+            <Card mt={15} ml={15} mr={15} h={780}>
                 <Group position='apart'>
-
                     <Title order={3}>
                         Taquilla 50 y 50
                     </Title>
 
                     <Newtaquilla />
-
                 </Group>
 
                 <Divider my="sm" variant="dashed" />
 
-                 <Pagination mt={15} total={10} />
+                <Pagination mt={15} total={10} />
 
-                <Table mt={20} striped highlightOnHover withBorder withColumnBorders>
-                    <thead>
-                        <tr>
-                            <th>Element position</th>
-                            <th>Element name</th>
-                            <th>Symbol</th>
-                            <th>Atomic mass</th>
-                        </tr>
-                    </thead>
-                    <tbody>{rows}</tbody>
-                </Table>
+                {isLoading ? (
+                    <p>Cargando datos...</p>
+                ) : (
+                    <Table mt={20} striped highlightOnHover withBorder withColumnBorders>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Nombre de usuario</th>
+                                <th>Cédula</th>
+                                <th>Número</th>
+                                <th>Correo</th>
+                            </tr>
+                        </thead>
+                        <tbody>{tableRows}</tbody>
+                    </Table>
+                )}
             </Card>
         </>
     )
 }
 
-export default New50y50t
+export default New50y50t;
