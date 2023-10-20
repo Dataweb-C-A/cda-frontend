@@ -106,8 +106,10 @@ function App({children}: AppProps) {
       try {
         const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
 
+        const user = JSON.parse(localStorage.getItem('user') || '{}')
         socket.onopen = function (): void {
-          axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${(JSON.parse(localStorage.getItem('user') || '{}')).id}&verifier=${(JSON.parse(localStorage.getItem('user') || '{}')).expires}`)
+          if (user.name === '50-50-001') {
+            axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${(JSON.parse(localStorage.getItem('user') || '{}')).id}&verifier=${(JSON.parse(localStorage.getItem('user') || '{}')).expires}`)
             .then((res) => {
               console.log(res)
               if (res.data.length === 0) {
@@ -122,6 +124,7 @@ function App({children}: AppProps) {
             }).catch((err) => {
               console.log(err)
             })
+          }
         }
       } catch (e) {
         setError(e)
