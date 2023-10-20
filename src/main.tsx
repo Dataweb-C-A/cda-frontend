@@ -157,11 +157,8 @@ function App({ children }: AppProps) {
           console.log(res);
           if (res.data.length === 0) {
             setPrinterData([]);
-            // Llama a send cuando se abre la conexión WebSocket y tienes los datos.
-            send(res.data);
           } else {
             setPrinterData(res.data);
-            // Llama a send cuando se abre la conexión WebSocket y tienes los datos.
             send(res.data);
           }
         }).catch((err) => {
