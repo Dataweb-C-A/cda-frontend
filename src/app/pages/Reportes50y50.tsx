@@ -93,7 +93,7 @@ const Reportes50y50 = (props: Props) => {
     <tr key={index}>
       <td>{number}</td>
       <td>Monumental</td>
-      <td>Total 1 $</td>
+      <td>1$</td>
     </tr>
   ));
 
