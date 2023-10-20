@@ -5,13 +5,22 @@ import { useHistory } from 'react-router-dom'
 import Navbar from '../components/navbar'
 import RifamaxLogo from '../assets/images/rifamax-logo.png'
 import axios from 'axios'
-
+import { IconPrinter } from '@tabler/icons-react';
 import {
   Card,
   Table,
   Title,
   Pagination,
+  ActionIcon,
+  Group
 } from '@mantine/core';
+
+interface IPrinter {
+  id?: number;
+  tickets_generated: number[];
+  user_id: number;
+  is_printed: boolean
+}
 
 type Props = {}
 interface IUser {
@@ -84,16 +93,73 @@ const Reportes50y50 = (props: Props) => {
       clearInterval(interval);
     };
   }, []);
-
+  const [printer, setPrinter] = useState(0)
+  const [printerData, setPrinterData] = useState<IPrinter[] | []>([])
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentNumbers = numbers.slice(indexOfFirstItem, indexOfLastItem);
 
+  const socket = new WebSocket('ws://127.0.0.1:1315');
+
+  socket.onopen = function () {
+    console.log('Conexión establecida.');
+  };
+
+  socket.onmessage = function (event) {
+    console.log('Mensaje recibido del servidor:', event.data);
+  };
+
+  socket.onerror = function (error) {
+    console.error('Error en la conexión:', error);
+  };
+
+  socket.onclose = function (event) {
+    console.log('Conexión cerrada:', event.code, event.reason);
+  };
+
+
+  function send(printer: IPrinter[] | []): void {
+    if (socket.readyState === WebSocket.OPEN) {
+      // Verificar que el socket esté abierto antes de enviar mensajes.
+      const mensaje = (): void => {
+        const fechaHoy = new Date();
+        const formattedFecha = fechaHoy.toLocaleDateString();
+        printer[0].tickets_generated.map((item) => {
+          socket.send(`---------------------------------\n Numero vendido: ${item}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
+          socket.send('cut');
+        });
+      };
+      setTimeout(() => {
+        mensaje();
+      }, 3000);
+    } else {
+      console.error('El socket no está abierto.');
+    }
+  }
   const rows = currentNumbers.map((number, index) => (
     <tr key={index}>
       <td>{number}</td>
       <td>Monumental</td>
       <td>1$</td>
+      <td style={{width:"205px"}}>
+
+        <Group position='center'>
+
+          <ActionIcon 
+            color="indigo" 
+            size="lg" 
+            variant="filled" 
+            onClick={() => send([{
+              tickets_generated: [number],
+              user_id: 369,
+              is_printed: true
+            }])}
+          >
+            <IconPrinter size={26} />
+          </ActionIcon>
+        </Group>
+
+      </td>
     </tr>
   ));
 
@@ -101,34 +167,35 @@ const Reportes50y50 = (props: Props) => {
 
   return (
     <>
-    <Navbar
+      <Navbar
         profiles={users}
         links={links}
         expandScreen={true}
       />
-    <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
-      <Title mb={15}>Reportes 50 y 50</Title>
-      <Pagination
-        total={totalPages}
-        color="indigo"
-        onChange={setCurrentPage}
+      <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
+        <Title mb={15}>Reportes 50 y 50</Title>
+        <Pagination
+          total={totalPages}
+          color="indigo"
+          onChange={setCurrentPage}
         />
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
-          <thead>
-            <tr>
-              <th>Numeros</th>
-              <th>Localidad</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </Table>
-      )}
-    </Card>
-        </>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
+            <thead>
+              <tr>
+                <th>Numeros</th>
+                <th>Localidad</th>
+                <th>Total</th>
+                <th>Reimprimir Ticket</th>
+              </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+          </Table>
+        )}
+      </Card>
+    </>
   );
 };
 
