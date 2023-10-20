@@ -139,94 +139,117 @@ function Reporterifa({ }: Props) {
       history.push('/login')
     )
   }, [])
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  let is5050User = false;
 
+  if (typeof user.name === 'string') {
+    is5050User = user.name.substring(0, 5) === "50 50";
+  }
   return (
     <>
-      <Navbar profiles={profiles} links={links} />
-
-      <Grid grow gutter={20} m={5} >
-        <Grid.Col span={4}>
-          <Cards
-            left={0}
-            right={0}
-            color='green'
-            number={todayEarnings}
-            label='Ganancia de hoy'
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Cards
-            left={0}
-            right={0}
-            color='blue'
-            number={commissionPercentage}
-            label='Comision de agencia'
-          />
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Cards
-            left={0}
-            right={0}
-            color='red'
-            number={resultCommisssion}
-            label='Ganancia final'
-          />
-        </Grid.Col>
-      </Grid>
-
-      <Card shadow="sm" radius="sm" mx={15} mt={5} h="80vh">
-        <Grid>
-          <Grid.Col xl={6} md={6} xs={12}>
-            <Title order={2} fw={500} mb={20}>
-              Reportes de Ventas
-              <Text fw={300} fz={20} mb={-7}>
-                Reportes de ventas de rifas
-              </Text>
-            </Title>
+    {is5050User ? (
+      <>
+      <Navbar
+        profiles={users}
+        links={links}
+        expandScreen={true}
+      />
+      <Card mt={15} ml={15} mr={15} h={800}>
+        <Title mt={55} ml={15} order={3}>
+          Sin acceso
+        </Title>
+      </Card>
+    </>
+       ) : (
+        <>
+        <Navbar profiles={profiles} links={links} />
+  
+        <Grid grow gutter={20} m={5} >
+          <Grid.Col span={4}>
+            <Cards
+              left={0}
+              right={0}
+              color='green'
+              number={todayEarnings}
+              label='Ganancia de hoy'
+            />
           </Grid.Col>
-          <Grid.Col xl={6} md={6} xs={12}>
-            <Group position='right'>
-              <TextInput
-                mt={-10}
-                placeholder="Escribe el premio"
-                label="Filtrar por premio"
-                value={searchInput}
-                onChange={handleSearchInputChange}
-              />
-              {/**fecha de inicio */}
-              <DatePicker
-                mt={-10}
-                placeholder="Seleccionar fecha"
-                inputFormat="YYYY MMM DD"
-                label="Filtrar desde"
-                variant="filled"
-                value={startDate}
-                onChange={(date) => setStartDate(date)}
-              />
-
-              <DatePicker
-                mt={-10}
-                placeholder="Seleccionar fecha"
-                inputFormat="YYYY MMM DD"
-                label="Filtrar hasta"
-                variant="filled"
-                value={endDate}
-                onChange={(date) => setEndDate(date)}
-              />
-            </Group>
+          <Grid.Col span={4}>
+            <Cards
+              left={0}
+              right={0}
+              color='blue'
+              number={commissionPercentage}
+              label='Comision de agencia'
+            />
+          </Grid.Col>
+          <Grid.Col span={4}>
+            <Cards
+              left={0}
+              right={0}
+              color='red'
+              number={resultCommisssion}
+              label='Ganancia final'
+            />
           </Grid.Col>
         </Grid>
-        <Pagination
-          total={Math.ceil(filteredElements.length / itemsPerPage)} 
-          onChange={handlePageChange} 
-        />
-
-        <Table mt={15} captionSide="bottom" withColumnBorders highlightOnHover>
-          <thead>{ths}</thead>
-          <tbody>{paginatedRows}
-          </tbody>
-        </Table>
-      </Card>
+  
+        <Card shadow="sm" radius="sm" mx={15} mt={5} h="80vh">
+          <Grid>
+            <Grid.Col xl={6} md={6} xs={12}>
+              <Title order={2} fw={500} mb={20}>
+                Reportes de Ventas
+                <Text fw={300} fz={20} mb={-7}>
+                  Reportes de ventas de rifas
+                </Text>
+              </Title>
+            </Grid.Col>
+            <Grid.Col xl={6} md={6} xs={12}>
+              <Group position='right'>
+                <TextInput
+                  mt={-10}
+                  placeholder="Escribe el premio"
+                  label="Filtrar por premio"
+                  value={searchInput}
+                  onChange={handleSearchInputChange}
+                />
+                {/**fecha de inicio */}
+                <DatePicker
+                  mt={-10}
+                  placeholder="Seleccionar fecha"
+                  inputFormat="YYYY MMM DD"
+                  label="Filtrar desde"
+                  variant="filled"
+                  value={startDate}
+                  onChange={(date) => setStartDate(date)}
+                />
+  
+                <DatePicker
+                  mt={-10}
+                  placeholder="Seleccionar fecha"
+                  inputFormat="YYYY MMM DD"
+                  label="Filtrar hasta"
+                  variant="filled"
+                  value={endDate}
+                  onChange={(date) => setEndDate(date)}
+                />
+              </Group>
+            </Grid.Col>
+          </Grid>
+          <Pagination
+            total={Math.ceil(filteredElements.length / itemsPerPage)} 
+            onChange={handlePageChange} 
+          />
+  
+          <Table mt={15} captionSide="bottom" withColumnBorders highlightOnHover>
+            <thead>{ths}</thead>
+            <tbody>{paginatedRows}
+            </tbody>
+          </Table>
+        </Card>
+        </>
+       
+      )}
     </>
   )
 }

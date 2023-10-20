@@ -196,69 +196,7 @@ function infinito() {
                       {precio * 10}$
                     </Text>
                   </Card >
-                  {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(2)
-                  handleQuantityClick(2)
-                }
-                }
-              >
-                <Text fz={35}>
-                  2
-                </Text>
-                <Text fz={15}>
-                  {precio * 2}$
-                </Text>
-
-              </Card > */}
-
-                  {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(3)
-                  handleQuantityClick(3)
-                }
-                }
-              >
-                <Text fz={35}>
-                  3
-                </Text>
-                <Text fz={15}>
-                  {precio * 3}$
-                </Text>
-              </Card >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(4)
-                  handleQuantityClick(4)
-                }
-                }
-              >
-                <Text fz={35}>
-                  4
-                </Text>
-                <Text fz={15}>
-                  {precio * 4}$
-                </Text>
-              </Card > */}
-                  {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(5)
-                  handleQuantityClick(5)
-                }
-                }
-              >
-                <Text fz={35}>
-                  5
-                </Text>
-                <Text fz={15}>
-                  {precio * 5}$
-                </Text>
-              </Card > */}
-
+               
                 </Flex>
                 <Flex
                   mih={50}
@@ -269,67 +207,7 @@ function infinito() {
                   wrap="wrap"
                 >
 
-                  {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(7)
-                  handleQuantityClick(7)
-                }
-                }
-              >
-                <Text fz={35}>
-                  7
-                </Text>
-                <Text fz={15}>
-                  {precio * 7}$
-                </Text>
-              </Card >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(8)
-                  handleQuantityClick(8)
-                }
-                }
-              >
-                <Text fz={35}>
-                  8
-                </Text>
-                <Text fz={15}>
-                  {precio * 8}$
-                </Text>
-              </Card >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(9)
-                  handleQuantityClick(9)
-                }
-                }
-              >
-                <Text fz={35}>
-                  9
-                </Text>
-                <Text fz={15}>
-                  {precio * 9}$
-                </Text>
-              </Card >
-              <Card px={35} py={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(10)
-                  handleQuantityClick(10)
-                }
-                }
-              >
-                <Text fz={35}>
-                  10
-                </Text>
-                <Text fz={15}>
-                  {precio * 10}$
-                </Text>
-
-              </Card > */}
+               
 
                 </Flex>
 
@@ -492,7 +370,7 @@ function infinito() {
             expandScreen={true}
           />
           <Card mt={15} ml={15} mr={15} h={890}>
-            <Title mt={400} ml={450} order={1}>
+            <Title mt={400} ml={10} order={3}>
               Sin acceso
             </Title>
           </Card>

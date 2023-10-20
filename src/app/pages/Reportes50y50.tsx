@@ -219,7 +219,7 @@ const Reportes50y50 = (props: Props) => {
             links={links}
             expandScreen={true}
           />
-          <Card mt={15} ml={15} mr={15} h={10}>
+          <Card mt={15} ml={15} mr={15} h={800}>
             <Title mt={55} ml={15} order={3}>
               Sin acceso
             </Title>

@@ -85,91 +85,114 @@ function Riferos() {
       <td>{moment(user.created_at).format("DD/MM/YYYY")}</td>
     </tr>
   ));
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  let is5050User = false;
 
+  if (typeof user.name === 'string') {
+    is5050User = user.name.substring(0, 5) === "50 50";
+  }
   return (
     <>
-      <section className="riferos">
-        <Navbar profiles={users} links={links} />
-        <Card
-          mx={15}
-          shadow={"0 0 7px 0 #5f5f5f3d"}
-          mt={15}
-          style={{ overflowX: "auto" }}
-        >
-          <Grid>
-            <Grid.Col md={6} sm={12}>
-              <Title order={2} fw={500} mb={20}>
-                Riferos
-                <Text fw={300} fz={20}>
-                  Lista de los riferos registrados en la plataforma
-                </Text>
-              </Title>
-              <Input
-                icon={<IconAt />}
-                placeholder="Buscar por nombre, apellido o cédula"
-                value={search}
-                name="value"
-                radius="sm"
-                size="md"
-                onChange={handleSearch}
-                className="search-riferos"
-              />
-            </Grid.Col>
-            <Grid.Col md={6} sm={12}>
-              <FormRifero
-                variant="filled"
-                color="blue"
-                style={{ float: "right" }}
-                className="btn-rifa"
+
+      {is5050User ? (
+        <>
+          <Navbar
+            profiles={users}
+            links={links}
+            expandScreen={true}
+          />
+          <Card mt={15} ml={15} mr={15} h={800}>
+            <Title mt={55} ml={15} order={3}>
+              Sin acceso
+            </Title>
+          </Card>
+        </>
+      ) : (
+        <>
+          <section className="riferos">
+            <Navbar profiles={users} links={links} />
+            <Card
+              mx={15}
+              shadow={"0 0 7px 0 #5f5f5f3d"}
+              mt={15}
+              style={{ overflowX: "auto" }}
+            >
+              <Grid>
+                <Grid.Col md={6} sm={12}>
+                  <Title order={2} fw={500} mb={20}>
+                    Riferos
+                    <Text fw={300} fz={20}>
+                      Lista de los riferos registrados en la plataforma
+                    </Text>
+                  </Title>
+                  <Input
+                    icon={<IconAt />}
+                    placeholder="Buscar por nombre, apellido o cédula"
+                    value={search}
+                    name="value"
+                    radius="sm"
+                    size="md"
+                    onChange={handleSearch}
+                    className="search-riferos"
+                  />
+                </Grid.Col>
+                <Grid.Col md={6} sm={12}>
+                  <FormRifero
+                    variant="filled"
+                    color="blue"
+                    style={{ float: "right" }}
+                    className="btn-rifa"
+                  >
+                    Agregar rifero
+                  </FormRifero>
+                </Grid.Col>
+              </Grid>
+              <Table
+                verticalSpacing="xs"
+                striped
+                highlightOnHover
+                fontSize="md"
+                style={{ overflowX: "auto" }}
               >
-                Agregar rifero
-              </FormRifero>
-            </Grid.Col>
-          </Grid>
-          <Table
-            verticalSpacing="xs"
-            striped
-            highlightOnHover
-            fontSize="md"
-            style={{ overflowX: "auto" }}
-          >
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Cédula</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Estado</th>
-                <th>Rol</th>
-                <th>Fecha</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                loading ? (
+                <thead>
                   <tr>
-                    <td colSpan={7} style={{ textAlign: "center" }}>
-                      <Loader mt="7%" size="lg" />
-                      <Text mb="7%" fz="25px" fw="bold">Cargando riferos...</Text>
-                    </td>
+                    <th>Nombre</th>
+                    <th>Cédula</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>Rol</th>
+                    <th>Fecha</th>
                   </tr>
-                ) : (
-                  rows.length > 0 ? (
-                    rows
-                  ) : (
-                    <tr>
-                      <td colSpan={7} style={{ textAlign: "center" }}>
-                        <Text mt="7%" fz="25px" fw="bold">No se encontraron riferos</Text>
-                        <NotFound style={{ marginBottom: '7%' }} size={160} stroke={1.5} />
-                      </td>
-                    </tr>
-                  )
-                )
-              }
-            </tbody>
-          </Table>
-        </Card>
-      </section>
+                </thead>
+                <tbody>
+                  {
+                    loading ? (
+                      <tr>
+                        <td colSpan={7} style={{ textAlign: "center" }}>
+                          <Loader mt="7%" size="lg" />
+                          <Text mb="7%" fz="25px" fw="bold">Cargando riferos...</Text>
+                        </td>
+                      </tr>
+                    ) : (
+                      rows.length > 0 ? (
+                        rows
+                      ) : (
+                        <tr>
+                          <td colSpan={7} style={{ textAlign: "center" }}>
+                            <Text mt="7%" fz="25px" fw="bold">No se encontraron riferos</Text>
+                            <NotFound style={{ marginBottom: '7%' }} size={160} stroke={1.5} />
+                          </td>
+                        </tr>
+                      )
+                    )
+                  }
+                </tbody>
+              </Table>
+            </Card>
+          </section>
+        </>
+      )}
     </>
   );
 }
