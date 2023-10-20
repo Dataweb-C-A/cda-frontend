@@ -131,7 +131,6 @@ const Reportes50y50 = (props: Props) => {
         const fechaHoy = new Date();
         const formattedFecha = fechaHoy.toLocaleDateString();
         printer[0].tickets_generated.map((item) => {
-          // Agregar ceros adicionales según la cantidad de dígitos en el número
           let paddedItem = String(item);
           if (paddedItem.length === 2) {
             paddedItem = `00${paddedItem}`;
