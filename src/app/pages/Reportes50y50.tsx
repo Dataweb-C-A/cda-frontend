@@ -131,7 +131,15 @@ const Reportes50y50 = (props: Props) => {
         const fechaHoy = new Date();
         const formattedFecha = fechaHoy.toLocaleDateString();
         printer[0].tickets_generated.map((item) => {
-          socket.send(`---------------------------------\n Numero vendido: ${item}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
+          // Agregar ceros adicionales según la cantidad de dígitos en el número
+          let paddedItem = String(item);
+          if (paddedItem.length === 2) {
+            paddedItem = `00${paddedItem}`;
+          } else if (paddedItem.length === 3) {
+            paddedItem = `0${paddedItem}`;
+          }
+  
+          socket.send(`---------------------------------\n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
           socket.send('cut');
         });
       };
@@ -142,6 +150,7 @@ const Reportes50y50 = (props: Props) => {
       console.error('El socket no está abierto.');
     }
   }
+  
   const rows = currentNumbers.map((number, index) => (
     <tr key={index}>
       <td>{number}</td>
