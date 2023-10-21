@@ -64,11 +64,16 @@ const Reportes50y50 = (props: Props) => {
     persistantTime: 250
   })
 
+  interface IData {
+    numbers: number;
+    agency: string
+  }
+
   const theme = useMantineTheme();
   const history = useHistory();
 
 
-  const [numbers, setNumbers] = useState([]);
+  const [numbers, setNumbers] = useState<IData[] | []>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 13;
@@ -117,7 +122,7 @@ const Reportes50y50 = (props: Props) => {
   const filteredNumbers = selectedOption
     ? currentNumbers.filter((number) => {
         // You can modify this condition based on your filtering criteria
-        return number === selectedOption;
+        return String(number.numbers) === selectedOption;
       })
     : currentNumbers;
 
@@ -181,7 +186,7 @@ const Reportes50y50 = (props: Props) => {
             variant="filled"
             onClick={() => send([{
               notification: {
-                tickets_generated: [number],
+                tickets_generated: [number.numbers],
                 user_id: 369,
                 is_printed: true
               }
@@ -209,7 +214,7 @@ const Reportes50y50 = (props: Props) => {
           <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
             <Title mb={15}>Reportes 50 y 50</Title>
 
-           <Select
+           {/* <Select
               label="Seleccione agente"
               placeholder="Pick one"
               w={350}
@@ -222,7 +227,7 @@ const Reportes50y50 = (props: Props) => {
               ]}
               value={selectedOption}
               onChange={handleChange}
-            />
+            /> */}
 
             <Pagination
               total={totalPages}
