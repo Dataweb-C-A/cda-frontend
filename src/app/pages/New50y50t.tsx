@@ -98,7 +98,7 @@ const New50y50t = (props: Props) => {
 
           <Divider my="sm" variant="dashed" />
 
-          <Pagination mt={15} total={10} />
+          {/* <Pagination mt={15} total={10} /> */}
 
           {isLoading ? (
             <p>Cargando datos...</p>

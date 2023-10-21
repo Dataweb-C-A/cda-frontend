@@ -1,8 +1,7 @@
 import React from 'react'
 import { Card, Button, Group, Text, Divider, Grid, Chip, Badge } from "@mantine/core";
 import { useLocation } from 'react-router-dom';
-
-import RifamaxLogo from "../assets/images/rifamax-logo.png"
+import RifamaxLogo from "../assets/images/firma.png"
 type Props = {}
 
 type TicketsLabelProps = {
@@ -62,7 +61,7 @@ function it5050({ }: Props) {
         <img
           src={RifamaxLogo}
           alt="ticket"
-          style={{ width: "80%", height: "80%", margin: "0 0 0 10%" }}
+          style={{ width: "50%", height: "50%", margin: "0 0 0 23%" }}
         />
 
 
@@ -128,14 +127,7 @@ function it5050({ }: Props) {
           </Text>
         </Group>
 
-        <Group position="apart">
-          <Text fz="xl" fw={400}>
-            Fecha de venta
-          </Text>
-          <Text fz="xl" fw={400}>
-            20/10/2023
-          </Text>
-        </Group>
+       
 
         <Group position="apart">
           <Text fz="xl" fw={400}>
