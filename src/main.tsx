@@ -24,6 +24,7 @@ import Reportes50y50 from './app/pages/Reportes50y50'
 import Pot from './app/pages/Pot'
 import axios from 'axios'
 import New50y50t from './app/pages/New50y50t'
+import it5050 from './app/pages/it5050'
 
 
 type AppProps = {
@@ -242,6 +243,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/login" component={Login} />
           <Route path="/public_draws" component={Public} />
           <Route path="/Pot" component={Pot} />
+          <Route path="/it5050" component={it5050} />
           <AuthRouter path="/riferos" component={Riferos} isPrivate />
           <AuthRouter path="/lobby" component={Operadora} isPrivate />
           <AuthRouter path="/reports" component={Reports} isPrivate />

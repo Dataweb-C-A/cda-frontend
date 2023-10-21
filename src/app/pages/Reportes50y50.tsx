@@ -141,7 +141,7 @@ const Reportes50y50 = (props: Props) => {
             paddedItem = `0${paddedItem}`;
           }
   
-          socket.send(`---------------------------------\n Numero de ticket: ${printer[0].notification.current_id} \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
+          socket.send(`---------------------------------\n Este ticket ha sido reimpreso \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Monumental\n---------------------------------\n\n\n\n\n\n\n`);
           socket.send('cut');
         });
       };
@@ -211,9 +211,13 @@ const Reportes50y50 = (props: Props) => {
                   </tr>
                 </thead>
                 <tbody>{rows}</tbody>
+
               </Table>
+
             )}
+
           </Card>
+          
         </>
       ) : (
         <>
