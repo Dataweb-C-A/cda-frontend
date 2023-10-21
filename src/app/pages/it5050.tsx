@@ -1,5 +1,6 @@
 import React from 'react'
 import { Card, Button, Group, Text, Divider, Grid, Chip, Badge } from "@mantine/core";
+import { useLocation } from 'react-router-dom';
 
 import RifamaxLogo from "../assets/images/rifamax-logo.png"
 type Props = {}
@@ -13,7 +14,28 @@ type TicketsLabelProps = {
   mb?: number;
 };
 function it5050({ }: Props) {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const playsParam = searchParams.get('plays');
 
+  const parsePlays = (playsString: string | null) => {
+    if (playsString === null) {
+      return [];
+    }
+
+    // Use a regular expression to match numbers in square brackets
+    const playsArray = playsString.match(/\d+/g);
+
+    if (playsArray === null) {
+      return [];
+    }
+
+    return playsArray.map((str) => parseInt(str, 10));
+  };
+
+
+
+  const playsArray = playsParam ? parsePlays(playsParam) : [];
   return (
     <>
       <Group mb={150}></Group>
@@ -51,10 +73,27 @@ function it5050({ }: Props) {
             Numeros
           </Text>
         </Group>
+        <Group position="center">
+          <Text fz="lg" fw={200}>
+            {playsArray.length > 0
+              ? playsArray.map((number) => {
+                let paddedNumber = String(number);
+                const length = paddedNumber.length;
 
-        <Text fz="lg" fw={200}>
-          1542 , 456
-        </Text>
+                if (length === 1) {
+                  paddedNumber = '000' + paddedNumber;
+                } else if (length === 2) {
+                  paddedNumber = '00' + paddedNumber;
+                } else if (length === 3) {
+                  paddedNumber = '0' + paddedNumber;
+                }
+
+                return paddedNumber;
+              }).join('  |  ')
+              : 'No se proporcionaron números válidos'}
+          </Text>
+        </Group>
+
         <Divider size="lg" my="sm" variant="dashed" />
 
         <Group position="center">
@@ -64,7 +103,7 @@ function it5050({ }: Props) {
         </Group>
 
         <Text fz="lg" fw={200}>
-          50% pote recaudado
+          50% Pote Recaudado
         </Text>
 
         <Divider size="lg" my="sm" variant="dashed" />
@@ -78,14 +117,7 @@ function it5050({ }: Props) {
           </Text>
         </Group>
 
-        <Group position="apart">
-          <Text fz="xl" fw={400}>
-            Ticket numero:
-          </Text>
-          <Text fz="xl" fw={400}>
-            35
-          </Text>
-        </Group>
+
 
         <Group position="apart">
           <Text fz="xl" fw={400}>
