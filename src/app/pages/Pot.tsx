@@ -24,7 +24,7 @@ type Partido = {
   pot_founds: number;
 };
 const titleStyles = {
-  fontSize: '100px',
+  fontSize: '5vw',
   marginTop: '5vw', 
   marginLeft: '15vw', 
 };
