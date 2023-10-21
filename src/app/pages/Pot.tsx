@@ -23,7 +23,11 @@ type Partido = {
   founds: number;
   pot_founds: number;
 };
-
+const titleStyles = {
+  fontSize: '100px',
+  marginTop: '5vw', 
+  marginLeft: '15vw', 
+};
 type Localidades = {
   [key: string]: Partido[];
 };
@@ -87,9 +91,7 @@ function Pot({ }: Props) {
                 Fecha: {data.playdate}
               </Text>
 
-              <Text mt={10} >
-                Tickets vendidos: {data.tickets_sold}
-              </Text>
+              
 
             </Group>
 
@@ -97,11 +99,11 @@ function Pot({ }: Props) {
 
             <Group mt="10%"  position="apart">
 
-              <Title mr={-25}  >
+              <Title style={titleStyles} >
                 Monto a repartir: {data.pot_founds} $
               </Title>
 
-              <div>
+              {/* <div>
 
                 <ActionIcon ml={180} w={450}  mb={20} variant="transparent" style={{ color: (data.pot_founds * 0.5) >= 7000 ? "#1d870c" : "#2B2C3D", zIndex: 99 }}  >
                   <IconRectangleFilled size="410px" />
@@ -114,12 +116,12 @@ function Pot({ }: Props) {
                 <ActionIcon ml={180} mt={190} w={450} style={{ color: (data.pot_founds * 0.5) >= 1000 ? "#1d870c" : "#2B2C3D" }}>
                   <IconRectangleFilled size="300px" />
                 </ActionIcon>
-{/* #2B2C3D */ }
+{/* #2B2C3D 
                 <ActionIcon  mt={-260} w="90%" variant="transparent" style={{ color: "inherit" }}>
                   <IconBeer size="895px" />
                 </ActionIcon>
 
-              </div>
+              </div> */}
 
             </Group>
 

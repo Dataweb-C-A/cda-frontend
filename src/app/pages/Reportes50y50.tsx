@@ -156,7 +156,7 @@ const Reportes50y50 = (props: Props) => {
   const rows = currentNumbers.map((number, index) => (
     <tr key={index}>
       <td>{number}</td>
-      <td>Monumental</td>
+      <td>Caracas</td>
       <td>1$</td>
       <td style={{ width: "205px" }}>
 

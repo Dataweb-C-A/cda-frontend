@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Button, Group, Text, Divider, Grid, Chip, Badge } from "@mantine/core";
 import { useLocation } from 'react-router-dom';
 import RifamaxLogo from "../assets/images/firma.png"
+import { Point } from 'tabler-icons-react';
 type Props = {}
 
 type TicketsLabelProps = {
@@ -16,13 +17,20 @@ function it5050({ }: Props) {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const playsParam = searchParams.get('plays');
-
+  const idParam = searchParams.get('id');
+  const redireccionar = () => {
+    window.location.href = '/pot'; 
+  };
+  const fechaActual = new Date(); 
+  const dia = fechaActual.getDate();
+  const mes = fechaActual.getMonth() + 1; 
+  const año = fechaActual.getFullYear();
+  const fechaFormateada = `${dia}/${mes}/${año}`;
   const parsePlays = (playsString: string | null) => {
     if (playsString === null) {
       return [];
     }
 
-    // Use a regular expression to match numbers in square brackets
     const playsArray = playsString.match(/\d+/g);
 
     if (playsArray === null) {
@@ -61,7 +69,7 @@ function it5050({ }: Props) {
         <img
           src={RifamaxLogo}
           alt="ticket"
-          style={{ width: "50%", height: "50%", margin: "0 0 0 23%" }}
+          style={{ width: "50%", height: "50%", margin: "0 0 0 25%" }}
         />
 
 
@@ -109,6 +117,15 @@ function it5050({ }: Props) {
 
         <Group position="apart">
           <Text fz="xl" fw={400}>
+            Numero de tickets:
+          </Text>
+          <Text fz="xl" fw={400}>
+            {idParam || 'N/A'}
+          </Text>
+        </Group>
+
+        <Group position="apart">
+          <Text fz="xl" fw={400}>
             Tipo:
           </Text>
           <Text fz="xl" fw={400}>
@@ -127,18 +144,26 @@ function it5050({ }: Props) {
           </Text>
         </Group>
 
-       
+
 
         <Group position="apart">
-          <Text fz="xl" fw={400}>
-            Fecha sorteo:
-          </Text>
-          <Text fz="xl" fw={400}>
-            21/10/2023
-          </Text>
-        </Group>
+        <Text fz="xl" fw={400}>
+          Fecha sorteo:
+        </Text>
+        <Text fz="xl" fw={400}>
+          {fechaFormateada}
+        </Text>
+      </Group>
 
       </Card>
+     
+     
+      <Group mt={18} position="center">
+        <Text style={{cursor:"pointer" , textDecoration:"underline"}} fz="xl" fw={400} onClick={redireccionar}>
+          Ver pote Actual
+        </Text>
+      </Group>
+
     </>
   )
 }
