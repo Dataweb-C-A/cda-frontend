@@ -12,11 +12,12 @@ import {
   Title,
   Pagination,
   ActionIcon,
-  Group
+  Group,
+  Select
 } from '@mantine/core';
 
 interface IPrinter {
-  notification : {
+  notification: {
     id?: number;
     tickets_generated: number[];
     user_id: number;
@@ -70,9 +71,10 @@ const Reportes50y50 = (props: Props) => {
   const [numbers, setNumbers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 19;
+  const itemsPerPage = 13;
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   let is5050User = false;
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   if (typeof user.name === 'string') {
     is5050User = user.name.substring(0, 5) === "50 50";
@@ -93,7 +95,7 @@ const Reportes50y50 = (props: Props) => {
   useEffect(() => {
     fetchData();
     if (!is5050User) {
-      return; // No hagas la solicitud si el usuario no coincide con "50 50"
+      return;
     }
     const interval = setInterval(() => {
       fetchData();
@@ -108,6 +110,16 @@ const Reportes50y50 = (props: Props) => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentNumbers = numbers.slice(indexOfFirstItem, indexOfLastItem);
+  const handleChange = (value: string | null) => {
+    setSelectedOption(value);
+  };
+
+  const filteredNumbers = selectedOption
+    ? currentNumbers.filter((number) => {
+        // You can modify this condition based on your filtering criteria
+        return number === selectedOption;
+      })
+    : currentNumbers;
 
   const socket = new WebSocket('ws://127.0.0.1:1315');
 
@@ -140,7 +152,7 @@ const Reportes50y50 = (props: Props) => {
           } else if (paddedItem.length === 3) {
             paddedItem = `0${paddedItem}`;
           }
-  
+
           socket.send(`---------------------------------\n Este ticket ha sido reimpreso \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Caracas\n---------------------------------\n\n\n\n\n\n\n`);
           socket.send('cut');
         });
@@ -152,10 +164,11 @@ const Reportes50y50 = (props: Props) => {
       console.error('El socket no está abierto.');
     }
   }
-  
-  const rows = currentNumbers.map((number, index) => (
+
+  const rows = filteredNumbers.map((number, index) => (
     <tr key={index}>
-      <td>{number}</td>
+      <td>{number.numbers}</td>
+      <td>{number.agency}</td>
       <td>Caracas</td>
       <td>1$</td>
       <td style={{ width: "205px" }}>
@@ -166,11 +179,13 @@ const Reportes50y50 = (props: Props) => {
             color="indigo"
             size="lg"
             variant="filled"
-            onClick={() => send([{notification: {
-              tickets_generated: [number],
-              user_id: 369,
-              is_printed: true
-            }}])}
+            onClick={() => send([{
+              notification: {
+                tickets_generated: [number],
+                user_id: 369,
+                is_printed: true
+              }
+            }])}
           >
             <IconPrinter size={26} />
           </ActionIcon>
@@ -193,6 +208,22 @@ const Reportes50y50 = (props: Props) => {
           />
           <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
             <Title mb={15}>Reportes 50 y 50</Title>
+
+           <Select
+              label="Seleccione agente"
+              placeholder="Pick one"
+              w={350}
+              mb={15}
+              data={[
+                { value: 'react', label: 'React' },
+                { value: 'ng', label: 'Angular' },
+                { value: 'svelte', label: 'Svelte' },
+                { value: 'vue', label: 'Vue' },
+              ]}
+              value={selectedOption}
+              onChange={handleChange}
+            />
+
             <Pagination
               total={totalPages}
               color="indigo"
@@ -205,6 +236,7 @@ const Reportes50y50 = (props: Props) => {
                 <thead>
                   <tr>
                     <th>Numeros</th>
+                    <th>Agente</th>
                     <th>Localidad</th>
                     <th>Total</th>
                     <th>Reimprimir Ticket</th>
@@ -217,7 +249,7 @@ const Reportes50y50 = (props: Props) => {
             )}
 
           </Card>
-          
+
         </>
       ) : (
         <>
