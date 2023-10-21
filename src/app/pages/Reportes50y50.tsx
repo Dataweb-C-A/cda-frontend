@@ -76,10 +76,11 @@ const Reportes50y50 = (props: Props) => {
   const [numbers, setNumbers] = useState<IData[] | []>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 13;
+  const itemsPerPage = 1000000000;
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   let is5050User = false;
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
 
   if (typeof user.name === 'string') {
     is5050User = user.name.substring(0, 5) === "50 50";
@@ -115,16 +116,18 @@ const Reportes50y50 = (props: Props) => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentNumbers = numbers.slice(indexOfFirstItem, indexOfLastItem);
+
   const handleChange = (value: string | null) => {
     setSelectedOption(value);
+    setCurrentPage(1);
   };
 
   const filteredNumbers = selectedOption
     ? currentNumbers.filter((number) => {
-        // You can modify this condition based on your filtering criteria
-        return String(number.numbers) === selectedOption;
+        return number.agency === selectedOption;
       })
     : currentNumbers;
+  
 
   const socket = new WebSocket('ws://127.0.0.1:1315');
 
@@ -144,6 +147,10 @@ const Reportes50y50 = (props: Props) => {
     console.log('Conexión cerrada:', event.code, event.reason);
   };
 
+  const getAgencyOptions = () => {
+    const uniqueAgencies = [...new Set(numbers.map((number) => number.agency))];
+    return uniqueAgencies.map((agency) => ({ value: agency, label: agency }));
+  };
 
   function send(printer: IPrinter[] | []): void {
     if (socket.readyState === WebSocket.OPEN) {
@@ -176,26 +183,27 @@ const Reportes50y50 = (props: Props) => {
       <td>{number.agency}</td>
       <td>Caracas</td>
       <td>1$</td>
-      <td style={{ width: "205px" }}>
-
+      <td style={{ width: '205px' }}>
         <Group position='center'>
-
           <ActionIcon
-            color="indigo"
-            size="lg"
-            variant="filled"
-            onClick={() => send([{
-              notification: {
-                tickets_generated: [number.numbers],
-                user_id: 369,
-                is_printed: true
-              }
-            }])}
+            color='indigo'
+            size='lg'
+            variant='filled'
+            onClick={() =>
+              send([
+                {
+                  notification: {
+                    tickets_generated: [number.numbers],
+                    user_id: 369,
+                    is_printed: true,
+                  },
+                },
+              ])
+            }
           >
             <IconPrinter size={26} />
           </ActionIcon>
         </Group>
-
       </td>
     </tr>
   ));
@@ -214,26 +222,20 @@ const Reportes50y50 = (props: Props) => {
           <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
             <Title mb={15}>Reportes 50 y 50</Title>
 
-           {/* <Select
-              label="Seleccione agente"
-              placeholder="Pick one"
+            <Select
+              label='Seleccione agente'
+              placeholder='Elega agente'
               w={350}
               mb={15}
-              data={[
-                { value: 'react', label: 'React' },
-                { value: 'ng', label: 'Angular' },
-                { value: 'svelte', label: 'Svelte' },
-                { value: 'vue', label: 'Vue' },
-              ]}
+              data={getAgencyOptions()}
               value={selectedOption}
-              onChange={handleChange}
-            /> */}
-
-            <Pagination
-              total={totalPages}
-              color="indigo"
-              onChange={setCurrentPage}
+              onChange={(value) => {
+                setSelectedOption(value);
+                setCurrentPage(1);
+              }}
             />
+
+
             {loading ? (
               <p>Loading...</p>
             ) : (
