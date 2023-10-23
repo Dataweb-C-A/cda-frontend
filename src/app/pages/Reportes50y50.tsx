@@ -15,6 +15,7 @@ import {
   Group,
   Select
 } from '@mantine/core';
+import Newrifa50y50 from './Newrifa50y50';
 
 interface IPrinter {
   notification: {
@@ -222,6 +223,8 @@ const Reportes50y50 = (props: Props) => {
           <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
             <Title mb={15}>Reportes 50 y 50</Title>
 
+
+<Group position='apart'>
             <Select
               label='Seleccione agente'
               placeholder='Elega agente'
@@ -234,8 +237,8 @@ const Reportes50y50 = (props: Props) => {
                 setCurrentPage(1);
               }}
             />
-
-
+     <Newrifa50y50/>
+    </Group>
             {loading ? (
               <p>Loading...</p>
             ) : (

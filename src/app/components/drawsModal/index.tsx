@@ -490,7 +490,7 @@ function DrawsModal({
                   }}
                   {...form.getInputProps('draw_type').value === 'To-Infinity' && { checked: true }}
                 />
-                <Checkbox
+                {/* <Checkbox
                   value="50/50"
                   label="50/50"
                   checked={checkedIndex === 4}
@@ -499,7 +499,7 @@ function DrawsModal({
                     setCheckedIndex(4)
                   }}
                   {...form.getInputProps('draw_type').value === '50/50' && { checked: true }}
-                />
+                /> */}
               </Group>
               <Grid>
                 <Grid.Col span={10}>
@@ -695,7 +695,7 @@ function DrawsModal({
                   />
                 </Grid.Col>
               </Grid>
-              <Grid mb={10}>
+              {/* <Grid mb={10}>
                 <Grid.Col span={6}>
                   <Select
                     size='md'
@@ -733,7 +733,7 @@ function DrawsModal({
 
                   />
                 </Grid.Col>
-              </Grid>
+              </Grid> */}
 
               <Grid mb={15}>
                 <Grid.Col span={6}>
