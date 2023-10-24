@@ -10,16 +10,16 @@ interface SidebarProps {
   title: string | React.ReactNode | '';
   onClose: () => void;
   position: 'left' | 'right';
-  links?: Array<{ 
-    icon?: React.ReactNode, 
-    name: string; 
-    url: string, 
+  links?: Array<{
+    icon?: React.ReactNode,
+    name: string;
+    url: string,
     description?: string,
     descriptionColor?: string | 'blue',
-    descriptionSize?: number | 10, 
-    chevron?: boolean, 
+    descriptionSize?: number | 10,
+    chevron?: boolean,
     role?: string,
-    onClick?: void 
+    onClick?: void
   }>;
   children?: React.ReactNode;
   drawerProps?: DrawerProps;
@@ -29,9 +29,9 @@ interface SidebarProps {
 interface DisplayRole {
   role?: string;
   match?: string | null;
-} 
+}
 
-function DisplayRole({ role, match }: DisplayRole){
+function DisplayRole({ role, match }: DisplayRole) {
   if (role === 'Admin' && match === 'Admin') {
     return 'block'
   }
@@ -49,10 +49,18 @@ function DisplayRole({ role, match }: DisplayRole){
 }
 
 function Sidebar({ profile, links, open, title, onClose, position, children, size }: SidebarProps) {
-  
-  const { user } = useUser();
-  
+
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  let is5050User = false;
+  let no5050User = false;
+
+  if (typeof user.name === 'string') {
+    is5050User = user.name.substring(0, 5) != "50 50";
+    no5050User = user.name.substring(0, 5) === "50 50";
+  }
+
   return (
+
     <Drawer
       opened={open || false}
       onClose={onClose}
@@ -64,39 +72,49 @@ function Sidebar({ profile, links, open, title, onClose, position, children, siz
     >
       {profile}
       <Box w='100%' mt={20}>
-        {links && (
-          links.map((link, index) => (
-            <Link
-              to={link.url}
-              style={{ textDecoration: 'none', display: DisplayRole({ role: link.role, match: user?.role }) }}
-              key={index}
-            >
-              <NavLink
+        {links &&
+          links.map((link, index) => {
+            const is5050 = link.name.includes("50 y 50");
+            const shouldHide =
+              (is5050User && is5050) || (no5050User && !is5050);
 
-                key={link.name}
-                active={link.url === window.location.pathname}
-                label={link.name}
-                description={
-                  <Text
-                    size={link.descriptionSize || 10}
-                    color={link.descriptionColor || 'blue'} 
-                  >
-                    {link.description}
-                  </Text>
-                }
-                rightSection={link.chevron ? <IconChevronDown size="1rem" stroke={1.5} /> : null}
-                icon={link.icon}
-                onClick={link.onClick || undefined}
-                color="blue"
-                variant="subtle"
-                style={{ borderRadius: '5px', padding: 12 }}
-              />
-            </Link>
-          ))
-        )}
+            return shouldHide ? null : (
+              <Link
+                to={link.url}
+                style={{
+                  textDecoration: 'none',
+                  display: DisplayRole({ role: link.role, match: user?.role }),
+                }}
+                key={index}
+              >
+                <NavLink
+                  key={link.name}
+                  active={link.url === window.location.pathname}
+                  label={link.name}
+                  description={
+                    <Text
+                      size={link.descriptionSize || 10}
+                      color={link.descriptionColor || 'blue'}
+                    >
+                      {link.description}
+                    </Text>
+                  }
+                  rightSection={link.chevron ? <IconChevronDown size="1rem" stroke={1.5} /> : null}
+                  icon={link.icon}
+                  onClick={link.onClick || undefined}
+                  color="blue"
+                  variant="subtle"
+                  style={{ borderRadius: '5px', padding: 12 }}
+                />
+              </Link>
+            );
+          })}
       </Box>
+
+
       {children}
     </Drawer>
+
   );
 }
 

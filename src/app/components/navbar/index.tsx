@@ -612,7 +612,6 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
               </Text>
             </Card>
           ) : null}
-        <Newtaquilla/>
       
           <Text fw={700}>Lista de Riferos</Text>
           {agencies.map((profile, index) => (
