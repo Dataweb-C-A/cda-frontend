@@ -60,7 +60,7 @@ function Newrifa50y50({ }: Props) {
     },
     validate: {
       title: (value: string) => {
-        if (!value) return 'Titulo de rifa requerido';
+        if (!value) return 'Evento de rifa requerido';
         if (value.length < 5) return 'El titulo debe tener al menos 5 caracteres';
         if (value.length > 50) return 'El titulo debe tener menos de 50 caracteres';
       },
@@ -127,7 +127,6 @@ function Newrifa50y50({ }: Props) {
         withCloseButton={false}
         opened={opened}
         onClose={() => {
-          // Reset the form values to their initial values
           form.reset();
           setOpened(false);
         }}
@@ -137,8 +136,8 @@ function Newrifa50y50({ }: Props) {
           <Grid>
             <Grid.Col span={6}>
               <TextInput
-                label="Titulo"
-                placeholder="Titulo"
+                label="Evento"
+                placeholder="Evento"
                 size='md'
 
                 error={form.errors.title}
@@ -262,14 +261,14 @@ function Newrifa50y50({ }: Props) {
           </Grid>
 
 
-          <Button fullWidth type="submit">Crear</Button>
+          <Button color="indigo" fullWidth type="submit">Crear</Button>
 
         </form>
 
       </Modal>
 
-      <Group position="center">
-        <Button onClick={() => setOpened(true)}>Crear nueva rifa</Button>
+      <Group position="left" mb={15}>
+        <Button color="indigo" onClick={() => setOpened(true)}>Crear nueva rifa</Button>
       </Group>
     </>
   )

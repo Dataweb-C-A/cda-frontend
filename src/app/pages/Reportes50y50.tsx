@@ -180,6 +180,7 @@ const Reportes50y50 = (props: Props) => {
 
   const rows = filteredNumbers.map((number, index) => (
     <tr key={index}>
+        <td  style={{ width: '205px' }}>92</td>
       <td>{number.numbers}</td>
       <td>{number.agency}</td>
       <td>Caracas</td>
@@ -237,7 +238,6 @@ const Reportes50y50 = (props: Props) => {
                 setCurrentPage(1);
               }}
             />
-     <Newrifa50y50/>
     </Group>
             {loading ? (
               <p>Loading...</p>
@@ -245,6 +245,7 @@ const Reportes50y50 = (props: Props) => {
               <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
                 <thead>
                   <tr>
+                    <th>Numero de tickets</th>
                     <th>Numeros</th>
                     <th>Agente</th>
                     <th>Localidad</th>

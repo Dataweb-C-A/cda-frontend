@@ -29,11 +29,10 @@ const New50y50t = (props: Props) => {
 
 
   useEffect(() => {
-    // Obtiene el token almacenado en el localStorage
     const token = localStorage.getItem("token");
 
     if (!is5050User) {
-      return; // No hagas la solicitud si el usuario no coincide con "50 50"
+      return; 
     }
     if (token) {
       axios.get("https://rifa-max.com/api/v1/taquilla_fifty", {
@@ -93,13 +92,11 @@ const New50y50t = (props: Props) => {
               Taquilla 50 y 50
             </Title>
 
-            <Newtaquilla />
           </Group>
 
           <Divider my="sm" variant="dashed" />
 
           {/* <Pagination mt={15} total={10} /> */}
-
           {isLoading ? (
             <p>Cargando datos...</p>
           ) : (

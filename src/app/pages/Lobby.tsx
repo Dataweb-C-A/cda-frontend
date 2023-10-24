@@ -8,8 +8,13 @@ import axios from 'axios'
 import {
   Group,
   Image,
-  Card
+  Card,
+  Table,
+  Input,
+  Title
 } from '@mantine/core';
+import Newrifa50y50 from './Newrifa50y50';
+import { IconAt } from '@tabler/icons';
 
 interface IUser {
   id: number;
@@ -111,33 +116,96 @@ function Lobby() {
     { label: "X100", redirect: '/draws' },
     { label: "50/50", redirect: '/infinito' }
   ];
+
+
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  let is5050User = false;
+
+  if (typeof user.name === 'string') {
+    is5050User = user.name.substring(0, 5) === "50 50";
+  }
+  const elements = [
+    { Evento: "Beisbol", Fecha_rifa: "24/10/2023", Fecha_exp: "24/10/2023", Localidad: 'Monumental', Fundacion: 'La Salle' },
+    { Evento: "Beisbol", Fecha_rifa: "24/10/2023", Fecha_exp: "24/10/2023", Localidad: 'Monumental', Fundacion: 'La Salle' },
+  ];
+
+  const rows = elements.map((element) => (
+    <tr >
+      <td>{element.Evento}</td>
+      <td>{element.Fecha_rifa}</td>
+      <td>{element.Fecha_exp}</td>
+      <td>{element.Localidad}</td>
+      <td>{element.Fundacion}</td>
+    </tr>
+  ));
   return (
     <>
+
       <Navbar
         profiles={users}
         links={links}
         expandScreen={true}
       />
-      <Group position="center" mt={10} >
-        {games.map((game, index) => (
-          <a href={game.redirect}>
 
-            <Card shadow="sm" p="lg" radius="md" withBorder style={!profile.access_permissions.includes(game.label) ? { opacity: 0.2, cursor: 'not-allowed' } : { cursor: 'pointer' }}>
-              <Image
-                key={index}
-                radius="md"
-                src={RifamaxLogo}
-                mt={25}
-                width={300}
-                height={120}
-                caption={game.label}
+      {is5050User ? (
+        <>
+          <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
+          <Group position='center' >
+             <Title>
+
+              Eventos
+             </Title>
+            </Group>
+            <Group position='apart' >
+              <Input
+                icon={<IconAt />}
+                placeholder="Buscar Evento"
+                w={150}
               />
-            </Card>
-          </a>
+              <Newrifa50y50 />
+            </Group>
 
-        ))}
-      </Group>
+            <Table striped highlightOnHover withBorder withColumnBorders>
+              <thead>
+                <tr>
+                  <th>Evento</th>
+                  <th>Fecha de inicio</th>
+                  <th>Fecha de finalización</th>
+                  <th>Localidad</th>
+                  <th>Fundacion</th>
+                </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+            </Table>
+          </Card>
+        </>
+      ) : (
+        <>
 
+
+          <Group position="center" mt={10} >
+            {games.map((game, index) => (
+
+              <a href={game.redirect}>
+
+                <Card shadow="sm" p="lg" radius="md" withBorder style={!profile.access_permissions.includes(game.label) ? { opacity: 0.2, cursor: 'not-allowed' } : { cursor: 'pointer' }}>
+                  <Image
+                    key={index}
+                    radius="md"
+                    src={RifamaxLogo}
+                    mt={25}
+                    width={300}
+                    height={120}
+                    caption={game.label}
+                  />
+                </Card>
+
+              </a>
+
+            ))}
+          </Group>
+        </>
+      )}
     </>
   )
 }
