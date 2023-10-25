@@ -14,7 +14,7 @@ import {
   Title
 } from '@mantine/core';
 import Newrifa50y50 from './Newrifa50y50';
-import { IconAt } from '@tabler/icons';
+import { IconSearch } from '@tabler/icons-react';
 
 interface IUser {
   id: number;
@@ -31,6 +31,13 @@ interface ILoading {
   loaded: boolean;
   isFirstLoad: boolean;
   persistantTime: number
+}
+interface DrawData {
+  title: string;
+  created_at: string;
+  Fecha_exp: string;
+  Localidad: string;
+  Fundacion: string;
 }
 
 function Lobby() {
@@ -54,7 +61,18 @@ function Lobby() {
 
   const theme = useMantineTheme();
   const history = useHistory();
+  const [draws, setDraws] = useState<DrawData[]>([]);
 
+  useEffect(() => {
+    axios.get('https://api.rifamax.app/draws_fifty')
+      .then(res => {
+        setDraws(res.data as DrawData[]); 
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+  
   useEffect(() => {
     axios.get('https://rifa-max.com/api/v1/rifas/stats', {
       headers: {
@@ -124,20 +142,8 @@ function Lobby() {
   if (typeof user.name === 'string') {
     is5050User = user.name.substring(0, 5) === "50 50";
   }
-  const elements = [
-    { Evento: "Beisbol", Fecha_rifa: "24/10/2023", Fecha_exp: "24/10/2023", Localidad: 'Monumental', Fundacion: 'La Salle' },
-    { Evento: "Beisbol", Fecha_rifa: "24/10/2023", Fecha_exp: "24/10/2023", Localidad: 'Monumental', Fundacion: 'La Salle' },
-  ];
-
-  const rows = elements.map((element) => (
-    <tr >
-      <td>{element.Evento}</td>
-      <td>{element.Fecha_rifa}</td>
-      <td>{element.Fecha_exp}</td>
-      <td>{element.Localidad}</td>
-      <td>{element.Fundacion}</td>
-    </tr>
-  ));
+ 
+  
   return (
     <>
 
@@ -158,25 +164,41 @@ function Lobby() {
             </Group>
             <Group position='apart' >
               <Input
-                icon={<IconAt />}
+                icon={<IconSearch/>}
                 placeholder="Buscar Evento"
-                w={150}
+                w={200}
               />
               <Newrifa50y50 />
             </Group>
 
-            <Table striped highlightOnHover withBorder withColumnBorders>
-              <thead>
-                <tr>
-                  <th>Evento</th>
-                  <th>Fecha de inicio</th>
-                  <th>Fecha de finalización</th>
-                  <th>Localidad</th>
-                  <th>Fundacion</th>
-                </tr>
-              </thead>
-              <tbody>{rows}</tbody>
-            </Table>
+            {draws.length > 0 ? (
+  <Table striped highlightOnHover withBorder withColumnBorders>
+    <thead>
+      <tr>
+        <th>Evento</th>
+        <th>Fecha de inicio</th>
+        <th>Fecha de finalización</th>
+        <th>Localidad</th>
+        <th>Fundación</th>
+      </tr>
+    </thead>
+    <tbody>
+      {draws.map((draw, index) => (
+        <tr key={index}>
+          <td>{draw.title}</td>
+          <td>{draw.created_at}</td>
+          <td>{draw.Fecha_exp}</td>
+          <td>{draw.Localidad}</td>
+          <td>{draw.Fundacion}</td>
+        </tr>
+      ))}
+    </tbody>
+  </Table>
+) : (
+  <p>Loading...</p>
+)}
+
+
           </Card>
         </>
       ) : (

@@ -13,9 +13,12 @@ import {
   Pagination,
   ActionIcon,
   Group,
-  Select
+  Select,
+  Tabs
 } from '@mantine/core';
 import Newrifa50y50 from './Newrifa50y50';
+import { IconPhoto, IconMessageCircle, IconSettings } from '@tabler/icons';
+import Combo50table from '../components/table/Combo50table';
 
 interface IPrinter {
   notification: {
@@ -112,6 +115,8 @@ const Reportes50y50 = (props: Props) => {
       clearInterval(interval);
     };
   }, []);
+
+
   const [printer, setPrinter] = useState(0)
   const [printerData, setPrinterData] = useState<IPrinter[] | []>([])
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -125,10 +130,10 @@ const Reportes50y50 = (props: Props) => {
 
   const filteredNumbers = selectedOption
     ? currentNumbers.filter((number) => {
-        return number.agency === selectedOption;
-      })
+      return number.agency === selectedOption;
+    })
     : currentNumbers;
-  
+
 
   const socket = new WebSocket('ws://127.0.0.1:1315');
 
@@ -180,11 +185,9 @@ const Reportes50y50 = (props: Props) => {
 
   const rows = filteredNumbers.map((number, index) => (
     <tr key={index}>
-        <td  style={{ width: '205px' }}>92</td>
       <td>{number.numbers}</td>
       <td>{number.agency}</td>
       <td>Caracas</td>
-      <td>1$</td>
       <td style={{ width: '205px' }}>
         <Group position='center'>
           <ActionIcon
@@ -221,43 +224,59 @@ const Reportes50y50 = (props: Props) => {
             links={links}
             expandScreen={true}
           />
+
+
           <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
-            <Title mb={15}>Reportes 50 y 50</Title>
+            <Tabs color="indigo" variant="outline" defaultValue="gallery">
+              <Tabs.List grow>
+                <Tabs.Tab value="Reporte de venta" icon={<IconMessageCircle size={14} />}>Reporte de venta</Tabs.Tab>
+                <Tabs.Tab value="imprmir" icon={<IconPrinter size={14} />}>imprmir</Tabs.Tab>
+              </Tabs.List>
+
+              <Tabs.Panel value="imprmir" pt="xs">
+                
 
 
-<Group position='apart'>
-            <Select
-              label='Seleccione agente'
-              placeholder='Elega agente'
-              w={350}
-              mb={15}
-              data={getAgencyOptions()}
-              value={selectedOption}
-              onChange={(value) => {
-                setSelectedOption(value);
-                setCurrentPage(1);
-              }}
-            />
-    </Group>
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
-              <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
-                <thead>
-                  <tr>
-                    <th>Numero de tickets</th>
-                    <th>Numeros</th>
-                    <th>Agente</th>
-                    <th>Localidad</th>
-                    <th>Total</th>
-                    <th>Reimprimir Ticket</th>
-                  </tr>
-                </thead>
-                <tbody>{rows}</tbody>
+                <Group position='apart'>
+                  <Select
+                    label='Seleccione agente'
+                    placeholder='Elega agente'
+                    w={350}
+                    mb={15}
+                    data={getAgencyOptions()}
+                    value={selectedOption}
+                    onChange={(value) => {
+                      setSelectedOption(value);
+                      setCurrentPage(1);
+                    }}
+                  />
+                </Group>
+                {loading ? (
+                  <p>Loading...</p>
+                ) : (
+                  <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
+                    <thead>
+                      <tr>
+                        <th>Numeros</th>
+                        <th>Agente</th>
+                        <th>Localidad</th>
+                        <th>Reimprimir Ticket</th>
+                      </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
 
-              </Table>
+                  </Table>
 
-            )}
+                )}
+              </Tabs.Panel>
+
+              <Tabs.Panel value="Reporte de venta" pt="xs">
+                <Combo50table/>
+              </Tabs.Panel>
+
+
+            </Tabs>
+
 
           </Card>
 

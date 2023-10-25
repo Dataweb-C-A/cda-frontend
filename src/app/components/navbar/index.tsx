@@ -260,7 +260,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
           <AvatarCard
           id={user ? user.id : 0}
           name={user ? user.name : 'Usuario'}
-          role={user && user.name === "50 50 001" ? 'Agente' : (user ? user.role : 'Usuario')}
+          role={user && user.name === "50 50 001" ? 'Admin' : (user ? user.role : 'Usuario')}
           border={true}
           cedula="V-29543140"
           image=""
