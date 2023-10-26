@@ -121,13 +121,8 @@ function Newrifa50y50({ }: Props) {
 
 
 
-  const generateRandomUsername = () => {
-    return 'randomUsername';
-  };
-
   const handleSubmit = async (values: typeof form.values) => {
     const token = localStorage.getItem('token');
-    const randomUsername = generateRandomUsername();
 
     try {
       const response = await axios.post('https://api.rifamax.app/draws', {
