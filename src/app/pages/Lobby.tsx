@@ -35,9 +35,9 @@ interface ILoading {
 interface DrawData {
   title: string;
   created_at: string;
-  Fecha_exp: string;
-  Localidad: string;
-  Fundacion: string;
+  expired_date: string;
+  location: string;
+  foundation: string;
 }
 
 function Lobby() {
@@ -186,10 +186,10 @@ function Lobby() {
       {draws.map((draw, index) => (
         <tr key={index}>
           <td>{draw.title}</td>
-          <td>{draw.created_at}</td>
-          <td>{draw.Fecha_exp}</td>
-          <td>{draw.Localidad}</td>
-          <td>{draw.Fundacion}</td>
+          <td>{draw.created_at.slice(0, 10)}</td>
+          <td>{draw.expired_date}</td>
+          <td>{draw.location}</td>
+          <td>{draw.foundation}</td>
         </tr>
       ))}
     </tbody>

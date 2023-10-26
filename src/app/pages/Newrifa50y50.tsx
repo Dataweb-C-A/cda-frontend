@@ -26,10 +26,9 @@ import {
 
 import moment from 'moment'
 import { useForm } from '@mantine/form';
-
 import { DatePicker } from "@mantine/dates"
-
 import { Calendar } from 'tabler-icons-react'
+import axios from 'axios';
 
 type Props = {}
 
@@ -64,16 +63,16 @@ function Newrifa50y50({ }: Props) {
         if (value.length < 5) return 'El titulo debe tener al menos 5 caracteres';
         if (value.length > 50) return 'El titulo debe tener menos de 50 caracteres';
       },
-     
-      
+
+
       init_date: (value: Date) => {
         if (!value) return 'Fecha de inicio requerida';
       },
       expired_date: (value: Date) => {
-        
-          if (!value) return 'Fecha de finalización requerida';
-          if (value < actualDate) return 'La fecha de finalización debe ser mayor a la fecha actual';
-        
+
+        if (!value) return 'Fecha de finalización requerida';
+        if (value < actualDate) return 'La fecha de finalización debe ser mayor a la fecha actual';
+
       },
       draw_type: (value: string) => {
         if (!value) return 'Tipo de rifa requerido';
@@ -102,7 +101,7 @@ function Newrifa50y50({ }: Props) {
         if (!value) return 'Numeros de la rifa requeridos';
         if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
       },
-     
+
       money: (value: string) => {
         if (!value) return 'Moneda requerida';
       },
@@ -119,6 +118,50 @@ function Newrifa50y50({ }: Props) {
       return new Date(moment().add(2, 'days').format('YYYY-MM-DD'))
     }
   }
+
+
+
+  const generateRandomUsername = () => {
+    return 'randomUsername';
+  };
+
+  const handleSubmit = async (values: typeof form.values) => {
+    const token = localStorage.getItem('token');
+    const randomUsername = generateRandomUsername();
+
+    try {
+      const response = await axios.post('https://api.rifamax.app/draws', {
+        title: values.title,
+        first_prize: '50',
+        type_of_draw: '50/50',
+        init_date: values.init_date,
+        expired_date: values.expired_date,
+        numbers: values.numbers,
+        ticket_counts: 0,
+        loteria: 'ZULIA 7A',
+        has_winners: false,
+        is_active: true,
+        owner_id: JSON.parse(localStorage.getItem('user') || '{}').id,
+        draw_type: 'To-Infinity',
+        limit: 100,
+        price_unit: 1.0,
+        money: '$',
+        location: values.local_id,
+        foundation: values.fundation_id,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      console.log('Solicitud POST exitosa:', response.data);
+      setOpened(false);
+      form.reset();
+    } catch (error) {
+      console.error('Error al enviar la solicitud POST:', error);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -131,8 +174,9 @@ function Newrifa50y50({ }: Props) {
           setOpened(false);
         }}
       >
-      
-        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+
+
           <Grid>
             <Grid.Col span={6}>
               <TextInput
@@ -183,9 +227,9 @@ function Newrifa50y50({ }: Props) {
                 placeholder='Fecha de expiracion'
                 size='md'
                 fullWidth
-               
+
                 minDate={form.getInputProps('init_date').value || new Date(moment().add(2, 'days').format('YYYY-MM-DD'))}
-                
+
 
                 rightSection={<Calendar opacity={0.8} />}
                 {...form.getInputProps('expired_date')}
