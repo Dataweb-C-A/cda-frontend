@@ -118,44 +118,24 @@ function Newrifa50y50({ }: Props) {
       return new Date(moment().add(2, 'days').format('YYYY-MM-DD'))
     }
   }
-
-
-
-  const handleSubmit = async (values: typeof form.values) => {
-    const token = localStorage.getItem('token');
-
+  const handleFormSubmit = async () => {
     try {
       const response = await axios.post('https://api.rifamax.app/draws', {
-        title: values.title,
-        first_prize: '50',
-        type_of_draw: '50/50',
-        init_date: values.init_date,
-        expired_date: values.expired_date,
-        numbers: values.numbers,
-        ticket_counts: 0,
-        loteria: 'ZULIA 7A',
-        has_winners: false,
-        is_active: true,
-        owner_id: JSON.parse(localStorage.getItem('user') || '{}').id,
-        draw_type: 'To-Infinity',
-        limit: 100,
-        price_unit: 1.0,
-        money: '$',
-        location: values.local_id,
-        foundation: values.fundation_id,
+        draw: form.values, 
       }, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+          "Content-Type": ["application/json", "multipart/form-data"],
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
+        }
       });
 
-      console.log('Solicitud POST exitosa:', response.data);
-      setOpened(false);
-      form.reset();
+      console.log(response.data);
+
     } catch (error) {
-      console.error('Error al enviar la solicitud POST:', error);
+      console.error(error); 
     }
   };
+
 
   return (
     <>
@@ -169,7 +149,10 @@ function Newrifa50y50({ }: Props) {
           setOpened(false);
         }}
       >
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          handleFormSubmit();
+        }}>
 
 
           <Grid>

@@ -77,33 +77,40 @@ const Home: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoadingDump({
-        loaded: false,
-        isFirstLoad: false,
-        persistantTime: 10000
-      })
+    const fetchData = () => {
       axios.get('https://rifa-max.com/current', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
-      }).then(res => {
-        setLoadingDump({
-          loaded: true,
-          isFirstLoad: false,
-          persistantTime: 10000
-        })
-        setProfile(res.data)
-      }).catch((err) => {
-        console.log(err)
-        setLoadingDump({
-          loaded: false,
-          isFirstLoad: false,
-          persistantTime: 10000
-        })
       })
-    }, loadingDump.persistantTime)
-  }, [loadingDump])
+        .then(res => {
+          setLoadingDump({
+            loaded: true,
+            isFirstLoad: false,
+            persistantTime: 10000
+          })
+          setProfile(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+          setLoadingDump({
+            loaded: false,
+            isFirstLoad: false,
+            persistantTime: 10000
+          })
+        });
+    };
+  
+    // Realizar una primera llamada al montar el componente
+    fetchData();
+  
+    // Configurar un intervalo para llamar a fetchData cada 10 segundos
+    const intervalId = setInterval(fetchData, 10000);
+  
+    // Limpia el intervalo cuando el componente se desmonta
+    return () => clearInterval(intervalId);
+  }, [loadingDump]);
+  
 
   return (
     profile.access_permissions.includes('Rifamax') ? (
