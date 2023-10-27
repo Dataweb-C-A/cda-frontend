@@ -147,9 +147,8 @@ function Draws({ }: IDraws) {
               onClick={() => setOpenForm(!openForm)}
               onClose={() => closeForm()}
               open={openForm}
-              
             >
-              Agregar rifa Especiales
+              Agregar rifa de moto
             </DrawsModal>
           </Grid.Col>
         </Grid>

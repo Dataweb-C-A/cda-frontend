@@ -83,7 +83,7 @@ const Reportes50y50 = (props: Props) => {
   const itemsPerPage = 1000000000;
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   let is5050User = false;
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string>("imprimir");
 
 
   if (typeof user.name === 'string') {
@@ -123,7 +123,7 @@ const Reportes50y50 = (props: Props) => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentNumbers = numbers.slice(indexOfFirstItem, indexOfLastItem);
 
-  const handleChange = (value: string | null) => {
+  const handleChange = (value: string) => {
     setSelectedOption(value);
     setCurrentPage(1);
   };
@@ -230,22 +230,22 @@ const Reportes50y50 = (props: Props) => {
             <Tabs color="indigo" variant="outline" defaultValue="gallery">
               <Tabs.List grow>
                 <Tabs.Tab value="Reporte de venta" icon={<IconMessageCircle size={14} />}>Reporte de venta</Tabs.Tab>
-                <Tabs.Tab value="imprmir" icon={<IconPrinter size={14} />}>imprmir</Tabs.Tab>
+                <Tabs.Tab value="imprimir" icon={<IconPrinter size={14} />}>Imprimir</Tabs.Tab>
               </Tabs.List>
 
-              <Tabs.Panel value="imprmir" pt="xs">
+              <Tabs.Panel value="imprimir" defaultValue='imprimir' pt="xs">
                 
 
 
                 <Group position='apart'>
                   <Select
-                    label='Seleccione agente'
-                    placeholder='Elega agente'
+                    label='Seleccione taquilla'
+                    placeholder='Elija taquilla'
                     w={350}
                     mb={15}
                     data={getAgencyOptions()}
                     value={selectedOption}
-                    onChange={(value) => {
+                    onChange={(value: string) => {
                       setSelectedOption(value);
                       setCurrentPage(1);
                     }}
@@ -264,20 +264,13 @@ const Reportes50y50 = (props: Props) => {
                       </tr>
                     </thead>
                     <tbody>{rows}</tbody>
-
                   </Table>
-
                 )}
               </Tabs.Panel>
-
               <Tabs.Panel value="Reporte de venta" pt="xs">
                 <Combo50table/>
               </Tabs.Panel>
-
-
             </Tabs>
-
-
           </Card>
 
         </>

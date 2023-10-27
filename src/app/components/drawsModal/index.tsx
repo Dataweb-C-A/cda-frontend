@@ -20,6 +20,8 @@ import {
   Divider,
   MultiSelect,
   ActionIcon,
+  Title,
+  Card
 
 } from '@mantine/core'
 import moment from 'moment'
@@ -72,7 +74,7 @@ type FormProps = {
   award: IFile | null;
   owner_id: number | string | null;
   local_id: number | string | null;
-  fundation_id:number | string | null;
+  fundation_id: number | string | null;
   user_id: number;
 }
 
@@ -239,7 +241,7 @@ function DrawsModal({
           if (!value) return 'Localidad Requerida';
         }
       },
-      fundation_id:(value: string) => {
+      fundation_id: (value: string) => {
         if (form.values.draw_type === '50/50') {
           if (!value) return 'Fundacion Requerida';
         }
@@ -891,7 +893,48 @@ function DrawsModal({
               </Group>
             </form>
           </Stepper.Step>
-          <Stepper.Step label="Verificar los datos" description="Verifica que los datos de la rifa sean correctos" >
+          <Stepper.Step label="Verificar los datos" description="Verifica que los datos de la rifa sean correctos">
+            <Card>
+
+              <Title>Información de la Rifa</Title>
+
+              <ul>
+                <li>
+                  <strong>Título:</strong> {form.values.title}
+                </li>
+                <li>
+                  <strong>Tipo de Rifa:</strong> {form.values.draw_type}
+                </li>
+                <li>
+                  <strong>Límite:</strong> {form.values.limit}
+                </li>
+                <li>
+                  <strong>Precio Unitario:</strong> {form.values.price_unit}
+                </li>
+              
+                <li>
+                  <strong>Número de Tickets:</strong> {form.values.tickets_count}
+                </li>
+                <li>
+                  <strong>Premio:</strong> {form.values.first_prize}
+                </li>
+                <li>
+                  <strong>Números de la Rifa:</strong> {form.values.numbers}
+                </li>
+               
+                  {/* <li>
+                    <strong>Fecha de Inicio:</strong> {form.values.init_date}
+                  </li>
+                  <li>
+                    <strong>Fecha de Expiración:</strong> {form.values.expired_date}
+                  </li> */}
+                <li>
+                  <strong>Moneda:</strong> {form.values.money}
+                </li>
+               
+               
+              </ul>
+            </Card>
           </Stepper.Step>
         </Stepper>
       </Modal>

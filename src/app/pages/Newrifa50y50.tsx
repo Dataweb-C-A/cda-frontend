@@ -38,8 +38,9 @@ function Newrifa50y50({ }: Props) {
   const form = useForm({
     initialValues: {
       title: '',
-      draw_type: 'Progressive',
+      draw_type: 'To-Infinity',
       limit: null,
+      type_of_draw: '50/50',
       price_unit: null,
       loteria: 'ZULIA 7A',
       tickets_count: 0,
@@ -52,9 +53,9 @@ function Newrifa50y50({ }: Props) {
       money: '$',
       ads: null,
       award: null,
-      owner_id: null,
-      fundation_id: null,
-      local_id: null,
+      owner_id: 369,
+      foundation: null,
+      location: null,
       user_id: JSON.parse(localStorage.getItem('user') || '').id || 1
     },
     validate: {
@@ -63,29 +64,21 @@ function Newrifa50y50({ }: Props) {
         if (value.length < 5) return 'El titulo debe tener al menos 5 caracteres';
         if (value.length > 50) return 'El titulo debe tener menos de 50 caracteres';
       },
-
-
       init_date: (value: Date) => {
         if (!value) return 'Fecha de inicio requerida';
       },
       expired_date: (value: Date) => {
-
         if (!value) return 'Fecha de finalización requerida';
         if (value < actualDate) return 'La fecha de finalización debe ser mayor a la fecha actual';
-
       },
       draw_type: (value: string) => {
         if (!value) return 'Tipo de rifa requerido';
       },
-      local_id: (value: string) => {
-
+      location: (value: string) => {
         if (!value) return 'Localidad Requerida';
-
       },
-      fundation_id: (value: string) => {
-
+      foundation: (value: string) => {
         if (!value) return 'Fundacion Requerida';
-
       },
       tickets_count: (value: number) => {
         if (form.values.draw_type === 'To-Infinity' || form.values.draw_type === '50/50') { } else {
@@ -124,13 +117,11 @@ function Newrifa50y50({ }: Props) {
         draw: form.values, 
       }, {
         headers: {
-          "Content-Type": ["application/json", "multipart/form-data"],
+          "Content-Type": "application/json",
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
         }
       });
-
       console.log(response.data);
-
     } catch (error) {
       console.error(error); 
     }
@@ -153,8 +144,6 @@ function Newrifa50y50({ }: Props) {
           e.preventDefault();
           handleFormSubmit();
         }}>
-
-
           <Grid>
             <Grid.Col span={6}>
               <TextInput
@@ -178,14 +167,11 @@ function Newrifa50y50({ }: Props) {
               />
             </Grid.Col>
           </Grid>
-
-
           <Grid>
             <Grid.Col span={6}>
               <DatePicker
                 label='Fecha de la rifa'
                 placeholder='Fecha de la rifa'
-
                 size='md'
                 fullWidth
                 rightSection={
@@ -205,10 +191,7 @@ function Newrifa50y50({ }: Props) {
                 placeholder='Fecha de expiracion'
                 size='md'
                 fullWidth
-
                 minDate={form.getInputProps('init_date').value || new Date(moment().add(2, 'days').format('YYYY-MM-DD'))}
-
-
                 rightSection={<Calendar opacity={0.8} />}
                 {...form.getInputProps('expired_date')}
                 error={form.errors.expired_date}
@@ -216,11 +199,6 @@ function Newrifa50y50({ }: Props) {
               />
             </Grid.Col>
           </Grid>
-
-
-
-
-
           <Grid>
             <Grid.Col span={6}>
               <NumberInput
@@ -256,28 +234,22 @@ function Newrifa50y50({ }: Props) {
               <Select
                 size='md'
                 mb="md"
-
                 label="Localidad"
                 placeholder="Elige la Localidad"
-
-                error={form.errors.local_id}
+                error={form.errors.location}
                 data={[
-                  { value: 'BsF', label: 'Monumental' },
+                  { value: 'Monumental', label: 'Monumental' },
                 ]}
-                {...form.getInputProps('local_id')}
+                {...form.getInputProps('location')}
               />
             </Grid.Col>
             <Grid.Col span={6}>
               <TextInput
                 size='md'
                 label="Fundacion"
-
                 placeholder="Fundacion"
-
-                error={form.errors.fundation_id}
-                {...form.getInputProps('fundation_id')}
-
-
+                error={form.errors.foundation}
+                {...form.getInputProps('foundation')}
               />
             </Grid.Col>
           </Grid>
