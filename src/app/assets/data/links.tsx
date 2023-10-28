@@ -18,6 +18,7 @@ if (typeof user.name === 'string') {
 
 export const links = [
   { name: 'Lobby', url: '/', chevron: false, icon: <FaHome size={20} strokeWidth={0} />  },
+  { name: 'Lobby  50 y 50', url: '/', chevron: false, icon: <FaHome size={20} strokeWidth={0} />  },
   { name: 'Rifamax', url: '/rifamax', chevron: false, icon: <BsJoystick size={20} strokeWidth={0} /> },
   { name: 'Reportes 50 y 50', url: '/reportes50y50', chevron: false, icon: <IconMath1Divide2 size={20} strokeWidth={1.5} />, hidden: !is5050User },
   { name: 'Taquilla 50 y 50', url: '/New50y50t', chevron: false, icon: <IconHomePlus size={20} strokeWidth={1.5} />, hidden: !is5050User },

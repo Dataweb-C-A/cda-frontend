@@ -64,15 +64,25 @@ function Lobby() {
   const [draws, setDraws] = useState<DrawData[]>([]);
 
   useEffect(() => {
-    axios.get('https://api.rifamax.app/draws_fifty')
-      .then(res => {
-        setDraws(res.data as DrawData[]); 
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    const fetchData = () => {
+      axios
+        .get('https://api.rifamax.app/draws_fifty')
+        .then((res) => {
+          setDraws(res.data as DrawData[]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchData();
+
+    const intervalId = setInterval(fetchData, 10000);
+
+    return () => clearInterval(intervalId);
   }, []);
-  
+
+
   useEffect(() => {
     axios.get('https://rifa-max.com/api/v1/rifas/stats', {
       headers: {
@@ -125,17 +135,14 @@ function Lobby() {
           })
         });
     };
-  
-    // Realizar una primera llamada al montar el componente
+
     fetchData();
-  
-    // Configurar un intervalo para llamar a fetchData cada 10 segundos
-    const intervalId = setInterval(fetchData, 10000);
-  
-    // Limpia el intervalo cuando el componente se desmonta
+
+    const intervalId = setInterval(fetchData, 5000);
+
     return () => clearInterval(intervalId);
   }, []);
-  
+
   const games = [
     { label: "Rifamax", redirect: '/rifamax' },
     { label: "X100", redirect: '/draws' },
@@ -149,8 +156,8 @@ function Lobby() {
   if (typeof user.name === 'string') {
     is5050User = user.name.substring(0, 5) === "50 50";
   }
- 
-  
+
+
   return (
     <>
 
@@ -163,47 +170,47 @@ function Lobby() {
       {is5050User ? (
         <>
           <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
-          <Group position='center' >
-             <Title>
+            <Group position='center' >
+              <Title>
 
-              Eventos
-             </Title>
+                Eventos
+              </Title>
             </Group>
-            <Group position='apart' >
-              <Input
-                icon={<IconSearch/>}
+            <Group position='right' >
+              {/* <Input
+                icon={<IconSearch />}
                 placeholder="Buscar Evento"
                 w={200}
-              />
+              /> */}
               <Newrifa50y50 />
             </Group>
 
             {draws.length > 0 ? (
-  <Table striped highlightOnHover withBorder withColumnBorders>
-    <thead>
-      <tr>
-        <th>Evento</th>
-        <th>Fecha de inicio</th>
-        <th>Fecha de finalización</th>
-        <th>Localidad</th>
-        <th>Fundación</th>
-      </tr>
-    </thead>
-    <tbody>
-      {draws.map((draw, index) => (
-        <tr key={index}>
-          <td>{draw.title}</td>
-          <td>{draw.created_at.slice(0, 10)}</td>
-          <td>{draw.expired_date}</td>
-          <td>{draw.location}</td>
-          <td>{draw.foundation}</td>
-        </tr>
-      ))}
-    </tbody>
-  </Table>
-) : (
-  <p>Loading...</p>
-)}
+              <Table striped highlightOnHover withBorder withColumnBorders>
+                <thead>
+                  <tr>
+                    <th>Evento</th>
+                    <th>Fecha de inicio</th>
+                    <th>Fecha de finalización</th>
+                    <th>Localidad</th>
+                    <th>Fundación</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {draws.map((draw, index) => (
+                    <tr key={index}>
+                      <td>{draw.title}</td>
+                      <td>{draw.created_at.slice(0, 10)}</td>
+                      <td>{draw.expired_date}</td>
+                      <td>{draw.location}</td>
+                      <td>{draw.foundation}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              <p>Loading...</p>
+            )}
 
 
           </Card>

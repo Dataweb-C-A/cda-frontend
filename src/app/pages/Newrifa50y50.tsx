@@ -45,7 +45,7 @@ function Newrifa50y50({ }: Props) {
       loteria: 'ZULIA 7A',
       tickets_count: 0,
       first_prize: '',
-      numbers: null,
+      numbers: 100,
       second_prize: null,
       init_date: null,
       visible_taquillas_ids: [],
@@ -90,9 +90,8 @@ function Newrifa50y50({ }: Props) {
         if (!value) return 'Precio unitario requerido';
         if (value <= 0) return 'El precio unitario debe ser mayor a 0';
       },
-      numbers: (value: number) => {
-        if (!value) return 'Numeros de la rifa requeridos';
-        if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
+      first_prize: (value: string) => {
+        if (!value) return 'Premio requerido';
       },
 
       money: (value: string) => {
@@ -114,7 +113,7 @@ function Newrifa50y50({ }: Props) {
   const handleFormSubmit = async () => {
     try {
       const response = await axios.post('https://api.rifamax.app/draws', {
-        draw: form.values, 
+        draw: form.values,
       }, {
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +122,7 @@ function Newrifa50y50({ }: Props) {
       });
       console.log(response.data);
     } catch (error) {
-      console.error(error); 
+      console.error(error);
     }
   };
 
@@ -142,7 +141,8 @@ function Newrifa50y50({ }: Props) {
       >
         <form onSubmit={(e) => {
           e.preventDefault();
-          handleFormSubmit();
+          handleFormSubmit(); 
+          setOpened(false);
         }}>
           <Grid>
             <Grid.Col span={6}>
@@ -156,14 +156,12 @@ function Newrifa50y50({ }: Props) {
               />
             </Grid.Col>
             <Grid.Col span={6}>
-              <NumberInput
-                label="Numeros de la rifa"
-                placeholder="Numeros de la rifa"
+            <TextInput
+                label="Premio"
+                placeholder="Premio"
                 size='md'
-
-                hideControls
-                error={form.errors.numbers}
-                {...form.getInputProps('numbers')}
+                error={form.errors.first_prize}
+                {...form.getInputProps('first_prize')}
               />
             </Grid.Col>
           </Grid>
@@ -256,7 +254,6 @@ function Newrifa50y50({ }: Props) {
 
 
           <Button color="indigo" fullWidth type="submit">Crear</Button>
-
         </form>
 
       </Modal>
