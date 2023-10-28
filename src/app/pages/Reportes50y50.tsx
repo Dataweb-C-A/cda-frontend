@@ -85,6 +85,7 @@ const Reportes50y50 = (props: Props) => {
   let is5050User = false;
   const [selectedOption, setSelectedOption] = useState<string>("imprimir");
 
+  const [selectedAgent, setSelectedAgent] = useState<string>('');
 
   if (typeof user.name === 'string') {
     is5050User = user.name.substring(0, 5) === "50 50";
@@ -122,17 +123,14 @@ const Reportes50y50 = (props: Props) => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentNumbers = numbers.slice(indexOfFirstItem, indexOfLastItem);
-
   const handleChange = (value: string) => {
-    setSelectedOption(value);
+    setSelectedAgent(value);
     setCurrentPage(1);
   };
+  
+  const filteredNumbers = currentNumbers;
 
-  const filteredNumbers = selectedOption
-    ? currentNumbers.filter((number) => {
-      return number.agency === selectedOption;
-    })
-    : currentNumbers;
+
 
 
   const socket = new WebSocket('ws://127.0.0.1:1315');
@@ -182,8 +180,14 @@ const Reportes50y50 = (props: Props) => {
       console.error('El socket no está abierto.');
     }
   }
-
-  const rows = filteredNumbers.map((number, index) => (
+  const filteredRows = filteredNumbers.filter((number) => {
+    if (selectedAgent === '') {
+      return true; // No se ha seleccionado un agente, muestra todos los registros.
+    } else {
+      return number.agency === selectedAgent;
+    }
+  });
+  const rows = filteredRows.map((number, index) => (
     <tr key={index}>
       <td>{number.numbers}</td>
       <td>{number.agency}</td>
@@ -227,6 +231,10 @@ const Reportes50y50 = (props: Props) => {
 
 
           <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
+            <Group position='center'>
+
+          <Title mb={10} order={2}>Eliga un registro</Title>
+            </Group>
             <Tabs color="indigo" variant="outline" defaultValue="gallery">
               <Tabs.List grow>
                 <Tabs.Tab value="Reporte de venta" icon={<IconMessageCircle size={14} />}>Reporte de venta</Tabs.Tab>
@@ -238,18 +246,18 @@ const Reportes50y50 = (props: Props) => {
 
 
                 <Group position='apart'>
-                  <Select
-                    label='Seleccione taquilla'
-                    placeholder='Elija taquilla'
-                    w={350}
-                    mb={15}
-                    data={getAgencyOptions()}
-                    value={selectedOption}
-                    onChange={(value: string) => {
-                      setSelectedOption(value);
-                      setCurrentPage(1);
-                    }}
-                  />
+                <Select
+  label='Seleccione taquilla'
+  placeholder='Elija taquilla'
+  w={350}
+  mb={15}
+  data={getAgencyOptions()}
+  value={selectedAgent} // Actualiza el valor de acuerdo a selectedAgent
+  onChange={(value: string) => {
+    handleChange(value); // Llama a handleChange con el nuevo valor
+  }}
+/>
+
                 </Group>
                 {loading ? (
                   <p>Loading...</p>
@@ -271,6 +279,7 @@ const Reportes50y50 = (props: Props) => {
                 <Combo50table/>
               </Tabs.Panel>
             </Tabs>
+           
           </Card>
 
         </>
