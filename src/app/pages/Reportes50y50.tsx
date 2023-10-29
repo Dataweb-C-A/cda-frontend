@@ -247,16 +247,16 @@ const Reportes50y50 = (props: Props) => {
 
                 <Group position='apart'>
                 <Select
-  label='Seleccione taquilla'
-  placeholder='Elija taquilla'
-  w={350}
-  mb={15}
-  data={getAgencyOptions()}
-  value={selectedAgent} // Actualiza el valor de acuerdo a selectedAgent
-  onChange={(value: string) => {
-    handleChange(value); // Llama a handleChange con el nuevo valor
-  }}
-/>
+                  label='Seleccione taquilla'
+                  placeholder='Elija taquilla'
+                  w={350}
+                  mb={15}
+                  data={getAgencyOptions()}
+                  value={selectedAgent} // Actualiza el valor de acuerdo a selectedAgent
+                  onChange={(value: string) => {
+                    handleChange(value); // Llama a handleChange con el nuevo valor
+                  }}
+                />
 
                 </Group>
                 {loading ? (

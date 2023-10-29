@@ -73,7 +73,7 @@ function Newtaquilla({ }: Props) {
             const randomUsername = generateRandomUsername();
 
             try {
-              const response = await axios.post('https://rifa-max.com/api/v1/users', {
+              const response = await axios.post('https://rifa-max.com/api/v1/users_new_taquilla', {
                 name: values.name,
                 username: randomUsername,
                 cedula: values.cedula,
