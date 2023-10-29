@@ -91,7 +91,7 @@ const New50y50t = (props: Props) => {
             <Title order={3}>
               Taquilla 50 y 50
             </Title>
-
+            <Newtaquilla />
           </Group>
 
           <Divider my="sm" variant="dashed" />
