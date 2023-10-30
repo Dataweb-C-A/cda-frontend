@@ -48,7 +48,7 @@ function Newrifa50y50({ }: Props) {
 
   const form1 = useForm({
     initialValues: {
-      fundacion: '',  // Cambio de "email" a "fundacion"
+      fundacion: '',
 
     },
 
@@ -129,6 +129,29 @@ function Newrifa50y50({ }: Props) {
     },
   });
 
+  const form3 = useForm({
+    initialValues: {
+      precio: '',
+      combo: '',
+
+    },
+
+    validate: {
+      combo: (value) => {
+        if (!value) {
+          return 'Este campo no puede estar vacío';
+        }
+
+      },
+      precio: (value) => {
+        if (!value) {
+          return 'Este campo no puede estar vacío';
+        }
+
+      }
+    },
+  });
+
   const [isInputMode, setIsInputMode] = useState(false);
 
   const toggleInputMode = () => {
@@ -137,35 +160,7 @@ function Newrifa50y50({ }: Props) {
   const [selectedFoundation, setSelectedFoundation] = useState('');
 
 
-  const [inputList, setInputList] = useState<ReactElement[]>([]);
 
-  const agregarInput = () => {
-    const newIndex = inputList.length;
-    const newInput = (
-      <Group position="center" mt="xl">
-
-        <TextInput
-          w={105}
-          label="Numero combos"
-          key={newIndex}
-          placeholder={`Input ${newIndex}`}
-          mt={-10}
-        />
-
-        <TextInput
-          w={105}
-          ml={-5}
-
-          label="Precio"
-          key={newIndex}
-          placeholder={`Input ${newIndex}`}
-          mt={-10}
-
-        />
-      </Group>
-    );
-    setInputList([...inputList, newInput]);
-  };
 
   const [actualDate, setActualDate] = useState<Date>(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))
   const [active, setActive] = useState(0);
@@ -212,7 +207,7 @@ function Newrifa50y50({ }: Props) {
     money: '',
     location: '',
   });
-  
+
 
   const handleNextStep2 = () => {
     if (form2.isValid()) {
@@ -231,8 +226,15 @@ function Newrifa50y50({ }: Props) {
       console.log(form2.errors);
     }
   };
-  
-  
+
+  const handleNextStep3 = () => {
+    if (form3.isValid()) {// Guarda la fundación seleccionada
+      nextStep();
+    } else {
+      console.log('El formulario no es válido. Por favor, complete todos los campos correctamente.');
+      console.log(form3.errors);
+    }
+  };
 
   return (
     <>
@@ -401,26 +403,34 @@ function Newrifa50y50({ }: Props) {
           </Stepper.Step>
 
           <Stepper.Step label="Paso 3" description="Precio combos">
-            <Group position='apart'>
+  <form onSubmit={form3.onSubmit((values) => console.log(values))}>
+    <Group position='apart'>
+      <Group position="center" mt="xl">
+        <TextInput
+          w={105}
+          label="Numero combos"
+          mt={-10}
+          {...form3.getInputProps('combo')}
+        />
+        <TextInput
+          w={105}
+          ml={-5}
+          label="Precio"
+          mt={-10}
+          {...form3.getInputProps('precio')}
+        />
+      </Group>
+      <Button color="gray">agregar combo</Button>
+    </Group>
+    <Group position="center" mt="xl">
+      <Button variant="default" onClick={prevStep}>
+        Volver
+      </Button>
+      <Button onClick={handleNextStep3}>Siguiente paso</Button>
+    </Group>
+  </form>
+</Stepper.Step>
 
-
-
-
-              <ScrollArea type="auto" style={{ height: 250 }} offsetScrollbars>
-                {inputList}
-              </ScrollArea>
-
-              <Button color="gray" onClick={agregarInput}>
-                agregar combo
-              </Button>
-
-            </Group>
-
-            <Group position="center" mt="xl">
-              <Button variant="default" onClick={prevStep}>Volver</Button>
-              <Button onClick={nextStep}>Siguiente paso</Button>
-            </Group>
-          </Stepper.Step>
 
           <Stepper.Step label="Paso 4" description="Verificar datos">
 
@@ -456,7 +466,7 @@ function Newrifa50y50({ }: Props) {
                   <li >{step2Data ? step2Data.title : 'No se ha ingresado un Evento'}</li>
 
                   <Title order={6}>Premio:</Title>
-                  <li >{step2Data ? step2Data.first_prize  : 'No se ha ingresado un Premio'}</li>
+                  <li >{step2Data ? step2Data.first_prize : 'No se ha ingresado un Premio'}</li>
 
                   <Title order={6}>Fecha de inicio:</Title>
                   <li >{step2Data ? step2Data.init_date.toLocaleDateString() : 'No se ha ingresado una fecha de finalización'}</li>
@@ -465,15 +475,15 @@ function Newrifa50y50({ }: Props) {
                   <li >{step2Data ? step2Data.expired_date.toLocaleDateString() : 'No se ha ingresado una fecha de finalización'}</li>
 
                   <Title order={6}>Precio unitario:</Title>
-                  <li >{step2Data ? step2Data.price_unit: 'No se ha ingresado una fecha de finalización'}</li>
+                  <li >{step2Data ? step2Data.price_unit : 'No se ha ingresado una fecha de finalización'}</li>
 
                   <Title order={6}>Moneda:</Title>
-                  <li >{step2Data ? step2Data.money: 'No se ha ingresado una fecha de finalización'}</li>
+                  <li >{step2Data ? step2Data.money : 'No se ha ingresado una fecha de finalización'}</li>
 
                   <Title order={6}>Localidad: </Title>
-                  <li >{step2Data ? step2Data.location: 'No se ha ingresado una fecha de finalización'}</li>
+                  <li >{step2Data ? step2Data.location : 'No se ha ingresado una fecha de finalización'}</li>
 
-                  
+
                   <Title mt={10} order={6}>Localidad:</Title>
                   <li>
                     {selectedFoundation}
