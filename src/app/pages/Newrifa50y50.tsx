@@ -22,7 +22,8 @@ import {
   MultiSelect,
   Title,
   ActionIcon,
-  ScrollArea
+  ScrollArea,
+  Card
 
 } from '@mantine/core'
 import { IconPlus } from '@tabler/icons-react';
@@ -33,11 +34,36 @@ import { Calendar } from 'tabler-icons-react'
 import axios from 'axios';
 
 type Props = {}
-
+type Step2Data = {
+  title: string;
+  first_prize: string;
+  init_date: Date;
+  expired_date: Date;
+  price_unit: number;
+  money: string;
+  location: string;
+};
 function Newrifa50y50({ }: Props) {
   const [opened, setOpened] = useState(false);
 
-  const form = useForm({
+  const form1 = useForm({
+    initialValues: {
+      fundacion: '',  // Cambio de "email" a "fundacion"
+
+    },
+
+    validate: {
+      fundacion: (value) => {
+        if (!value) {
+          return 'Este campo no puede estar vacío';
+        }
+
+      },
+    },
+  });
+
+
+  const form2 = useForm({
     initialValues: {
       title: '',
       draw_type: 'To-Infinity',
@@ -79,11 +105,12 @@ function Newrifa50y50({ }: Props) {
       location: (value: string) => {
         if (!value) return 'Localidad Requerida';
       },
-      foundation: (value: string) => {
-        if (!value) return 'Fundacion Requerida';
-      },
+      // foundation: (value: string) => {
+      //   if (!value) return 'Fundacion Requerida';
+      // }
+
       tickets_count: (value: number) => {
-        if (form.values.draw_type === 'To-Infinity' || form.values.draw_type === '50/50') { } else {
+        if (form2.values.draw_type === 'To-Infinity' || form2.values.draw_type === '50/50') { } else {
           if (!value) return 'Cantidad de tickets requerida';
           if (value < 100 || value > 1000) return 'La cantidad de tickets debe ser mayor o igual a 100 y menor o igual a 1000';
         }
@@ -107,6 +134,7 @@ function Newrifa50y50({ }: Props) {
   const toggleInputMode = () => {
     setIsInputMode(!isInputMode);
   };
+  const [selectedFoundation, setSelectedFoundation] = useState('');
 
 
   const [inputList, setInputList] = useState<ReactElement[]>([]);
@@ -114,11 +142,27 @@ function Newrifa50y50({ }: Props) {
   const agregarInput = () => {
     const newIndex = inputList.length;
     const newInput = (
-      <Input
-        key={newIndex}
-        placeholder={`Input ${newIndex}`}
-        mt="lg"
-      />
+      <Group position="center" mt="xl">
+
+        <TextInput
+          w={105}
+          label="Numero combos"
+          key={newIndex}
+          placeholder={`Input ${newIndex}`}
+          mt={-10}
+        />
+
+        <TextInput
+          w={105}
+          ml={-5}
+
+          label="Precio"
+          key={newIndex}
+          placeholder={`Input ${newIndex}`}
+          mt={-10}
+
+        />
+      </Group>
     );
     setInputList([...inputList, newInput]);
   };
@@ -135,22 +179,60 @@ function Newrifa50y50({ }: Props) {
       return new Date(moment().add(2, 'days').format('YYYY-MM-DD'))
     }
   }
-  const handleFormSubmit = async () => {
-    try {
-      const response = await axios.post('https://api.rifamax.app/draws', {
-        draw: form.values,
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
-        }
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
+  // const handleFormSubmit = async () => {
+  //   try {
+  //     const response = await axios.post('https://api.rifamax.app/draws', {
+  //       draw: form.values,
+  //     }, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
+  //       }
+  //     });
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  const handleNextStep1 = () => {
+    if (form1.isValid()) {
+      setSelectedFoundation(form1.values.fundacion); // Guarda la fundación seleccionada
+      nextStep();
+    } else {
+      console.log('El formulario no es válido. Por favor, complete todos los campos correctamente.');
+      console.log(form1.errors);
     }
   };
+  const [step2Data, setStep2Data] = useState<Step2Data | null>({
+    title: '',
+    first_prize: '',
+    init_date: new Date(),
+    expired_date: new Date(),
+    price_unit: 0,
+    money: '',
+    location: '',
+  });
+  
 
+  const handleNextStep2 = () => {
+    if (form2.isValid()) {
+      setStep2Data({
+        title: form2.values.title,
+        first_prize: form2.values.first_prize,
+        init_date: form2.values.init_date || new Date(),
+        expired_date: form2.values.expired_date || new Date(),
+        price_unit: form2.values.price_unit || 0,
+        money: form2.values.money,
+        location: form2.values.location || '', // Valor predeterminado en caso de que location sea null
+      });
+      nextStep();
+    } else {
+      console.log('El formulario no es válido. Por favor, complete todos los campos correctamente.');
+      console.log(form2.errors);
+    }
+  };
+  
+  
 
   return (
     <>
@@ -161,45 +243,53 @@ function Newrifa50y50({ }: Props) {
         withCloseButton={false}
         opened={opened}
         onClose={() => {
-          form.reset();
+          form2.reset();
           setOpened(false);
         }}
       >
 
-        <Stepper allowNextStepsSelect={false} active={active} onStepClick={setActive} breakpoint="sm">
+        <Stepper active={active} onStepClick={setActive} breakpoint="sm">
 
           <Stepper.Step label="Paso 1" description="Razon social">
+
+
             <Group position='center'>
               <Title order={2}>Ingrese razon social</Title>
             </Group>
 
-            <Group position='center'>
-              {isInputMode ? (
-                <Input mt={15} placeholder="Ingrese razon social" />
-              ) : (
-                <Select
-                  mt={15}
-                  placeholder="Ingrese razon social"
-                  data={[{ value: 'react', label: 'React' }]}
-                />
-              )}
+            <form onSubmit={form1.onSubmit((values) => console.log(values))}>
 
-              <ActionIcon size="lg" mt={15} variant="filled" onClick={toggleInputMode}>
-                <IconPlus size={18} />
-              </ActionIcon>
-            </Group>
-            <Group position="center" mt="xl">
-          
-          <Button onClick={nextStep}>Next step</Button>
-        </Group>
+              <Group position='center'>
+                {isInputMode ? (
+                  <Input mt={15} placeholder="Ingrese razon social" />
+
+                ) : (
+                  <Select
+                    mt={15}
+                    placeholder="Ingrese razon social"
+                    data={[{ value: 'react', label: 'React' }]}
+                    {...form1.getInputProps('fundacion')}
+
+                  />
+                )}
+
+                <ActionIcon size="lg" mt={15} variant="filled" onClick={toggleInputMode}>
+                  <IconPlus size={18} />
+                </ActionIcon>
+              </Group>
+              <Group position="center" mt="xl">
+
+                <Button type="submit" onClick={handleNextStep1} >
+                  Siguiente paso
+                </Button>
+              </Group>
+
+            </form>
+
           </Stepper.Step>
 
           <Stepper.Step label="Paso 2" description="Datos de la rifa">
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              handleFormSubmit();
-              setOpened(false);
-            }}>
+            <form onSubmit={form2.onSubmit((values) => console.log(values))}>
               <Grid>
                 <Grid.Col span={6}>
                   <TextInput
@@ -207,8 +297,8 @@ function Newrifa50y50({ }: Props) {
                     placeholder="Evento"
                     size='md'
 
-                    error={form.errors.title}
-                    {...form.getInputProps('title')}
+                    error={form2.errors.title}
+                    {...form2.getInputProps('title')}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
@@ -216,8 +306,8 @@ function Newrifa50y50({ }: Props) {
                     label="Premio"
                     placeholder="Premio"
                     size='md'
-                    error={form.errors.first_prize}
-                    {...form.getInputProps('first_prize')}
+                    error={form2.errors.first_prize}
+                    {...form2.getInputProps('first_prize')}
                   />
                 </Grid.Col>
               </Grid>
@@ -235,8 +325,8 @@ function Newrifa50y50({ }: Props) {
                     }
                     minDate={validateDate()}
                     maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
-                    error={form.errors.init_date}
-                    {...form.getInputProps('init_date')}
+                    error={form2.errors.init_date}
+                    {...form2.getInputProps('init_date')}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
@@ -245,11 +335,11 @@ function Newrifa50y50({ }: Props) {
                     placeholder='Fecha de expiracion'
                     size='md'
                     fullWidth
-                    minDate={form.getInputProps('init_date').value || new Date(moment().add(2, 'days').format('YYYY-MM-DD'))}
+                    minDate={form2.getInputProps('init_date').value || new Date(moment().add(2, 'days').format('YYYY-MM-DD'))}
                     rightSection={<Calendar opacity={0.8} />}
-                    {...form.getInputProps('expired_date')}
-                    error={form.errors.expired_date}
-                    {...form.getInputProps('expired_date')}
+                    {...form2.getInputProps('expired_date')}
+                    error={form2.errors.expired_date}
+                    {...form2.getInputProps('expired_date')}
                   />
                 </Grid.Col>
               </Grid>
@@ -261,9 +351,9 @@ function Newrifa50y50({ }: Props) {
 
                     size='md'
                     mt="md"
-                    error={form.errors.price_unit}
+                    error={form2.errors.price_unit}
                     hideControls
-                    {...form.getInputProps('price_unit')}
+                    {...form2.getInputProps('price_unit')}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
@@ -273,13 +363,13 @@ function Newrifa50y50({ }: Props) {
                     label="Moneda"
                     placeholder="Elige una moneda"
 
-                    error={form.errors.money}
+                    error={form2.errors.money}
                     data={[
                       { value: 'BsF', label: 'Bolivares' },
                       { value: '$', label: 'Dolares Estadounidenses' },
                       { value: 'COP', label: 'Pesos Colombianos' }
                     ]}
-                    {...form.getInputProps('money')}
+                    {...form2.getInputProps('money')}
                   />
                 </Grid.Col>
               </Grid>
@@ -290,56 +380,124 @@ function Newrifa50y50({ }: Props) {
                     mb="md"
                     label="Localidad"
                     placeholder="Elige la Localidad"
-                    error={form.errors.location}
+                    error={form2.errors.location}
 
-                    {...form.getInputProps('location')}
+                    {...form2.getInputProps('location')}
                   />
                 </Grid.Col>
-               
+
               </Grid>
               <Group position="center" mt="xl">
-          <Button variant="default" onClick={prevStep}>Back</Button>
-          <Button onClick={nextStep}>Next step</Button>
-        </Group>
+                <Button variant="default" onClick={prevStep}>
+                  Volver
+                </Button>
+                <Button type="submit" onClick={handleNextStep2} >
+                  Siguiente paso
+                </Button>
+              </Group>
 
               {/* <Button color="indigo" fullWidth type="submit">Crear</Button> */}
             </form>
           </Stepper.Step>
 
           <Stepper.Step label="Paso 3" description="Precio combos">
+            <Group position='apart'>
 
-            <ActionIcon size="lg" mt={15} variant="filled" onClick={agregarInput}>
-              <IconPlus size={18} />
-            </ActionIcon>
-            <Group position='center'>
 
-              <ScrollArea type="auto" ml={-35} style={{ height: 250 }} offsetScrollbars>
+
+
+              <ScrollArea type="auto" style={{ height: 250 }} offsetScrollbars>
                 {inputList}
               </ScrollArea>
+
+              <Button color="gray" onClick={agregarInput}>
+                agregar combo
+              </Button>
+
             </Group>
 
             <Group position="center" mt="xl">
-          <Button variant="default" onClick={prevStep}>Back</Button>
-          <Button onClick={nextStep}>Next step</Button>
-        </Group>
+              <Button variant="default" onClick={prevStep}>Volver</Button>
+              <Button onClick={nextStep}>Siguiente paso</Button>
+            </Group>
           </Stepper.Step>
 
           <Stepper.Step label="Paso 4" description="Verificar datos">
-            Step 4 content: Get full access
+
+
+            <Group position='apart' >
+              <Group>
+                <Card >
+
+                  <Title order={4}>Combo info:</Title>
+
+
+                  <Card style={{ background: '#1d1e30', }}>
+                    <Group>
+
+                      <Text>
+                        SI
+                      </Text>
+                      <Text>
+                        SI
+                      </Text>
+                    </Group>
+                  </Card>
+                </Card>
+              </Group>
+
+              <Divider variant="dashed" orientation="vertical" />
+              <Group ml={80}>
+                <Card >
+
+                  <Title mb={10} order={3}>Datos:</Title>
+
+                  <Title order={6}>Evento:</Title>
+                  <li >{step2Data ? step2Data.title : 'No se ha ingresado un Evento'}</li>
+
+                  <Title order={6}>Premio:</Title>
+                  <li >{step2Data ? step2Data.first_prize  : 'No se ha ingresado un Premio'}</li>
+
+                  <Title order={6}>Fecha de inicio:</Title>
+                  <li >{step2Data ? step2Data.init_date.toLocaleDateString() : 'No se ha ingresado una fecha de finalización'}</li>
+
+                  <Title order={6}>Fecha de finalización:</Title>
+                  <li >{step2Data ? step2Data.expired_date.toLocaleDateString() : 'No se ha ingresado una fecha de finalización'}</li>
+
+                  <Title order={6}>Precio unitario:</Title>
+                  <li >{step2Data ? step2Data.price_unit: 'No se ha ingresado una fecha de finalización'}</li>
+
+                  <Title order={6}>Moneda:</Title>
+                  <li >{step2Data ? step2Data.money: 'No se ha ingresado una fecha de finalización'}</li>
+
+                  <Title order={6}>Localidad: </Title>
+                  <li >{step2Data ? step2Data.location: 'No se ha ingresado una fecha de finalización'}</li>
+
+                  
+                  <Title mt={10} order={6}>Localidad:</Title>
+                  <li>
+                    {selectedFoundation}
+                  </li>
+
+
+                </Card>
+              </Group>
+
+            </Group>
+
+
+
             <Group position="center" mt="xl">
-          <Button variant="default" onClick={prevStep}>Back</Button>
-          <Button onClick={nextStep}>Next step</Button>
-        </Group>
+              <Button variant="default" onClick={prevStep}>Volver</Button>
+              <Button onClick={nextStep}>Siguiente paso</Button>
+            </Group>
           </Stepper.Step>
 
           <Stepper.Completed>
-            Completed, click back button to get to previous step
+            Completed, click Volver button to get to previous step
           </Stepper.Completed>
 
         </Stepper>
-
-       
-
 
       </Modal>
 
