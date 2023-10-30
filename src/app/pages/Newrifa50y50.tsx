@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useState, ReactElement } from 'react';
 import {
   Stepper,
   Switch,
@@ -11,6 +10,7 @@ import {
   SimpleGrid,
   Modal,
   Button,
+  Input,
   Slider,
   TextInput,
   Checkbox,
@@ -20,10 +20,12 @@ import {
   Group,
   Divider,
   MultiSelect,
+  Title,
   ActionIcon,
+  ScrollArea
 
 } from '@mantine/core'
-
+import { IconPlus } from '@tabler/icons-react';
 import moment from 'moment'
 import { useForm } from '@mantine/form';
 import { DatePicker } from "@mantine/dates"
@@ -100,8 +102,31 @@ function Newrifa50y50({ }: Props) {
     },
   });
 
-  const [actualDate, setActualDate] = useState<Date>(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))
+  const [isInputMode, setIsInputMode] = useState(false);
 
+  const toggleInputMode = () => {
+    setIsInputMode(!isInputMode);
+  };
+
+
+  const [inputList, setInputList] = useState<ReactElement[]>([]);
+
+  const agregarInput = () => {
+    const newIndex = inputList.length;
+    const newInput = (
+      <Input
+        key={newIndex}
+        placeholder={`Input ${newIndex}`}
+        mt="lg"
+      />
+    );
+    setInputList([...inputList, newInput]);
+  };
+
+  const [actualDate, setActualDate] = useState<Date>(new Date(moment().format('YYYY-MM-DD hh:mm:ss')))
+  const [active, setActive] = useState(0);
+  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
+  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const validate = new Date(moment().format('YYYY-MM-DD 19:30:00'))
   const validateDate = () => {
     if (actualDate <= validate) {
@@ -132,6 +157,7 @@ function Newrifa50y50({ }: Props) {
       <Modal
         centered
         size="50%"
+
         withCloseButton={false}
         opened={opened}
         onClose={() => {
@@ -139,120 +165,181 @@ function Newrifa50y50({ }: Props) {
           setOpened(false);
         }}
       >
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          handleFormSubmit(); 
-          setOpened(false);
-        }}>
-          <Grid>
-            <Grid.Col span={6}>
-              <TextInput
-                label="Evento"
-                placeholder="Evento"
-                size='md'
 
-                error={form.errors.title}
-                {...form.getInputProps('title')}
-              />
-            </Grid.Col>
-            <Grid.Col span={6}>
-            <TextInput
-                label="Premio"
-                placeholder="Premio"
-                size='md'
-                error={form.errors.first_prize}
-                {...form.getInputProps('first_prize')}
-              />
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={6}>
-              <DatePicker
-                label='Fecha de la rifa'
-                placeholder='Fecha de la rifa'
-                size='md'
-                fullWidth
-                rightSection={
-                  <Calendar
-                    opacity={0.8}
+        <Stepper allowNextStepsSelect={false} active={active} onStepClick={setActive} breakpoint="sm">
+
+          <Stepper.Step label="Paso 1" description="Razon social">
+            <Group position='center'>
+              <Title order={2}>Ingrese razon social</Title>
+            </Group>
+
+            <Group position='center'>
+              {isInputMode ? (
+                <Input mt={15} placeholder="Ingrese razon social" />
+              ) : (
+                <Select
+                  mt={15}
+                  placeholder="Ingrese razon social"
+                  data={[{ value: 'react', label: 'React' }]}
+                />
+              )}
+
+              <ActionIcon size="lg" mt={15} variant="filled" onClick={toggleInputMode}>
+                <IconPlus size={18} />
+              </ActionIcon>
+            </Group>
+            <Group position="center" mt="xl">
+          
+          <Button onClick={nextStep}>Next step</Button>
+        </Group>
+          </Stepper.Step>
+
+          <Stepper.Step label="Paso 2" description="Datos de la rifa">
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleFormSubmit();
+              setOpened(false);
+            }}>
+              <Grid>
+                <Grid.Col span={6}>
+                  <TextInput
+                    label="Evento"
+                    placeholder="Evento"
+                    size='md'
+
+                    error={form.errors.title}
+                    {...form.getInputProps('title')}
                   />
-                }
-                minDate={validateDate()}
-                maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
-                error={form.errors.init_date}
-                {...form.getInputProps('init_date')}
-              />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <DatePicker
-                label='Fecha de expiracion'
-                placeholder='Fecha de expiracion'
-                size='md'
-                fullWidth
-                minDate={form.getInputProps('init_date').value || new Date(moment().add(2, 'days').format('YYYY-MM-DD'))}
-                rightSection={<Calendar opacity={0.8} />}
-                {...form.getInputProps('expired_date')}
-                error={form.errors.expired_date}
-                {...form.getInputProps('expired_date')}
-              />
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={6}>
-              <NumberInput
-                label="Precio unitario"
-                placeholder="Precio unitario"
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <TextInput
+                    label="Premio"
+                    placeholder="Premio"
+                    size='md'
+                    error={form.errors.first_prize}
+                    {...form.getInputProps('first_prize')}
+                  />
+                </Grid.Col>
+              </Grid>
+              <Grid>
+                <Grid.Col span={6}>
+                  <DatePicker
+                    label='Fecha de la rifa'
+                    placeholder='Fecha de la rifa'
+                    size='md'
+                    fullWidth
+                    rightSection={
+                      <Calendar
+                        opacity={0.8}
+                      />
+                    }
+                    minDate={validateDate()}
+                    maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
+                    error={form.errors.init_date}
+                    {...form.getInputProps('init_date')}
+                  />
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <DatePicker
+                    label='Fecha de expiracion'
+                    placeholder='Fecha de expiracion'
+                    size='md'
+                    fullWidth
+                    minDate={form.getInputProps('init_date').value || new Date(moment().add(2, 'days').format('YYYY-MM-DD'))}
+                    rightSection={<Calendar opacity={0.8} />}
+                    {...form.getInputProps('expired_date')}
+                    error={form.errors.expired_date}
+                    {...form.getInputProps('expired_date')}
+                  />
+                </Grid.Col>
+              </Grid>
+              <Grid>
+                <Grid.Col span={6}>
+                  <NumberInput
+                    label="Precio unitario"
+                    placeholder="Precio unitario"
 
-                size='md'
-                mt="md"
-                error={form.errors.price_unit}
-                hideControls
-                {...form.getInputProps('price_unit')}
-              />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Select
-                size='md'
-                mt="md"
-                label="Moneda"
-                placeholder="Elige una moneda"
+                    size='md'
+                    mt="md"
+                    error={form.errors.price_unit}
+                    hideControls
+                    {...form.getInputProps('price_unit')}
+                  />
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <Select
+                    size='md'
+                    mt="md"
+                    label="Moneda"
+                    placeholder="Elige una moneda"
 
-                error={form.errors.money}
-                data={[
-                  { value: 'BsF', label: 'Bolivares' },
-                  { value: '$', label: 'Dolares Estadounidenses' },
-                  { value: 'COP', label: 'Pesos Colombianos' }
-                ]}
-                {...form.getInputProps('money')}
-              />
-            </Grid.Col>
-          </Grid>
-          <Grid mb={10}>
-            <Grid.Col span={6}>
-            <TextInput
-                size='md'
-                mb="md"
-                label="Localidad"
-                placeholder="Elige la Localidad"
-                error={form.errors.location}
+                    error={form.errors.money}
+                    data={[
+                      { value: 'BsF', label: 'Bolivares' },
+                      { value: '$', label: 'Dolares Estadounidenses' },
+                      { value: 'COP', label: 'Pesos Colombianos' }
+                    ]}
+                    {...form.getInputProps('money')}
+                  />
+                </Grid.Col>
+              </Grid>
+              <Grid mb={10}>
+                <Grid.Col span={6}>
+                  <TextInput
+                    size='md'
+                    mb="md"
+                    label="Localidad"
+                    placeholder="Elige la Localidad"
+                    error={form.errors.location}
+
+                    {...form.getInputProps('location')}
+                  />
+                </Grid.Col>
                
-                {...form.getInputProps('location')}
-              />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <TextInput
-                size='md'
-                label="Fundacion"
-                placeholder="Fundacion"
-                error={form.errors.foundation}
-                {...form.getInputProps('foundation')}
-              />
-            </Grid.Col>
-          </Grid>
+              </Grid>
+              <Group position="center" mt="xl">
+          <Button variant="default" onClick={prevStep}>Back</Button>
+          <Button onClick={nextStep}>Next step</Button>
+        </Group>
 
+              {/* <Button color="indigo" fullWidth type="submit">Crear</Button> */}
+            </form>
+          </Stepper.Step>
 
-          <Button color="indigo" fullWidth type="submit">Crear</Button>
-        </form>
+          <Stepper.Step label="Paso 3" description="Precio combos">
+
+            <ActionIcon size="lg" mt={15} variant="filled" onClick={agregarInput}>
+              <IconPlus size={18} />
+            </ActionIcon>
+            <Group position='center'>
+
+              <ScrollArea type="auto" ml={-35} style={{ height: 250 }} offsetScrollbars>
+                {inputList}
+              </ScrollArea>
+            </Group>
+
+            <Group position="center" mt="xl">
+          <Button variant="default" onClick={prevStep}>Back</Button>
+          <Button onClick={nextStep}>Next step</Button>
+        </Group>
+          </Stepper.Step>
+
+          <Stepper.Step label="Paso 4" description="Verificar datos">
+            Step 4 content: Get full access
+            <Group position="center" mt="xl">
+          <Button variant="default" onClick={prevStep}>Back</Button>
+          <Button onClick={nextStep}>Next step</Button>
+        </Group>
+          </Stepper.Step>
+
+          <Stepper.Completed>
+            Completed, click back button to get to previous step
+          </Stepper.Completed>
+
+        </Stepper>
+
+       
+
 
       </Modal>
 
