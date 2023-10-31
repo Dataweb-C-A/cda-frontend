@@ -28,7 +28,7 @@ const taquillaPermissions = user.name === "50-50-001" ? ['/reportes50y50'] : [];
 const permissions: PermissionMap = {
   [Role.Admin]: ['/','/rifamax' ,'/New50y50t', '/users', '/riferos', '/reportes-rifa','/cuadre' ,'/lobby','/reports', '/exchange', '/draws','/infinito','/reportes50y50'],
   [Role.Rifero]: ['/'],
-  [Role.Taquilla]: ['/','/rifamax','/New50y50t','/riferos', '/lobby', '/reportes-rifa','/cuadre','/infinito', '/reportes50y50','/draws',],
+  [Role.Taquilla]: ['/','/rifamax','award','/New50y50t','/riferos', '/lobby', '/reportes-rifa','/cuadre','/infinito', '/reportes50y50','/draws',],
   [Role.Agencia]: ['/'],
   [Role.Auto]: ['/lobby'],
   [Role.Undefined]: ['/login'],

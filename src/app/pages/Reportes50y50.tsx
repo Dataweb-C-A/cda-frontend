@@ -250,10 +250,10 @@ const Reportes50y50 = (props: Props) => {
             <Tabs color="indigo" variant="outline" defaultValue="gallery">
               <Tabs.List grow>
                 <Tabs.Tab value="Reporte de venta" icon={<IconMessageCircle size={14} />}>Reporte de venta</Tabs.Tab>
-                <Tabs.Tab value="imprimir" icon={<IconPrinter size={14} />}>Imprimir</Tabs.Tab>
+                <Tabs.Tab value="imprimir" icon={<IconPrinter size={14} />}>Reimprimir ticket buzon</Tabs.Tab>
               </Tabs.List>
 
-              <Tabs.Panel value="imprimir" defaultValue='imprimir' pt="xs">
+              <Tabs.Panel value="mprimir" defaultValue='imprimir' pt="xs">
                 
 
 

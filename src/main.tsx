@@ -25,6 +25,8 @@ import Pot from './app/pages/Pot'
 import axios from 'axios'
 import New50y50t from './app/pages/New50y50t'
 import it5050 from './app/pages/it5050'
+import award from './app/pages/Award'
+
 
 
 type AppProps = {
@@ -251,6 +253,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <AuthRouter path="/exchange" component={Exchange} isPrivate />
           <AuthRouter path="/draws" component={Draws} isPrivate />
           <AuthRouter path="/cuadre" component={Cuadre} isPrivate />
+          <AuthRouter path="/award" component={award} isPrivate />
           <AuthRouter path="/infinito" component={Infinito} isPrivate />
           <AuthRouter path="/New50y50t" component={New50y50t} isPrivate />
           <AuthRouter path="/reportes50y50" component={Reportes50y50} isPrivate />
