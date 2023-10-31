@@ -57,7 +57,7 @@ function Combo50table() {
 
       <Group mb={12} position='apart'>
 
-        <Text fz="md">Total ganado: {totalComboPrice} $</Text>
+        <Text fz="md">Total venta: {totalComboPrice} $</Text>
         <Text mr={15} fz="md">Pote: {pote} $</Text>
 
       </Group>

@@ -253,7 +253,7 @@ const Reportes50y50 = (props: Props) => {
                 <Tabs.Tab value="imprimir" icon={<IconPrinter size={14} />}>Reimprimir ticket buzon</Tabs.Tab>
               </Tabs.List>
 
-              <Tabs.Panel value="mprimir" defaultValue='imprimir' pt="xs">
+              <Tabs.Panel value="imprimir" defaultValue='imprimir' pt="xs">
                 
 
 
@@ -264,7 +264,7 @@ const Reportes50y50 = (props: Props) => {
                   w={350}
                   mb={15}
                   data={getAgencyOptions()}
-                  value={selectedAgent} // Actualiza el valor de acuerdo a selectedAgent
+                  value={selectedAgent} 
                   onChange={(value: string) => {
                     handleChange(value); // Llama a handleChange con el nuevo valor
                   }}
