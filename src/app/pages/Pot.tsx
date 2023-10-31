@@ -15,7 +15,11 @@ import {
 import { IconOvalVerticalFilled, IconPig, IconRectangleFilled, IconBeer } from '@tabler/icons-react';
 
 type Props = {}
-
+interface IData {
+  id: number;
+  numbers: number[][];
+  combo_price: number;
+}
 type Partido = {
   titulo: string;
   playdate: string;
@@ -25,8 +29,8 @@ type Partido = {
 };
 const titleStyles = {
   fontSize: '5vw',
-  marginTop: '5vw', 
-  marginLeft: '15vw', 
+  marginTop: '5vw',
+  marginLeft: '15vw',
 };
 type Localidades = {
   [key: string]: Partido[];
@@ -34,17 +38,55 @@ type Localidades = {
 
 function Pot({ }: Props) {
   const [data, setData] = useState<Partido | null>(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const [loading, setLoading] = useState(true);
+  const [numbers, setNumbers] = useState<IData[] | []>([]);
 
   const fetchData = () => {
-    axios.get('https://api.rifamax.app/pot/stadium')
+    axios.get('https://api.rifamax.app/combos?id=8')
       .then((response) => {
-        setData(response.data.monumental);
+        const numbersData = response.data.places;
+        setNumbers(numbersData);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error('Error al obtener los datos:', error);
+        console.error('Error fetching data:', error);
+        setLoading(false);
       });
   };
+  useEffect(() => {
+    fetchData();
 
+    const interval = setInterval(() => {
+      fetchData();
+      setCurrentDate(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  let totalComboPrice = 0;
+
+  numbers.forEach((data) => {
+    totalComboPrice += data.combo_price;
+  });
+
+  const pote = totalComboPrice / 2;
   useEffect(() => {
     fetchData();
 
@@ -56,54 +98,46 @@ function Pot({ }: Props) {
       clearInterval(intervalId);
     };
   }, []);
+  const formattedDate = currentDate.toLocaleDateString();
 
   return (
     <>
-      {data && (
-        <Group position='center'>
-          <Card
-            w="95%"
-            styles={{
-              background: "#5f5f5f3d"
-            }}
-            mt={55}
-            h="895px"
-            radius="md"
-            shadow="sm"
-            withBorder
-          >
-            {/* <Card.Section>
-                <Image
-                  src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Estadio_M%C3%A2s_Monumental.jpg"
-                  height={260}
-                />
-              </Card.Section>  */}
-            <Group position='center'>
-              <Title order={3}>
-                {data.titulo}
-              </Title>
 
-            </Group>
+      <Group position='center'>
+        <Card
+          w="95%"
+          styles={{
+            background: "#5f5f5f3d"
+          }}
+          mt={55}
+          h="895px"
+          radius="md"
+          shadow="sm"
+          withBorder
+        >
 
-            <Group position="apart">
+          <Group position='center'>
+            <Title order={3}>
 
-              <Text mt={5} >
-                Fecha: {data.playdate}
-              </Text>
+            </Title>
 
-              
+          </Group>
 
-            </Group>
+          <Group position="apart">
+            <Text mt={5}>
+              Fecha: {formattedDate}
+            </Text>
+          </Group>
 
-            <Divider label="Pote actual" labelPosition="center"  my="sm" variant="dashed" />
+          <Divider label="Pote actual" labelPosition="center" my="sm" variant="dashed" />
 
-            <Group mt="10%"  position="apart">
+          <Group mt="10%" position="apart">
 
-              <Title style={titleStyles} >
-                Monto a repartir: {data.pot_founds} $
-              </Title>
+            <Title style={titleStyles} >
+              Monto a repartir: {pote} $
+            </Title>
 
-              {/* <div>
+            {/* <div>
 
                 <ActionIcon ml={180} w={450}  mb={20} variant="transparent" style={{ color: (data.pot_founds * 0.5) >= 7000 ? "#1d870c" : "#2B2C3D", zIndex: 99 }}  >
                   <IconRectangleFilled size="410px" />
@@ -123,11 +157,11 @@ function Pot({ }: Props) {
 
               </div> */}
 
-            </Group>
+          </Group>
 
-          </Card>
-        </Group>
-      )}
+        </Card>
+      </Group>
+
     </>
   );
 }
