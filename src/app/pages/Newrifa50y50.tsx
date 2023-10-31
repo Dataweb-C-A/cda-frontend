@@ -403,33 +403,33 @@ function Newrifa50y50({ }: Props) {
           </Stepper.Step>
 
           <Stepper.Step label="Paso 3" description="Precio combos">
-  <form onSubmit={form3.onSubmit((values) => console.log(values))}>
-    <Group position='apart'>
-      <Group position="center" mt="xl">
-        <TextInput
-          w={105}
-          label="Numero combos"
-          mt={-10}
-          {...form3.getInputProps('combo')}
-        />
-        <TextInput
-          w={105}
-          ml={-5}
-          label="Precio"
-          mt={-10}
-          {...form3.getInputProps('precio')}
-        />
-      </Group>
-      <Button color="gray">agregar combo</Button>
-    </Group>
-    <Group position="center" mt="xl">
-      <Button variant="default" onClick={prevStep}>
-        Volver
-      </Button>
-      <Button onClick={handleNextStep3}>Siguiente paso</Button>
-    </Group>
-  </form>
-</Stepper.Step>
+            <form onSubmit={form3.onSubmit((values) => console.log(values))}>
+              <Group position='apart'>
+                <Group position="center" mt="xl">
+                  <TextInput
+                    w={105}
+                    label="Numero combos"
+                    mt={-10}
+                    {...form3.getInputProps('combo')}
+                  />
+                  <TextInput
+                    w={105}
+                    ml={-5}
+                    label="Precio"
+                    mt={-10}
+                    {...form3.getInputProps('precio')}
+                  />
+                </Group>
+                <Button color="gray">agregar combo</Button>
+              </Group>
+              <Group position="center" mt="xl">
+                <Button variant="default" onClick={prevStep}>
+                  Volver
+                </Button>
+                <Button onClick={handleNextStep3}>Siguiente paso</Button>
+              </Group>
+            </form>
+          </Stepper.Step>
 
 
           <Stepper.Step label="Paso 4" description="Verificar datos">
