@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from '../components/navbar'
 import { links } from '../assets/data/links'
 import axios from 'axios';
@@ -11,6 +11,11 @@ interface IPlaces {
   client_id: null
 }
 
+interface ICurrent {
+  title: string;
+  foundation: string;
+}
+
 function infinito() {
   const [profiles, setProfiles] = useState([]);
   const precio = 1;
@@ -20,6 +25,17 @@ function infinito() {
   const [notificationErrorVisible, setNotificationErrorVisible] = useState(false);
   const [sold, setSold] = useState<IPlaces[] | []>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [currentDraw, setCurrentDraw] = useState<ICurrent | null>(null)
+
+  useEffect(() => {
+    axios.get('https://api.rifamax.app/draws_fifty')
+      .then((res) => {
+        setCurrentDraw(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   const handleQuantityClick = (selectedQuantity: number) => {
     axios.post(`https://api.rifamax.app/to-infinity?quantity=${selectedQuantity}`, {
@@ -109,7 +125,7 @@ function infinito() {
           <Grid.Col span={8}>
 
             <Title order={2} fw={700}>Rifamax 50/50</Title>
-            <Title order={3} fw={200}>A beneficio de fundacion La Salle</Title>
+            <Title order={3} fw={200}>A beneficio de fundacion {currentDraw?.foundation}</Title>
 
             <Divider
 
