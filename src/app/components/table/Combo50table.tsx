@@ -43,8 +43,13 @@ function Combo50table() {
     };
   }, []);
 
-  const totalComboPrice = numbers.reduce((total, data) => total + data.combo_price, 0);
-  const pote = totalComboPrice * 0.5;
+  let totalComboPrice = 0;
+
+  numbers.forEach((data) => {
+    totalComboPrice += data.combo_price;
+  });
+  
+  const pote = totalComboPrice / 2;
 
   return (
     <>
