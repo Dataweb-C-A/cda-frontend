@@ -14,6 +14,7 @@ import {
   ActionIcon,
   Group,
   Select,
+  ScrollArea,
   Tabs
 } from '@mantine/core';
 import Newrifa50y50 from './Newrifa50y50';
@@ -187,36 +188,47 @@ const Reportes50y50 = (props: Props) => {
       return number.agency === selectedAgent;
     }
   });
-  const rows = filteredRows.map((number, index) => (
-    <tr key={index}>
-      <td>{number.numbers}</td>
-      <td>{number.agency}</td>
-      <td>Caracas</td>
-      <td style={{ width: '205px' }}>
-        <Group position='center'>
-          <ActionIcon
-            color='indigo'
-            size='lg'
-            variant='filled'
-            onClick={() =>
-              send([
-                {
-                  notification: {
-                    tickets_generated: [number.numbers],
-                    user_id: 369,
-                    is_printed: true,
+  const rows = filteredRows.map((number, index) => {
+    let formattedNumber = number.numbers.toString(); 
+    if (formattedNumber.length === 1) {
+      formattedNumber = '000' + formattedNumber;
+    } else if (formattedNumber.length === 2) {
+      formattedNumber = '00' + formattedNumber;
+    } else if (formattedNumber.length === 3) {
+      formattedNumber = '0' + formattedNumber;
+    }
+  
+    return (
+      <tr key={index}>
+        <td>{formattedNumber}</td>
+        <td>{number.agency}</td>
+        <td>Caracas</td>
+        <td style={{ width: '205px' }}>
+          <Group position='center'>
+            <ActionIcon
+              color='indigo'
+              size='lg'
+              variant='filled'
+              onClick={() =>
+                send([
+                  {
+                    notification: {
+                      tickets_generated: [number.numbers],
+                      user_id: 369,
+                      is_printed: true,
+                    },
                   },
-                },
-              ])
-            }
-          >
-            <IconPrinter size={26} />
-          </ActionIcon>
-        </Group>
-      </td>
-    </tr>
-  ));
-
+                ])
+              }
+            >
+              <IconPrinter size={26} />
+            </ActionIcon>
+          </Group>
+        </td>
+      </tr>
+    );
+  });
+  
   const totalPages = Math.ceil(numbers.length / itemsPerPage);
 
   return (
@@ -233,7 +245,7 @@ const Reportes50y50 = (props: Props) => {
           <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
             <Group position='center'>
 
-          <Title mb={10} order={2}>Eliga un registro</Title>
+          <Title mb={10} order={2}>Elija un registro</Title>
             </Group>
             <Tabs color="indigo" variant="outline" defaultValue="gallery">
               <Tabs.List grow>
@@ -262,6 +274,9 @@ const Reportes50y50 = (props: Props) => {
                 {loading ? (
                   <p>Loading...</p>
                 ) : (
+
+                  <ScrollArea type="scroll" style={{ height: 650 }}>
+                    
                   <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
                     <thead>
                       <tr>
@@ -271,8 +286,10 @@ const Reportes50y50 = (props: Props) => {
                         <th>Reimprimir Ticket</th>
                       </tr>
                     </thead>
+                    
                     <tbody>{rows}</tbody>
                   </Table>
+                </ScrollArea>
                 )}
               </Tabs.Panel>
               <Tabs.Panel value="Reporte de venta" pt="xs">

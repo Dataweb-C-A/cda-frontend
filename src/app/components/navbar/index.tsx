@@ -264,7 +264,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
           border={true}
           cedula="V-29543140"
           image=""
-          hasHover={false}
+          // hasHover={false}
         />
         
         }

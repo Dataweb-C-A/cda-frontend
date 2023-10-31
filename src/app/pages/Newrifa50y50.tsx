@@ -229,15 +229,13 @@ function Newrifa50y50({ }: Props) {
           </Grid>
           <Grid mb={10}>
             <Grid.Col span={6}>
-              <Select
+            <TextInput
                 size='md'
                 mb="md"
                 label="Localidad"
                 placeholder="Elige la Localidad"
                 error={form.errors.location}
-                data={[
-                  { value: 'Monumental', label: 'Monumental' },
-                ]}
+               
                 {...form.getInputProps('location')}
               />
             </Grid.Col>

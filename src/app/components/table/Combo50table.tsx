@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Table,
-  Title
+  Group,
+  Title,
+  Text,
+  ScrollArea
 } from '@mantine/core';
 
 interface IData {
@@ -21,7 +24,6 @@ function Combo50table() {
         const numbersData = response.data.places;
         setNumbers(numbersData);
         setLoading(false);
-        
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -41,35 +43,61 @@ function Combo50table() {
     };
   }, []);
 
+  const totalComboPrice = numbers.reduce((total, data) => total + data.combo_price, 0);
+  const pote = totalComboPrice * 0.5;
+
   return (
     <>
-    <Title mb={15}>Reportes 50 y 50</Title>
-          <Table striped highlightOnHover withBorder withColumnBorders>
+      <Title mb={15}>Reportes 50 y 50</Title>
 
-        <thead>
-          <tr>
-            <th>Numero de compra</th>
-            <th>Numeros</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-        <tbody>
-          {numbers.map((data) => (
-            <tr key={data.id}>
-              <td>{data.id}</td>
-              <td>
-                {data.numbers.map((numberArray, index) => (
-                  <span key={index}>
-                    {numberArray.join(' ')} 
-                    {index < data.numbers.length - 1 && ', '}
-                  </span>
-                ))}
-              </td>
-              <td>{data.combo_price} $</td>
+      <Group mb={12} position='apart'>
+
+        <Text fz="md">Total ganado: {totalComboPrice} $</Text>
+        <Text mr={15} fz="md">Pote: {pote} $</Text>
+
+      </Group>
+      <ScrollArea type="scroll" style={{ height: 650 }}>
+
+        <Table striped highlightOnHover withBorder withColumnBorders>
+          <thead>
+            <tr>
+              <th>Numero de compra</th>
+              <th>Numeros</th>
+              <th>Precio</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {numbers.map((data) => (
+              <tr key={data.id}>
+                <td>{data.id}</td>
+                <td>
+                  {data.numbers.map((numberArray, index) => (
+                    <span key={index}>
+                      {numberArray.map((num) => {
+                        const numStr = num.toString();
+                        const numLength = numStr.length;
+
+                        if (numLength === 1) {
+                          return `000${numStr}`;
+                        } else if (numLength === 2) {
+                          return `00${numStr}`;
+                        } else if (numLength === 3) {
+                          return `0${numStr}`;
+                        } else {
+                          return numStr; 
+                        }
+                      }).join(' ')}
+                      {index < data.numbers.length - 1 && ', '}
+                    </span>
+                  ))}
+                </td>
+
+                <td>{data.combo_price} $</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </ScrollArea>
     </>
   );
 }

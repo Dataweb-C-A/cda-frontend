@@ -70,7 +70,6 @@ const New50y50t = (props: Props) => {
   const tableRows = users.map((user: any) => (
     <tr key={user.id}>
       <td>{user.name}</td>
-      <td>{user.username}</td>
       <td>{user.cedula}</td>
       <td>{user.taquilla.phone}</td>
       <td>{user.email}</td>
@@ -104,7 +103,6 @@ const New50y50t = (props: Props) => {
               <thead>
                 <tr>
                   <th>Nombre</th>
-                  <th>Nombre de usuario</th>
                   <th>Cédula</th>
                   <th>Número</th>
                   <th>Correo</th>

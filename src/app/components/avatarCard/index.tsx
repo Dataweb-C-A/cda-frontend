@@ -115,11 +115,11 @@ function AvatarCard({ id, name, image, role, border, width, padding, margin, sty
             src={image}
             size="lg"
             radius="md"
-            style={{ filter: isHovering ? 'blur(5px)' : 'none' }}
-            onMouseEnter={() => {
-              hasHover && setIsHovering(true);
-            }}
-            onMouseLeave={() => setIsHovering(false)}
+            // style={{ filter: isHovering ? 'blur(5px)' : 'none' }}
+            // onMouseEnter={() => {
+            //   hasHover && setIsHovering(true);
+            // }}
+            // onMouseLeave={() => setIsHovering(false)}
           >
             {getInitials(name)}
           </Avatar>
@@ -127,7 +127,7 @@ function AvatarCard({ id, name, image, role, border, width, padding, margin, sty
             <div
               className="pencil-overlay"
             >
-              <Pencil />
+              {/* <Pencil /> */}
             </div>
           )}
           <Text>
@@ -138,7 +138,7 @@ function AvatarCard({ id, name, image, role, border, width, padding, margin, sty
         </div>
         {children}
       </Card>
-      <Modal
+      {/* <Modal
         opened={editModal}
         onClose={() => setEditModal(false)}
         size="xl"
@@ -151,7 +151,7 @@ function AvatarCard({ id, name, image, role, border, width, padding, margin, sty
       </Group>
 
 
-      </Modal>
+      </Modal> */}
     </div>
   );
 }
