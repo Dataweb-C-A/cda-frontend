@@ -77,7 +77,24 @@ const Reportes50y50 = (props: Props) => {
   const theme = useMantineTheme();
   const history = useHistory();
 
+  const socket = new WebSocket('ws://127.0.0.1:1315');
 
+  socket.onopen = function () {
+    console.log('Conexión establecida.');
+  };
+
+  socket.onmessage = function (event) {
+    console.log('Mensaje recibido del servidor:', event.data);
+  };
+
+  socket.onerror = function (error) {
+    console.error('Error en la conexión:', error);
+  };
+
+  socket.onclose = function (event) {
+    console.log('Conexión cerrada:', event.code, event.reason);
+  };
+  
   const [numbers, setNumbers] = useState<IData[] | []>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -111,7 +128,7 @@ const Reportes50y50 = (props: Props) => {
     }
     const interval = setInterval(() => {
       fetchData();
-    }, 1000);
+    }, 10000);
 
     return () => {
       clearInterval(interval);
@@ -130,27 +147,6 @@ const Reportes50y50 = (props: Props) => {
   };
   
   const filteredNumbers = currentNumbers;
-
-
-
-
-  const socket = new WebSocket('ws://127.0.0.1:1315');
-
-  socket.onopen = function () {
-    console.log('Conexión establecida.');
-  };
-
-  socket.onmessage = function (event) {
-    console.log('Mensaje recibido del servidor:', event.data);
-  };
-
-  socket.onerror = function (error) {
-    console.error('Error en la conexión:', error);
-  };
-
-  socket.onclose = function (event) {
-    console.log('Conexión cerrada:', event.code, event.reason);
-  };
 
   const getAgencyOptions = () => {
     const uniqueAgencies = [...new Set(numbers.map((number) => number.agency))];
