@@ -124,7 +124,7 @@ function infinito() {
         <Grid>
           <Grid.Col span={8}>
 
-            <Title order={2} fw={700}>Rifamax 50/50</Title>
+            <Title order={2} fw={700}>Rifa 50/50</Title>
             <Title order={3} fw={200}>A beneficio de fundacion {currentDraw?.foundation}</Title>
 
             <Divider

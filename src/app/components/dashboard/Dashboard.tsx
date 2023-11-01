@@ -659,7 +659,6 @@ function Dashboard() {
                       socket.send(`\n---------------------------------\nTotal Pesos: ${closedData.total.cop} COP`)
                       socket.send('\n\n\n\n\n\n')
                       socket.send('cut')
-                      socket.close();
                     }, 1000)
                   };
 

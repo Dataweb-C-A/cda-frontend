@@ -84,14 +84,13 @@ function App({ children }: AppProps) {
             paddedItem = `0${paddedItem}`;
           }
   
-          socket.send(`---------------------------------\n Numero de ticket: ${printer[0].notification.current_id} \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Caracas\n---------------------------------\n\n\n\n\n\n\n`);
+          socket.send(`---------------------------------\n Numero de ticket: ${printer[0].notification.current_id} \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Caracas\n---------------------------------\n\n\n\n\n`);
           socket.send('cut');
-          socket.close();
         });
       };
       setTimeout(() => {
         mensaje();
-      }, 3000);
+      }, 1000);
     } else {
       console.error('El socket no está abierto.');
     }
