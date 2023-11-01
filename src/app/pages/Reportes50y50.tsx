@@ -102,12 +102,39 @@ const Reportes50y50 = (props: Props) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   let is5050User = false;
   const [selectedOption, setSelectedOption] = useState<string>("imprimir");
+  function send(printer: IPrinter[] | []): void {
+    if (socket.readyState === WebSocket.OPEN) {
+      const mensaje = (): void => {
+        const fechaHoy = new Date();
+        const formattedFecha = fechaHoy.toLocaleDateString();
+        printer[0].notification.tickets_generated.map((item) => {
+          let paddedItem = String(item);
+          if (paddedItem.length === 2) {
+            paddedItem = `00${paddedItem}`;
+          } else if (paddedItem.length === 3) {
+            paddedItem = `0${paddedItem}`;
+          }
+
+          socket.send(`---------------------------------\n Este ticket ha sido reimpreso \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Caracas\n---------------------------------\n\n\n\n\n\n\n`);
+          socket.send('cut');
+          socket.close();
+        });
+      };
+      setTimeout(() => {
+        mensaje();
+      }, 3000);
+    } else {
+      console.error('El socket no está abierto.');
+    }
+  }
 
   const [selectedAgent, setSelectedAgent] = useState<string>('');
 
   if (typeof user.name === 'string') {
     is5050User = user.name.substring(0, 5) === "50 50";
   }
+
+
   const fetchData = () => {
     axios.get('https://api.rifamax.app/report_tickets?id=8')
       .then((response) => {
@@ -122,18 +149,18 @@ const Reportes50y50 = (props: Props) => {
   };
 
   useEffect(() => {
-    fetchData();
-    if (!is5050User) {
-      return;
-    }
     const interval = setInterval(() => {
       fetchData();
     }, 10000);
 
+    if (!is5050User) {
+      return;
+    }
+
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [numbers]);
 
 
   const [printer, setPrinter] = useState(0)
@@ -153,30 +180,6 @@ const Reportes50y50 = (props: Props) => {
     return uniqueAgencies.map((agency) => ({ value: agency, label: agency }));
   };
 
-  function send(printer: IPrinter[] | []): void {
-    if (socket.readyState === WebSocket.OPEN) {
-      const mensaje = (): void => {
-        const fechaHoy = new Date();
-        const formattedFecha = fechaHoy.toLocaleDateString();
-        printer[0].notification.tickets_generated.map((item) => {
-          let paddedItem = String(item);
-          if (paddedItem.length === 2) {
-            paddedItem = `00${paddedItem}`;
-          } else if (paddedItem.length === 3) {
-            paddedItem = `0${paddedItem}`;
-          }
-
-          socket.send(`---------------------------------\n Este ticket ha sido reimpreso \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Caracas\n---------------------------------\n\n\n\n\n\n\n`);
-          socket.send('cut');
-        });
-      };
-      setTimeout(() => {
-        mensaje();
-      }, 3000);
-    } else {
-      console.error('El socket no está abierto.');
-    }
-  }
   const filteredRows = filteredNumbers.filter((number) => {
     if (selectedAgent === '') {
       return true; // No se ha seleccionado un agente, muestra todos los registros.
