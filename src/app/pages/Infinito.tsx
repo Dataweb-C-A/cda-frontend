@@ -25,7 +25,6 @@ function infinito() {
   const [notificationErrorVisible, setNotificationErrorVisible] = useState(false);
   const [sold, setSold] = useState<IPlaces[] | []>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [currentDraw, setCurrentDraw] = useState<ICurrent | null>(null)
 
   useEffect(() => {
     axios.get('https://api.rifamax.app/draws_fifty')
@@ -36,7 +35,35 @@ function infinito() {
         console.log(err)
       })
   }, [])
+  useEffect(() => {
+    axios.get('https://api.rifamax.app/draws_fifty_last')
+      .then((res) => {
+        setCurrentDraw(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+  const [currentDraw, setCurrentDraw] = useState<any>(null); // Cambia 'any' al tipo correcto según la estructura de tus datos
+  const [isLoading, setIsLoading] = useState(true);
+  const [isClosed, setIsClosed] = useState(false);
 
+  useEffect(() => {
+    axios.get('https://api.rifamax.app/draws_fifty_last')
+      .then((res) => {
+        setCurrentDraw(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    // Puedes agregar un indicador de carga aquí
+    return <div>Cargando...</div>;
+  }
   const handleQuantityClick = (selectedQuantity: number) => {
     axios.post(`https://api.rifamax.app/to-infinity?quantity=${selectedQuantity}`, {
       draw_id: 8,
@@ -113,8 +140,18 @@ function infinito() {
         `}
       </style>
       <Navbar profiles={profiles} links={links} />
-
-      <Card
+      {currentDraw && currentDraw.is_closed ? (
+    <Card
+    shadow="sm"
+    h="calc(100vh - 82px)"
+    withBorder
+    mt={10}
+    mx={10}
+  >
+     <Title order={2} fw={700}>Rifa cerrada</Title>
+    </Card>
+       ) : (
+        <Card
         shadow="sm"
         h="calc(100vh - 82px)"
         withBorder
@@ -449,6 +486,7 @@ function infinito() {
 
         </Grid>
       </Card >
+      )}
       {notificationErrorVisible && (
         <Notification
           color="red"

@@ -33,6 +33,7 @@ interface ILoading {
   persistantTime: number
 }
 interface DrawData {
+  id: number;
   title: string;
   created_at: string;
   expired_date: string;
@@ -189,6 +190,8 @@ function Lobby() {
               <Table striped highlightOnHover withBorder withColumnBorders>
                 <thead>
                   <tr>
+
+                    <th>id</th>
                     <th>Evento</th>
                     <th>Fecha de inicio</th>
                     <th>Fecha de finalización</th>
@@ -199,6 +202,7 @@ function Lobby() {
                 <tbody>
                   {draws.map((draw, index) => (
                     <tr key={index}>
+                      <td>{draw.id}</td>
                       <td>{draw.title}</td>
                       <td>{draw.created_at.slice(0, 10)}</td>
                       <td>{draw.expired_date}</td>
