@@ -44,7 +44,7 @@ function infinito() {
         console.log(err)
       })
   }, [])
-  const [currentDraw, setCurrentDraw] = useState<any>(null); // Cambia 'any' al tipo correcto según la estructura de tus datos
+  const [currentDraw, setCurrentDraw] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
 
@@ -61,7 +61,6 @@ function infinito() {
   }, []);
 
   if (isLoading) {
-    // Puedes agregar un indicador de carga aquí
     return <div>Cargando...</div>;
   }
   const handleQuantityClick = (selectedQuantity: number) => {
@@ -140,99 +139,106 @@ function infinito() {
         `}
       </style>
       <Navbar profiles={profiles} links={links} />
+
       {currentDraw && currentDraw.is_closed ? (
-    <Card
-    shadow="sm"
-    h="calc(100vh - 82px)"
-    withBorder
-    mt={10}
-    mx={10}
-  >
-     <Title order={2} fw={700}>Rifa cerrada</Title>
-    </Card>
-       ) : (
+
         <Card
-        shadow="sm"
-        h="calc(100vh - 82px)"
-        withBorder
-        mt={10}
-        mx={10}
-      >
-        <Grid>
-          <Grid.Col span={8}>
+          shadow="sm"
+          h="calc(100vh - 82px)"
+          withBorder
+          mt={10}
+          mx={10}
+        >
+          <Group mt={450} position='center'>
 
-            <Title order={2} fw={700}>Rifa 50/50</Title>
-            <Title order={3} fw={200}>A beneficio de fundacion {currentDraw?.foundation}</Title>
+          <Title order={1} fw={900}>Rifa cerrada</Title>
+          </Group>
 
-            <Divider
+        </Card>
+      ) : (
 
-              my="sm"
-              label={
-                <>
-                  <Text fz={20}>Tickets</Text>
-                </>
-              }
-              labelPosition="center"
-              variant="dashed"
+        <Card
+          shadow="sm"
+          h="calc(100vh - 82px)"
+          withBorder
+          mt={10}
+          mx={10}
+        >
+          <Grid>
+            <Grid.Col span={8}>
 
+              <Title order={2} fw={700}>Rifa 50/50</Title>
+              <Title order={3} fw={200}>A beneficio de fundacion {currentDraw?.foundation}</Title>
 
-            />
+              <Divider
 
-            <Flex
-              mih={50}
-              gap="md"
-              mt="18%"
-              justify="center"
-              align="center"
-              direction="row"
-              wrap="wrap"
-            >
-
-              <Card p={65} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(1)
-                  handleQuantityClick(1)
+                my="sm"
+                label={
+                  <>
+                    <Text fz={20}>Tickets</Text>
+                  </>
                 }
-                }
-              >
-                <Text fz={35}>
-                  1
-                </Text>
-                <Text fz={15}>
-                  {precio}$
-                </Text>
+                labelPosition="center"
+                variant="dashed"
 
-              </Card >
-              <Card p={65} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(6)
-                  handleQuantityClick(6)
-                }}
+
+              />
+
+              <Flex
+                mih={50}
+                gap="md"
+                mt="18%"
+                justify="center"
+                align="center"
+                direction="row"
+                wrap="wrap"
               >
-                <Text fz={35}>
-                  6
-                </Text>
-                <Text fz={15}>
-                  {precio * 5}$
-                </Text>
-              </Card >
-              <Card p={65} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(15)
-                  handleQuantityClick(15)
-                }}
-              >
-                <Text fz={35}>
-                  15
-                </Text>
-                <Text fz={15}>
-                  {precio * 10}$
-                </Text>
-              </Card >
-              {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
+
+                <Card p={65} mb={15} className="hover-card" shadow="xl"
+                  radius="lg"
+                  onClick={() => {
+                    setQuantity(1)
+                    handleQuantityClick(1)
+                  }
+                  }
+                >
+                  <Text fz={35}>
+                    1
+                  </Text>
+                  <Text fz={15}>
+                    {precio}$
+                  </Text>
+
+                </Card >
+                <Card p={65} mb={15} className="hover-card" shadow="xl"
+                  radius="lg"
+                  onClick={() => {
+                    setQuantity(6)
+                    handleQuantityClick(6)
+                  }}
+                >
+                  <Text fz={35}>
+                    6
+                  </Text>
+                  <Text fz={15}>
+                    {precio * 5}$
+                  </Text>
+                </Card >
+                <Card p={65} mb={15} className="hover-card" shadow="xl"
+                  radius="lg"
+                  onClick={() => {
+                    setQuantity(15)
+                    handleQuantityClick(15)
+                  }}
+                >
+                  <Text fz={35}>
+                    15
+                  </Text>
+                  <Text fz={15}>
+                    {precio * 10}$
+                  </Text>
+                </Card >
+                {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
                   setQuantity(2)
@@ -249,7 +255,7 @@ function infinito() {
 
               </Card > */}
 
-              {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
+                {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
                   setQuantity(3)
@@ -279,7 +285,7 @@ function infinito() {
                   {precio * 4}$
                 </Text>
               </Card > */}
-              {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
+                {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
                   setQuantity(5)
@@ -295,17 +301,17 @@ function infinito() {
                 </Text>
               </Card > */}
 
-            </Flex>
-            <Flex
-              mih={50}
-              gap="md"
-              justify="center"
-              align="center"
-              direction="row"
-              wrap="wrap"
-            >
+              </Flex>
+              <Flex
+                mih={50}
+                gap="md"
+                justify="center"
+                align="center"
+                direction="row"
+                wrap="wrap"
+              >
 
-              {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
+                {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
                 radius="lg"
                 onClick={() => {
                   setQuantity(7)
@@ -367,125 +373,125 @@ function infinito() {
 
               </Card > */}
 
-            </Flex>
+              </Flex>
 
 
-          </Grid.Col>
+            </Grid.Col>
 
-          <Grid.Col span={4}>
+            <Grid.Col span={4}>
 
-            <Group h="100%" position='center'>
+              <Group h="100%" position='center'>
 
-              <Card
-                h="88vh"
-                w="100%"
-
-                bg="#1d1d29"
-                radius={"xl"}
-              >
                 <Card
-                  h="100%"
+                  h="88vh"
                   w="100%"
 
+                  bg="#1d1d29"
                   radius={"xl"}
                 >
-                  <Grid>
-                    <Grid.Col span={12}>
-                      <ScrollArea w="100%" h="71vh">
-                        <Group position='center'>
-                          {
-                            sold.length > 0 ? (
-                              sold.map((quantity) => (
-                                <Card w="100%" bg={'#1d1e30'} mb={5}>
-                                  <Text key={quantity.place_numbers} fz={20} ta="center">{quantity.place_numbers}</Text>
-                                </Card>
-                              ))
-                            ) : (
-                              <Text ta="center" mt="5%">No hay tickets seleccionados</Text>
-                            )
-                          }
-                        </Group>
-                      </ScrollArea>
-                    </Grid.Col>
+                  <Card
+                    h="100%"
+                    w="100%"
 
-                    <Grid.Col span={12}>
+                    radius={"xl"}
+                  >
+                    <Grid>
+                      <Grid.Col span={12}>
+                        <ScrollArea w="100%" h="71vh">
+                          <Group position='center'>
+                            {
+                              sold.length > 0 ? (
+                                sold.map((quantity) => (
+                                  <Card w="100%" bg={'#1d1e30'} mb={5}>
+                                    <Text key={quantity.place_numbers} fz={20} ta="center">{quantity.place_numbers}</Text>
+                                  </Card>
+                                ))
+                              ) : (
+                                <Text ta="center" mt="5%">No hay tickets seleccionados</Text>
+                              )
+                            }
+                          </Group>
+                        </ScrollArea>
+                      </Grid.Col>
 
-                      <Divider py={10} size="md" />
+                      <Grid.Col span={12}>
 
-                      <Group position="apart">
+                        <Divider py={10} size="md" />
 
-                        <Text fz={25} fw={450}>Jugadas: {sold.length}</Text>
-                        {/* <Button onClick={handleClearClick}>
+                        <Group position="apart">
+
+                          <Text fz={25} fw={450}>Jugadas: {sold.length}</Text>
+                          {/* <Button onClick={handleClearClick}>
                           Limpiar
                         </Button> */}
-                        <Button color="green" w={200} onClick={() => {
-                          function send(): void {
-                            try {
-                              const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
+                          <Button color="green" w={200} onClick={() => {
+                            function send(): void {
+                              try {
+                                const socket: WebSocket = new WebSocket('ws://127.0.0.1:1315');
 
-                              socket.onopen = function (): void {
-                                console.log('Conexión establecida.');
+                                socket.onopen = function (): void {
+                                  console.log('Conexión establecida.');
 
-                                const mensaje = (): void => {
-                                  const placeNumbersArray = sold.map(place => place.place_numbers);
-                                  const url = `https://api.rifamax.app/places/printer/infinity?draw_id=8&plays=[${placeNumbersArray}]&agency_id=${JSON.parse(localStorage.getItem('user') || '{}').id}`;
+                                  const mensaje = (): void => {
+                                    const placeNumbersArray = sold.map(place => place.place_numbers);
+                                    const url = `https://api.rifamax.app/places/printer/infinity?draw_id=8&plays=[${placeNumbersArray}]&agency_id=${JSON.parse(localStorage.getItem('user') || '{}').id}`;
 
-                                  fetch(url)
-                                    .then(function (response: Response): Promise<string> {
-                                      return response.text();
-                                    })
-                                    .then(function (text: string): void {
-                                      socket.send(text);
-                                      socket.send('cut')
-                                      setSold([])
-                                      setTotalPrice(0);
-                                    });
+                                    fetch(url)
+                                      .then(function (response: Response): Promise<string> {
+                                        return response.text();
+                                      })
+                                      .then(function (text: string): void {
+                                        socket.send(text);
+                                        socket.send('cut')
+                                        setSold([])
+                                        setTotalPrice(0);
+                                      });
+                                  };
+                                  mensaje();
                                 };
-                                mensaje();
-                              };
 
-                              socket.onmessage = function (event: MessageEvent): void {
-                                console.log('Mensaje recibido del servidor:', event.data);
-                              };
+                                socket.onmessage = function (event: MessageEvent): void {
+                                  console.log('Mensaje recibido del servidor:', event.data);
+                                };
 
-                              socket.onerror = function (error: Event): void {
-                                console.error('Error en la conexión:', error);
-                                handlePrintError();
-                                setSold([])
-                              };
+                                socket.onerror = function (error: Event): void {
+                                  console.error('Error en la conexión:', error);
+                                  handlePrintError();
+                                  setSold([])
+                                };
 
-                              socket.onclose = function (event: CloseEvent): void {
-                                console.log('Conexión cerrada:', event.code, event.reason);
-                              };
-                            } catch (e) {
-                              alert(JSON.stringify(e));
+                                socket.onclose = function (event: CloseEvent): void {
+                                  console.log('Conexión cerrada:', event.code, event.reason);
+                                };
+                              } catch (e) {
+                                alert(JSON.stringify(e));
+                              }
                             }
-                          }
 
-                          send();
-                          setSelectedQuantities(0);
-                        }}
-                          disabled={selectedQuantities === 0}
-                        >
-                          Imprimir
-                        </Button>
-                        <Text fz={25} fw={450}>Total: ${totalPrice}</Text> {/* Muestra el total */}
-                      </Group>
+                            send();
+                            setSelectedQuantities(0);
+                          }}
+                            disabled={selectedQuantities === 0}
+                          >
+                            Imprimir
+                          </Button>
+                          <Text fz={25} fw={450}>Total: ${totalPrice}</Text> 
+                        </Group>
 
-                    </Grid.Col>
+                      </Grid.Col>
 
-                  </Grid>
+                    </Grid>
+
+                  </Card>
 
                 </Card>
 
-              </Card>
+              </Group>
 
-            </Group>
+            </Grid.Col>
 
-          </Grid.Col>
-
-        </Grid>
-      </Card >
+          </Grid>
+        </Card >
       )}
       {notificationErrorVisible && (
         <Notification
