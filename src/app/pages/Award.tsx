@@ -132,14 +132,19 @@ function Award({ }: Props) {
   const winnerIs = currentDraw?.winner_is;
   const [openedModal1, setOpenedModal1] = useState(false);
   const [openedModal2, setOpenedModal2] = useState(false);
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  let is5050User = false;
+  if (typeof user.name === 'string') {
+    is5050User = user.name.substring(0, 5) === "50 50 001";
+  }
 
+  console.log("Usuario:", user);
+  console.log("Es usuario 50 50 001:", is5050User);
   return (
     <>
-      <Navbar
-        profiles={community}
-        links={links}
-      />
-       <Modal
+      <Navbar profiles={community} links={links} />
+      
+      <Modal
         opened={openedModal1}
         onClose={() => setOpenedModal1(false)}
         size="55%"
@@ -150,7 +155,7 @@ function Award({ }: Props) {
           Cerrar día
         </Button>
       </Modal>
-
+  
       <Modal
         opened={openedModal2}
         onClose={() => setOpenedModal2(false)}
@@ -159,90 +164,90 @@ function Award({ }: Props) {
       >
         <Combo50table />
       </Modal>
-
-      <Card h={880} ml={15} mr={15} mt={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
-
+  
+      {is5050User ? (
         <Title order={2} fw={500} mb={20}>
-          Premiación 50/50
-          <Text fw={300} fz={20} mb={-7}>
-            Premiacion para las rifas 50/50
-          </Text>
+          error
         </Title>
-
-        {currentDraw?.winner_is != null && currentDraw?.is_closed === true ? (
-          <Group mt={250} position="center">
-            <Card w={500} h={190} my={20} shadow="sm" p="lg" radius="md" withBorder>
-              <Group position="center">
-                <Title order={2}>
-                  El Ticket ganador es :
-                </Title>
-              </Group>
-
-              <Group mt={15} position="center">
-                <Title order={2}>
-                  🎉 {winnerIs} 🎉
-                </Title>
-                {/*modal 2 */}
-                <Button mt={10} onClick={() => setOpenedModal2(true)} fullWidth >
-                  
-                  Ver cierre
+      ) : (
+      <Card h={880} ml={15} mr={15} mt={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+  
+        <>
+          <Title order={2} fw={500} mb={20}>
+            Premiación 50/50
+            <Text fw={300} fz={20} mb={-7}>
+              Premiacion para las rifas 50/50
+            </Text>
+          </Title>
+  
+          {currentDraw?.winner_is != null && currentDraw?.is_closed === true ? (
+            <Group mt={250} position="center">
+              <Card w={500} h={190} my={20} shadow="sm" p="lg" radius="md" withBorder>
+                <Group position="center">
+                  <Title order={2}>
+                    El Ticket ganador es :
+                  </Title>
+                </Group>
+  
+                <Group mt={15} position="center">
+                  <Title order={2}>
+                    🎉 {winnerIs} 🎉
+                  </Title>
+                  {/*modal 2 */}
+                  <Button mt={10} onClick={() => setOpenedModal2(true)} fullWidth >
+                    Ver cierre
+                  </Button>
+                </Group>
+              </Card>
+            </Group>
+          ) : (
+            <Group mt={250} position="center">
+              <Card w={500} h={150} my={20} shadow="sm" p="lg" radius="md" withBorder>
+                <Group spacing={0} mt={10}>
+                  <NumberInput
+                    type="number"
+                    placeholder="Numero ganador"
+                    value={typeof winningNumber === 'number' ? winningNumber : undefined}
+                    w="80%"
+                    hideControls
+                    onKeyDown={(e) => {
+                      if (e.key === '-' || e.key === 'e' || e.key === '+' || e.key === ',') {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(value) => {
+                      if (typeof value === 'number') {
+                        setWinningNumber(value);
+                      }
+                    }}
+                    style={{ borderRadius: "5px 0px 0px 5px" }}
+                  />
+  
+                  <Button
+                    color="blue"
+                    w="20%"
+                    style={{ borderRadius: "0px 5px 5px 0px" }}
+                    onClick={() => {
+                      sendPutRequest();
+                      window.location.reload();
+                    }}
+                    disabled={currentDraw?.winner_is !== null}
+                  >
+                    <ChevronRight />
+                  </Button>
+                </Group>
+                <Button disabled={currentDraw?.winner_is === null} mt={30} onClick={() => setOpenedModal1(true)} fullWidth color="red">
+                  Cerrar día
                 </Button>
-              </Group>
-
-            </Card>
-          </Group>
-
-        ) : (
-          <Group mt={250} position="center">
-            <Card w={500} h={150} my={20} shadow="sm" p="lg" radius="md" withBorder>
-              <Group spacing={0} mt={10}>
-
-                <NumberInput
-                  type="number"
-                  placeholder="Numero ganador"
-                  value={typeof winningNumber === 'number' ? winningNumber : undefined}
-                  w="80%"
-                  hideControls
-                  onKeyDown={(e) => {
-                    if (e.key === '-' || e.key === 'e' || e.key === '+' || e.key === ',') {
-                      e.preventDefault();
-                    }
-                  }}
-                  onChange={(value) => {
-                    if (typeof value === 'number') {
-                      setWinningNumber(value);
-                    }
-                  }}
-                  style={{ borderRadius: "5px 0px 0px 5px" }}
-                />
-
-
-
-                <Button
-                  color="blue"
-                  w="20%"
-                  style={{ borderRadius: "0px 5px 5px 0px" }}
-                  onClick={() => {
-                    sendPutRequest();
-                    window.location.reload();
-                  }}
-                  disabled={currentDraw?.winner_is !== null}
-                >
-                  <ChevronRight />
-                </Button>
-
-
-              </Group>
-              <Button disabled={currentDraw?.winner_is === null} mt={30} onClick={() => setOpenedModal1(true)} fullWidth color="red">
-                Cerrar día
-              </Button>
-            </Card>
-          </Group>
-        )}
-
+              </Card>
+            </Group>
+          )}
+        </>
       </Card>
+      )}
     </>
   )
+  
 }
 
 export default Award
