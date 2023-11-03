@@ -85,9 +85,9 @@ function infinito() {
   }
 
   const getPrice = (quantity: number) => {
-    if (quantity === 1) return 1;
-    if (quantity === 6) return 5;
-    if (quantity === 15) return 10;
+    if (quantity === 1) return 2;
+    if (quantity === 3) return 5;
+    if (quantity === 7) return 10;
     return 0;
   }
 
@@ -206,19 +206,19 @@ function infinito() {
                     1
                   </Text>
                   <Text fz={15}>
-                    {precio}$
+                    {precio +1}$
                   </Text>
 
                 </Card >
                 <Card p={65} mb={15} className="hover-card" shadow="xl"
                   radius="lg"
                   onClick={() => {
-                    setQuantity(6)
-                    handleQuantityClick(6)
+                    setQuantity(3)
+                    handleQuantityClick(3)
                   }}
                 >
                   <Text fz={35}>
-                    6
+                    3
                   </Text>
                   <Text fz={15}>
                     {precio * 5}$
@@ -227,79 +227,18 @@ function infinito() {
                 <Card p={65} mb={15} className="hover-card" shadow="xl"
                   radius="lg"
                   onClick={() => {
-                    setQuantity(15)
-                    handleQuantityClick(15)
+                    setQuantity(7)
+                    handleQuantityClick(7)
                   }}
                 >
                   <Text fz={35}>
-                    15
+                    7
                   </Text>
                   <Text fz={15}>
                     {precio * 10}$
                   </Text>
                 </Card >
-                {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(2)
-                  handleQuantityClick(2)
-                }
-                }
-              >
-                <Text fz={35}>
-                  2
-                </Text>
-                <Text fz={15}>
-                  {precio * 2}$
-                </Text>
-
-              </Card > */}
-
-                {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(3)
-                  handleQuantityClick(3)
-                }
-                }
-              >
-                <Text fz={35}>
-                  3
-                </Text>
-                <Text fz={15}>
-                  {precio * 3}$
-                </Text>
-              </Card >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(4)
-                  handleQuantityClick(4)
-                }
-                }
-              >
-                <Text fz={35}>
-                  4
-                </Text>
-                <Text fz={15}>
-                  {precio * 4}$
-                </Text>
-              </Card > */}
-                {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(5)
-                  handleQuantityClick(5)
-                }
-                }
-              >
-                <Text fz={35}>
-                  5
-                </Text>
-                <Text fz={15}>
-                  {precio * 5}$
-                </Text>
-              </Card > */}
+              
 
               </Flex>
               <Flex
@@ -311,68 +250,7 @@ function infinito() {
                 wrap="wrap"
               >
 
-                {/* <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(7)
-                  handleQuantityClick(7)
-                }
-                }
-              >
-                <Text fz={35}>
-                  7
-                </Text>
-                <Text fz={15}>
-                  {precio * 7}$
-                </Text>
-              </Card >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(8)
-                  handleQuantityClick(8)
-                }
-                }
-              >
-                <Text fz={35}>
-                  8
-                </Text>
-                <Text fz={15}>
-                  {precio * 8}$
-                </Text>
-              </Card >
-              <Card p={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(9)
-                  handleQuantityClick(9)
-                }
-                }
-              >
-                <Text fz={35}>
-                  9
-                </Text>
-                <Text fz={15}>
-                  {precio * 9}$
-                </Text>
-              </Card >
-              <Card px={35} py={45} mb={15} className="hover-card" shadow="xl"
-                radius="lg"
-                onClick={() => {
-                  setQuantity(10)
-                  handleQuantityClick(10)
-                }
-                }
-              >
-                <Text fz={35}>
-                  10
-                </Text>
-                <Text fz={15}>
-                  {precio * 10}$
-                </Text>
-
-              </Card > */}
-
+             
               </Flex>
 
 

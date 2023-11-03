@@ -99,7 +99,7 @@ function Award({ }: Props) {
       .then((res) => {
         console.log(res.data);
         setWinningNumber("");
-        window.location.reload();
+
       })
       .catch((err) => {
         console.log(err);
@@ -182,7 +182,7 @@ function Award({ }: Props) {
   
           {currentDraw?.winner_is != null && currentDraw?.is_closed === true ? (
             <Group mt={250} position="center">
-              <Card w={500} h={JSON.parse(localStorage.getItem('user') || '{}').name === "50 50 001" ? 190 : 135} my={20} shadow="sm" p="lg" radius="md" withBorder>
+              <Card w={500} h={190} my={20} shadow="sm" p="lg" radius="md" withBorder>
                 <Group position="center">
                   <Title order={2}>
                     El Ticket ganador es :
@@ -191,64 +191,54 @@ function Award({ }: Props) {
   
                 <Group mt={15} position="center">
                   <Title order={2}>
-                    🎉 {Number(winnerIs) <= 999 && Number(winnerIs) >= 100 ? `0${winnerIs}` : Number(winnerIs) <= 99 && Number(winnerIs) >= 10 ? `00${winnerIs}` : Number(winnerIs) <= 9 ? `000${winnerIs}` : winnerIs } 🎉
+                    🎉 {winnerIs} 🎉
                   </Title>
-                  {
-                    JSON.parse(localStorage.getItem('user') || '{}').name === "50 50 001" ?
-                      <Button mt={10} onClick={() => setOpenedModal2(true)} fullWidth >
-                        Ver cierre
-                      </Button>
-                    : null
-                  }
+                  {/*modal 2 */}
+                  <Button mt={10} onClick={() => setOpenedModal2(true)} fullWidth >
+                    Ver cierre
+                  </Button>
                 </Group>
               </Card>
             </Group>
           ) : (
             <Group mt={250} position="center">
               <Card w={500} h={150} my={20} shadow="sm" p="lg" radius="md" withBorder>
-                {
-                  JSON.parse(localStorage.getItem('user') || '{}').name === "50 50 001" ?
-                    <>
-                      <Group spacing={0} mt={10}>
-                        <NumberInput
-                          type="number"
-                          placeholder="Numero ganador"
-                          value={typeof winningNumber === 'number' ? winningNumber : undefined}
-                          w="80%"
-                          hideControls
-                          onKeyDown={(e) => {
-                            if (e.key === '-' || e.key === 'e' || e.key === '+' || e.key === ',') {
-                              e.preventDefault();
-                            }
-                          }}
-                          onChange={(value) => {
-                            if (typeof value === 'number') {
-                              setWinningNumber(value);
-                            }
-                          }}
-                          style={{ borderRadius: "5px 0px 0px 5px" }}
-                        />
-        
-                        <Button
-                          color="blue"
-                          w="20%"
-                          style={{ borderRadius: "0px 5px 5px 0px" }}
-                          onClick={() => {
-                            sendPutRequest();
-                          }}
-                          disabled={currentDraw?.winner_is !== null}
-                        >
-                          <ChevronRight />
-                        </Button>
-                      </Group>
-                      <Button disabled={currentDraw?.winner_is === null} mt={30} onClick={() => setOpenedModal1(true)} fullWidth color="red">
-                        Cerrar día
-                      </Button>
-                    </>
-                  : <Text ta='center' mt={35} fz={20} fw={700}>
-                    ESPERANDO PREMIACIÓN
-                  </Text>
-                }
+                <Group spacing={0} mt={10}>
+                  <NumberInput
+                    type="number"
+                    placeholder="Numero ganador"
+                    value={typeof winningNumber === 'number' ? winningNumber : undefined}
+                    w="80%"
+                    hideControls
+                    onKeyDown={(e) => {
+                      if (e.key === '-' || e.key === 'e' || e.key === '+' || e.key === ',') {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(value) => {
+                      if (typeof value === 'number') {
+                        setWinningNumber(value);
+                      }
+                    }}
+                    style={{ borderRadius: "5px 0px 0px 5px" }}
+                  />
+  
+                  <Button
+                    color="blue"
+                    w="20%"
+                    style={{ borderRadius: "0px 5px 5px 0px" }}
+                    onClick={() => {
+                      sendPutRequest();
+                      window.location.reload();
+                    }}
+                    disabled={currentDraw?.winner_is !== null}
+                  >
+                    <ChevronRight />
+                  </Button>
+                </Group>
+                <Button disabled={currentDraw?.winner_is === null} mt={30} onClick={() => setOpenedModal1(true)} fullWidth color="red">
+                  Cerrar día
+                </Button>
               </Card>
             </Group>
           )}
