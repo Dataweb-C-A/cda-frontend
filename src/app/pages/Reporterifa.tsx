@@ -194,7 +194,7 @@ function Reporterifa({ }: Props) {
           </Grid.Col>
         </Grid>
   
-        <Card shadow="sm" radius="sm" mx={15} mt={5} h="80vh">
+        <Card withBorder radius="lg"  shadow="sm" mx={15} mt={5} h="80vh">
           <Grid>
             <Grid.Col xl={6} md={6} xs={12}>
               <Title order={2} fw={500} mb={20}>
@@ -241,7 +241,7 @@ function Reporterifa({ }: Props) {
             onChange={handlePageChange} 
           />
   
-          <Table mt={15} captionSide="bottom" withColumnBorders highlightOnHover>
+  <Table fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
             <thead>{ths}</thead>
             <tbody>{paginatedRows}
             </tbody>

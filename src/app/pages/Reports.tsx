@@ -144,7 +144,7 @@ function Reports() {
           profiles={community}
           links={links}
         />
-        <Card mx={15} mt={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+        <Card withBorder radius="lg"  mx={15} mt={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
           <Title order={2} fw={500} mb={20}>
             Reportes
             <Text fw={300} fz={20} mb={-7}>

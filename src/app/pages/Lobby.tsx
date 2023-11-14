@@ -16,6 +16,7 @@ import {
   ScrollArea
 } from '@mantine/core';
 import Newrifa50y50 from './Newrifa50y50';
+import { Link } from 'react-router-dom';
 import { IconSearch } from '@tabler/icons-react';
 
 interface IUser {
@@ -149,7 +150,6 @@ function Lobby() {
   const games = [
     { label: "Rifamax", redirect: '/rifamax' },
     { label: "X100", redirect: '/draws' },
-    { label: "50/50", redirect: '/infinito' }
   ];
 
 
@@ -191,42 +191,42 @@ function Lobby() {
             </Group>
 
             {draws.length > 0 ? (
-                    <ScrollArea type="scroll" style={{ height: 755 }}>
+              <ScrollArea type="scroll" style={{ height: 755 }}>
 
-               
-              <Table fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
-                <thead>
-                  <tr>
 
-                    <th>id</th>
-                    <th>Evento</th>
-                    <th>Fecha de inicio</th>
-                    <th>Fecha de finalización</th>
-                    <th>Localidad</th>
-                    <th>Fundación</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {draws.map((draw, index) => (
-                    <tr key={index}>
-                      <td>{draw.id}</td>
-                      <td>{draw.title}</td>
-                      <td>{draw.created_at.slice(0, 10)}</td>
-                      <td>{draw.expired_date}</td>
-                      <td>{draw.location}</td>
-                      <td>{draw.foundation}</td>
+                <Table fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
+                  <thead>
+                    <tr>
+
+                      <th>id</th>
+                      <th>Evento</th>
+                      <th>Fecha de inicio</th>
+                      <th>Fecha de finalización</th>
+                      <th>Localidad</th>
+                      <th>Fundación</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
+                  </thead>
+                  <tbody>
+                    {draws.map((draw, index) => (
+                      <tr key={index}>
+                        <td>{draw.id}</td>
+                        <td>{draw.title}</td>
+                        <td>{draw.created_at.slice(0, 10)}</td>
+                        <td>{draw.expired_date}</td>
+                        <td>{draw.location}</td>
+                        <td>{draw.foundation}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
               </ScrollArea>
             ) : (
               <>
-              <Group mt={200} position='center'>
+                <Group mt={200} position='center'>
 
-                <Loader color="blue" size={150} variant="bars" />
-              </Group>
-            </>
+                  <Loader color="blue" size={150} variant="bars" />
+                </Group>
+              </>
             )}
 
 
@@ -236,12 +236,22 @@ function Lobby() {
         <>
 
 
-          <Group position="center" mt={10} >
+          <Group position="center" mt={10}>
             {games.map((game, index) => (
-
-              <a href={game.redirect}>
-
-                <Card shadow="sm" p="lg" radius="md" withBorder style={!profile.access_permissions.includes(game.label) ? { opacity: 0.2, cursor: 'not-allowed' } : { cursor: 'pointer' }}>
+              <Link
+                to={!profile.access_permissions.includes(game.label) ? '/' : game.redirect}
+                style={{ textDecoration: 'none' }}
+              >
+                <Card
+                  withBorder
+                  radius="lg"
+                  shadow="xl"
+                  style={
+                    !profile.access_permissions.includes(game.label)
+                      ? { opacity: 0.2, cursor: 'not-allowed' }
+                      : { cursor: 'pointer' }
+                  }
+                >
                   <Image
                     key={index}
                     radius="md"
@@ -252,9 +262,7 @@ function Lobby() {
                     caption={game.label}
                   />
                 </Card>
-
-              </a>
-
+              </Link>
             ))}
           </Group>
         </>

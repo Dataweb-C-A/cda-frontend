@@ -80,7 +80,7 @@ function Exchange() {
   return (
     <>
       <Navbar profiles={profiles} links={links} />
-      <Card shadow="sm" radius="sm" mx={10} mt={15} h="100vh">
+      <Card withBorder radius="lg"  shadow="sm"  mx={10} mt={15} h="99%">
         <Grid>
           <Grid.Col span={6}>
             <Title order={2} fw={500} mb={20}>
@@ -106,8 +106,11 @@ function Exchange() {
         {
           loading ? (
             <>
-              <Loader ml="50%" mt="10%" />
-            </>
+                  <Group mt={200} position='center'>
+  
+                    <Loader color="blue" size={150} variant="bars" />
+                  </Group>
+                </>
           ) : (
             <TableSort data={exchange} />
           )

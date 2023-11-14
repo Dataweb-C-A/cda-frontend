@@ -317,7 +317,7 @@ function Dashboard() {
 
   const handleDelete = (id: number) => {
     const url = `https://rifa-max.com/api/v1/rifas/${id}`;
-  
+
     axios.delete(url, {
       headers: {
         ContentType: "application/json",
@@ -403,14 +403,14 @@ function Dashboard() {
       </td>
       <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
       <td >{moment(element.rifDate).format('DD/MM/YYYY')}</td>
-      <td> 
-      {
-        element.app_status === 'No enviado' ? (
-          <ActionIcon mt={5} h={1} ml={25} color="red" variant="filled" onClick={() => handleDelete(element.serie)}>
-            <IconTrashX size={16} />
-          </ActionIcon>
-        ) : null
-      }
+      <td>
+        {
+          element.app_status === 'No enviado' ? (
+            <ActionIcon mt={5} h={1} ml={25} color="red" variant="filled" onClick={() => handleDelete(element.serie)}>
+              <IconTrashX size={16} />
+            </ActionIcon>
+          ) : null
+        }
       </td>
     </tr>
   ));
@@ -584,111 +584,111 @@ function Dashboard() {
           </Group>
         </Card>
 
-        
-       < Grid>
-      <Grid.Col md={6} lg={6}>
-      <PDFDownloadLink
-            document={<TableMock />}
-            fileName={`cierre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD-MM-YYYY')}.pdf`}
-            style={{
-              textDecoration: "none",
-            }}
-          >
-            <BlobProvider document={<TableMock />}>
-              {({ url, loading, error }) => {
-                if (loading) {
-                  return <Button loading  fullWidth >Descargar</Button>;
-                }
-                if (error) {
-                  return <p>Error: {error.toString()}</p>;
-                }
-                if (url) {
-                  return (
-                    <div>
 
-                      <a href={url} target="_blank" rel="noopener noreferrer" download={`cuadre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD/MM/YYYY')}.pdf`}>
-                        <Button
-                          mt={10}
-                          variant="filled"
-                          color="blue"
-                          size="sm"
-                          fullWidth
-                        >
-                          Descargar
-                        </Button>
-                      </a>
-                    </div>
-                  );
-                }
-                return null;
+        < Grid>
+          <Grid.Col md={6} lg={6}>
+            <PDFDownloadLink
+              document={<TableMock />}
+              fileName={`cierre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD-MM-YYYY')}.pdf`}
+              style={{
+                textDecoration: "none",
               }}
-            </BlobProvider>
-          </PDFDownloadLink>
+            >
+              <BlobProvider document={<TableMock />}>
+                {({ url, loading, error }) => {
+                  if (loading) {
+                    return <Button loading fullWidth >Descargar</Button>;
+                  }
+                  if (error) {
+                    return <p>Error: {error.toString()}</p>;
+                  }
+                  if (url) {
+                    return (
+                      <div>
 
-      </Grid.Col>
+                        <a href={url} target="_blank" rel="noopener noreferrer" download={`cuadre-${JSON.parse(localStorage.getItem('user') || '{}').name}-${moment().format('DD/MM/YYYY')}.pdf`}>
+                          <Button
+                            mt={10}
+                            variant="filled"
+                            color="blue"
+                            size="sm"
+                            fullWidth
+                          >
+                            Descargar
+                          </Button>
+                        </a>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              </BlobProvider>
+            </PDFDownloadLink>
 
-      <Grid.Col md={6} lg={6}>
+          </Grid.Col>
 
-      <Button color="teal" mt={10}
-      fullWidth
-            onClick={(e) => {
-              e.preventDefault()
+          <Grid.Col md={6} lg={6}>
 
-              function send() {
-                try {
-                  const socket = new WebSocket('ws://127.0.0.1:1315');
+            <Button color="teal" mt={10}
+              fullWidth
+              onClick={(e) => {
+                e.preventDefault()
 
-                  socket.onopen = function () {
-                    console.log('Conexión establecida.');
+                function send() {
+                  try {
+                    const socket = new WebSocket('ws://127.0.0.1:1315');
 
-                    setTimeout(() => {
-                      socket.send(`       CUADRE/CIERRE\n        ${moment().format('DD-MM-YYYY')}\n---------------------------------\nSerie   Montos   Accion\n---------------------------------`)
-                      socket.send(
-                        `${closedData.rifa.map((item) => {
-                          let temp = `\n${item.serie}     ${item.amount}${item.denomination}     ${item.verification}`
-                          const sent = () => {
-                            return (
-                              socket.send(temp)
-                            )
-                          }
-                          sent()
-                        })
-                        }`)
-                      socket.send(`\n---------------------------------\nTotal Bolivares: ${closedData.total.bsd} Bs.D`)
-                      socket.send(`\n---------------------------------\nTotal Dolares: ${closedData.total.dolar} $`)
-                      socket.send(`\n---------------------------------\nTotal Pesos: ${closedData.total.cop} COP`)
-                      socket.send('\n\n\n\n\n\n')
-                      socket.send('cut')
-                    }, 1000)
-                  };
+                    socket.onopen = function () {
+                      console.log('Conexión establecida.');
 
-                  socket.onmessage = function (event) {
-                    console.log('Mensaje recibido del servidor:', event.data);
-                  };
+                      setTimeout(() => {
+                        socket.send(`       CUADRE/CIERRE\n        ${moment().format('DD-MM-YYYY')}\n---------------------------------\nSerie   Montos   Accion\n---------------------------------`)
+                        socket.send(
+                          `${closedData.rifa.map((item) => {
+                            let temp = `\n${item.serie}     ${item.amount}${item.denomination}     ${item.verification}`
+                            const sent = () => {
+                              return (
+                                socket.send(temp)
+                              )
+                            }
+                            sent()
+                          })
+                          }`)
+                        socket.send(`\n---------------------------------\nTotal Bolivares: ${closedData.total.bsd} Bs.D`)
+                        socket.send(`\n---------------------------------\nTotal Dolares: ${closedData.total.dolar} $`)
+                        socket.send(`\n---------------------------------\nTotal Pesos: ${closedData.total.cop} COP`)
+                        socket.send('\n\n\n\n\n\n')
+                        socket.send('cut')
+                      }, 1000)
+                    };
 
-                  socket.onerror = function (error) {
-                    console.error('Error en la conexión:', error);
-                  };
+                    socket.onmessage = function (event) {
+                      console.log('Mensaje recibido del servidor:', event.data);
+                    };
 
-                  socket.onclose = function (event) {
-                    console.log('Conexión cerrada:', event.code, event.reason);
-                  };
+                    socket.onerror = function (error) {
+                      console.error('Error en la conexión:', error);
+                    };
 
-                } catch (e) {
-                  alert(JSON.stringify(e));
+                    socket.onclose = function (event) {
+                      console.log('Conexión cerrada:', event.code, event.reason);
+                    };
+
+                  } catch (e) {
+                    alert(JSON.stringify(e));
+                  }
                 }
-              }
 
-              send()
-            }}>
-            Imprimir
-          </Button>
-      </Grid.Col>
-     
-    </Grid>
-          
-          
-        
+                send()
+              }}>
+              Imprimir
+            </Button>
+          </Grid.Col>
+
+        </Grid>
+
+
+
         {/* <Button color="blue" w="100%" disabled={closedData.pendings > 0} leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button> */}
       </Modal>
     )
@@ -714,7 +714,7 @@ function Dashboard() {
               onClose={() => setHelpModal(false)}
             />
           )}
-          <Card mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+          <Card withBorder radius="lg" mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
             <CloseDayModal />
             <Grid>
               <Grid.Col md={9} sm={12}>
@@ -726,7 +726,9 @@ function Dashboard() {
                 </Title>
                 <Group mb={15}>
                   <DatePicker
-                    w="150px"
+                    radius="lg"
+                    size="md"
+                    w="156px"
                     placeholder="Seleccionar fecha"
                     inputFormat="YYYY-MM-DD"
                     label="Desde"
@@ -735,7 +737,9 @@ function Dashboard() {
                     onChange={(date) => setStartDate(date)}
                   />
                   <DatePicker
-                    w="150px"
+                    radius="lg"
+                    size="md"
+                    w="156px"
                     placeholder="Seleccionar fecha"
                     inputFormat="YYYY-MM-DD"
                     label="Hasta"
@@ -749,9 +753,9 @@ function Dashboard() {
                     <Input
                       variant="filled"
                       placeholder="Premio, rifero o número de premiado"
-                      radius="sm"
-                      size="sm"
-                      w="260px"
+                      radius="lg"
+                      size="md"
+                      w="295px"
                       value={searchValue}
                       onChange={handleSearchChange}
                     />
@@ -762,7 +766,7 @@ function Dashboard() {
                       onClick={() => filterByDate()}
                       p={7}
                       fz={14}
-                      style={{ borderRadius: '5px 0 0 5px' }}
+                      style={{ borderRadius: '15px 0 0 15px' }}
                     >
                       Filtrar
                     </Button>
@@ -771,7 +775,7 @@ function Dashboard() {
                       color="red"
                       p={7}
                       fz={14}
-                      style={{ borderRadius: '0 5px 5px 0' }}
+                      style={{ borderRadius: '0 15px 15px 0' }}
                       onClick={() => {
                         setEndDate(null)
                         setStartDate(null)
@@ -793,11 +797,11 @@ function Dashboard() {
                 /> */}
               </Grid.Col>
               <Grid.Col md={2} sm={12}>
-                <Group position="right" mt={25}>
+                <Group  mt={25}>
                   <FormModal
                     variant="filled"
                     color="blue"
-                    style={{ position: 'absolute', right: 155 }}
+                    style={{ position: 'absolute', right: 155 ,borderRadius: '7px ' }}
                     leftIcon={<IconPlus />}
                     className="btn-rifa"
                     onClick={() => setOpenForm((prevState) => !prevState)}
@@ -807,7 +811,14 @@ function Dashboard() {
                   >
                     Agregar Rifa
                   </FormModal>
-                  <Button onClick={() => setCloseDay(true)} leftIcon={<IconX />} color='red' style={{ position: 'absolute', width: '130px', right: 15 }}>
+                  <Button  
+                  radius="md"
+                  size="md" 
+                  fz={12}
+                  onClick={() => setCloseDay(true)} 
+                  leftIcon={<IconX />} 
+                  color='red' 
+                  style={{ position: 'absolute', width: '130px', right: 15 }}>
                     Cerrar día
                   </Button>
                 </Group>

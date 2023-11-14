@@ -223,9 +223,11 @@ export default function TableSort({ data }: TableSortProps) {
         mb="md"
         icon={<IconSearch size="1.3rem" stroke={2} />}
         value={search}
-        size="md"
+        
         w={340}
-        radius={0}
+
+        radius="lg"
+        size="lg"
         onChange={handleSearchChange}
       />
       <Table

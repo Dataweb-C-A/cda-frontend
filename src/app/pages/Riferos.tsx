@@ -101,7 +101,7 @@ function Riferos() {
             links={links}
             expandScreen={true}
           />
-          <Card mt={15} ml={15} mr={15} h={800}>
+          <Card withBorder radius="lg" shadow="xl" mt={15} ml={15} mr={15} h={800}>
             <Title mt={55} ml={15} order={3}>
               Sin acceso
             </Title>
@@ -112,6 +112,7 @@ function Riferos() {
           <section className="riferos">
             <Navbar profiles={users} links={links} />
             <Card
+              withBorder radius="lg"
               mx={15}
               shadow={"0 0 7px 0 #5f5f5f3d"}
               mt={15}
@@ -130,8 +131,8 @@ function Riferos() {
                     placeholder="Buscar por nombre, apellido o cédula"
                     value={search}
                     name="value"
-                    radius="sm"
-                    size="md"
+                    radius="lg"
+                    size="lg"
                     onChange={handleSearch}
                     className="search-riferos"
                   />
@@ -147,13 +148,8 @@ function Riferos() {
                   </FormRifero>
                 </Grid.Col>
               </Grid>
-              <Table
-                verticalSpacing="xs"
-                striped
-                highlightOnHover
-                fontSize="md"
-                style={{ overflowX: "auto" }}
-              >
+              <Table fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
+
                 <thead>
                   <tr>
                     <th>Nombre</th>

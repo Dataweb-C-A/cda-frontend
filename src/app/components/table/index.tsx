@@ -126,7 +126,7 @@ export default function TableSort({ data }: TableSortProps) {
       case 'boolean':
         if (payload === true) {
           return (
-            <div style={{ display: 'flex', width: '100%'}}>
+            <div style={{ display: 'flex', width: '100%' }}>
               <div style={{ margin: 'auto' }}>
                 <Badge color="green">
                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -139,7 +139,7 @@ export default function TableSort({ data }: TableSortProps) {
           )
         } else {
           return (
-            <div style={{ display: 'flex', width: '100%'}}>
+            <div style={{ display: 'flex', width: '100%' }}>
               <div style={{ margin: 'auto' }}>
                 <Badge color="red">
                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -162,10 +162,10 @@ export default function TableSort({ data }: TableSortProps) {
           return <Text>{payload.toLocaleDateString()}</Text>
         }
         return <Text>{JSON.stringify(payload)}</Text>
-      case 'undefined': 
+      case 'undefined':
         return <Text>N/A</Text>
       default:
-        return <Text>{payload}</Text>  
+        return <Text>{payload}</Text>
     }
   }
 
@@ -184,61 +184,55 @@ export default function TableSort({ data }: TableSortProps) {
   ))
 
   return (
-    <ScrollArea>
+    <>
       <TextInput
         placeholder="Buscar por cualquier campo"
         mb="md"
         icon={<IconSearch size="1.3rem" stroke={2} />}
         value={search}
-        size='md'
         w={340}
-        radius={0}
+        radius="lg"
+        size="lg"
         onChange={handleSearchChange}
       />
-      <Table 
-        striped 
-        highlightOnHover 
-        withColumnBorders 
-        withBorder 
-        horizontalSpacing="md" 
-        verticalSpacing="sm" 
-        miw={700} 
-        sx={{ tableLayout: 'fixed' }}
-      >
-        <thead>
-          <tr>
-            {
-              keys(data[0]).map((key) => (
-                <Th
-                  key={key}
-                  sorted={sortBy === key}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting(key)}
-                >
-                  {
-                    key.includes('_') ? 
-                    key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ') : 
-                    key.charAt(0).toUpperCase() + key.slice(1)
-                  }
-                </Th>
-              ))
-            }
-          </tr>
-        </thead>
-        <tbody>
-          {rows.length > 0 ? (
-            rows
-          ) : (
+      <ScrollArea type="scroll" style={{ height: 755 }}>
+        <Table fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
+
+          <thead>
             <tr>
-              <td colSpan={Object.keys(data[0]).length}>
-                <Text weight={700} my="8%" fz={20} align="center">
-                  No hay resultados
-                </Text>
-              </td>
+              {
+                keys(data[0]).map((key) => (
+                  <Th
+                    key={key}
+                    sorted={sortBy === key}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting(key)}
+                  >
+                    {
+                      key.includes('_') ?
+                        key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ') :
+                        key.charAt(0).toUpperCase() + key.slice(1)
+                    }
+                  </Th>
+                ))
+              }
             </tr>
-          )}
-        </tbody>
-      </Table>
-    </ScrollArea>
+          </thead>
+          <tbody>
+            {rows.length > 0 ? (
+              rows
+            ) : (
+              <tr>
+                <td colSpan={Object.keys(data[0]).length}>
+                  <Text weight={700} my="8%" fz={20} align="center">
+                    No hay resultados
+                  </Text>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </ScrollArea>
+    </>
   )
 }
