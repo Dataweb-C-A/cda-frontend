@@ -57,13 +57,13 @@ function Combo50table() {
 
       <Group mb={12} position='apart'>
 
-        <Text fz="md">Total venta: {totalComboPrice} $</Text>
-        <Text mr={15} fz="md">Pote: {pote} $</Text>
+        <Text fz="lg">Total venta: {totalComboPrice} $</Text>
+        <Text  mr={15} fz="lg">Pote: {pote} $</Text>
 
       </Group>
       <ScrollArea type="scroll" style={{ height: 650 }}>
 
-        <Table striped highlightOnHover withBorder withColumnBorders>
+      <Table fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
           <thead>
             <tr>
               <th>Numero de compra</th>

@@ -62,9 +62,9 @@ function Login() {
     try {
       const { data } = await axios.post<LoginResponse>(
         'https://rifa-max.com/api/v1/login',
-        { 
-          email: email, 
-          password: password 
+        {
+          email: email,
+          password: password
         },
         {
           headers: {
@@ -100,7 +100,7 @@ function Login() {
       setErrorMessage('Correo o contraseña incorrectos')
     }
   }
-  
+
   return (
     <Paper style={{
       position: 'absolute',
@@ -109,7 +109,7 @@ function Login() {
       height: '100vh'
     }}>
       <Container size={420} mt='20vh'>
-        <Paper withBorder shadow='md' p={30} mt={30} radius='md' bg={
+        <Paper withBorder shadow='md' p={30} mt={30} radius='lg' bg={
           theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.blue[0]
         }>
           <Image
@@ -117,25 +117,30 @@ function Login() {
             alt='Rifamax'
             style={{ margin: '0 auto' }}
           />
-          <TextInput 
-            label='Correo' 
-            placeholder='micorreo@rifamax.com' 
-            required 
-            withAsterisk={false} 
+          <TextInput
+            label='Correo'
+
+            radius="md"
+            size="md"
+            placeholder='micorreo@rifamax.com'
+            required
+            withAsterisk={false}
             value={checkLastSession ? JSON.parse(sessionStorage.getItem('lastSession') || '{}').email : email}
             onChange={
               (e: any) => setEmail(e.currentTarget.value)
-            } 
+            }
           />
-          <PasswordInput 
-            label='Contraseña' 
-            placeholder='********' 
-            required 
-            withAsterisk={false} 
-            value={checkLastSession ? JSON.parse(sessionStorage.getItem('lastSession') || '{}').password : password }
+          <PasswordInput
+            radius="md"
+            size="md"
+            label='Contraseña'
+            placeholder='********'
+            required
+            withAsterisk={false}
+            value={checkLastSession ? JSON.parse(sessionStorage.getItem('lastSession') || '{}').password : password}
             onChange={
               (e: any) => setPassword(e.currentTarget.value)
-            } 
+            }
           />
           <Group position='apart' mt='lg'>
             <Anchor href='#' color='blue' onClick={() => setOpen(!open)} style={{ display: 'none' }}>
@@ -143,8 +148,10 @@ function Login() {
             </Anchor>
             <Checkbox label='Recordarme' onChange={(e: any) => setRemember(e.currentTarget.checked)} />
           </Group>
-          <Button 
-            fullWidth 
+          <Button
+            fullWidth
+            radius="md"
+            size="md"
             mt='xl'
             onClick={
               () => {

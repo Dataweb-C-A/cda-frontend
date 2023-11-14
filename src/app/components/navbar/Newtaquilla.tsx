@@ -62,6 +62,7 @@ function Newtaquilla({ }: Props) {
         opened={opened}
         size="xl"
         centered
+        radius="lg"
         onClose={() => {
           setOpened(false);
           setFormReset(true);
@@ -105,6 +106,8 @@ function Newtaquilla({ }: Props) {
             <TextInput
               placeholder="Nombre"
               label="Nombre"
+              radius="lg"
+              size="lg"
               mb={10}
               {...form.getInputProps('name')}
             />
@@ -112,6 +115,8 @@ function Newtaquilla({ }: Props) {
             <TextInput
               placeholder="Telefono"
               label="Telefono"
+              radius="lg"
+              size="lg"
               {...form.getInputProps('phone')}
               mb={10}
             />
@@ -120,6 +125,8 @@ function Newtaquilla({ }: Props) {
 
           <Group grow>
             <TextInput
+                radius="lg"
+                size="lg"
               placeholder="Cedula"
               label="Cedula"
               {...form.getInputProps('cedula')}
@@ -127,6 +134,8 @@ function Newtaquilla({ }: Props) {
             />
             <TextInput
               placeholder="Correo"
+              radius="lg"
+              size="lg"
               label="Correo"
               {...form.getInputProps('email')}
               mb={10}
@@ -139,6 +148,8 @@ function Newtaquilla({ }: Props) {
           <Group grow>
             <PasswordInput
               placeholder="Contraseña"
+              radius="lg"
+              size="lg"
               label="Contraseña"
               {...form.getInputProps('password')}
               mb={10}
@@ -146,6 +157,8 @@ function Newtaquilla({ }: Props) {
 
             <PasswordInput
               placeholder="Confirnar Contraseña"
+              radius="lg"
+              size="lg"
               label="Confirnar Contraseña"
               {...form.getInputProps('password_confirmation')}
               mb={10}
@@ -154,13 +167,30 @@ function Newtaquilla({ }: Props) {
           </Group>
 
 
-          <Button type="submit" fullWidth >Continuar</Button>
+          <Button
+            radius="md"
+            size="md"
+            type="submit"
+            mt={15}
+            fullWidth >
+            Continuar
+          </Button>
         </form>
 
       </Modal>
 
 
-      <Button mb={10} w={350} leftIcon={<IconHomePlus size={14} />} fullWidth color='blue'  onClick={() => setOpened(true)}>Agregar taquilla</Button>
+      <Button
+        radius="md"
+        size="md"
+        mb={10}
+        w={350}
+        leftIcon={<IconHomePlus size={14} />}
+        fullWidth
+        color='blue'
+        onClick={() => setOpened(true)}>
+        Agregar taquilla
+      </Button>
 
     </>
   )

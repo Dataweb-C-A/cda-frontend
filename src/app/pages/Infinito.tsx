@@ -145,7 +145,8 @@ function infinito() {
         <Card
           shadow="sm"
           h="calc(100vh - 82px)"
-          withBorder
+          withBorder 
+          radius="lg" 
           mt={10}
           mx={10}
         >
@@ -160,7 +161,8 @@ function infinito() {
         <Card
           shadow="sm"
           h="calc(100vh - 82px)"
-          withBorder
+          withBorder 
+          radius="lg" 
           mt={10}
           mx={10}
         >

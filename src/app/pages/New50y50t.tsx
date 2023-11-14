@@ -9,6 +9,8 @@ import {
   Pagination,
   Group,
   Divider,
+  Loader,
+  ScrollArea
 } from '@mantine/core';
 import Newtaquilla from '../components/navbar/Newtaquilla';
 
@@ -32,7 +34,7 @@ const New50y50t = (props: Props) => {
     const token = localStorage.getItem("token");
 
     if (!is5050User) {
-      return; 
+      return;
     }
     if (token) {
       axios.get("https://rifa-max.com/api/v1/taquilla_fifty", {
@@ -85,7 +87,7 @@ const New50y50t = (props: Props) => {
       />
 
       {is5050User ? (
-        <Card mt={15} ml={15} mr={15} h={780}>
+        <Card withBorder radius="lg" shadow="xl" mt={15} ml={15} mr={15} h={780}>
           <Group position='apart'>
             <Title order={3}>
               Taquilla 50 y 50
@@ -96,21 +98,28 @@ const New50y50t = (props: Props) => {
           <Divider my="sm" variant="dashed" />
 
           {/* <Pagination mt={15} total={10} /> */}
-          {isLoading ? (
-            <p>Cargando datos...</p>
-          ) : (
-            <Table mt={20} striped highlightOnHover withBorder withColumnBorders>
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Cédula</th>
-                  <th>Número</th>
-                  <th>Correo</th>
-                </tr>
-              </thead>
-              <tbody>{tableRows}</tbody>
-            </Table>
-          )}
+          <ScrollArea h="60vh">
+            {isLoading ? (
+              <>
+                <Group mt={200} position='center'>
+
+                  <Loader color="blue" size={150} variant="bars" />
+                </Group>
+              </>
+            ) : (
+              <Table mt={20} fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Cédula</th>
+                    <th>Número</th>
+                    <th>Correo</th>
+                  </tr>
+                </thead>
+                <tbody>{tableRows}</tbody>
+              </Table>
+            )}
+          </ScrollArea>
         </Card>
       ) : (
         <>

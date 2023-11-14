@@ -103,7 +103,8 @@ function AvatarCard({ id, name, image, role, border, width, padding, margin, sty
       onMouseLeave={() => true ? setIsHovering(false) : null}
     >
       <Card
-        shadow="sm"
+        radius="lg"
+        shadow="xl"
         p={padding}
         w={width}
         withBorder={border}

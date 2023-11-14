@@ -152,7 +152,10 @@ function Award({ }: Props) {
         withCloseButton={false}
       >
         <Combo50table />
-        <Button mt={10} fullWidth color="red" onClick={cerrarDia}>
+        <Button
+          radius="md"
+          size="md"
+          mt={10} fullWidth color="red" onClick={cerrarDia}>
           Cerrar día
         </Button>
       </Modal>
@@ -171,7 +174,14 @@ function Award({ }: Props) {
           error
         </Title>
       ) : (
-        <Card h={880} ml={15} mr={15} mt={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+        <Card
+          withBorder
+          radius="lg"
+          h={880}
+          ml={15}
+          mr={15}
+          mt={15}
+          shadow={"0 0 7px 0 #5f5f5f3d"}>
 
           <>
             <Title order={2} fw={500} mb={20}>
@@ -183,11 +193,12 @@ function Award({ }: Props) {
 
             {currentDraw?.winner_is != null && currentDraw?.is_closed === true ? (
               <Group mt={250} position="center">
-                <Card w={500} h={JSON.parse(localStorage.getItem('user') || '{}').name === "50 50 001" ? 190 : 135} my={20} shadow="sm" p="lg" radius="md" withBorder>                <Group position="center">
-                  <Title order={2}>
-                    El Ticket ganador es :
-                  </Title>
-                </Group>
+                <Card radius="lg" w={500} h={JSON.parse(localStorage.getItem('user') || '{}').name === "50 50 001" ? 190 : 135} my={20} shadow="sm" p="lg" withBorder>
+                  <Group position="center">
+                    <Title order={2}>
+                      El Ticket ganador es :
+                    </Title>
+                  </Group>
 
                   <Group mt={15} position="center">
                     <Title order={2}>
@@ -195,7 +206,9 @@ function Award({ }: Props) {
                     </Title>
                     {
                       JSON.parse(localStorage.getItem('user') || '{}').name === "50 50 001" ?
-                        <Button mt={10} onClick={() => setOpenedModal2(true)} fullWidth >
+                        <Button
+                          radius="md"
+                          size="md" mt={10} onClick={() => setOpenedModal2(true)} fullWidth >
                           Ver cierre
                         </Button>
                         : null
@@ -205,7 +218,8 @@ function Award({ }: Props) {
               </Group>
             ) : (
               <Group mt={250} position="center">
-                <Card w={500} h={150} my={20} shadow="sm" p="lg" radius="md" withBorder>
+                <Card
+                  radius="lg" w={500} h={150} my={20} shadow="sm" p="lg" withBorder>
                   {
                     JSON.parse(localStorage.getItem('user') || '{}').name === "50 50 001" ?
                       <>
@@ -241,7 +255,10 @@ function Award({ }: Props) {
                             <ChevronRight />
                           </Button>
                         </Group>
-                        <Button disabled={currentDraw?.winner_is === null} mt={30} onClick={() => setOpenedModal1(true)} fullWidth color="red">
+                        <Button
+
+                          radius="md"
+                          size="md" disabled={currentDraw?.winner_is === null} mt={30} onClick={() => setOpenedModal1(true)} fullWidth color="red">
                           Cerrar día
                         </Button>
                       </>

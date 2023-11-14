@@ -8,10 +8,12 @@ import axios from 'axios'
 import {
   Group,
   Image,
+  Loader,
   Card,
   Table,
   Input,
-  Title
+  Title,
+  ScrollArea
 } from '@mantine/core';
 import Newrifa50y50 from './Newrifa50y50';
 import { IconSearch } from '@tabler/icons-react';
@@ -170,7 +172,9 @@ function Lobby() {
 
       {is5050User ? (
         <>
-          <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
+          <Card
+            withBorder
+            radius="lg" mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
             <Group position='center' >
               <Title>
 
@@ -187,7 +191,10 @@ function Lobby() {
             </Group>
 
             {draws.length > 0 ? (
-              <Table striped highlightOnHover withBorder withColumnBorders>
+                    <ScrollArea type="scroll" style={{ height: 755 }}>
+
+               
+              <Table fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
                 <thead>
                   <tr>
 
@@ -212,8 +219,14 @@ function Lobby() {
                   ))}
                 </tbody>
               </Table>
+              </ScrollArea>
             ) : (
-              <p>Loading...</p>
+              <>
+              <Group mt={200} position='center'>
+
+                <Loader color="blue" size={150} variant="bars" />
+              </Group>
+            </>
             )}
 
 

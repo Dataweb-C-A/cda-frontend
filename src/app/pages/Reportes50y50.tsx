@@ -10,6 +10,7 @@ import {
   Card,
   Table,
   Title,
+  Loader,
   Pagination,
   ActionIcon,
   Group,
@@ -94,7 +95,7 @@ const Reportes50y50 = (props: Props) => {
   socket.onclose = function (event) {
     console.log('Conexión cerrada:', event.code, event.reason);
   };
-  
+
   const [numbers, setNumbers] = useState<IData[] | []>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -172,7 +173,7 @@ const Reportes50y50 = (props: Props) => {
     setSelectedAgent(value);
     setCurrentPage(1);
   };
-  
+
   const filteredNumbers = currentNumbers;
 
   const getAgencyOptions = () => {
@@ -188,7 +189,7 @@ const Reportes50y50 = (props: Props) => {
     }
   });
   const rows = filteredRows.map((number, index) => {
-    let formattedNumber = number.numbers.toString(); 
+    let formattedNumber = number.numbers.toString();
     if (formattedNumber.length === 1) {
       formattedNumber = '000' + formattedNumber;
     } else if (formattedNumber.length === 2) {
@@ -196,7 +197,7 @@ const Reportes50y50 = (props: Props) => {
     } else if (formattedNumber.length === 3) {
       formattedNumber = '0' + formattedNumber;
     }
-  
+
     return (
       <tr key={index}>
         <td>{formattedNumber}</td>
@@ -227,7 +228,7 @@ const Reportes50y50 = (props: Props) => {
       </tr>
     );
   });
-  
+
   const totalPages = Math.ceil(numbers.length / itemsPerPage);
 
   return (
@@ -241,61 +242,80 @@ const Reportes50y50 = (props: Props) => {
           />
 
 
-          <Card mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
+          <Card withBorder radius="lg"  mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
             <Group position='center'>
 
-          <Title mb={10} order={2}>Elija un registro</Title>
+              <Title mb={10} order={2}>Elija un registro</Title>
             </Group>
             <Tabs color="indigo" variant="outline" defaultValue="gallery">
               <Tabs.List grow>
-                <Tabs.Tab value="Reporte de venta" icon={<IconMessageCircle size={14} />}>Reporte de venta</Tabs.Tab>
-                <Tabs.Tab value="imprimir" icon={<IconPrinter size={14} />}>Reimprimir ticket buzon</Tabs.Tab>
+                <Tabs.Tab
+                
+                  value="Reporte de venta"
+                  fz="lg"
+                  icon={<IconMessageCircle size={14} />}>
+                  Reporte de venta
+                </Tabs.Tab>
+                <Tabs.Tab
+                  fz="lg"
+                  value="imprimir"
+                  icon={<IconPrinter size={14} />}>
+                  Reimprimir ticket buzon
+                </Tabs.Tab>
               </Tabs.List>
 
               <Tabs.Panel value="imprimir" defaultValue='imprimir' pt="xs">
-                
+
 
 
                 <Group position='apart'>
-                <Select
-                  label='Seleccione taquilla'
-                  placeholder='Elija taquilla'
-                  w={350}
-                  mb={15}
-                  data={getAgencyOptions()}
-                  value={selectedAgent} 
-                  onChange={(value: string) => {
-                    handleChange(value); // Llama a handleChange con el nuevo valor
-                  }}
-                />
+                  <Select
+                    label='Seleccione taquilla'
+                    placeholder='Elija taquilla'
+                    maxDropdownHeight={150}
+                    w={350}
+                    radius="lg"
+                    size="lg"
+                    mb={15}
+                    data={getAgencyOptions()}
+                    value={selectedAgent}
+                    onChange={(value: string) => {
+                      handleChange(value);
+                    }}
+                  />
 
                 </Group>
                 {loading ? (
-                  <p>Loading...</p>
+                  <>
+                  <Group mt={200} position='center'>
+  
+                    <Loader color="blue" size={150} variant="bars" />
+                  </Group>
+                </>
                 ) : (
 
-                  <ScrollArea type="scroll" style={{ height: 650 }}>
-                    
-                  <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
-                    <thead>
-                      <tr>
-                        <th>Numeros</th>
-                        <th>Agente</th>
-                        <th>Localidad</th>
-                        <th>Reimprimir Ticket</th>
-                      </tr>
-                    </thead>
-                    
-                    <tbody>{rows}</tbody>
-                  </Table>
-                </ScrollArea>
+                  <ScrollArea type="scroll" style={{ height: 635 }}>
+
+                    <Table fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
+                      <thead>
+                        <tr>
+                          <th>Numeros</th>
+                          <th>Agente</th>
+                          <th>Localidad</th>
+                          <th>Reimprimir Ticket</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>{rows}</tbody>
+                    </Table>
+                  </ScrollArea>
                 )}
               </Tabs.Panel>
               <Tabs.Panel value="Reporte de venta" pt="xs">
-                <Combo50table/>
+                <Combo50table />
               </Tabs.Panel>
             </Tabs>
-           
+
           </Card>
 
         </>

@@ -148,7 +148,7 @@ function Draws({ }: IDraws) {
               onClose={() => closeForm()}
               open={openForm}
             >
-              Agregar rifa de moto
+              Agregar rifa moto
             </DrawsModal>
           </Grid.Col>
         </Grid>
