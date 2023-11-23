@@ -26,7 +26,7 @@ import axios from 'axios'
 import New50y50t from './app/pages/New50y50t'
 import it5050 from './app/pages/it5050'
 import award from './app/pages/Award'
-
+import Logint from './app/pages/Logint'
 
 
 type AppProps = {
@@ -252,6 +252,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <AuthRouter path="/reportes-rifa" component={Reporterifa} isPrivate />
           <AuthRouter path="/exchange" component={Exchange} isPrivate />
           <AuthRouter path="/draws" component={Draws} isPrivate />
+          <AuthRouter path="/logint" component={Cuadre} isPrivate />
           <AuthRouter path="/cuadre" component={Cuadre} isPrivate />
           <AuthRouter path="/award" component={award} isPrivate />
           <AuthRouter path="/infinito" component={Infinito} isPrivate />

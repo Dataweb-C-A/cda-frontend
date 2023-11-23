@@ -431,6 +431,7 @@ function DrawsModal({
         onClose={() => closeModal()}
         title="Agregar Rifa Especiales"
         size="xl"
+        radius={'lg'}
       >
         <Stepper size="md" active={active}>
           <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
@@ -441,6 +442,7 @@ function DrawsModal({
                     label="Titulo"
                     placeholder="Titulo"
                     size='md'
+                    radius={'lg'}
                     withAsterisk
                     error={form.errors.title}
                     {...form.getInputProps('title')}
@@ -451,6 +453,7 @@ function DrawsModal({
                     label="Numeros de la rifa"
                     placeholder="Numeros de la rifa"
                     size='md'
+                    radius={'lg'}
                     withAsterisk
                     hideControls
                     error={form.errors.numbers}
@@ -511,6 +514,7 @@ function DrawsModal({
                     placeholder="Primer premio"
                     error={form.errors.first_prize}
                     withAsterisk
+                    radius={'lg'}
                     mt="md"
                     mb={15}
                     {...form.getInputProps('first_prize')}
@@ -536,6 +540,7 @@ function DrawsModal({
                       size='md'
                       label={etiqueta}
                       mt={15}
+                      radius={'lg'}
                       mb={10}
                       placeholder={etiqueta}
 
@@ -548,6 +553,7 @@ function DrawsModal({
                   <DatePicker
                     label='Fecha de la rifa'
                     placeholder='Fecha de la rifa'
+                    radius={'lg'}
                     withAsterisk
                     size='md'
                     fullWidth
@@ -567,6 +573,7 @@ function DrawsModal({
                     label='Fecha de expiracion'
                     placeholder='Fecha de expiracion'
                     size='md'
+                    radius={'lg'}
                     fullWidth
                     defaultValue={
                       form.getInputProps('draw_type').value === 'Progressive' ? null :
@@ -670,6 +677,7 @@ function DrawsModal({
               <Grid>
                 <Grid.Col span={6}>
                   <NumberInput
+                  radius={'lg'}
                     label="Precio unitario"
                     placeholder="Precio unitario"
                     withAsterisk
@@ -682,6 +690,7 @@ function DrawsModal({
                 </Grid.Col>
                 <Grid.Col span={6}>
                   <Select
+                  radius={'lg'}
                     size='md'
                     mt="md"
                     label="Moneda"
@@ -740,6 +749,7 @@ function DrawsModal({
               <Grid mb={15}>
                 <Grid.Col span={6}>
                   <Select
+                  radius={'lg'}
                     size='md'
                     mb="md"
                     label="Taquilla patrocinante"
@@ -761,6 +771,7 @@ function DrawsModal({
                 <Grid.Col span={6}>
                   <MultiSelect
                     size='md'
+                    radius={'lg'}
                     mb="md"
                     label="Taquillas visibles"
                     disabled={allTaquillas}
@@ -802,7 +813,7 @@ function DrawsModal({
                   </Group>
                   <Dropzone
                     disabled={checkedIndex === 4}
-
+                    radius={'lg'}
 
                     className={checkedIndex === 4 ? classes.disabled2 : 'activopapi'}
                     accept={IMAGE_MIME_TYPE}
@@ -849,6 +860,7 @@ function DrawsModal({
                     disabled={checkedIndex === 4}
                     className={checkedIndex === 4 ? classes.disabled : 'activopapi'}
                     accept={IMAGE_MIME_TYPE}
+                    radius={'lg'}
                     onDrop={(files) => {
                       handleDrop2(files)
                       form.getInputProps('ads').onChange(files[0])
@@ -884,12 +896,12 @@ function DrawsModal({
                 </Grid.Col>
               </Grid>
               <Group position="center" mt="xl">
-                <Button variant="default" onClick={prevStep} disabled={
+                <Button variant="default" radius={'lg'} onClick={prevStep} disabled={
                   active === 2 ? true : false
                 }>
                   Atrás
                 </Button>
-                <Button type="submit">Siguiente</Button>
+                <Button radius={'lg'} type="submit">Siguiente</Button>
               </Group>
             </form>
           </Stepper.Step>
