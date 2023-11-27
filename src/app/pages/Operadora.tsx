@@ -75,7 +75,7 @@ function Operadora() {
   const [draws, setDraws] = useState<IDraws[] | []>([])
   const [profiles, setProfiles] = useState([])
   const [loading, setLoading] = useState(true)
-  const [modalState, setModalState] = useState(false);  
+  const [modalState, setModalState] = useState(false);
   const [drawSelected, setDrawSelected] = useState<IDraws>({
     id: 0,
     title: '',
@@ -117,7 +117,7 @@ function Operadora() {
 
   function useQuery() {
     const { search } = useLocation();
-  
+
     return useMemo(() => new URLSearchParams(search), [search]);
   }
 
@@ -183,12 +183,12 @@ function Operadora() {
         console.log(err)
         setErrors(err.response.data.message)
       }
-    )
+      )
   }, [])
 
- const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
- const handleButtonClick = (buttonIndex: number) => {
+  const handleButtonClick = (buttonIndex: number) => {
     setActiveIndex(buttonIndex);
     setModalState(true);
   }
@@ -216,7 +216,7 @@ function Operadora() {
           setErrors(err.response.data.message)
         }
         )
-    },1000)
+    }, 1000)
   }, [draws])
 
   const handleLobby = (id: number, connection: Date) => {
@@ -242,7 +242,7 @@ function Operadora() {
         },
       },
     }))
-   
+
     const { classes, cx } = useStyles()
 
     return (
@@ -286,7 +286,7 @@ function Operadora() {
         ) : (
           loading ? (
             <>
-              <div 
+              <div
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -320,7 +320,7 @@ function Operadora() {
           {
             errors === null && loading ? (
               <>
-                <div 
+                <div
                   style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -334,41 +334,44 @@ function Operadora() {
               </>
             ) : null
           }
-          
-          <Group ml={35} mt={0} >
-            {draws.map((card, index) => (
-                 <Button
-                 key={card.id}
-                 w={205}
-                 h={110}
-                 component="a"
-                 target="_blank"
-                 style={{
-                  zIndex: 9,
-                  backgroundColor:
-                    activeIndex === index && lobbyState.open ? "#3c3d47" : "#2b2c3d",
-                  border:
-                    activeIndex === index && lobbyState.open ? "2px solid #00ff00" : "none",
-                }}
-                onClick={() => {
-                  handleButtonClick(index); 
-                  dispatch(setLobbyMode(!selector));
-                  setDrawSelected(card);
-                  setLobbyState({
-                    open: !lobbyState.open,
-                    lobby_id: card.id,
-                    lobby_state: true,
-                    lobby_connection: new Date(),
-                  });
-                }}
-               >
-                    <Text mt={2} fw={500} fz={15} mb={4} align="center">
-                      {card.first_prize}
-                    </Text>
-                   
-                  </Button>
-            ))}
-          </Group>
+          {/** rifas abiertas */}
+          <ScrollArea w='185vh' h={120}>
+
+            <Group  ml={35} mt={0} >
+              {draws.map((card, index) => (
+                <Button
+                  key={card.id}
+                 w={200}
+                  h={110}
+                  component="a"
+                  target="_blank"
+                  style={{
+                    backgroundColor:
+                      activeIndex === index && lobbyState.open ? "#3c3d47" : "#2b2c3d",
+                    border:
+                      activeIndex === index && lobbyState.open ? "2px solid #00ff00" : "none",
+                  }}
+                  onClick={() => {
+                    handleButtonClick(index);
+                    dispatch(setLobbyMode(!selector));
+                    setDrawSelected(card);
+                    setLobbyState({
+                      open: !lobbyState.open,
+                      lobby_id: card.id,
+                      lobby_state: true,
+                      lobby_connection: new Date(),
+                    });
+                  }}
+                >
+                  <Text mt={2} fw={500} fz={15} mb={4} align="center">
+                    {card.first_prize}
+                  </Text>
+
+                </Button>
+              ))}
+            </Group>
+          </ScrollArea>
+
           {
             draws.length === 0 && loading === false ? (
               <Grid mt={0} gutter={10} mx={10}>
@@ -439,7 +442,7 @@ function Operadora() {
         {
           JSON.parse(localStorage.getItem("user") || '').role === "Auto" && loading === false ? (
             <div
-              style={{ position: "absolute", top: 15, right: 15, width: "120px", zIndex: 99999 }}
+              style={{ position: "absolute", top: 10, right: 15, width: "120px"}}
             >
               <Card>
                 <img src={RifamaxLogo} width="100%" />
@@ -465,7 +468,7 @@ function Operadora() {
           ) : (
             loading === true ? (
               <>
-                <div 
+                <div
                   style={{
                     display: 'flex',
                     justifyContent: 'center',

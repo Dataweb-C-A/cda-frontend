@@ -25,7 +25,7 @@ export const links = [
   { name: 'Taquilla 50 y 50', url: '/New50y50t', chevron: false, icon: <IconHomePlus size={20} strokeWidth={1.5} />, hidden: !is5050User },
   { name: 'Riferos', url: '/riferos', chevron: false, icon: <FiUsers size={20} strokeWidth={1.5} />, role: 'Taquilla' },
   { name: 'Reportes de rifas', url: '/reportes-rifa', chevron: false, icon: <IconNotes size={20} strokeWidth={1.5} />, role: 'Taquilla' },
-  // { name: 'Taquilla Rifamax', url: '/lobby', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <TbBrandAppleArcade size={20} strokeWidth={1.3} />, role: 'Taquilla' },
+  // { name: 'Rifamax x100', url: '/x100', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <TbBrandAppleArcade size={20} strokeWidth={1.3} />, role: 'Taquilla' },
   // { name: 'Cuadre', url: '/cuadre',description: '¡Nuevo!',descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconBrandGoogleAnalytics size={20} strokeWidth={1.5} />, role: 'Taquilla' },
   { name: 'Rifas 50 y 50', url: '/infinito', description: '¡Nuevo!',descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconPokerChip size={20} strokeWidth={1.5} />, role: 'Taquilla'},
   { name: 'Reportes', url: '/reports', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <BsBuilding size={20} strokeWidth={0} />, role: 'Admin' },

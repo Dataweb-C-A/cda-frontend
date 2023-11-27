@@ -247,7 +247,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/Pot" component={Pot} />
           <Route path="/it5050/:plays?/:id?" component={it5050} />
           <AuthRouter path="/riferos" component={Riferos} isPrivate />
-          <AuthRouter path="/lobby" component={Operadora} isPrivate />
+          <AuthRouter path="/x100" component={Operadora} isPrivate />
           <AuthRouter path="/reports" component={Reports} isPrivate />
           <AuthRouter path="/reportes-rifa" component={Reporterifa} isPrivate />
           <AuthRouter path="/exchange" component={Exchange} isPrivate />

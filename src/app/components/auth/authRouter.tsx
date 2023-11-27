@@ -26,11 +26,11 @@ const user = JSON.parse(localStorage.getItem('user') || '{}');
 const taquillaPermissions = user.name === "50-50-001" ? ['/reportes50y50'] : [];
 
 const permissions: PermissionMap = {
-  [Role.Admin]: ['/','/rifamax' ,'/New50y50t','Logint', '/users', '/riferos', '/reportes-rifa','/cuadre' ,'/lobby','/reports', '/exchange', '/draws','/infinito','/reportes50y50'],
+  [Role.Admin]: ['/','/rifamax' ,'/New50y50t','Logint', '/users', '/riferos', '/reportes-rifa','/cuadre' ,'/x100','/reports', '/exchange', '/draws','/infinito','/reportes50y50'],
   [Role.Rifero]: ['/'],
-  [Role.Taquilla]: ['/','/rifamax','/award','/New50y50t','/riferos', '/lobby', '/reportes-rifa','/cuadre','/infinito', '/reportes50y50','/draws',],
+  [Role.Taquilla]: ['/','/rifamax','/award','/New50y50t','/riferos', '/reportes-rifa','/cuadre','/infinito','/x100', '/reportes50y50','/draws',],
   [Role.Agencia]: ['/'],
-  [Role.Auto]: ['/lobby'],
+  [Role.Auto]: ['/x100'],
   [Role.Undefined]: ['/login'],
   [Role.Null]: ['/login'],
 };

@@ -592,14 +592,15 @@ function TicketModal({ draw_id }: modalProps) {
     <Card
       shadow="sm"
       radius="sm"
-      mt={95}
+      mt={130}
       w="100%"
+
       //  { bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}}
       style={{
         position: 'absolute',
         top: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? 5 : 70,
         left: 0,
-        height: "100",
+        height: "50",
         background: theme.colors.dark[7]
       }}
     >
@@ -692,16 +693,16 @@ function TicketModal({ draw_id }: modalProps) {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              width: "100%",
-              height: "100%",
+              width: "67%",
+              height: "75%",
               zIndex: 1,
               position: "fixed",
-              top: 0,
-              left: 0,
-              backgroundColor: "rgba(0, 0, 0, 0.9)",
+              top: '20%',
+              left: 30,
+              backgroundColor: "rgba(0, 0, 0, 0.)",
             }}
           >
-            <Loader />
+            <Loader variant="bars" />
             <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
           </Card>
         )}
@@ -711,54 +712,54 @@ function TicketModal({ draw_id }: modalProps) {
       <div className={classes.container}>
 
         <div className={classes.ticketsFlex}>
-        <Group key={counter}>
-  {dataLoaded ? (
-    apiData.length > 0 ? (
-      apiData.map((item, index) => {
-        const cardStyle = {
-          width: `${70 / 9}%`,
-          margin: margin,
-        };
+          <Group key={counter}>
+            {dataLoaded ? (
+              apiData.length > 0 ? (
+                apiData.map((item, index) => {
+                  const cardStyle = {
+                    width: `${70 / 9}%`,
+                    margin: margin,
+                  };
 
-        return (
-          <>
-            <Card
-              px={8}
-              className={cx(classes.ticket, {
-                [classes.selected]: active.includes(item.place_number),
-                [classes.sold]: item.is_sold,
-              })}
-              key={index}
-              onClick={() => (item.is_sold ? null : handleTickets(item.place_number))}
-              style={cardStyle}
-            >
-              <div className={classes.ticketsTop}></div>
-              <Text ta="center" mt="0%">
-                {formatPlace(item.place_number, draws.tickets_count)}
-              </Text>
-              <div className={classes.ticketsBottom}></div>
-            </Card>
-          </>
-        );
-      })
-    ) : (
-      <Text ta="center">En mantenimiento</Text>
-    )
-  ) : (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "70vh",
-      }}
-    >
-      <Loader />
-      <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
-    </div>
-  )}
-</Group>
+                  return (
+                    <>
+                      <Card
+                        px={8}
+                        className={cx(classes.ticket, {
+                          [classes.selected]: active.includes(item.place_number),
+                          [classes.sold]: item.is_sold,
+                        })}
+                        key={index}
+                        onClick={() => (item.is_sold ? null : handleTickets(item.place_number))}
+                        style={cardStyle}
+                      >
+                        <div className={classes.ticketsTop}></div>
+                        <Text ta="center" mt="0%">
+                          {formatPlace(item.place_number, draws.tickets_count)}
+                        </Text>
+                        <div className={classes.ticketsBottom}></div>
+                      </Card>
+                    </>
+                  );
+                })
+              ) : (
+                <Text ta="center">En mantenimiento</Text>
+              )
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "20vh",
+                }}
+              >
+                <Loader variant="bars" />
+                <Text style={{ marginLeft: "10px" }}>Cargando Sorteo...</Text>
+              </div>
+            )}
+          </Group>
 
 
         </div>
