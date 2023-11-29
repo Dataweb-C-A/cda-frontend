@@ -306,7 +306,7 @@ function DrawsModal({
     const nuevaEtiqueta = `Premio #${premioNumber}`;
     setPremioNumber(premioNumber + 1);
     setPremios([...premios, nuevaEtiqueta]);
-    setInputValues([...inputValues, '']); // Agregar un valor inicial vacío al array de valores de los TextInput
+    setInputValues([...inputValues, '']); 
   };
 
   const eliminarUltimoPremio = () => {
@@ -316,7 +316,7 @@ function DrawsModal({
       setPremios(nuevosPremios);
       setPremioNumber(premioNumber - 1);
       const nuevosInputValues = [...inputValues];
-      nuevosInputValues.pop(); // Eliminar el último valor del array de valores de los TextInput
+      nuevosInputValues.pop(); 
       setInputValues(nuevosInputValues);
     } else {
       setPremioNumber(2);
@@ -331,7 +331,6 @@ function DrawsModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí puedes usar el array inputValues para acceder a los valores ingresados en los TextInput.
     console.log(inputValues);
   };
 

@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { setLobbyMode } from '../../config/reducers/lobbySlice';
 import { useForm } from '@mantine/form';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons';
-
+import Rticket from './Rticket';
 type clientProps = {
   name: string
   lastname: string
@@ -638,7 +638,7 @@ function TicketModal({ draw_id }: modalProps) {
                     style={{
                       opacity: currentPage === index + 1 ? 1 : 0.6,
                       background: currentPage === index + 1 ? theme.colors.blue[6] : 'rgba(0, 0, 0, 0)',
-                      cursor: loadingPage ? 'not-allowed' : 'pointer', // Deshabilitar botones si se está cargando
+                      cursor: loadingPage ? 'not-allowed' : 'pointer',
                     }}
                   >
                     {index}
@@ -820,6 +820,7 @@ function TicketModal({ draw_id }: modalProps) {
                             <Text fw={600} size={20}>TOTAL: {active.length * draws.price_unit}$</Text>
                           </Group>
                         </Paper>
+
                         <br />
                         <div style={{ top: '500%', right: '-6%' }}>
                           {/*  boton  compra*/}
@@ -1033,6 +1034,7 @@ function TicketModal({ draw_id }: modalProps) {
                         }
 
                       </Card>
+                    <Rticket/>
                       {modalOpened && (
                         <Modal opened={modalOpened} onClose={() => setModalOpened(false)} withCloseButton={false} mt={350}>
                           <div className='card-container' style={{}}>
