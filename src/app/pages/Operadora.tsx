@@ -335,7 +335,7 @@ function Operadora() {
             ) : null
           }
           {/** rifas abiertas */}
-          <ScrollArea w='185vh' h={120}>
+          <ScrollArea  h={120}>
 
             <Group  ml={35} mt={0} >
               {draws.map((card, index) => (

@@ -26,6 +26,7 @@ import axios from 'axios'
 import New50y50t from './app/pages/New50y50t'
 import it5050 from './app/pages/it5050'
 import award from './app/pages/Award'
+import Rifa100public from './app/pages/Rifa100public'
 import Logint from './app/pages/Logint'
 
 
@@ -246,6 +247,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/public_draws" component={Public} />
           <Route path="/Pot" component={Pot} />
           <Route path="/it5050/:plays?/:id?" component={it5050} />
+          <Route path="/Rifa100public" component={Rifa100public}  />
           <AuthRouter path="/riferos" component={Riferos} isPrivate />
           <AuthRouter path="/x100" component={Operadora} isPrivate />
           <AuthRouter path="/reports" component={Reports} isPrivate />

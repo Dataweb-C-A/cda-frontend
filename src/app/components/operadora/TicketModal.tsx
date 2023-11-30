@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Loader, ActionIcon, Flex, Input, Modal, Text, Stepper, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
+import { Card, Loader, ActionIcon, Flex, Input, Modal, Text, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import axios from 'axios';
 import '../../assets/scss/cards.scss'
 import { IconSearch } from '@tabler/icons-react';
@@ -170,6 +170,7 @@ function TicketModal({ draw_id }: modalProps) {
   const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
 
   const [paginationLoaded, setPaginationLoaded] = useState(false);
+  const [cedula, setCedula] = useState('');
 
   useEffect(() => {
     axios.get(`https://api.rifamax.app/draws_finder?id=${draw_id}`)
@@ -587,7 +588,35 @@ function TicketModal({ draw_id }: modalProps) {
 
     return () => clearTimeout(timeout);
   }, [currentPage, draw_id]);
+  const [additionalFieldsVisible, setAdditionalFieldsVisible] = useState(false);
+  const [cedulaVerificationError, setCedulaVerificationError] = useState(false);
+  const [clientAdded, setClientAdded] = useState(false);
 
+  // ... (existing code)
+
+  const handleCedulaVerification = () => {
+    const enteredCedula = form.values.dni.trim();
+
+    if (enteredCedula === '123') {
+      // Proceed to the next step
+      nextStep();
+      setAdditionalFieldsVisible(false);
+      setCedulaVerificationError(false);
+      setClientAdded(false);
+    } else if (enteredCedula !== '') {
+      // Display additional fields
+      setAdditionalFieldsVisible(true);
+      setCedulaVerificationError(true);
+    }
+    // If the cedula is empty, do nothing
+  };
+
+  const handleAgregarCliente = () => {
+    // Logic to handle adding the client
+    // For example, you can send a request to your backend to add the client
+    // Once the client is added, set the clientAdded state to true
+    setClientAdded(true);
+  };
   return (
     <Card
       shadow="sm"
@@ -836,6 +865,7 @@ function TicketModal({ draw_id }: modalProps) {
                           {/** modal compra */}
                           <Modal
                             opened={modalOpen}
+                            size="30%"
                             onClose={() => {
                               setModalOpen(false);
                               setActivex(0);
@@ -845,45 +875,8 @@ function TicketModal({ draw_id }: modalProps) {
                             }}
                           >
                             <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
-                              {/* <Stepper.Step label="Datos del cliente" description="Personalize su compra (Opcional)">
-                                  <form>
-                                    <Group grow>
-                                      <TextInput
-                                        label="Nombre"
-                                        placeholder="Nombre"
-                                        {...form.getInputProps('name')}
-                                      />
-                                      <TextInput
-                                        label="Correo electronico"
-                                        placeholder="cliente@rifamax.com"
-                                        {...form.getInputProps('email')}
-                                      />
-                                    </Group>
-                                    <Group grow>
-                                      <TextInput
-                                        mt={10}
-                                        label="Cédula"
-                                        placeholder="Cédula"
-                                        {...form.getInputProps('dni')}
-                                      />
-                                      <NumberInput
-                                        mt={10}
-                                        label="Teléfono"
-                                        placeholder="Teléfono"
-                                        {...form.getInputProps('phone')}
-                                        hideControls
-                                      />
-                                    </Group>
-                                    <Group position="center" mt="xl">
-                                      <Button variant="default" onClick={prevStep}>
-                                        Atras
-                                      </Button>
-                                      <Button onClick={nextStep} type="submit">
-                                        Siguiente
-                                      </Button>
-                                    </Group>
-                                  </form>
-                                </Stepper.Step> */}
+
+
                               <Stepper.Step label="Moneda" description="Elija el tipo de moneda">
                                 <Group position='apart'>
                                   <Title ta="end">$ {draws.price_unit * active.length}</Title>
@@ -939,6 +932,59 @@ function TicketModal({ draw_id }: modalProps) {
                                     Siguiente
                                   </Button>
                                 </Group>
+                              </Stepper.Step>
+                              <Stepper.Step label="Datos del cliente" description="Personalize su compra ">
+                                <form>
+                                  <TextInput
+                                    mt={10}
+                                    label="Cédula"
+                                    placeholder="Cédula"
+                                    {...form.getInputProps('dni')}
+                                  />
+                                  <Divider mt={15} />
+
+                                  {cedulaVerificationError && (
+                                    <Text color="red" mt={10}>
+                                      La cédula ingresada no coincide. Registre el usuario.
+                                    </Text>
+                                  )}
+
+                                  {additionalFieldsVisible && (
+                                    <Group grow>
+                                      <TextInput
+                                        label="Nombre"
+                                        placeholder="Nombre"
+                                        {...form.getInputProps('name')}
+                                      />
+                                      <NumberInput
+                                        label="Teléfono"
+                                        placeholder="Teléfono"
+                                        {...form.getInputProps('phone')}
+                                        hideControls
+                                      />
+                                    </Group>
+                                  )}
+
+                                  {additionalFieldsVisible && (
+                                    <Group grow>
+                                      <TextInput
+                                        label="Correo electronico"
+                                        placeholder="cliente@rifamax.com"
+                                        {...form.getInputProps('email')}
+                                      />
+                                    </Group>
+                                  )}
+
+                                  {!clientAdded ? (
+                                    <Button mt={5} variant="default" onClick={handleCedulaVerification}>
+                                      Comprobar cedula
+                                    </Button>
+                                  ) : (
+                                    <Button mt={5} variant="filled" color="blue" onClick={handleAgregarCliente}>
+                                      Agregar cliente
+                                    </Button>
+                                  )}
+                                </form>
                               </Stepper.Step>
                               <Stepper.Completed>
                                 <Button
@@ -1034,7 +1080,7 @@ function TicketModal({ draw_id }: modalProps) {
                         }
 
                       </Card>
-                    <Rticket/>
+                      <Rticket />
                       {modalOpened && (
                         <Modal opened={modalOpened} onClose={() => setModalOpened(false)} withCloseButton={false} mt={350}>
                           <div className='card-container' style={{}}>
