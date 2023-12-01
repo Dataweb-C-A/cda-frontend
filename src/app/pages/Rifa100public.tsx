@@ -1,90 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 
-import { Card, Loader, ActionIcon, Flex, Input, Modal, Text, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
+import { Card, SimpleGrid, Loader, Flex, Input, Modal, Text, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 
 
 type Props = {}
 
 function Rifa100public({ }: Props) {
-  const bounce = keyframes({
-    'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
-    '40%, 43%': { transform: 'translate3d(0, -0.455rem, 0)' },
-    '70%': { transform: 'translate3d(0, -0.3575rem, 0)' },
-    '90%': { transform: 'translate3d(0, -0.0598rem, 0)' },
-  })
 
-  const useStyles = createStyles((theme) => ({
-    container: {
-      display: 'flex',
-      width: '100%',
-    },
-    ticket: {
-      background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1],
-      cursor: 'pointer',
-      // bailarines
-      height: '50px',
-      margin: '0.3rem',
-      marginRight: '2rem',
-      userSelect: 'none',
-      '&:hover': {
-        background: theme.colors.blue[5],
-      },
-    },
-    ticketsTop: {
-      position: 'absolute',
-      width: '50%',
-      bottom: '93%',
-      height: '7px',
-      left: '25%',
-      borderRadius: '0 0 3px 3px',
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-    },
-    ticketsBottom: {
-      position: 'absolute',
-      width: '50%',
-      top: '93%',
-      height: '7px',
-      left: '25%',
-      borderRadius: '3px 3px 0 0',
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-    },
-    stickyNav: {
-      position: 'sticky',
-      top: `${window.pageYOffset}rem`,
-      right: '0',
-      width: '100%',
-    },
-    ticketsFlex: {
-      width: '70%',
-      paddingRight: '25px',
-      paddingLeft: "20px"
-    },
-    taquillaFlex: {
-      width: '30%',
-    },
-    cardTaquilla: {
-      position: 'sticky',
-      top: `${window.pageYOffset}px`,
-      right: '0',
-      width: '100%',
-      background: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.white,
-    },
-    selected: {
-      background: theme.colors.green[7],
-      animation: `${bounce} 2s ease-in-out infinite`,
-    },
-    sold: {
-      background: theme.colorScheme === 'dark' ? theme.colors.red[7] : theme.colors.red[5],
-      animation: 'none',
-      cursor: 'not-allowed',
-      '&:hover': {
-        background: theme.colors.red[7],
-      },
-    },
-  }))
-  const { classes, cx } = useStyles()
   const [counter, setCounter] = useState<number>(0)
-
+  const progre = 23;
   return (
     <>
 
@@ -100,145 +24,163 @@ function Rifa100public({ }: Props) {
             color:black; 
            
           }
+         
         `}
       </style>
-      <Group mr={15} mt={15} ml={15} position='apart'>
-
+      <SimpleGrid
+        cols={2}
+        mt="10%"
+        mr={15}
+        ml={15}
+        spacing="lg"
+        breakpoints={[
+          { maxWidth: 980, cols: 3, spacing: 'md' },
+          { maxWidth: 755, cols: 2, spacing: 'sm' },
+          { maxWidth: 600, cols: 1, spacing: 'sm' },
+        ]}
+      >
         <Flex
           mih={50}
           gap="md"
-          ml={153}
+          ml="2%"
           justify="center"
           align="center"
           direction="column"
           wrap="wrap"
+          w='100%'
+          mr="25%"
+
         >
+
+          <TextInput 
+          size="lg" 
+          placeholder="Buscar numero" label="Compra numero" radius="lg" w="40%" />
 
           <Group  >
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
-              <Text fz={35}>
+              <Text align='center' fz={35}>
                 1
               </Text>
-              <Text fz={15}>
+              <Text align='center' fz={15}>
                 1$
               </Text>
 
             </Card >
 
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
-              <Text fz={35}>
+              <Text align='center' fz={35}>
                 2
               </Text>
-              <Text fz={15}>
+              <Text align='center' fz={15}>
                 2$
               </Text>
 
             </Card >
 
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
-              <Text fz={35}>
+              <Text align='center' fz={35}>
                 3
               </Text>
-              <Text fz={15}>
+              <Text align='center' fz={15}>
                 3$
               </Text>
 
             </Card >
 
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"     >
-              <Text fz={35}>
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"     >
+              <Text align='center' fz={35}>
                 4
               </Text>
-              <Text fz={15}>
+              <Text align='center' fz={15}>
                 4$
               </Text>
 
             </Card >
 
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
-              <Text fz={35}>
+              <Text align='center' fz={35}>
                 5
               </Text>
-              <Text fz={15}>
+              <Text align='center' fz={15}>
                 5$
               </Text>
 
             </Card >
+
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+
+            >
+              <Text align='center' fz={35}>
+                6
+              </Text>
+              <Text align='center' fz={15}>
+                6$
+              </Text>
+
+            </Card >
+
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+
+            >
+              <Text align='center' fz={35}>
+                7
+              </Text>
+              <Text align='center' fz={15}>
+                7$
+              </Text>
+
+            </Card >
+
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+
+            >
+              <Text align='center' fz={35}>
+                8
+              </Text>
+              <Text align='center' fz={15}>
+                8$
+              </Text>
+
+            </Card >
+
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"     >
+              <Text align='center' fz={35}>
+                9
+              </Text>
+              <Text align='center' fz={15}>
+                9$
+              </Text>
+
+            </Card >
+
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+
+            >
+              <Text align='center' fz={35}>
+                10
+              </Text>
+              <Text align='center' fz={15}>
+                10$
+              </Text>
+
+            </Card >
+
           </Group>
 
-          <Group >
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"
 
-            >
-              <Text fz={35}>
-                1
-              </Text>
-              <Text fz={15}>
-                1$
-              </Text>
 
-            </Card >
-
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"
-
-            >
-              <Text fz={35}>
-                2
-              </Text>
-              <Text fz={15}>
-                2$
-              </Text>
-
-            </Card >
-
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"
-
-            >
-              <Text fz={35}>
-                3
-              </Text>
-              <Text fz={15}>
-                3$
-              </Text>
-
-            </Card >
-
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"     >
-              <Text fz={35}>
-                4
-              </Text>
-              <Text fz={15}>
-                4$
-              </Text>
-
-            </Card >
-
-            <Card p={65} mb={15} className="hover-card" shadow="xl" radius="lg"
-
-            >
-              <Text fz={35}>
-                5
-              </Text>
-              <Text fz={15}>
-                5$
-              </Text>
-
-            </Card >
-          </Group>
         </Flex>
 
+        <Card shadow="sm" h="100%" radius='xl' mb={15} withBorder>
 
-        <Card shadow="sm" w={550}
-          withBorder
-        >
 
           <Text
             mt={7}
@@ -261,13 +203,12 @@ function Rifa100public({ }: Props) {
 
           <br />
           <div style={{ top: '500%', right: '-6%' }}>
-            {/*  boton  compra*/}
+
             <Button
               variant="filled"
               color="blue"
               mt={0}
               style={{ width: '100%' }}
-            // onClick={() => setModalOpen(true)}
             >
               Selecciona moneda y compra
             </Button>
@@ -291,7 +232,7 @@ function Rifa100public({ }: Props) {
             <Group position="apart">
 
 
-              <Image maw={250} radius="md" alt="Premios" />
+              <Image maw={250} src="https://intervez.com/wp-content/uploads/2022/08/WAWA1.jpeg" radius="md" alt="Premios" />
 
               <Flex
                 mih={50}
@@ -302,26 +243,30 @@ function Rifa100public({ }: Props) {
                 wrap="wrap"
               >
                 <Title order={3}>Premio</Title>
-                <Text></Text>
+                <Text>Una WAWA</Text>
                 <Title order={3}>Fecha de inicio</Title>
-                <Text></Text>
+                <Text>12/12/2023</Text>
                 <Title order={3}>Fecha de cierre</Title>
-                <Text></Text>
-                <Title order={3}>Limite</Title>
-                <Text></Text>
+                <Text>24/12/2023</Text>
+
                 <Title order={3}>Progreso</Title>
 
 
               </Flex>
             </Group>
-            <Progress color="green" size="xl" mt={7} />
+            <Progress value={progre} label={`${progre}`} size="xl" mt={7} />
 
           </>
 
 
         </Card>
 
-      </Group>
+      </SimpleGrid>
+
+
+
+
+
 
     </>
   )

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Card, Popover, Text, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton, Divider, Anchor, Loader } from "@mantine/core";
+import { Card, Popover, Text, ActionIcon, Spoiler, Button, Container, Grid, Modal, useMantineTheme, Box, Badge, Title, Paper, ChevronIcon, Progress, Avatar, Group, Drawer, createStyles, ScrollArea, Flex, Skeleton, Divider, Anchor, Loader } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { profiles } from "../assets/data/profiles";
 import { links } from "../assets/data/links";
@@ -15,6 +15,7 @@ import { setLobbyMode } from "../config/reducers/lobbySlice";
 import { ImSad } from "react-icons/im";
 import RifamaxLogo from "../assets/images/rifamax-logo.png"
 import { useHistory, useLocation } from "react-router-dom";
+import { IconAdjustments } from '@tabler/icons';
 
 interface ILobbyState {
   open: boolean
@@ -335,39 +336,47 @@ function Operadora() {
             ) : null
           }
           {/** rifas abiertas */}
-          <ScrollArea  h={120}>
+          <ScrollArea h={120}>
 
-            <Group  ml={35} mt={0} >
+            <Group ml={35} mt={0} >
               {draws.map((card, index) => (
-                <Button
-                  key={card.id}
-                 w={200}
-                  h={110}
-                  component="a"
-                  target="_blank"
-                  style={{
-                    backgroundColor:
-                      activeIndex === index && lobbyState.open ? "#3c3d47" : "#2b2c3d",
-                    border:
-                      activeIndex === index && lobbyState.open ? "2px solid #00ff00" : "none",
-                  }}
-                  onClick={() => {
-                    handleButtonClick(index);
-                    dispatch(setLobbyMode(!selector));
-                    setDrawSelected(card);
-                    setLobbyState({
-                      open: !lobbyState.open,
-                      lobby_id: card.id,
-                      lobby_state: true,
-                      lobby_connection: new Date(),
-                    });
-                  }}
-                >
-                  <Text mt={2} fw={500} fz={15} mb={4} align="center">
-                    {card.first_prize}
-                  </Text>
+                <>
+                  
+                  <Button
+                    key={card.id}
+                    w={200}
+                    h={110}
+                    component="a"
+                    target="_blank"
+                    style={{
+                      backgroundColor:
+                        activeIndex === index && lobbyState.open ? "#3c3d47" : "#2b2c3d",
+                      border:
+                        activeIndex === index && lobbyState.open ? "2px solid #00ff00" : "none",
+                    }}
+                    onClick={() => {
+                      handleButtonClick(index);
+                      dispatch(setLobbyMode(!selector));
+                      setDrawSelected(card);
+                      setLobbyState({
+                        open: !lobbyState.open,
+                        lobby_id: card.id,
+                        lobby_state: true,
+                        lobby_connection: new Date(),
+                      });
+                    }}
+                  >
 
-                </Button>
+
+                    <Text mt={2} fw={500} fz={15} mb={4} align="center" >
+                      {card.first_prize}
+                    </Text>
+                    <ActionIcon ml={-15} mt={15} style={{display:"flex"}} radius="xl" variant="filled">
+                    <IconAdjustments size={18} />
+                  </ActionIcon>
+                  </Button>
+                </>
+
               ))}
             </Group>
           </ScrollArea>
@@ -442,7 +451,7 @@ function Operadora() {
         {
           JSON.parse(localStorage.getItem("user") || '').role === "Auto" && loading === false ? (
             <div
-              style={{ position: "absolute", top: 10, right: 15, width: "120px"}}
+              style={{ position: "absolute", top: 10, right: 15, width: "120px" }}
             >
               <Card>
                 <img src={RifamaxLogo} width="100%" />
