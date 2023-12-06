@@ -1,14 +1,51 @@
 import { useState, useEffect, useRef } from 'react'
-
+import axios, { AxiosResponse } from 'axios';
 import { Card, SimpleGrid, Loader, Flex, Input, Modal, Text, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 
+interface RaffleData {
+  id: number;
+  ad: any;
+  title: any;
+  draw_type: string;
+  status: any;
+  limit: any;
+  money: string;
+  raffle_type: string;
+  price_unit: number;
+  tickets_count: number;
+  numbers: number;
+  lotery: any;
+  expired_date: any;
+  init_date: any;
+  prizes: any;
+  winners: any;
+  has_winners: any;
+  automatic_taquillas_ids: number[];
+  shared_user_id: number;
+  created_at: string;
+  updated_at: string;
+}
 
 type Props = {}
 
 function Rifa100public({ }: Props) {
 
   const [counter, setCounter] = useState<number>(0)
+
   const progre = 23;
+
+  const apiUrl = 'http://localhost:3000/x100/raffles';
+
+  axios.get(apiUrl)
+      .then((response: AxiosResponse<RaffleData>) => {
+          const raffle: RaffleData = response.data;
+  
+          console.log('Datos de la rifa:', raffle);
+      })
+      .catch((error) => {
+          console.error('Error al realizar la solicitud:', error);
+      });
+
   return (
     <>
 
@@ -52,9 +89,9 @@ function Rifa100public({ }: Props) {
 
         >
 
-          <TextInput 
-          size="lg" 
-          placeholder="Buscar numero" label="Compra numero" radius="lg" w="40%" />
+          <TextInput
+            size="lg"
+            placeholder="Buscar numero" label="Compra numero" radius="lg" w="40%" />
 
           <Group  >
             <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
@@ -93,7 +130,7 @@ function Rifa100public({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"     >
+            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg" >
               <Text align='center' fz={35}>
                 4
               </Text>
@@ -243,7 +280,7 @@ function Rifa100public({ }: Props) {
                 wrap="wrap"
               >
                 <Title order={3}>Premio</Title>
-                <Text>Una WAWA</Text>
+                <Text>UNA BUSETA</Text>
                 <Title order={3}>Fecha de inicio</Title>
                 <Text>12/12/2023</Text>
                 <Title order={3}>Fecha de cierre</Title>
@@ -262,10 +299,6 @@ function Rifa100public({ }: Props) {
         </Card>
 
       </SimpleGrid>
-
-
-
-
 
 
     </>

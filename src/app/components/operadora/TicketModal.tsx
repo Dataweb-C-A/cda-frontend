@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Card, Loader, ActionIcon, Flex, Input, Modal, Text, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
+import { Card, Loader, ActionIcon, Flex, Input, Modal, Text, Select, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import axios from 'axios';
 import '../../assets/scss/cards.scss'
 import { IconSearch } from '@tabler/icons-react';
@@ -8,6 +8,8 @@ import { setLobbyMode } from '../../config/reducers/lobbySlice';
 import { useForm } from '@mantine/form';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons';
 import Rticket from './Rticket';
+import { IconUserSearch } from '@tabler/icons-react';
+
 type clientProps = {
   name: string
   lastname: string
@@ -935,55 +937,40 @@ function TicketModal({ draw_id }: modalProps) {
                               </Stepper.Step>
                               <Stepper.Step label="Datos del cliente" description="Personalize su compra ">
                                 <form>
-                                  <TextInput
-                                    mt={10}
-                                    label="Cédula"
-                                    placeholder="Cédula"
-                                    {...form.getInputProps('dni')}
-                                  />
-                                  <Divider mt={15} />
-
-                                  {cedulaVerificationError && (
-                                    <Text color="red" mt={10}>
-                                      La cédula ingresada no coincide. Registre el usuario.
-                                    </Text>
-                                  )}
-
-                                  {additionalFieldsVisible && (
-                                    <Group grow>
-                                      <TextInput
-                                        label="Nombre"
-                                        placeholder="Nombre"
-                                        {...form.getInputProps('name')}
-                                      />
-                                      <NumberInput
-                                        label="Teléfono"
-                                        placeholder="Teléfono"
-                                        {...form.getInputProps('phone')}
-                                        hideControls
-                                      />
-                                    </Group>
-                                  )}
-
-                                  {additionalFieldsVisible && (
-                                    <Group grow>
-                                      <TextInput
-                                        label="Correo electronico"
-                                        placeholder="cliente@rifamax.com"
-                                        {...form.getInputProps('email')}
-                                      />
-                                    </Group>
-                                  )}
-
-                                  {!clientAdded ? (
-                                    <Button mt={5} variant="default" onClick={handleCedulaVerification}>
-                                      Comprobar cedula
-                                    </Button>
-                                  ) : (
-                                    <Button mt={5} variant="filled" color="blue" onClick={handleAgregarCliente}>
-                                      Agregar cliente
-                                    </Button>
-                                  )}
+                                  <Group position='center'>
+                                    <Select
+                                      w={80}
+                                      radius="md"
+                                      placeholder='+58'
+                                      data={[
+                                        { value: '+58', label: '+58' },
+                                        { value: '+1', label: '+1' },
+                                      ]}
+                                    />
+                                    <TextInput
+                                      placeholder="Telefono"
+                                      radius="md"
+                                    />
+                                    <ActionIcon color="indigo" size="lg" radius="md" variant="filled">
+                                      <IconUserSearch size={26} />
+                                    </ActionIcon>
+                                  </Group>
+                                  <Divider mt={15} mb={25} />
+                                  <Group>
+                                    <Select
+                                      w={80}
+                                      radius="md"
+                                      placeholder='+58'
+                                      data={[
+                                        { value: 'V', label: 'V' },
+                                        { value: 'E', label: 'E' },
+                                      ]}
+                                    />
+                                    <TextInput
+                                      placeholder="Cedula"
+                                      radius="md"
+                                    />
+                                  </Group>
                                 </form>
                               </Stepper.Step>
                               <Stepper.Completed>

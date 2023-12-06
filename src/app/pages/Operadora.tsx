@@ -371,9 +371,7 @@ function Operadora() {
                     <Text mt={2} fw={500} fz={15} mb={4} align="center" >
                       {card.first_prize}
                     </Text>
-                    <ActionIcon ml={-15} mt={15} style={{display:"flex"}} radius="xl" variant="filled">
-                    <IconAdjustments size={18} />
-                  </ActionIcon>
+                   
                   </Button>
                 </>
 
