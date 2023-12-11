@@ -91,7 +91,8 @@ function Rifa100public({ }: Props) {
 
           <TextInput
             size="lg"
-            placeholder="Buscar numero" label="Compra numero" radius="lg" w="40%" />
+            ml="-18vh"
+            placeholder="Buscar numero" label="Compra numero"  w="80%" />
 
           <Group  >
             <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"

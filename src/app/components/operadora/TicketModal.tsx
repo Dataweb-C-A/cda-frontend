@@ -939,38 +939,28 @@ function TicketModal({ draw_id }: modalProps) {
                                 <form>
                                   <Group position='center'>
                                     <Select
-                                      w={80}
+                                      w={100}
                                       radius="md"
                                       placeholder='+58'
+                                      size='lg'
                                       data={[
                                         { value: '+58', label: '+58' },
                                         { value: '+1', label: '+1' },
                                       ]}
                                     />
                                     <TextInput
-                                      placeholder="Telefono"
+                                      placeholder="(416) 111-1111"
+                                      w={170}
+                                      size='lg'
                                       radius="md"
                                     />
                                     <ActionIcon color="indigo" size="lg" radius="md" variant="filled">
                                       <IconUserSearch size={26} />
                                     </ActionIcon>
+
+                                    <Divider my="sm" variant="dashed" />
                                   </Group>
-                                  <Divider mt={15} mb={25} />
-                                  <Group>
-                                    <Select
-                                      w={80}
-                                      radius="md"
-                                      placeholder='+58'
-                                      data={[
-                                        { value: 'V', label: 'V' },
-                                        { value: 'E', label: 'E' },
-                                      ]}
-                                    />
-                                    <TextInput
-                                      placeholder="Cedula"
-                                      radius="md"
-                                    />
-                                  </Group>
+                             
                                 </form>
                               </Stepper.Step>
                               <Stepper.Completed>
