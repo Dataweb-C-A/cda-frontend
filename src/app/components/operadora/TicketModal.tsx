@@ -619,6 +619,30 @@ function TicketModal({ draw_id }: modalProps) {
     // Once the client is added, set the clientAdded state to true
     setClientAdded(true);
   };
+  const numero = "000" ;
+  const form2 = useForm({
+    initialValues: {
+      prefijo: '',
+      numero:'',
+      termsOfService: false,
+    },
+  
+ validate: {
+  prefijo: (value) => {
+    if (value === '') {
+      return 'prefijo vacio';
+    }
+  },
+  numero: (value) => {
+    if (value === '') {
+      return 'numero vacio';
+    } else if (value !== '000') {
+      return 'El número no coincide con "000"';
+    }
+  },
+},
+});
+  
   return (
     <Card
       shadow="sm"
@@ -936,7 +960,7 @@ function TicketModal({ draw_id }: modalProps) {
                                 </Group>
                               </Stepper.Step>
                               <Stepper.Step label="Datos del cliente" description="Personalize su compra ">
-                                <form>
+                              <form onSubmit={form2.onSubmit((values) => console.log(values))}>
                                   <Group position='center'>
                                     <Select
                                       w={100}
@@ -947,14 +971,17 @@ function TicketModal({ draw_id }: modalProps) {
                                         { value: '+58', label: '+58' },
                                         { value: '+1', label: '+1' },
                                       ]}
+                                      {...form2.getInputProps('prefijo')}
+
                                     />
                                     <TextInput
                                       placeholder="(416) 111-1111"
                                       w={170}
                                       size='lg'
+                                      {...form2.getInputProps('numero')}
                                       radius="md"
                                     />
-                                    <ActionIcon color="indigo" size="lg" radius="md" variant="filled">
+                                    <ActionIcon type="submit" color="indigo" size="lg" radius="md" variant="filled">
                                       <IconUserSearch size={26} />
                                     </ActionIcon>
 
@@ -962,6 +989,8 @@ function TicketModal({ draw_id }: modalProps) {
                                   </Group>
                              
                                 </form>
+                                <Divider my="sm" variant="dashed" />
+
                               </Stepper.Step>
                               <Stepper.Completed>
                                 <Button
