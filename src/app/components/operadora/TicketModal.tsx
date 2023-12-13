@@ -619,30 +619,30 @@ function TicketModal({ draw_id }: modalProps) {
     // Once the client is added, set the clientAdded state to true
     setClientAdded(true);
   };
-  const numero = "000" ;
+  const numero = "000";
   const form2 = useForm({
     initialValues: {
       prefijo: '',
-      numero:'',
+      numero: '',
       termsOfService: false,
     },
-  
- validate: {
-  prefijo: (value) => {
-    if (value === '') {
-      return 'prefijo vacio';
-    }
-  },
-  numero: (value) => {
-    if (value === '') {
-      return 'numero vacio';
-    } else if (value !== '000') {
-      return 'El número no coincide con "000"';
-    }
-  },
-},
-});
-  
+
+    validate: {
+      prefijo: (value) => {
+        if (value === '') {
+          return 'Prefijo vacio';
+        }
+      },
+      numero: (value) => {
+        if (value === '') {
+          return 'Numero vacio';
+        } else if (value !== '000') {
+          return 'El número no coincide con "000"';
+        }
+      },
+    },
+  });
+
   return (
     <Card
       shadow="sm"
@@ -892,6 +892,8 @@ function TicketModal({ draw_id }: modalProps) {
                           <Modal
                             opened={modalOpen}
                             size="30%"
+                            radius='xl'
+                            withCloseButton={false}
                             onClose={() => {
                               setModalOpen(false);
                               setActivex(0);
@@ -959,8 +961,10 @@ function TicketModal({ draw_id }: modalProps) {
                                   </Button>
                                 </Group>
                               </Stepper.Step>
+
                               <Stepper.Step label="Datos del cliente" description="Personalize su compra ">
-                              <form onSubmit={form2.onSubmit((values) => console.log(values))}>
+
+                                <form onSubmit={form2.onSubmit((values) => console.log(values))}>
                                   <Group position='center'>
                                     <Select
                                       w={100}
@@ -972,11 +976,11 @@ function TicketModal({ draw_id }: modalProps) {
                                         { value: '+1', label: '+1' },
                                       ]}
                                       {...form2.getInputProps('prefijo')}
-
                                     />
                                     <TextInput
                                       placeholder="(416) 111-1111"
                                       w={170}
+                                      type='number'
                                       size='lg'
                                       {...form2.getInputProps('numero')}
                                       radius="md"
@@ -984,12 +988,43 @@ function TicketModal({ draw_id }: modalProps) {
                                     <ActionIcon type="submit" color="indigo" size="lg" radius="md" variant="filled">
                                       <IconUserSearch size={26} />
                                     </ActionIcon>
-
-                                    <Divider my="sm" variant="dashed" />
                                   </Group>
-                             
+
+                                  {form2.errors.numero && (
+
+                                    <>
+
+
+                                      <Divider
+                                        label={'Agregar cliente'}
+                                        labelPosition='center'
+                                        variant='dashed'
+                                        py={10}
+                                      />
+                                      <Group >
+                                        <TextInput
+                                          placeholder="(416) 111-1111"
+                                          w={170}
+                                          type='number'
+
+                                          size='lg'
+                                          // {...form2.getInputProps('numero')}
+                                          radius="md"
+                                        />
+                                        <TextInput
+                                          placeholder="(416) 111-1111"
+                                          w={170}
+                                          type='number'
+                                          size='lg'
+                                          //  {...form2.getInputProps('numero')}
+                                          radius="md"
+                                        />
+                                      </Group>
+                                    </>
+                                  )}
                                 </form>
-                                <Divider my="sm" variant="dashed" />
+
+
 
                               </Stepper.Step>
                               <Stepper.Completed>
