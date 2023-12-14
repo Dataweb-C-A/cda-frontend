@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Card, Loader, ActionIcon, Flex, Input, Modal, Text, Select, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import '../../assets/scss/cards.scss'
 import { IconSearch } from '@tabler/icons-react';
 import { useDispatch } from 'react-redux';
@@ -167,7 +167,6 @@ function TicketModal({ draw_id }: modalProps) {
   const elementRef = useRef<HTMLDivElement>(null)
   const [modalOpened, setModalOpened] = useState(false);
   const [activex, setActivex] = useState(0);
-  const [isFormValid, setIsFormValid] = useState(false);
   const [searchTicket, setSearchTicket] = useState("");
   const [selectedTicket, setSelectedTicket] = useState<ticketProps | null>(null);
 
@@ -594,37 +593,12 @@ function TicketModal({ draw_id }: modalProps) {
   const [cedulaVerificationError, setCedulaVerificationError] = useState(false);
   const [clientAdded, setClientAdded] = useState(false);
 
-  // ... (existing code)
+  const [isFormValid, setIsFormValid] = useState(true);
 
-  const handleCedulaVerification = () => {
-    const enteredCedula = form.values.dni.trim();
-
-    if (enteredCedula === '123') {
-      // Proceed to the next step
-      nextStep();
-      setAdditionalFieldsVisible(false);
-      setCedulaVerificationError(false);
-      setClientAdded(false);
-    } else if (enteredCedula !== '') {
-      // Display additional fields
-      setAdditionalFieldsVisible(true);
-      setCedulaVerificationError(true);
-    }
-    // If the cedula is empty, do nothing
-  };
-
-  const handleAgregarCliente = () => {
-    // Logic to handle adding the client
-    // For example, you can send a request to your backend to add the client
-    // Once the client is added, set the clientAdded state to true
-    setClientAdded(true);
-  };
-  const numero = "000";
   const form2 = useForm({
     initialValues: {
       prefijo: '',
       numero: '',
-      termsOfService: false,
     },
 
     validate: {
@@ -637,11 +611,44 @@ function TicketModal({ draw_id }: modalProps) {
         if (value === '') {
           return 'Numero vacio';
         } else if (value !== '000') {
-          return 'El número no coincide con "000"';
+          return 'El número no esta registrado';
         }
       },
     },
   });
+
+  const isNumeroEmpty = form2.values.numero.trim() === '';
+  const [formData, setFormData] = useState({
+    prefijo: '',
+    numero: '',
+  });
+
+  const formatTelefono = (numero: string, prefijo: string) => {
+    const formattedNumero = `(${numero.substring(0, 3)}) ${numero.substring(3, 6)}-${numero.substring(6)}`;
+    console.log(`${prefijo} ${formattedNumero}`);
+  };
+
+  const handleTelefonoVerification = async () => {
+    const enteredNumero = form2.values.numero.trim();
+    const enteredPrefijo = form2.values.prefijo.trim();
+
+    try {
+      const response = await axios.get(`https://mock.rifa-max.com/x100/clients`, {
+        data: { phone: "+58 (412) 168-8466" }
+      });
+      
+      console.log('Respuesta del servidor:', response.data);
+
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error al hacer la solicitud:', error.message);
+      } else {
+        console.error('Error desconocido:', error);
+      }
+    }
+
+    formatTelefono(enteredNumero, enteredPrefijo);
+  };
 
   return (
     <Card
@@ -650,7 +657,6 @@ function TicketModal({ draw_id }: modalProps) {
       mt={130}
       w="100%"
 
-      //  { bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}}
       style={{
         position: 'absolute',
         top: JSON.parse(localStorage.getItem("user") || '').role === "Auto" ? 5 : 70,
@@ -985,7 +991,25 @@ function TicketModal({ draw_id }: modalProps) {
                                       {...form2.getInputProps('numero')}
                                       radius="md"
                                     />
-                                    <ActionIcon type="submit" color="indigo" size="lg" radius="md" variant="filled">
+                                    <ActionIcon
+                                      type="submit"
+                                      color="indigo"
+                                      size="lg"
+                                      radius="md"
+                                      variant="filled"
+                                      disabled={isNumeroEmpty}
+                                      onClick={() => {
+                                        if (!isNumeroEmpty) {
+                                          handleTelefonoVerification();
+                                          console.log('Datos del formulario:', form2.values);
+                                          // Almacena los datos del formulario en el estado formData
+                                          setFormData({
+                                            prefijo: form2.values.prefijo,
+                                            numero: form2.values.numero,
+                                          });
+                                        }
+                                      }}
+                                    >
                                       <IconUserSearch size={26} />
                                     </ActionIcon>
                                   </Group>
@@ -1001,25 +1025,56 @@ function TicketModal({ draw_id }: modalProps) {
                                         variant='dashed'
                                         py={10}
                                       />
+
                                       <Group >
                                         <TextInput
-                                          placeholder="(416) 111-1111"
-                                          w={170}
-                                          type='number'
-
+                                          placeholder="Nombre"
+                                          w='50%'
                                           size='lg'
                                           // {...form2.getInputProps('numero')}
                                           radius="md"
                                         />
                                         <TextInput
-                                          placeholder="(416) 111-1111"
-                                          w={170}
-                                          type='number'
+                                          placeholder="Apellido"
+                                          w='45%'
                                           size='lg'
                                           //  {...form2.getInputProps('numero')}
                                           radius="md"
                                         />
                                       </Group>
+                                      <TextInput
+                                        mt={15}
+                                        placeholder="Correo electronico"
+                                        w='98%'
+                                        size='lg'
+                                        // {...form2.getInputProps('numero')}
+                                        radius="md"
+                                      />
+                                      <Group mt={15}>
+                                        <Select
+                                          w={100}
+                                          radius="md"
+                                          placeholder='V'
+                                          size='lg'
+                                          data={[
+                                            { value: 'V', label: 'V' },
+                                            { value: 'J', label: 'J' },
+                                            { value: 'E', label: 'E' },
+                                            { value: 'G', label: 'G' },
+                                          ]}
+                                          {...form2.getInputProps('prefijo')}
+                                        />
+                                        <TextInput
+                                          placeholder="Cedula"
+                                          size='lg'
+                                          w='78%'
+                                          //  {...form2.getInputProps('numero')}
+                                          radius="md"
+                                        />
+                                      </Group>
+                                      <Button mt={15} w='98%' >
+                                        Agregar
+                                      </Button>
                                     </>
                                   )}
                                 </form>
