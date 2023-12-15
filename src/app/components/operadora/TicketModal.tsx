@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Card, Loader, ActionIcon, Flex, Input, Modal, Text, Select, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import axios, { AxiosResponse } from 'axios';
 import '../../assets/scss/cards.scss'
-import { IconSearch } from '@tabler/icons-react';
+import { IconSearch , IconUserPlus } from '@tabler/icons-react';
 import { useDispatch } from 'react-redux';
 import { setLobbyMode } from '../../config/reducers/lobbySlice';
 import { useForm } from '@mantine/form';
@@ -1072,8 +1072,10 @@ function TicketModal({ draw_id }: modalProps) {
                                           radius="md"
                                         />
                                       </Group>
-                                      <Button mt={15} w='98%' >
+                                      <Button radius="md" leftIcon={<IconUserPlus />} mt={15} w='98%' >
+                                        
                                         Agregar
+
                                       </Button>
                                     </>
                                   )}
