@@ -1157,6 +1157,7 @@ function TicketModal({ draw_id }: modalProps) {
                                   align="center"
                                   direction="column"
                                   wrap="wrap"
+                                  
                                 >
                                   <Title order={3}>Premio</Title>
                                   <Text>{draws.first_prize}</Text>

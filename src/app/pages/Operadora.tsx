@@ -9,6 +9,7 @@ import { ChevronLeft } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
 
+
 interface IStatus {
   is_connected: boolean;
   receiving_data: boolean;
@@ -120,7 +121,7 @@ const useStyles = createStyles((theme) => ({
     width: '100%'
   },
   ticketsList: {
-    width: 'calc(100% - 21rem)',
+    width: '100%',
     [theme.fn.smallerThan('md')]: {
       width: '100%'
     },
@@ -130,13 +131,16 @@ const useStyles = createStyles((theme) => ({
   },
   raffleInfo: {
     width: '21rem',
+    display: 'flex',
     [theme.fn.smallerThan('md')]: {
       display: 'none'
     },
   },
   raffleInfoCard: {
+    
     background: theme.colors.dark[7],
-    height: 'calc(100vh - 4.8rem - 64px)'
+    marginTop:"25px",
+    height: '50vh'
   },
   ticketsSellContainer: {
     width: "calc(10% - 20px)"
@@ -229,6 +233,480 @@ function Operadora() {
       },
       {
         position: 5,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
+        is_sold: true,
+        sold_to: {},
+        serial: 'test'
+      },
+      {
+        position: 6,
         is_sold: true,
         sold_to: {},
         serial: 'test'
@@ -449,9 +927,9 @@ function Operadora() {
                             })
                           }
                       </div>
-                      { /* Raffle info */ }
+                      { /* Raffle info   style={{ background: "#1D1E30"}} */ }
                       <div className={classes.raffleInfo}>
-                        <Card className={classes.raffleInfoCard}>
+                        <Card withBorder radius="xl" className={classes.raffleInfoCard}>
                         <Text fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
                           <Image src={raffleActive(selectedRaffle)?.ad} />
                           <Group w="100%" position='apart'>
@@ -472,6 +950,7 @@ function Operadora() {
                           </Group>
                         </Card>
                       </div>
+                     
                     </div>
                   </div>
                 </>
