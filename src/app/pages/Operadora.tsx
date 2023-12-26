@@ -8,6 +8,7 @@ import { Loader, Button, Text, createStyles, ScrollArea, Card, Image, Group, Pag
 import { ChevronLeft } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
+import { IconSearch } from "@tabler/icons-react"
 
 
 interface IStatus {
@@ -151,6 +152,12 @@ const useStyles = createStyles((theme) => ({
     height: '4rem', 
     marginBottom: '5px',
     background: '#4d4f66'
+  },
+  searchButton: {
+    '&:hover': {
+      backgroundColor: theme.colors.blue[9],
+      cursor: 'pointer'
+    },
   }
 }));
 
@@ -192,7 +199,7 @@ function Loading() {
 function Operadora() {
   const [raffles, setRaffles] = useState<IRaffle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [rafflesCableStatus, setRafflesCableStatus] = useState<IStatus>({
     is_connected: false,
@@ -907,6 +914,11 @@ function Operadora() {
                       size="xs"
                       hideControls
                       placeholder="Buscar número"
+                      icon={
+                        <Card px={2} py={0} m={0} ml={2} className={classes.searchButton}>
+                          <IconSearch style={{ marginTop: '5px' }} size={16} />
+                        </Card>
+                      }
                       ml={10}
                     />
                   </div>
@@ -920,7 +932,7 @@ function Operadora() {
                               return (
                                 <div className={classes.ticketsSellContainer}>
                                   <Card key={ticket.position} className={classes.tickets}>
-                                    <Text>{ticket.serial}</Text>
+                                    <Text ta='center'>{ticket.serial}</Text>
                                   </Card>
                                 </div>
                               )
