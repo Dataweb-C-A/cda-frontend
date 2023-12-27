@@ -1,902 +1,602 @@
 [
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 1,
+    "position": 1,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21eb"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 2,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 2,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21ec"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 3,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 3,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21ed"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 4,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 4,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21ee"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 5,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 5,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21ef"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 6,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 6,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f0"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 7,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 7,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f1"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 8,
+    "position": 8,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f2"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 9,
+    "position": 9,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f3"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 10,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 10,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f4"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 11,
+    "position": 11,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f5"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 12,
+    "position": 12,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f6"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 13,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 13,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f7"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 14,
+    "position": 14,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f8"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 15,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 15,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21f9"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 16,
+    "position": 16,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21fa"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 17,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 17,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21fb"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 18,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 18,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21fc"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 19,
+    "position": 19,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21fd"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 20,
+    "position": 20,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21fe"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 21,
+    "position": 21,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa21ff"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 22,
+    "position": 22,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2200"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 23,
+    "position": 23,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2201"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 24,
+    "position": 24,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2202"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 25,
+    "position": 25,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2203"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 26,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 26,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2204"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 27,
+    "position": 27,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2205"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 28,
+    "position": 28,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2206"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 29,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 29,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2207"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 30,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 30,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2208"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 31,
+    "position": 31,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2209"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 32,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 32,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa220a"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 33,
+    "position": 33,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa220b"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 34,
+    "position": 34,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa220c"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 35,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 35,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa220d"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 36,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 36,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa220e"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 37,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 37,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa220f"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 38,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 38,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2210"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 39,
+    "position": 39,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2211"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 40,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 40,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2212"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 41,
+    "position": 41,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2213"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 42,
+    "position": 42,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2214"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 43,
+    "position": 43,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2215"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 44,
+    "position": 44,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2216"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 45,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 45,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2217"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 46,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 46,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2218"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 47,
+    "position": 47,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2219"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 48,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 48,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa221a"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 49,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 49,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa221b"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 50,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 50,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa221c"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 51,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 51,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa221d"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 52,
+    "position": 52,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa221e"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 53,
+    "position": 53,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa221f"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 54,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 54,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2220"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 55,
+    "position": 55,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2221"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 56,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 56,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2222"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 57,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 57,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2223"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 58,
+    "position": 58,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2224"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 59,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 59,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2225"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 60,
+    "position": 60,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2226"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 61,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 61,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2227"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 62,
+    "position": 62,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2228"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 63,
+    "position": 63,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2229"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 64,
+    "position": 64,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa222a"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 65,
+    "position": 65,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa222b"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 66,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 66,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa222c"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 67,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 67,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa222d"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 68,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 68,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa222e"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 69,
+    "position": 69,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa222f"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 70,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 70,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2230"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 71,
+    "position": 71,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2231"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 72,
+    "position": 72,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2232"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 73,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 73,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2233"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 74,
+    "position": 74,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2234"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 75,
+    "position": 75,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2235"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 76,
+    "position": 76,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2236"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 77,
+    "position": 77,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2237"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 78,
+    "position": 78,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2238"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 79,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 79,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2239"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 80,
+    "position": 80,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa223a"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 81,
+    "position": 81,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa223b"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 82,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 82,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa223c"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 83,
+    "position": 83,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa223d"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 84,
+    "position": 84,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa223e"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 85,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 85,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa223f"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 86,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 86,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2240"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 87,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 87,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2241"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 88,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 88,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2242"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 89,
+    "position": 89,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2243"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 90,
+    "position": 90,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2244"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 91,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 91,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2245"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 92,
+    "position": 92,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2246"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 93,
+    "position": 93,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2247"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 94,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 94,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2248"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 95,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 95,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa2249"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 96,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 96,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa224a"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 97,
+    "position": 97,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa224b"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 98,
+    "position": 98,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa224c"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 99,
+    "position": 99,
     "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa224d"
   },
   {
-    "draw_id": 1,
-    "numbers": 293,
-    "place_number": 555,
-    "is_sold": false,
-    "is_first_winner": false,
-    "is_second_winner": false,
-    "client": null
+    "position": 100,
+    "is_sold": true,
+    "sold_to": {},
+    "serial": "658c4b88fc13ae0367fa224e"
   }
 ]

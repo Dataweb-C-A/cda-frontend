@@ -9,7 +9,8 @@ import { ChevronLeft } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
 import { IconSearch } from "@tabler/icons-react"
-
+import ticketsMock  from '../assets/data/tickets.json' 
+import { BiNoEntry } from "react-icons/bi"
 
 interface IStatus {
   is_connected: boolean;
@@ -147,11 +148,20 @@ const useStyles = createStyles((theme) => ({
     width: "calc(10% - 20px)"
   },
   tickets: {
-    border: '1px solid red', 
     width: '100%', 
-    height: '4rem', 
+    height: '3.7rem', 
     marginBottom: '5px',
-    background: '#4d4f66'
+    background: '#4d4f66',
+    userSelect: 'none',
+    textDecoration: 'none'
+  },
+  ticketsSelected: {
+    width: '100%', 
+    height: '3.7rem', 
+    marginBottom: '5px',
+    background: 'green',
+    userSelect: 'none',
+    textDecoration: 'none'
   },
   searchButton: {
     '&:hover': {
@@ -199,8 +209,9 @@ function Loading() {
 function Operadora() {
   const [raffles, setRaffles] = useState<IRaffle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
+  const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [rafflesCableStatus, setRafflesCableStatus] = useState<IStatus>({
     is_connected: false,
     receiving_data: false
@@ -213,548 +224,7 @@ function Operadora() {
       count: 0,
       pages: 0
     },
-    tickets: [
-      {
-        position: 1,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 2,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 3,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 4,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 5,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 6,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 7,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 8,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 9,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 10,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      },
-      {
-        position: 11,
-        is_sold: true,
-        sold_to: {},
-        serial: 'test'
-      }
-    ]
+    tickets: ticketsMock
   })
 
   const { classes } = useStyles()
@@ -847,6 +317,14 @@ function Operadora() {
     return raffles.find((raffle) => raffle.id === id)
   }
 
+  function chooseTicket(ticketNumber: number) {
+    if (ticketsSelected.includes(ticketNumber)) {
+      setTicketsSelected(ticketsSelected.filter((ticket) => ticket !== ticketNumber))
+    } else {
+      setTicketsSelected([...ticketsSelected, ticketNumber])
+    }
+  }
+
   return (
     <>
       <Navbar
@@ -907,8 +385,8 @@ function Operadora() {
                       initialPage={1}
                       total={10}
                       siblings={10}
-                      withControls={false}
-                      size="sm"
+                      withControls={true}
+                      size='md'
                     />
                     <NumberInput 
                       size="xs"
@@ -931,8 +409,12 @@ function Operadora() {
                             tickets.tickets.map((ticket) => {
                               return (
                                 <div className={classes.ticketsSellContainer}>
-                                  <Card key={ticket.position} className={classes.tickets}>
-                                    <Text ta='center'>{ticket.serial}</Text>
+                                  <Card 
+                                    key={ticket.position} 
+                                    className={ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : classes.tickets}
+                                    onClick={() => chooseTicket(ticket.position)}
+                                  >
+                                    <Text ta='center'>{ticket.position}</Text>
                                   </Card>
                                 </div>
                               )
