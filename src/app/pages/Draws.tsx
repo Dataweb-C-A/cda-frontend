@@ -128,7 +128,7 @@ function Draws({ }: IDraws) {
           </Modal>
         )
       }
-      <Card withBorder radius={'lg'} mx={15} mt={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+      <Card mx={5} mt={10} shadow={"0 0 7px 0 #5f5f5f3d"}>
         <Grid>
           <Grid.Col md={5} sm={12}>
             <Title order={2} fw={500} mb={20}>

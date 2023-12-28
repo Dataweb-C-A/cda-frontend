@@ -8,7 +8,7 @@ import { Loader, Button, Text, createStyles, ScrollArea, Card, Image, Group, Pag
 import { ChevronLeft } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconSearch } from "@tabler/icons-react"
+import { IconBrush, IconSearch, IconTrash } from "@tabler/icons-react"
 import ticketsMock  from '../assets/data/tickets.json' 
 import { bounce } from "../components/animations"
 
@@ -142,7 +142,7 @@ const useStyles = createStyles((theme) => ({
     
     background: theme.colors.dark[7],
     marginTop:"25px",
-    height: '50vh'
+    height: '100%'
   },
   ticketsSellContainer: {
     width: "calc(10% - 20px)"
@@ -326,6 +326,10 @@ function Operadora() {
     }
   }
 
+  function cleanSelection() {
+    setTicketsSelected([])
+  }
+
   return (
     <>
       <Navbar
@@ -400,6 +404,57 @@ function Operadora() {
                       }
                       ml={10}
                     />
+                    <Button 
+                      size='xs'
+                      ml={10}
+                      color="red"
+                    >
+                      <IconTrash 
+                        size={22}
+                        onClick={() => cleanSelection()}
+                      />
+                    </Button>
+                    <Text
+                      ml={10}
+                      mt={3}
+                    >
+                      Combos:
+                    </Text>
+                    <Button 
+                      size='xs'
+                      ml={10}
+                      color="teal"
+                    >
+                      2 x 15$
+                    </Button>
+                    <Button 
+                      size='xs'
+                      ml={10}
+                      color="teal"
+                    >
+                      4 x 20$
+                    </Button> 
+                    <Button 
+                      size='xs'
+                      ml={10}
+                      color="teal"
+                    >
+                      6 x 30$
+                    </Button> 
+                    <Button 
+                      size='xs'
+                      ml={10}
+                      color="teal"
+                    >
+                      8 x 40$
+                    </Button> 
+                    <Button 
+                      size='xs'
+                      ml={10}
+                      color="teal"
+                    >
+                      10 x 50$
+                    </Button> 
                   </div>
                   <div style={{ display: 'flex', width: '100%' }}>
                     <div className={classes.ticketsListContainer}>
@@ -424,9 +479,9 @@ function Operadora() {
                       </div>
                       { /* Raffle info   style={{ background: "#1D1E30"}} */ }
                       <div className={classes.raffleInfo}>
-                        <Card withBorder radius="xl" className={classes.raffleInfoCard}>
+                        <Card withBorder mt={0} className={classes.raffleInfoCard}>
                         <Text fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
-                          <Image src={raffleActive(selectedRaffle)?.ad} />
+                          <Image src={`http://localhost:3000/${raffleActive(selectedRaffle)?.ad?.url}`} />
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Tipo:</Text>
                             <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.tickets_count}</Text>
@@ -437,15 +492,31 @@ function Operadora() {
                           </Group>
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Fecha de inicio:</Text>
-                            <Text fw={300} fz={16} ta="end">{ moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY hh:mm') }</Text>
+                            <Text fw={300} fz={16} ta="end">{ moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY') }</Text>
                           </Group>
-                          <Group w="100%" position='apart'>
+                          <Group w="100%" mb={10} position='apart'>
                             <Text fw={700} fz={16} ta="start">Fecha de cierre:</Text>
                             <Text fw={300} fz={16} ta="end">{ raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY') }</Text>
                           </Group>
+                          {
+                            ticketsSelected.length > 0 && (
+                              <Card>
+                                <small>
+                                  <Group position="center" pb={10}>
+                                    {
+                                      ticketsSelected.map((ticket) => {
+                                        return (
+                                          <Text mb={-15} mx={-5}>{ticket}</Text>
+                                        )
+                                      })
+                                    }
+                                  </Group>  
+                                </small>
+                              </Card>
+                            )
+                          }
                         </Card>
                       </div>
-                     
                     </div>
                   </div>
                 </>

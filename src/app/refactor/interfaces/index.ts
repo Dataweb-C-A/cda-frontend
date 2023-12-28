@@ -1,6 +1,10 @@
+export interface IAdnoucement {
+  url: string
+}
+
 export interface IRaffle {
   id: number;
-  ad: null | string;
+  ad: null | IAdnoucement;
   title: string;
   draw_type: string;
   status: string;

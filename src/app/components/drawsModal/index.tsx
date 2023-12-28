@@ -414,7 +414,6 @@ function DrawsModal({
         onClose={() => closeModal()}
         title="Agregar Rifa Especiales"
         size="xl"
-        radius={'lg'}
       >
         <Stepper size="md" active={active}>
           <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
