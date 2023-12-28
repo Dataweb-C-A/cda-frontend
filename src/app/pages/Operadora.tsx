@@ -4,11 +4,11 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, Card, Image, Group, Pagination, NumberInput } from "@mantine/core"
+import { Loader, Button, Text, createStyles, ScrollArea, Card, Image, Group, Pagination, NumberInput, useMantineTheme, Checkbox } from "@mantine/core"
 import { ChevronLeft } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconBrush, IconSearch, IconTrash } from "@tabler/icons-react"
+import { IconCurrencyDollar, IconSearch, IconTrash, IconWallet } from "@tabler/icons-react"
 import ticketsMock  from '../assets/data/tickets.json' 
 import { bounce } from "../components/animations"
 
@@ -138,8 +138,7 @@ const useStyles = createStyles((theme) => ({
       display: 'none'
     },
   },
-  raffleInfoCard: {
-    
+  raffleInfoCard: { 
     background: theme.colors.dark[7],
     marginTop:"25px",
     height: '100%'
@@ -153,7 +152,8 @@ const useStyles = createStyles((theme) => ({
     marginBottom: '5px',
     background: '#4d4f66',
     userSelect: 'none',
-    textDecoration: 'none'
+    textDecoration: 'none',
+    cursor: 'pointer'
   },
   ticketsSelected: {
     width: '100%', 
@@ -163,6 +163,7 @@ const useStyles = createStyles((theme) => ({
     userSelect: 'none',
     textDecoration: 'none',
     animation: `${bounce} 3s ease-in-out infinite`,
+    cursor: 'pointer'
   },
   searchButton: {
     '&:hover': {
@@ -213,6 +214,7 @@ function Operadora() {
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
+  const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
   const [rafflesCableStatus, setRafflesCableStatus] = useState<IStatus>({
     is_connected: false,
     receiving_data: false
@@ -229,6 +231,8 @@ function Operadora() {
   })
 
   const { classes } = useStyles()
+
+  const theme = useMantineTheme();
 
   useEffect(() => {
     if (rafflesCableStatus.is_connected === false) {
@@ -296,6 +300,7 @@ function Operadora() {
             is_connected: false,
             receiving_data: false
           })
+          setHasPaymentSelected(null)
           setSelectedRaffle(null)
           setRaffles([])
         },
@@ -328,6 +333,7 @@ function Operadora() {
 
   function cleanSelection() {
     setTicketsSelected([])
+    setHasPaymentSelected(null)
   }
 
   return (
@@ -358,6 +364,8 @@ function Operadora() {
                         className={raffle.id === selectedRaffle ? classes.raffleSelectedCard : classes.raffleCard} 
                         onClick={() => { 
                           setSelectedRaffle(raffle.id)
+                          setTicketsSelected([])
+                          setHasPaymentSelected(null)
                           console.log(raffle)
                         }}
                       />
@@ -502,16 +510,57 @@ function Operadora() {
                             ticketsSelected.length > 0 && (
                               <Card>
                                 <small>
-                                  <Group position="center" pb={10}>
+                                  <Text fw={700} ta="center" style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }} fz={16}>Jugadas:</Text> 
+                                  <Group pb={10} ml={5} position="center">
                                     {
                                       ticketsSelected.map((ticket) => {
                                         return (
-                                          <Text mb={-15} mx={-5}>{ticket}</Text>
+                                          <Text fz={20} fw={1000} mt={5} mb={-25} mx={-5}>{ticket}</Text>
                                         )
                                       })
                                     }
-                                  </Group>  
+                                  </Group>
+                                  <Text fw={700} fz={16} ta="center" mt={20} style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }}>Total:</Text>  
+                                  <Text fw={1000} fz={20} mt={5} mb={20} ta="center">{ticketsSelected.length * (raffleActive(selectedRaffle)?.price_unit || 0)}$</Text>
                                 </small>
+                                <Text fw={700} ta="center" mt={-10} style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }} mb={10} fz={16}>
+                                  Seleccione una moneda
+                                </Text>
+                                <Group w="100%" mt={-5} mb={10} position="apart">
+                                  <Text fw={700} fz={16} ml={10}>$</Text>
+                                  <Text fw={700} fz={16} ml={10}>COP</Text>
+                                  <Text fw={700} fz={16}>BsD</Text>
+                                </Group>
+                                <Group w="100%" mt={-5} mb={10} position="apart">
+                                  <Checkbox 
+                                    size="lg" 
+                                    checked={hasPaymentSelected === '$'}
+                                    onChange={() => {
+                                      setHasPaymentSelected("$")
+                                    }}
+                                  />
+                                  <Checkbox 
+                                    size="lg" 
+                                    checked={hasPaymentSelected === 'COP'}
+                                    onChange={() => {
+                                      setHasPaymentSelected("COP")
+                                    }}
+                                  />
+                                  <Checkbox 
+                                    size="lg" 
+                                    checked={hasPaymentSelected === 'BsD'}
+                                    onChange={() => {
+                                      setHasPaymentSelected("BsD")
+                                    }}
+                                  />
+                                </Group>
+                                <Button 
+                                  fullWidth 
+                                  leftIcon={<IconWallet/>}
+                                  disabled={hasPaymentSelected === null}
+                                >
+                                  Comprar
+                                </Button>
                               </Card>
                             )
                           }
