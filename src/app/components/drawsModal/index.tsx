@@ -58,29 +58,29 @@ type IFile = {
 
 type FormProps = {
   title: null | string;
-  draw_type: string | 'End-To-Date' | 'To-Infinity' | 'Progressive' | '50/50';
+  draw_type: string | 'Fecha limite' | 'Infinito' | 'Progresiva' | '50/50';
   limit: null | number;
   price_unit: null | number;
-  loteria: string;
+  lotery: string;
   tickets_count: number;
-  first_prize: string;
+  // first_prize: string;
   numbers: null | number | string;
-  second_prize: null | string | null;
+  raffle_type: string;
+  // second_prize: null | string | null;
   init_date: null | Date | string;
   visible_taquillas_ids: number[];
   expired_date: Date | string | null;
   money: null | string;
-  ads: IFile | null;
-  award: IFile | null;
+  ad: IFile | null;
   owner_id: number | string | null;
   local_id: number | string | null;
   fundation_id: number | string | null;
-  user_id: number;
+  shared_user_id: number;
 }
 
 interface IWhitelist {
   id: number,
-  user_id: number,
+  shared_user_id: number,
   name: string,
   role: string,
   email: string,
@@ -120,8 +120,8 @@ function DrawsModal({
     }
   ])
   const [isSecondPrizeEnabled, setSecondPrizeEnabled] = useState(false);
-  const [files, setFiles] = useState<FileWithPath[]>([]);
-  const [files2, setFiles2] = useState<FileWithPath[]>([]);
+  const [files, setFiles] = useState<FileWithPath | null>(null);
+  const [files2, setFiles2] = useState<FileWithPath | null>(null);
 
   useEffect(() => {
     axios.get("https://api.rifamax.app/whitelists").then((res) => {
@@ -144,7 +144,7 @@ function DrawsModal({
         res.data.map((item: IWhitelist) => {
           return {
             label: item.name,
-            value: item.user_id
+            value: item.shared_user_id
           }
         })
       )
@@ -171,29 +171,27 @@ function DrawsModal({
     },
   }));
 
-
-
   const form = useForm({
     initialValues: {
       title: '',
-      draw_type: 'Progressive',
+      draw_type: 'Progresiva',
       limit: null,
       price_unit: null,
-      loteria: 'ZULIA 7A',
+      lotery: 'ZULIA 7A',
       tickets_count: 0,
-      first_prize: '',
+      // first_prize: '',
       numbers: null,
-      second_prize: null,
+      // second_prize: null,
       init_date: null,
       visible_taquillas_ids: [],
       expired_date: null,
       money: '$',
-      ads: null,
-      award: null,
+      ad: null,
       owner_id: null,
+      raffle_type: 'Triple',
       fundation_id: null,
       local_id: null,
-      user_id: JSON.parse(localStorage.getItem('user') || '').id || 1
+      shared_user_id: JSON.parse(localStorage.getItem('user') || '').id || 1
     },
     validate: {
       title: (value: string) => {
@@ -202,31 +200,31 @@ function DrawsModal({
         if (value.length > 50) return 'El titulo debe tener menos de 50 caracteres';
       },
       limit: (value: number) => {
-        if (form.values.draw_type === 'Progressive') {
+        if (form.values.draw_type === 'Progresiva') {
           if (value < 1) return 'El limite debe ser mayor a 0';
           if (value > 100) return 'El limite debe ser menor a 100';
         } else {
           form.setFieldValue('limit', null);
         }
       },
-      first_prize: (value: string) => {
-        if (!value) return 'Premio requerido';
-        if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
-        if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
-      },
-      second_prize: (value: string) => {
-        if (!value) {
-          if (isSecondPrizeEnabled) return 'Premio requerido';
-        } else {
-          if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
-          if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
-        }
-      },
+      // first_prize: (value: string) => {
+      //   if (!value) return 'Premio requerido';
+      //   if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
+      //   if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
+      // },
+      // second_prize: (value: string) => {
+      //   if (!value) {
+      //     if (isSecondPrizeEnabled) return 'Premio requerido';
+      //   } else {
+      //     if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
+      //     if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
+      //   }
+      // },
       init_date: (value: Date) => {
         if (!value) return 'Fecha de inicio requerida';
       },
       expired_date: (value: Date) => {
-        if (form.values.draw_type === 'Progressive') {
+        if (form.values.draw_type === 'Progresiva') {
           form.setFieldValue('expired_date', null);
         } else {
           if (!value) return 'Fecha de finalización requerida';
@@ -247,7 +245,7 @@ function DrawsModal({
         }
       },
       tickets_count: (value: number) => {
-        if (form.values.draw_type === 'To-Infinity' || form.values.draw_type === '50/50') { } else {
+        if (form.values.draw_type === 'Infinito' || form.values.draw_type === '50/50') { } else {
           if (!value) return 'Cantidad de tickets requerida';
           if (value < 100 || value > 1000) return 'La cantidad de tickets debe ser mayor o igual a 100 y menor o igual a 1000';
         }
@@ -277,13 +275,7 @@ function DrawsModal({
           if (value.length < 1) return 'Taquillas requeridas';
         }
       },
-      award: (value: string) => {
-        if (form.values.draw_type != '50/50') {
-
-          if (!value) return 'Premio requerido';
-        }
-      },
-      ads: (value: string) => {
+      ad: (value: string) => {
         if (form.values.draw_type != '50/50') {
           if (!value) return 'Anuncio requerido';
 
@@ -339,10 +331,10 @@ function DrawsModal({
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
 
-    axios.post('https://api.rifamax.app/draws', { draw: values }, {
+    axios.post('http://localhost:3000/x100/raffles', { x100_raffle: values }, {
       headers: {
         "Content-Type": ["application/json", "multipart/form-data"],
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((res) => {
       console.log(res)
@@ -354,9 +346,9 @@ function DrawsModal({
 
   const validateDate = () => {
     if (actualDate <= validate) {
-      return new Date(moment().add(1, 'days').format('YYYY-MM-DD'))
+      return new Date(moment().add(1, 'days').format('YYYY-MM-DD hh:mm'))
     } else {
-      return new Date(moment().add(2, 'days').format('YYYY-MM-DD'))
+      return new Date(moment().add(2, 'days').format('YYYY-MM-DD hh:mm'))
     }
   }
 
@@ -389,39 +381,26 @@ function DrawsModal({
 
   const removeFile = (index: number, dropzone: number) => {
     if (dropzone === 1) {
-      const updatedFiles = [...files];
-      updatedFiles.splice(index, 1);
+      const updatedFiles = files;
       setFiles(updatedFiles);
     } else if (dropzone === 2) {
-      const updatedFiles2 = [...files2];
-      updatedFiles2.splice(index, 1);
+      const updatedFiles2 = files2
       setFiles2(updatedFiles2);
-      form.setFieldValue('ads', null)
+      form.setFieldValue('ad', null)
     }
   };
 
-  const handleDrop2 = (acceptedFiles: FileWithPath[]) => {
-    if (acceptedFiles.length > 0) {
-      setFiles2([acceptedFiles[0]]);
-      acceptedFiles ?? form.setFieldValue('ads', acceptedFiles[0])
-    }
-  };
-
-
-  const previews = (fileList: FileWithPath[], dropzone: number) => {
-    return fileList.map((file, index) => {
-      const imageUrl = URL.createObjectURL(file);
+  const previews = (fileList: FileWithPath | null, dropzone: number) => {
+      const imageUrl = fileList === null ? '' : URL.createObjectURL(fileList);
       return (
-        <div key={index} style={{ position: 'relative' }}>
-
+        <div style={{ position: 'relative' }}>
           <Image
             src={imageUrl}
             imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
           />
-          <CloseButton aria-label="Close modal" onClick={() => removeFile(index, dropzone)} />
+          <CloseButton aria-label="Close modal" onClick={() => removeFile(1, dropzone)} />
         </div>
       );
-    });
   };
   return (
     <>
@@ -466,33 +445,33 @@ function DrawsModal({
               <Group mt={15} mb={15} position="center">
                 <Checkbox
                   label="Fecha limite"
-                  value="End-To-Date"
+                  value="Fecha limite"
                   checked={checkedIndex === 1}
                   onChange={() => {
-                    form.getInputProps('draw_type').onChange('End-To-Date')
+                    form.getInputProps('draw_type').onChange('Fecha limite')
                     setCheckedIndex(1)
                   }}
-                  {...form.getInputProps('draw_type').value === 'End-To-Date' && { checked: true }}
+                  {...form.getInputProps('draw_type').value === 'Fecha limite' && { checked: true }}
                 />
                 <Checkbox
-                  value="Progressive"
+                  value="Progresiva"
                   label="Progresivo"
                   checked={checkedIndex === 2}
                   onChange={() => {
-                    form.getInputProps('draw_type').onChange('Progressive')
+                    form.getInputProps('draw_type').onChange('Progresiva')
                     setCheckedIndex(2)
                   }}
-                  {...form.getInputProps('draw_type').value === 'Progressive' && { checked: true }}
+                  {...form.getInputProps('draw_type').value === 'Progresiva' && { checked: true }}
                 />
                 <Checkbox
-                  value="To-Infinity"
+                  value="Infinito"
                   label="Infinito"
                   checked={checkedIndex === 3}
                   onChange={() => {
-                    form.getInputProps('draw_type').onChange('To-Infinity')
+                    form.getInputProps('draw_type').onChange('Infinito')
                     setCheckedIndex(3)
                   }}
-                  {...form.getInputProps('draw_type').value === 'To-Infinity' && { checked: true }}
+                  {...form.getInputProps('draw_type').value === 'Infinito' && { checked: true }}
                 />
                 {/* <Checkbox
                   value="50/50"
@@ -562,7 +541,7 @@ function DrawsModal({
                       />
                     }
                     minDate={validateDate()}
-                    maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD'))}
+                    maxDate={new Date(moment().add(2, 'week').format('YYYY-MM-DD hh:mm'))}
                     error={form.errors.init_date}
                     {...form.getInputProps('init_date')}
                   />
@@ -575,15 +554,15 @@ function DrawsModal({
                     radius={'lg'}
                     fullWidth
                     defaultValue={
-                      form.getInputProps('draw_type').value === 'Progressive' ? null :
+                      form.getInputProps('draw_type').value === 'Progresiva' ? null :
                         form.getInputProps('expired_date').value
                     }
                     minDate={form.getInputProps('init_date').value || new Date(moment().add(2, 'days').format('YYYY-MM-DD'))}
                     disabled={
-                      form.getInputProps('draw_type').value === 'Progressive'
+                      form.getInputProps('draw_type').value === 'Progresiva'
                     }
                     withAsterisk={
-                      form.getInputProps('draw_type').value === 'To-Infinity' || form.getInputProps('draw_type').value === '50/50' || form.getInputProps('draw_type').value === 'End-To-Date'
+                      form.getInputProps('draw_type').value === 'Infinito' || form.getInputProps('draw_type').value === '50/50' || form.getInputProps('draw_type').value === 'Fecha limite'
                     }
                     rightSection={<Calendar opacity={0.8} />}
                     {...form.getInputProps('expired_date')}
@@ -597,7 +576,7 @@ function DrawsModal({
                   Elija el conteo de tickets
                 </Text>
                 {
-                  form.getInputProps('draw_type').value === 'Progressive' || form.getInputProps('draw_type').value === 'End-To-Date' ? (
+                  form.getInputProps('draw_type').value === 'Progresiva' || form.getInputProps('draw_type').value === 'Fecha limite' ? (
                     <Text size="md" fz="md" c="red" mb={18} inline mt={25} ml={-12}>
                       *
                     </Text>
@@ -652,13 +631,13 @@ function DrawsModal({
                   Limite para cerrar la rifa (solo para las rifas progresivas)
                 </Text>
                 {
-                  form.getInputProps('draw_type').value === 'Progressive' && (
+                  form.getInputProps('draw_type').value === 'Progresiva' && (
                     <Text inline c='red' mt={-17} ml={-12}>*</Text>
                   )
                 }
               </Group>
               <Slider mb={35}
-                disabled={form.getInputProps('draw_type').value !== 'Progressive'}
+                disabled={form.getInputProps('draw_type').value !== 'Progresiva'}
                 marks={[
                   { value: 0, label: '0%' },
                   { value: 50, label: '50%' },
@@ -757,7 +736,7 @@ function DrawsModal({
                     }
                     placeholder="Elige una taquilla disponible"
                     withAsterisk={
-                      form.getInputProps('draw_type').value === 'To-Infinity' || form.getInputProps('draw_type').value === 'Progressive' || form.getInputProps('draw_type').value === 'End-To-Date'
+                      form.getInputProps('draw_type').value === 'Infinito' || form.getInputProps('draw_type').value === 'Progresiva' || form.getInputProps('draw_type').value === 'Fecha limite'
                     }
 
                     error={form.errors.owner_id}
@@ -798,36 +777,30 @@ function DrawsModal({
                 // }} 
                 />
               </Group>
-              <Grid>
-                <Grid.Col span={6}>
+              {/* <Grid>
+                <Grid.Col span={6}> */}
                   <Group>
-
-
                     <Text size="xl" fz="md" mb={15} inline>
-                      Imagenes del premio
-
+                      Imagenes de publicidad
                     </Text>
-
                     {checkedIndex === 4 ? <Text inline c='red' mt={-17} ml={-12}></Text> : <Text inline c='red' mt={-17} ml={-12}>*</Text>}
                   </Group>
                   <Dropzone
                     disabled={checkedIndex === 4}
                     radius={'lg'}
-
                     className={checkedIndex === 4 ? classes.disabled2 : 'activopapi'}
                     accept={IMAGE_MIME_TYPE}
-                    multiple={true}
-                    maxFiles={1}
+                    multiple={false}
                     onDrop={(files) => {
-                      form.getInputProps('award').onChange(files)
-                      setFiles(files)
+                      form.getInputProps('ad').onChange(files[0])
+                      setFiles(files[0])
                     }}
-                    color={form.errors.award ? 'red' : ''}
-                    {...form.getInputProps('award')}
+                    color={form.errors.ad ? 'red' : ''}
+                    {...form.getInputProps('ad')}
                   >
                     <IconPhoto size="3.2rem" stroke={1.5} />
                     <Text size="xl" inline>
-                      Imagen de premio
+                      Imagen de publicidad
                     </Text>
                     <Text size="sm" color="dimmed" inline mt={7}>
                       presione la imagen en este area
@@ -835,7 +808,7 @@ function DrawsModal({
                   </Dropzone>
                   {checkedIndex !== 4 && (
                     <Text fz="sm" ta="center" c='red' mt={10} inline>
-                      {form.errors.award}
+                      {form.errors.ad}
                     </Text>
                   )}
                   <SimpleGrid
@@ -846,8 +819,8 @@ function DrawsModal({
                     {previews(files, 1)}
                   </SimpleGrid>
 
-                </Grid.Col>
-                <Grid.Col span={6}>
+                {/* </Grid.Col> */}
+                {/* <Grid.Col span={6}>
                   <Group>
                     <Text size="xl" fz="md" mb={15} inline>
                       Imagen de Publicidad
@@ -892,8 +865,8 @@ function DrawsModal({
                   >
                     {previews(files2, 2)}
                   </SimpleGrid>
-                </Grid.Col>
-              </Grid>
+                </Grid.Col> */}
+              {/* </Grid> */}
               <Group position="center" mt="xl">
                 <Button variant="default" radius={'lg'} onClick={prevStep} disabled={
                   active === 2 ? true : false
@@ -926,9 +899,9 @@ function DrawsModal({
                 <li>
                   <strong>Número de Tickets:</strong> {form.values.tickets_count}
                 </li>
-                <li>
+                {/* <li>
                   <strong>Premio:</strong> {form.values.first_prize}
-                </li>
+                </li> */}
                 <li>
                   <strong>Números de la Rifa:</strong> {form.values.numbers}
                 </li>

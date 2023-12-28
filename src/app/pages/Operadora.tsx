@@ -10,7 +10,7 @@ import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
 import { IconSearch } from "@tabler/icons-react"
 import ticketsMock  from '../assets/data/tickets.json' 
-import { BiNoEntry } from "react-icons/bi"
+import { bounce } from "../components/animations"
 
 interface IStatus {
   is_connected: boolean;
@@ -161,7 +161,8 @@ const useStyles = createStyles((theme) => ({
     marginBottom: '5px',
     background: 'green',
     userSelect: 'none',
-    textDecoration: 'none'
+    textDecoration: 'none',
+    animation: `${bounce} 3s ease-in-out infinite`,
   },
   searchButton: {
     '&:hover': {
@@ -209,7 +210,7 @@ function Loading() {
 function Operadora() {
   const [raffles, setRaffles] = useState<IRaffle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [rafflesCableStatus, setRafflesCableStatus] = useState<IStatus>({
