@@ -393,13 +393,18 @@ function DrawsModal({
   const previews = (fileList: FileWithPath | null, dropzone: number) => {
       const imageUrl = fileList === null ? '' : URL.createObjectURL(fileList);
       return (
-        <div style={{ position: 'relative' }}>
+        <>
+        
+        <Group position='center'>
+
+        <div >
           <Image
             src={imageUrl}
             imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
           />
-          <CloseButton aria-label="Close modal" onClick={() => removeFile(1, dropzone)} />
         </div>
+        </Group>
+        </>
       );
   };
   return (
