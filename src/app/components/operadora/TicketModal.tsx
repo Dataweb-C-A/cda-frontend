@@ -911,63 +911,7 @@ function TicketModal({ draw_id }: modalProps) {
                             <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
 
 
-                              <Stepper.Step label="Moneda" description="Elija el tipo de moneda">
-                                <Group position='apart'>
-                                  <Title ta="end">$ {draws.price_unit * active.length}</Title>
-                                  <Checkbox
-                                    checked={checkedIndex === 0}
-                                    onChange={() => {
-                                      setCheckedIndex(0);
-                                      setIsChecked(true);
-                                      setCoin("$");
-                                    }}
-                                  />
-                                </Group>
-                                <Group position='apart'>
-                                  <Title ta="end">
-                                    Bs.D {((draws.price_unit * active.length) * parseFloat(exchange.BsD.replace('Bs. ', '').replace(',', '.'))).toFixed(2)}
-                                  </Title>
-                                  <Checkbox
-                                    checked={checkedIndex === 1}
-                                    onChange={() => {
-                                      setCheckedIndex(1);
-                                      setIsChecked(true);
-                                      setCoin("Bs.D");
-                                    }}
-                                  />
-                                </Group>
-                                <Group position='apart'>
-                                  <Title ta="end">
-                                    COP {((draws.price_unit * active.length) * parseFloat(exchange.COP.replace(' COP', ''))).toFixed(2)}
-                                  </Title>
-                                  <Checkbox
-                                    checked={checkedIndex === 2}
-                                    onChange={() => {
-                                      setCheckedIndex(2);
-                                      setIsChecked(true);
-                                      setCoin("COP");
-                                    }}
-                                  />
-                                </Group>
-
-                                <Group position="center" mt="xl">
-                                  <Button variant="default" onClick={prevStep}>
-                                    Atrás
-                                  </Button>
-                                  <Button
-                                    type="submit"
-                                    onClick={() => {
-                                      if (isChecked) {
-                                        setModalOpen(true);
-                                        nextStep();
-                                      }
-                                    }}
-                                    disabled={!isChecked}>
-                                    Siguiente
-                                  </Button>
-                                </Group>
-                              </Stepper.Step>
-
+                              
                               <Stepper.Step label="Datos del cliente" description="Personalize su compra ">
 
                                 <form onSubmit={form2.onSubmit((values) => console.log(values))}>

@@ -4,11 +4,11 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, Card, Image, Group, Pagination, NumberInput, useMantineTheme, Checkbox } from "@mantine/core"
+import { Loader, Button, Text, createStyles, ScrollArea, Card, Image, Group, Pagination, NumberInput, useMantineTheme, Checkbox, Modal, TextInput } from "@mantine/core"
 import { ChevronLeft } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconCurrencyDollar, IconSearch, IconTrash, IconWallet } from "@tabler/icons-react"
+import { IconSearch, IconTrash, IconWallet } from "@tabler/icons-react"
 import ticketsMock  from '../assets/data/tickets.json' 
 import { bounce } from "../components/animations"
 
@@ -30,6 +30,11 @@ interface ITicket {
   is_sold: boolean,
   sold_to: IClient | {}
   serial: string
+}
+
+interface ITicketModal { 
+  isOpen: boolean,
+  mode: string
 }
 
 interface ITicketsResponse { 
@@ -165,6 +170,15 @@ const useStyles = createStyles((theme) => ({
     animation: `${bounce} 3s ease-in-out infinite`,
     cursor: 'pointer'
   },
+  ticketsSold: {
+    width: '100%', 
+    height: '3.7rem', 
+    marginBottom: '5px',
+    background: 'red',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'not-allowed'
+  },
   searchButton: {
     '&:hover': {
       backgroundColor: theme.colors.blue[9],
@@ -215,6 +229,12 @@ function Operadora() {
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
+  const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
+  const [searchValue, setSearchValue] = useState<number>(0)
+  const [isOpenInvalidTicketModal, setIsOpenInvalidModal] = useState<ITicketModal>({
+    isOpen: false,
+    mode: 'valid'
+  })
   const [rafflesCableStatus, setRafflesCableStatus] = useState<IStatus>({
     is_connected: false,
     receiving_data: false
@@ -251,6 +271,13 @@ function Operadora() {
             is_connected: false,
             receiving_data: false
           })
+          setBuyIsOpen(false)
+          setSearchValue(0)
+          setHasPaymentSelected(null)
+          setIsOpenInvalidModal({
+            isOpen: false,
+            mode: 'valid'
+          })
           setSelectedRaffle(null)
           setRaffles([])
         },
@@ -282,7 +309,7 @@ function Operadora() {
         });
     } 
 
-    console.log('effect going effect')
+    console.log('useEffect are going effect')
 
     if (selectedRaffle !== null) {
       cable.subscriptions.create('X100::TicketsChannel', {
@@ -336,8 +363,120 @@ function Operadora() {
     setHasPaymentSelected(null)
   }
 
+  function handleInvalidModal(state: boolean, mode: string) {
+    setIsOpenInvalidModal({
+      isOpen: state,
+      mode: mode
+    })
+  }
+
+  function apartTickets(ticket_nro: number) {
+    const ticketSelected = tickets.tickets.find((ticket) => ticket.position === ticket_nro);
+
+    if (!ticketSelected) {
+      return handleInvalidModal(true, `invalid - ${ticket_nro}`);
+    }
+
+    if (ticketSelected.is_sold) {
+      return handleInvalidModal(true, 'sold');
+    }
+
+    if (ticketsSelected.includes(ticketSelected.position)) {
+      return handleInvalidModal(true, 'selected');
+    }
+
+    const newTickets = [...ticketsSelected, ticketSelected.position];
+    setTicketsSelected(newTickets);
+
+    return handleInvalidModal(false, 'valid');
+  }
+
+  function InvalidModal() {
+    const { isOpen, mode } = isOpenInvalidTicketModal;
+    const isSold = mode === 'sold';
+    const isTicketSelected = mode === 'selected';
+    const ticketNumber = mode.slice(10);
+
+    const handleClose = () => {
+      handleInvalidModal(false, '');
+    };
+
+    return (
+      <Modal 
+        opened={isOpen} 
+        onClose={handleClose} 
+        withCloseButton={false}
+        title={isSold ? "Este ticket ha sido vendido" : isTicketSelected ? "El ticket ya ha sido seleccionado" : "Ticket inválido"}
+        centered
+      >
+        <Card py={100}>
+          <Text ta="center" fw={600} fz={24}>
+            {isSold ? "Este ticket ha sido vendido" : isTicketSelected ? "El ticket ya ha sido seleccionado" : `El ticket número: ${ticketNumber} no existe`}
+          </Text>
+        </Card>
+        <Button
+          variant="filled" 
+          color="blue" 
+          fullWidth
+          mt={10}
+          onClick={handleClose}
+        >
+          Aceptar
+        </Button>
+      </Modal>
+    );
+  }
+
+  function BuyModal() {
+
+    const handleClose = () => {
+      setBuyIsOpen(false)
+    }
+
+    return (
+      <Modal
+        opened={buyIsOpen}
+        onClose={handleClose}
+        centered
+        title="Comprar tickets"
+        size="xl"
+      >
+        <Group spacing={5} w="100%" mb={10}>
+          <TextInput
+            w="49.5%"
+            placeholder="Nombre"
+            label="Nombre de cliente"
+            withAsterisk
+          />
+          <TextInput
+            w="49.5%"
+            placeholder="Apellido"
+            label="Apellido de cliente"
+            withAsterisk
+          />
+        </Group>
+        <Group spacing={5} w="100%">
+          <TextInput
+            w="49.5%"
+            placeholder="Cedula"
+            label="Cedula"
+            withAsterisk
+          />
+          <TextInput
+            w="49.5%"
+            placeholder="Telefono"
+            label="Telefono"
+            withAsterisk
+          />
+        </Group>
+      </Modal>
+    )
+  }
+
   return (
     <>
+      <InvalidModal/>
+      <BuyModal />
       <Navbar
         profiles={users}
         links={links}
@@ -398,20 +537,33 @@ function Operadora() {
                       initialPage={1}
                       total={10}
                       siblings={10}
-                      withControls={true}
+                      withControls={false}
                       size='md'
                     />
                     <NumberInput 
                       size="xs"
                       hideControls
                       placeholder="Buscar número"
+                      onChange={(value: number) => setSearchValue(value)}
                       icon={
                         <Card px={2} py={0} m={0} ml={2} className={classes.searchButton}>
                           <IconSearch style={{ marginTop: '5px' }} size={16} />
                         </Card>
                       }
+                      style={{ borderRadius: '5px 0 0 5px'}}
                       ml={10}
                     />
+                    <Button 
+                      size='xs'
+                      ml={0}
+                      color="blue"
+                      onClick={() => apartTickets(searchValue)}
+                      style={{ borderRadius: '0 5px 5px 0'}}
+                    >
+                      <IconSearch
+                        size={22}
+                      />
+                    </Button>
                     <Button 
                       size='xs'
                       ml={10}
@@ -463,6 +615,16 @@ function Operadora() {
                     >
                       10 x 50$
                     </Button> 
+                    {
+                      JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
+                        <Button 
+                          size='xs'
+                          ml={10}
+                        >
+                          Agregar combos
+                        </Button>
+                      )
+                    }
                   </div>
                   <div style={{ display: 'flex', width: '100%' }}>
                     <div className={classes.ticketsListContainer}>
@@ -473,13 +635,24 @@ function Operadora() {
                             tickets.tickets.map((ticket) => {
                               return (
                                 <div className={classes.ticketsSellContainer}>
-                                  <Card 
-                                    key={ticket.position} 
-                                    className={ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : classes.tickets}
-                                    onClick={() => chooseTicket(ticket.position)}
-                                  >
-                                    <Text ta='center'>{ticket.position}</Text>
-                                  </Card>
+                                  {
+                                    ticket.is_sold ? (
+                                      <Card 
+                                        key={ticket.position} 
+                                        className={classes.ticketsSold}
+                                      >
+                                        <Text ta='center'>{ticket.position}</Text>
+                                      </Card>
+                                    ) : (
+                                      <Card 
+                                        key={ticket.position} 
+                                        className={ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : classes.tickets}
+                                        onClick={() => chooseTicket(ticket.position)}
+                                      >
+                                        <Text ta='center'>{ticket.position}</Text>
+                                      </Card>
+                                    )
+                                  }
                                 </div>
                               )
                             })
@@ -558,6 +731,7 @@ function Operadora() {
                                   fullWidth 
                                   leftIcon={<IconWallet/>}
                                   disabled={hasPaymentSelected === null}
+                                  onClick={() => setBuyIsOpen(true)}
                                 >
                                   Comprar
                                 </Button>
