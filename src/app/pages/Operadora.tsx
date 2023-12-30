@@ -4,19 +4,24 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, Card, Image, Group, Pagination, NumberInput, useMantineTheme, Checkbox, Modal, TextInput } from "@mantine/core"
+import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, Pagination, NumberInput, useMantineTheme, Checkbox, Modal, TextInput } from "@mantine/core"
 import { ChevronLeft } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconSearch, IconTrash, IconWallet } from "@tabler/icons-react"
-import ticketsMock  from '../assets/data/tickets.json' 
+import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
+import ticketsMock from '../assets/data/tickets.json'
 import { bounce } from "../components/animations"
 
 interface IStatus {
   is_connected: boolean;
   receiving_data: boolean;
 }
-
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  handlePageChange: (page: number) => void;
+  loadingPage: boolean;
+}
 interface IClient {
   id: number,
   name: string,
@@ -32,12 +37,12 @@ interface ITicket {
   serial: string
 }
 
-interface ITicketModal { 
+interface ITicketModal {
   isOpen: boolean,
   mode: string
 }
 
-interface ITicketsResponse { 
+interface ITicketsResponse {
   metadata: {
     page: number,
     items: number,
@@ -143,17 +148,17 @@ const useStyles = createStyles((theme) => ({
       display: 'none'
     },
   },
-  raffleInfoCard: { 
+  raffleInfoCard: {
     background: theme.colors.dark[7],
-    marginTop:"25px",
+    marginTop: "25px",
     height: '100%'
   },
   ticketsSellContainer: {
     width: "calc(10% - 20px)"
   },
   tickets: {
-    width: '100%', 
-    height: '3.7rem', 
+    width: '100%',
+    height: '3.7rem',
     marginBottom: '5px',
     background: '#4d4f66',
     userSelect: 'none',
@@ -161,8 +166,8 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer'
   },
   ticketsSelected: {
-    width: '100%', 
-    height: '3.7rem', 
+    width: '100%',
+    height: '3.7rem',
     marginBottom: '5px',
     background: 'green',
     userSelect: 'none',
@@ -171,8 +176,8 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer'
   },
   ticketsSold: {
-    width: '100%', 
-    height: '3.7rem', 
+    width: '100%',
+    height: '3.7rem',
     marginBottom: '5px',
     background: 'red',
     userSelect: 'none',
@@ -189,11 +194,11 @@ const useStyles = createStyles((theme) => ({
 
 function RaffleListEmpty() {
   return (
-    <div 
-      style={{ 
-        position: 'absolute', 
-        top: '50%', 
-        left: '50%', 
+    <div
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
         transform: 'translate(-50%, -50%)'
       }}
     >
@@ -203,13 +208,13 @@ function RaffleListEmpty() {
 }
 
 function Loading() {
-  return(
+  return (
     <>
-      <div 
-        style={{ 
-          position: 'absolute', 
-          top: '50%', 
-          left: '50%', 
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
           transform: 'translate(-50%, -50%)'
         }}
       >
@@ -223,6 +228,8 @@ function Loading() {
 }
 
 function Operadora() {
+  const numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
   const [raffles, setRaffles] = useState<IRaffle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
@@ -251,6 +258,7 @@ function Operadora() {
   })
 
   const { classes } = useStyles()
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   const theme = useMantineTheme();
 
@@ -264,7 +272,7 @@ function Operadora() {
             receiving_data: false
           })
         },
-  
+
         disconnected() {
           console.log('Disconnected from ActionCable');
           setRafflesCableStatus({
@@ -281,7 +289,7 @@ function Operadora() {
           setSelectedRaffle(null)
           setRaffles([])
         },
-  
+
         received(data: any) {
           console.log('Received data from ActionCable:', data);
           setRaffles(data)
@@ -307,7 +315,7 @@ function Operadora() {
         .catch((err) => {
           console.log(err);
         });
-    } 
+    }
 
     console.log('useEffect are going effect')
 
@@ -320,7 +328,7 @@ function Operadora() {
             receiving_data: false
           })
         },
-  
+
         disconnected() {
           console.log('Disconnected from ActionCable');
           setRafflesCableStatus({
@@ -331,7 +339,7 @@ function Operadora() {
           setSelectedRaffle(null)
           setRaffles([])
         },
-  
+
         received(data: any) {
           console.log('Received data from ActionCable:', data);
           setTickets(data)
@@ -343,20 +351,24 @@ function Operadora() {
         },
       })
     }
-    
+
   }, [selectedRaffle])
 
   function raffleActive(id: number) {
     return raffles.find((raffle) => raffle.id === id)
   }
+  const [ticketKey, setTicketKey] = useState<number>(0);
 
   function chooseTicket(ticketNumber: number) {
     if (ticketsSelected.includes(ticketNumber)) {
-      setTicketsSelected(ticketsSelected.filter((ticket) => ticket !== ticketNumber))
+      setTicketsSelected(ticketsSelected.filter((ticket) => ticket !== ticketNumber));
     } else {
-      setTicketsSelected([...ticketsSelected, ticketNumber])
+      setTicketsSelected([...ticketsSelected, ticketNumber]);
     }
+
+    setTicketKey((prevKey) => prevKey + 1);
   }
+
 
   function cleanSelection() {
     setTicketsSelected([])
@@ -402,9 +414,9 @@ function Operadora() {
     };
 
     return (
-      <Modal 
-        opened={isOpen} 
-        onClose={handleClose} 
+      <Modal
+        opened={isOpen}
+        onClose={handleClose}
         withCloseButton={false}
         title={isSold ? "Este ticket ha sido vendido" : isTicketSelected ? "El ticket ya ha sido seleccionado" : "Ticket inválido"}
         centered
@@ -415,8 +427,8 @@ function Operadora() {
           </Text>
         </Card>
         <Button
-          variant="filled" 
-          color="blue" 
+          variant="filled"
+          color="blue"
           fullWidth
           mt={10}
           onClick={handleClose}
@@ -475,7 +487,7 @@ function Operadora() {
 
   return (
     <>
-      <InvalidModal/>
+      <InvalidModal />
       <BuyModal />
       <Navbar
         profiles={users}
@@ -483,25 +495,25 @@ function Operadora() {
         expandScreen={false}
       />
       <section className={classes.pageContainer}>
-        { /* Raffles Container*/ }
+        { /* Raffles Container*/}
         <div className={rafflesSidebarStatus ? classes.rafflesContainer : classes.rafflesContainerConstract}>
           <div className={rafflesSidebarStatus ? classes.raffleSidebar : classes.close}>
-            <Button 
-              onClick={() => setRafflesSidebarStatus(!rafflesSidebarStatus)} 
+            <Button
+              onClick={() => setRafflesSidebarStatus(!rafflesSidebarStatus)}
               className={classes.raffleSidebarButton}
             >
-              <ChevronLeft style={{ marginTop: '3px', rotate: rafflesSidebarStatus ? "0deg" : '180deg', transition: '0.3s' }}/>
+              <ChevronLeft style={{ marginTop: '3px', rotate: rafflesSidebarStatus ? "0deg" : '180deg', transition: '0.3s' }} />
             </Button>
             <ScrollArea h="100%">
               {
-                loading ? <Loading/> : (
-                  raffles.length === 0 ? <RaffleListEmpty/> : (
+                loading ? <Loading /> : (
+                  raffles.length === 0 ? <RaffleListEmpty /> : (
                     raffles.map((raffle: IRaffle) => (
-                      <RaffleCard 
-                        data={raffle} 
+                      <RaffleCard
+                        data={raffle}
                         key={raffle.id}
-                        className={raffle.id === selectedRaffle ? classes.raffleSelectedCard : classes.raffleCard} 
-                        onClick={() => { 
+                        className={raffle.id === selectedRaffle ? classes.raffleSelectedCard : classes.raffleCard}
+                        onClick={() => {
                           setSelectedRaffle(raffle.id)
                           setTicketsSelected([])
                           setHasPaymentSelected(null)
@@ -515,16 +527,16 @@ function Operadora() {
             </ScrollArea>
           </div>
         </div>
-        { /* Tickets Container*/ }
+        { /* Tickets Container*/}
         <div className={rafflesSidebarStatus ? classes.ticketsContainer : classes.ticketsContainerExpanded}>
           <Card className={classes.ticketsPage}>
-            { 
+            {
               selectedRaffle === null ? (
                 <div
-                  style={{ 
-                    position: 'absolute', 
-                    top: '50%', 
-                    left: '50%', 
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
                     transform: 'translate(-50%, -50%)'
                   }}
                 >
@@ -533,14 +545,41 @@ function Operadora() {
               ) : (
                 <>
                   <div style={{ display: 'flex', marginBottom: '15px', width: '100%' }}>
-                    <Pagination
-                      initialPage={1}
-                      total={10}
-                      siblings={10}
-                      withControls={false}
-                      size='md'
-                    />
-                    <NumberInput 
+                    <ActionIcon
+                      variant="default"
+                      mr={10}
+                      py={0}
+                      size={40}
+                    //  onClick={() => handlePageChange(currentPage - 1)}
+                    //  disabled={currentPage === 1}
+                    >
+                      <IconChevronLeft />
+                    </ActionIcon>
+
+                    {numeros.map((numero, index) => (
+                      <Button
+                        key={index}
+                        mr={10}
+                        variant="default"
+                        color="gray"
+                        size="xl"
+                        compact
+                        py={10}
+                      >
+                        {numero}
+                      </Button>
+                    ))}
+                    <ActionIcon
+
+                      variant="default"
+                      color="gray"
+                      py={0}
+                      size={40}
+
+                    >
+                      <IconChevronRight />
+                    </ActionIcon>
+                    <NumberInput
                       size="xs"
                       hideControls
                       placeholder="Buscar número"
@@ -550,26 +589,26 @@ function Operadora() {
                           <IconSearch style={{ marginTop: '5px' }} size={16} />
                         </Card>
                       }
-                      style={{ borderRadius: '5px 0 0 5px'}}
+                      style={{ borderRadius: '5px 0 0 5px' }}
                       ml={10}
                     />
-                    <Button 
+                    <Button
                       size='xs'
                       ml={0}
                       color="blue"
                       onClick={() => apartTickets(searchValue)}
-                      style={{ borderRadius: '0 5px 5px 0'}}
+                      style={{ borderRadius: '0 5px 5px 0' }}
                     >
                       <IconSearch
                         size={22}
                       />
                     </Button>
-                    <Button 
+                    <Button
                       size='xs'
                       ml={10}
                       color="red"
                     >
-                      <IconTrash 
+                      <IconTrash
                         size={22}
                         onClick={() => cleanSelection()}
                       />
@@ -580,44 +619,44 @@ function Operadora() {
                     >
                       Combos:
                     </Text>
-                    <Button 
+                    <Button
                       size='xs'
                       ml={10}
                       color="teal"
                     >
                       2 x 15$
                     </Button>
-                    <Button 
+                    <Button
                       size='xs'
                       ml={10}
                       color="teal"
                     >
                       4 x 20$
-                    </Button> 
-                    <Button 
+                    </Button>
+                    <Button
                       size='xs'
                       ml={10}
                       color="teal"
                     >
                       6 x 30$
-                    </Button> 
-                    <Button 
+                    </Button>
+                    <Button
                       size='xs'
                       ml={10}
                       color="teal"
                     >
                       8 x 40$
-                    </Button> 
-                    <Button 
+                    </Button>
+                    <Button
                       size='xs'
                       ml={10}
                       color="teal"
                     >
                       10 x 50$
-                    </Button> 
+                    </Button>
                     {
                       JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
-                        <Button 
+                        <Button
                           size='xs'
                           ml={10}
                         >
@@ -628,40 +667,40 @@ function Operadora() {
                   </div>
                   <div style={{ display: 'flex', width: '100%' }}>
                     <div className={classes.ticketsListContainer}>
-                      { /* Raffle tickets */ }
+                      { /* Raffle tickets */}
                       <div className={classes.ticketsList}>
-                          {
-                            /* Dancers */
-                            tickets.tickets.map((ticket) => {
-                              return (
-                                <div className={classes.ticketsSellContainer}>
-                                  {
-                                    ticket.is_sold ? (
-                                      <Card 
-                                        key={ticket.position} 
-                                        className={classes.ticketsSold}
-                                      >
-                                        <Text ta='center'>{ticket.position}</Text>
-                                      </Card>
-                                    ) : (
-                                      <Card 
-                                        key={ticket.position} 
-                                        className={ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : classes.tickets}
-                                        onClick={() => chooseTicket(ticket.position)}
-                                      >
-                                        <Text ta='center'>{ticket.position}</Text>
-                                      </Card>
-                                    )
-                                  }
-                                </div>
-                              )
-                            })
-                          }
+                        {
+                          /* Dancers */
+                          tickets.tickets.map((ticket) => {
+                            return (
+                              <div className={classes.ticketsSellContainer}>
+                                {
+                                  ticket.is_sold ? (
+                                    <Card
+                                      key={ticket.position}
+                                      className={classes.ticketsSold}
+                                    >
+                                      <Text ta='center'>{ticket.position}</Text>
+                                    </Card>
+                                  ) : (
+                                    <Card
+                                      key={ticket.position + ticketKey}
+                                      className={ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : classes.tickets}
+                                      onClick={() => chooseTicket(ticket.position)}
+                                    >
+                                      <Text ta='center'>{ticket.position}</Text>
+                                    </Card>
+                                  )
+                                }
+                              </div>
+                            )
+                          })
+                        }
                       </div>
-                      { /* Raffle info   style={{ background: "#1D1E30"}} */ }
+                      { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
                         <Card withBorder mt={0} className={classes.raffleInfoCard}>
-                        <Text fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
+                          <Text fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
                           <Image src={`http://localhost:3000/${raffleActive(selectedRaffle)?.ad?.url}`} />
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Tipo:</Text>
@@ -673,17 +712,17 @@ function Operadora() {
                           </Group>
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Fecha de inicio:</Text>
-                            <Text fw={300} fz={16} ta="end">{ moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY') }</Text>
+                            <Text fw={300} fz={16} ta="end">{moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}</Text>
                           </Group>
                           <Group w="100%" mb={10} position='apart'>
                             <Text fw={700} fz={16} ta="start">Fecha de cierre:</Text>
-                            <Text fw={300} fz={16} ta="end">{ raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY') }</Text>
+                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY')}</Text>
                           </Group>
                           {
                             ticketsSelected.length > 0 && (
                               <Card>
                                 <small>
-                                  <Text fw={700} ta="center" style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }} fz={16}>Jugadas:</Text> 
+                                  <Text fw={700} ta="center" style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }} fz={16}>Jugadas:</Text>
                                   <Group pb={10} ml={5} position="center">
                                     {
                                       ticketsSelected.map((ticket) => {
@@ -693,7 +732,7 @@ function Operadora() {
                                       })
                                     }
                                   </Group>
-                                  <Text fw={700} fz={16} ta="center" mt={20} style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }}>Total:</Text>  
+                                  <Text fw={700} fz={16} ta="center" mt={20} style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }}>Total:</Text>
                                   <Text fw={1000} fz={20} mt={5} mb={20} ta="center">{ticketsSelected.length * (raffleActive(selectedRaffle)?.price_unit || 0)}$</Text>
                                 </small>
                                 <Text fw={700} ta="center" mt={-10} style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }} mb={10} fz={16}>
@@ -705,31 +744,31 @@ function Operadora() {
                                   <Text fw={700} fz={16}>BsD</Text>
                                 </Group>
                                 <Group w="100%" mt={-5} mb={10} position="apart">
-                                  <Checkbox 
-                                    size="lg" 
+                                  <Checkbox
+                                    size="lg"
                                     checked={hasPaymentSelected === '$'}
                                     onChange={() => {
                                       setHasPaymentSelected("$")
                                     }}
                                   />
-                                  <Checkbox 
-                                    size="lg" 
+                                  <Checkbox
+                                    size="lg"
                                     checked={hasPaymentSelected === 'COP'}
                                     onChange={() => {
                                       setHasPaymentSelected("COP")
                                     }}
                                   />
-                                  <Checkbox 
-                                    size="lg" 
+                                  <Checkbox
+                                    size="lg"
                                     checked={hasPaymentSelected === 'BsD'}
                                     onChange={() => {
                                       setHasPaymentSelected("BsD")
                                     }}
                                   />
                                 </Group>
-                                <Button 
-                                  fullWidth 
-                                  leftIcon={<IconWallet/>}
+                                <Button
+                                  fullWidth
+                                  leftIcon={<IconWallet />}
                                   disabled={hasPaymentSelected === null}
                                   onClick={() => setBuyIsOpen(true)}
                                 >
