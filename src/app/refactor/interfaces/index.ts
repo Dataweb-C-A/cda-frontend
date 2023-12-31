@@ -2,6 +2,11 @@ export interface IAdnoucement {
   url: string
 }
 
+interface IRaffleCombos { 
+  quantity: number;
+  price: number;
+}
+
 export interface IRaffle {
   id: number;
   ad: null | IAdnoucement;
@@ -24,6 +29,7 @@ export interface IRaffle {
   shared_user_id: number;
   created_at: string;
   updated_at: string;
+  combos: IRaffleCombos[] | null
 }
 
 export interface IPrize {

@@ -16,12 +16,7 @@ interface IStatus {
   is_connected: boolean;
   receiving_data: boolean;
 }
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  handlePageChange: (page: number) => void;
-  loadingPage: boolean;
-}
+
 interface IClient {
   id: number,
   name: string,
@@ -175,6 +170,14 @@ const useStyles = createStyles((theme) => ({
     animation: `${bounce} 3s ease-in-out infinite`,
     cursor: 'pointer'
   },
+  pagActive: {
+    background: theme.colors.blue[6],
+    color: theme.colors.blue[0],
+    '&:hover': {
+      background: theme.colors.blue[6],
+      color: theme.colors.blue[0],
+    },
+  },
   ticketsSold: {
     width: '100%',
     height: '3.7rem',
@@ -228,7 +231,7 @@ function Loading() {
 }
 
 function Operadora() {
-  const numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const paginationNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const [raffles, setRaffles] = useState<IRaffle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
@@ -258,7 +261,7 @@ function Operadora() {
   })
 
   const { classes } = useStyles()
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [selectedPage, setSelectedPage] = useState<number>(1);
 
   const theme = useMantineTheme();
 
@@ -357,6 +360,7 @@ function Operadora() {
   function raffleActive(id: number) {
     return raffles.find((raffle) => raffle.id === id)
   }
+
   const [ticketKey, setTicketKey] = useState<number>(0);
 
   function chooseTicket(ticketNumber: number) {
@@ -547,35 +551,35 @@ function Operadora() {
                   <div style={{ display: 'flex', marginBottom: '15px', width: '100%' }}>
                     <ActionIcon
                       variant="default"
-                      mr={10}
+                      mr={5}
                       py={0}
-                      size={40}
-                    //  onClick={() => handlePageChange(currentPage - 1)}
-                    //  disabled={currentPage === 1}
+                      size={30}
+                      onClick={() => setSelectedPage(selectedPage - 1)}
+                      disabled={selectedPage === 1}
                     >
                       <IconChevronLeft />
                     </ActionIcon>
 
-                    {numeros.map((numero, index) => (
+                    {paginationNumbers.map((pagNumber, index) => (
                       <Button
                         key={index}
-                        mr={10}
+                        mr={5}
                         variant="default"
                         color="gray"
-                        size="xl"
+                        size="md"
                         compact
-                        py={10}
+                        onClick={() => setSelectedPage(pagNumber)}
+                        className={selectedPage === pagNumber ? classes.pagActive : undefined}
                       >
-                        {numero}
+                        {pagNumber - 1}
                       </Button>
                     ))}
                     <ActionIcon
-
                       variant="default"
-                      color="gray"
                       py={0}
-                      size={40}
-
+                      size={30}
+                      onClick={() => setSelectedPage(selectedPage + 1)}
+                      disabled={selectedPage === 10}
                     >
                       <IconChevronRight />
                     </ActionIcon>
@@ -613,54 +617,43 @@ function Operadora() {
                         onClick={() => cleanSelection()}
                       />
                     </Button>
-                    <Text
-                      ml={10}
-                      mt={3}
-                    >
-                      Combos:
-                    </Text>
-                    <Button
-                      size='xs'
-                      ml={10}
-                      color="teal"
-                    >
-                      2 x 15$
-                    </Button>
-                    <Button
-                      size='xs'
-                      ml={10}
-                      color="teal"
-                    >
-                      4 x 20$
-                    </Button>
-                    <Button
-                      size='xs'
-                      ml={10}
-                      color="teal"
-                    >
-                      6 x 30$
-                    </Button>
-                    <Button
-                      size='xs'
-                      ml={10}
-                      color="teal"
-                    >
-                      8 x 40$
-                    </Button>
-                    <Button
-                      size='xs'
-                      ml={10}
-                      color="teal"
-                    >
-                      10 x 50$
-                    </Button>
                     {
-                      JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
+                      raffleActive(selectedRaffle)?.combos === null ? (
+                        JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
+                          <Button
+                            size='xs'
+                            ml={10}
+                          >
+                            Agregar combos
+                          </Button>
+                        )
+                      ) : (
+                        <>
+                          {
+                            (raffleActive(selectedRaffle)?.combos || []).map((combo) => {
+                              return (
+                                <>
+                                  <Button
+                                    size='xs'
+                                    ml={10}
+                                    color="teal"
+                                  >
+                                    {combo.quantity} x {combo.price}$
+                                  </Button>
+                                </>
+                              )
+                            })
+                          }
+                        </>
+                      )
+                    }
+                    {
+                      (raffleActive(selectedRaffle)?.combos || []).length > 0 && JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
                         <Button
                           size='xs'
                           ml={10}
                         >
-                          Agregar combos
+                          Modificar combos
                         </Button>
                       )
                     }
@@ -722,20 +715,20 @@ function Operadora() {
                             ticketsSelected.length > 0 && (
                               <Card>
                                 <small>
-                                  <Text fw={700} ta="center" style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }} fz={16}>Jugadas:</Text>
+                                  <Text fw={700} ta="center" fz={18}>Jugadas:</Text>
                                   <Group pb={10} ml={5} position="center">
                                     {
                                       ticketsSelected.map((ticket) => {
                                         return (
-                                          <Text fz={20} fw={1000} mt={5} mb={-25} mx={-5}>{ticket}</Text>
+                                          <Text fz={16} fw={1000} mt={5} mb={-25} mx={-5}>{ticket}</Text>
                                         )
                                       })
                                     }
                                   </Group>
-                                  <Text fw={700} fz={16} ta="center" mt={20} style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }}>Total:</Text>
-                                  <Text fw={1000} fz={20} mt={5} mb={20} ta="center">{ticketsSelected.length * (raffleActive(selectedRaffle)?.price_unit || 0)}$</Text>
+                                  <Text fw={700} fz={18} ta="center" mt={20}>Total:</Text>
+                                  <Text fw={1000} fz={16} mt={5} mb={20} ta="center">{ticketsSelected.length * (raffleActive(selectedRaffle)?.price_unit || 0)}$</Text>
                                 </small>
-                                <Text fw={700} ta="center" mt={-10} style={{ textDecoration: `1.5px underline wavy ${theme.colors.teal[6]}` }} mb={10} fz={16}>
+                                <Text fw={700} ta="center" mt={-10} mb={10} fz={18}>
                                   Seleccione una moneda
                                 </Text>
                                 <Group w="100%" mt={-5} mb={10} position="apart">
