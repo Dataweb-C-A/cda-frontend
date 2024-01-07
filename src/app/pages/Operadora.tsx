@@ -4,11 +4,11 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, Pagination, NumberInput, useMantineTheme, Checkbox, Modal, TextInput, Select, Stepper, Avatar } from "@mantine/core"
-import { ChevronLeft, QuestionMark, Tex } from "tabler-icons-react"
+import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, NumberInput, useMantineTheme, Checkbox, Modal, Select, Stepper, Avatar, TextInput } from "@mantine/core"
+import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconFlag } from "@tabler/icons-react"
+import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
 import USAFlag from "../assets/images/usa_flag.jpg"
@@ -259,7 +259,7 @@ function Operadora() {
 
   const [raffles, setRaffles] = useState<IRaffle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
@@ -281,6 +281,9 @@ function Operadora() {
   })
   const [countrySelected, setCountrySelected] = useState<string | null>(null)
   const [activeStep, setActiveStep] = useState<number>(0)
+  const [prefix, setPrefix] = useState<string | null>(null)
+  const [phone, setPhone] = useState<string>('')
+  const [countryPrefix, setCountryPrefix] = useState<string | null>(null)
 
   const { classes } = useStyles()
 
@@ -404,6 +407,8 @@ function Operadora() {
     })
   }
 
+  const phoneRegex = new RegExp(/^\+\d{1,4}\s\(\d{3}\)\s\d{3}-\d{4}$/)
+
   function parseTickets(position: number) {
     let parsedPosition: string;
 
@@ -515,6 +520,7 @@ function Operadora() {
                 mt={40}
                 onClick={() => {
                   countrySelected === 'Venezuela' ? setCountrySelected(null) : setCountrySelected('Venezuela')
+                  countrySelected === 'Venezuela' ? setCountryPrefix(null) : setCountryPrefix("+58")
                 }}
               />
               <Avatar
@@ -525,6 +531,7 @@ function Operadora() {
                 mt={40}
                 onClick={() => {
                   countrySelected === 'USA' ? setCountrySelected(null) : setCountrySelected('USA')
+                  countrySelected === 'USA' ? setCountryPrefix(null) : setCountryPrefix("+1")
                 }}
               />
               <Avatar
@@ -535,6 +542,7 @@ function Operadora() {
                 mt={40}
                 onClick={() => {
                   countrySelected === 'Colombia' ? setCountrySelected(null) : setCountrySelected('Colombia')
+                  countrySelected === 'Colombia' ? setCountryPrefix(null) : setCountryPrefix("+57")
                 }}
               />
             </Group>
@@ -571,26 +579,33 @@ function Operadora() {
                 Ingrese su número telefónico
               </Text>
               <Group
-                spacing={0}
+                spacing={5}
+                position="center"
                 w="100%"
               >
                 <Select
                   w={80}
                   label={<Text>Prefijo</Text>}
                   data={countrySelected === 'Venezuela' ? [
-                    { value: '414', label: '414' },
-                    { value: '412', label: '412' },
-                    { value: '424', label: '424' },
-                    { value: '416', label: '416' },
+                    { value: '(412)', label: '0412' },
+                    { value: '(414)', label: '0414' },
+                    { value: '(424)', label: '0424' },
+                    { value: '(416)', label: '0416' },
+                    { value: '(426)', label: '0426' }
                   ] : countrySelected === 'USA' ? USANumbers : ColombiaNumbers}
                   placeholder={
-                    countrySelected === 'Venezuela' ? '412'
+                    countrySelected === 'Venezuela' ? '0412'
                       : countrySelected === 'USA' ? '812' 
                         : '314'
                   }
                   searchable
                   nothingFound={<QuestionMark />}
-                  onChange={(value) => console.log(value)}
+                  onChange={(value) => setPrefix(value)}
+                />
+                <TextInput
+                  label={<Text>Número telefónico</Text>}
+                  placeholder="111-1111"
+                  onChange={(event) => setPhone(event.currentTarget.value)}
                 />
               </Group>
               <Button
@@ -599,13 +614,17 @@ function Operadora() {
                 Atrás
               </Button>
               <Button
-                disabled
+                disabled={!phoneRegex.test(`${countryPrefix} (${prefix}) ${phone}`)}
                 onClick={() => setActiveStep(activeStep + 1)}
               >
                 Siguiente
               </Button>
             </Group>
           </Stepper.Step>
+          <Stepper.Step
+            label="Verificación"
+            description="Confirmación y verificación"
+          ></Stepper.Step>
         </Stepper>
       </Modal>
     )
