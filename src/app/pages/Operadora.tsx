@@ -259,7 +259,7 @@ function Operadora() {
 
   const [raffles, setRaffles] = useState<IRaffle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
@@ -575,26 +575,8 @@ function Operadora() {
                 w="100%"
               >
                 <Select
-                  data={[
-                    { value: '+58', label: '+58' },
-                    { value: '+1', label: '+1' },
-                    { value: '+57', label: '+57' },
-                  ]}
-                  placeholder="0412"
-                  style={{ display: "none" }}
-                  w={280}
-                  value={
-                    countrySelected === 'Venezuela' ? '+58' :
-                      countrySelected === 'USA' ? '+1' :
-                        countrySelected === 'Colombia' ? '+57' :
-                          ''
-                  }
-                  searchable
-                  nothingFound="No existe"
-                />
-
-                <Select
                   w={80}
+                  label={<Text>Prefijo</Text>}
                   data={countrySelected === 'Venezuela' ? [
                     { value: '414', label: '414' },
                     { value: '412', label: '412' },
@@ -610,8 +592,6 @@ function Operadora() {
                   nothingFound={<QuestionMark />}
                   onChange={(value) => console.log(value)}
                 />
-
-
               </Group>
               <Button
                 onClick={() => setActiveStep(activeStep - 1)}
