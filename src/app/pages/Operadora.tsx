@@ -194,14 +194,14 @@ const useStyles = createStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.colors.blue[9],
       transition: '0.6s',
-      boxShadow: `0 0 0 10px ${theme.colors.blue[9]}, 0 0 0 10px ${theme.colors.blue[9]}`,
+      boxShadow: "0px 0px 93px 0px rgba(46,255,245,0.63)",
       cursor: 'pointer',
     },
   },
   avatarFlagSelected: {
     backgroundColor: theme.colors.blue[9],
     transition: '0.6s',
-    boxShadow: `0 0 0 10px ${theme.colors.blue[9]}, 0 0 0 10px ${theme.colors.blue[9]}`,
+    boxShadow: "0px 0px 93px 0px rgba(46,255,245,0.63)",
     cursor: 'pointer'
   }
 }));
