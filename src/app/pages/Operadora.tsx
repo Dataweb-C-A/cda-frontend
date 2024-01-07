@@ -5,7 +5,7 @@ import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
 import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, Pagination, NumberInput, useMantineTheme, Checkbox, Modal, TextInput, Select, Stepper, Avatar } from "@mantine/core"
-import { ChevronLeft, Tex } from "tabler-icons-react"
+import { ChevronLeft, QuestionMark, Tex } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
 import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconFlag } from "@tabler/icons-react"
@@ -13,6 +13,8 @@ import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
 import USAFlag from "../assets/images/usa_flag.jpg"
 import ColombiaFlag from "../assets/images/colombia_flag.jpg"
+import USANumbers from "../assets/data/usaNumbers.json"
+import ColombiaNumbers from "../assets/data/colombiaNumbers.json"
 
 interface IStatus {
   is_connected: boolean;
@@ -580,29 +582,15 @@ function Operadora() {
                   ]}
                   placeholder="0412"
                   style={{ display: "none" }}
-                  w={80}
+                  w={280}
                   value={
                     countrySelected === 'Venezuela' ? '+58' :
                       countrySelected === 'USA' ? '+1' :
                         countrySelected === 'Colombia' ? '+57' :
                           ''
                   }
-                  onChange={(value) => {
-                    switch (value) {
-                      case '+58':
-                        setCountrySelected('Venezuela');
-                        break;
-                      case '+1':
-                        setCountrySelected('USA');
-                        break;
-                      case '+57':
-                        setCountrySelected('Colombia');
-                        break;
-                      default:
-                        setCountrySelected(null);
-                        break;
-                    }
-                  }}
+                  searchable
+                  nothingFound="No existe"
                 />
 
                 <Select
@@ -612,213 +600,14 @@ function Operadora() {
                     { value: '412', label: '412' },
                     { value: '424', label: '424' },
                     { value: '416', label: '416' },
-                  ] : countrySelected === 'USA' ? [
-                    { "value": "205", "label": "205" },
-                    { "value": "208", "label": "208" },
-                    { "value": "209", "label": "209" },
-                    { "value": "212", "label": "212" },
-                    { "value": "213", "label": "213" },
-                    { "value": "214", "label": "214" },
-                    { "value": "215", "label": "215" },
-                    { "value": "216", "label": "216" },
-                    { "value": "217", "label": "217" },
-                    { "value": "218", "label": "218" },
-                    { "value": "219", "label": "219" },
-                    { "value": "224", "label": "224" },
-                    { "value": "225", "label": "225" },
-                    { "value": "228", "label": "228" },
-                    { "value": "231", "label": "231" },
-                    { "value": "234", "label": "234" },
-                    { "value": "239", "label": "239" },
-                    { "value": "240", "label": "240" },
-                    { "value": "248", "label": "248" },
-                    { "value": "251", "label": "251" },
-                    { "value": "252", "label": "252" },
-                    { "value": "253", "label": "253" },
-                    { "value": "254", "label": "254" },
-                    { "value": "256", "label": "256" },
-                    { "value": "267", "label": "267" },
-                    { "value": "269", "label": "269" },
-                    { "value": "270", "label": "270" },
-                    { "value": "272", "label": "272" },
-                    { "value": "276", "label": "276" },
-                    { "value": "281", "label": "281" },
-                    { "value": "302", "label": "302" },
-                    { "value": "303", "label": "303" },
-                    { "value": "304", "label": "304" },
-                    { "value": "305", "label": "305" },
-                    { "value": "306", "label": "306" },
-                    { "value": "307", "label": "307" },
-                    { "value": "308", "label": "308" },
-                    { "value": "309", "label": "309" },
-                    { "value": "310", "label": "310" },
-                    { "value": "312", "label": "312" },
-                    { "value": "313", "label": "313" },
-                    { "value": "314", "label": "314" },
-                    { "value": "316", "label": "316" },
-                    { "value": "319", "label": "319" },
-                    { "value": "320", "label": "320" },
-                    { "value": "321", "label": "321" },
-                    { "value": "323", "label": "323" },
-                    { "value": "325", "label": "325" },
-                    { "value": "334", "label": "334" },
-                    { "value": "336", "label": "336" },
-                    { "value": "337", "label": "337" },
-                    { "value": "339", "label": "339" },
-                    { "value": "347", "label": "347" },
-                    { "value": "351", "label": "351" },
-                    { "value": "352", "label": "352" },
-                    { "value": "360", "label": "360" },
-                    { "value": "361", "label": "361" },
-                    { "value": "402", "label": "402" },
-                    { "value": "403", "label": "403" },
-                    { "value": "404", "label": "404" },
-                    { "value": "405", "label": "405" },
-                    { "value": "406", "label": "406" },
-                    { "value": "407", "label": "407" },
-                    { "value": "408", "label": "408" },
-                    { "value": "409", "label": "409" },
-                    { "value": "410", "label": "410" },
-                    { "value": "412", "label": "412" },
-                    { "value": "413", "label": "413" },
-                    { "value": "414", "label": "414" },
-                    { "value": "415", "label": "415" },
-                    { "value": "417", "label": "417" },
-                    { "value": "419", "label": "419" },
-                    { "value": "424", "label": "424" },
-                    { "value": "425", "label": "425" },
-                    { "value": "430", "label": "430" },
-                    { "value": "432", "label": "432" },
-                    { "value": "434", "label": "434" },
-                    { "value": "435", "label": "435" },
-                    { "value": "440", "label": "440" },
-                    { "value": "442", "label": "442" },
-                    { "value": "443", "label": "443" },
-                    { "value": "458", "label": "458" },
-                    { "value": "469", "label": "469" },
-                    { "value": "470", "label": "470" },
-                    { "value": "478", "label": "478" },
-                    { "value": "479", "label": "479" },
-                    { "value": "480", "label": "480" },
-                    { "value": "484", "label": "484" },
-                    { "value": "501", "label": "501" },
-                    { "value": "502", "label": "502" },
-                    { "value": "503", "label": "503" },
-                    { "value": "504", "label": "504" },
-                    { "value": "505", "label": "505" },
-                    { "value": "506", "label": "506" },
-                    { "value": "507", "label": "507" },
-                    { "value": "508", "label": "508" },
-                    { "value": "509", "label": "509" },
-                    { "value": "510", "label": "510" },
-                    { "value": "512", "label": "512" },
-                    { "value": "513", "label": "513" },
-                    { "value": "514", "label": "514" },
-                    { "value": "515", "label": "515" },
-                    { "value": "516", "label": "516" },
-                    { "value": "517", "label": "517" },
-                    { "value": "518", "label": "518" },
-                    { "value": "520", "label": "520" },
-                    { "value": "530", "label": "530" },
-                    { "value": "531", "label": "531" },
-                    { "value": "534", "label": "534" },
-                    { "value": "539", "label": "539" },
-                    { "value": "541", "label": "541" },
-                    { "value": "551", "label": "551" },
-                    { "value": "559", "label": "559" },
-                    { "value": "562", "label": "562" },
-                    { "value": "563", "label": "563" },
-                    { "value": "571", "label": "571" },
-                    { "value": "573", "label": "573" },
-                    { "value": "574", "label": "574" },
-                    { "value": "575", "label": "575" },
-                    { "value": "586", "label": "586" },
-                    { "value": "601", "label": "601" },
-                    { "value": "602", "label": "602" },
-                    { "value": "603", "label": "603" },
-                    { "value": "605", "label": "605" },
-                    { "value": "606", "label": "606" },
-                    { "value": "607", "label": "607" },
-                    { "value": "608", "label": "608" },
-                    { "value": "609", "label": "609" },
-                    { "value": "610", "label": "610" },
-                    { "value": "612", "label": "612" },
-                    { "value": "614", "label": "614" },
-                    { "value": "615", "label": "615" },
-                    { "value": "616", "label": "616" },
-                    { "value": "617", "label": "617" },
-                    { "value": "618", "label": "618" },
-                    { "value": "619", "label": "619" },
-                    { "value": "620", "label": "620" },
-                    { "value": "623", "label": "623" },
-                    { "value": "626", "label": "626" },
-                    { "value": "631", "label": "631" },
-                    { "value": "636", "label": "636" },
-                    { "value": "641", "label": "641" },
-                    { "value": "646", "label": "646" },
-                    { "value": "650", "label": "650" },
-                    { "value": "651", "label": "651" },
-                    { "value": "657", "label": "657" },
-                    { "value": "660", "label": "660" },
-                    { "value": "661", "label": "661" },
-                    { "value": "662", "label": "662" },
-                    { "value": "667", "label": "667" },
-                    { "value": "669", "label": "669" },
-                    { "value": "671", "label": "671" },
-                    { "value": "684", "label": "684" },
-                    { "value": "701", "label": "701" },
-                    { "value": "702", "label": "702" },
-                    { "value": "703", "label": "703" },
-                    { "value": "704", "label": "704" },
-                    { "value": "706", "label": "706" },
-                    { "value": "707", "label": "707" },
-                    { "value": "708", "label": "708" },
-                    { "value": "712", "label": "712" },
-                    { "value": "713", "label": "713" },
-                    { "value": "714", "label": "714" },
-                    { "value": "715", "label": "715" },
-                    { "value": "716", "label": "716" },
-                    { "value": "717", "label": "717" },
-                    { "value": "718", "label": "718" },
-                    { "value": "724", "label": "724" },
-                    { "value": "727", "label": "727" },
-                    { "value": "731", "label": "731" },
-                    { "value": "732", "label": "732" },
-                    { "value": "734", "label": "734" },
-                    { "value": "737", "label": "737" },
-                    { "value": "754", "label": "754" },
-                    { "value": "757", "label": "757" },
-                    { "value": "760", "label": "760" },
-                    { "value": "762", "label": "762" },
-                    { "value": "763", "label": "763" },
-                    { "value": "765", "label": "765" },
-                    { "value": "769", "label": "769" },
-                    { "value": "770", "label": "770" },
-                    { "value": "772", "label": "772" },
-                    { "value": "773", "label": "773" },
-                    { "value": "774", "label": "774" },
-                    { "value": "775", "label": "775" },
-                    { "value": "786", "label": "786" },
-                    { "value": "787", "label": "787" },
-                    { "value": "801", "label": "801" },
-                    { "value": "802", "label": "802" },
-                    { "value": "803", "label": "803" },
-                    { "value": "804", "label": "804" },
-                    { "value": "805", "label": "805" },
-                    { "value": "806", "label": "806" },
-                    { "value": "808", "label": "808" },
-                    { "value": "809", "label": "809" },
-                    { "value": "810", "label": "810" },
-                    { "value": "812", "label": "812" },
-                    { "value": "813", "label": "813" },
-                    { "value": "814", "label": "814" },
-                    { "value": "815", "label": "815" },
-                    { "value": "816", "label": "816" },
-                    { "value": "817", "label": "817" },
-                  ] : countrySelected === 'Colombia' ? [
-                    { value: '+00', label: '+00' },
-                  ] : []}
-                  placeholder="414"
+                  ] : countrySelected === 'USA' ? USANumbers : ColombiaNumbers}
+                  placeholder={
+                    countrySelected === 'Venezuela' ? '412'
+                      : countrySelected === 'USA' ? '812' 
+                        : '314'
+                  }
+                  searchable
+                  nothingFound={<QuestionMark />}
                   onChange={(value) => console.log(value)}
                 />
 
