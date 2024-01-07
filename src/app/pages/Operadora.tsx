@@ -4,13 +4,15 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, Pagination, NumberInput, useMantineTheme, Checkbox, Modal, TextInput } from "@mantine/core"
-import { ChevronLeft } from "tabler-icons-react"
+import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, Pagination, NumberInput, useMantineTheme, Checkbox, Modal, TextInput, Select, Stepper, Avatar } from "@mantine/core"
+import { ChevronLeft, Tex } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
-import ticketsMock from '../assets/data/tickets.json'
+import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconFlag } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
+import VenezuelaFlag from "../assets/images/venezuela_flag.png"
+import USAFlag from "../assets/images/usa_flag.jpg"
+import ColombiaFlag from "../assets/images/colombia_flag.jpg"
 
 interface IStatus {
   is_connected: boolean;
@@ -29,7 +31,6 @@ interface ITicket {
   position: number,
   is_sold: boolean,
   sold_to: IClient | {}
-  serial: string
 }
 
 interface ITicketModal {
@@ -38,12 +39,6 @@ interface ITicketModal {
 }
 
 interface ITicketsResponse {
-  metadata: {
-    page: number,
-    items: number,
-    count: number,
-    pages: number
-  },
   tickets: ITicket[]
 }
 
@@ -192,6 +187,20 @@ const useStyles = createStyles((theme) => ({
       backgroundColor: theme.colors.blue[9],
       cursor: 'pointer'
     },
+  },
+  avatarFlags: {
+    '&:hover': {
+      backgroundColor: theme.colors.blue[9],
+      transition: '0.6s',
+      boxShadow: `0 0 0 10px ${theme.colors.blue[9]}, 0 0 0 10px ${theme.colors.blue[9]}`,
+      cursor: 'pointer',
+    },
+  },
+  avatarFlagSelected: {
+    backgroundColor: theme.colors.blue[9],
+    transition: '0.6s',
+    boxShadow: `0 0 0 10px ${theme.colors.blue[9]}, 0 0 0 10px ${theme.colors.blue[9]}`,
+    cursor: 'pointer'
   }
 }));
 
@@ -230,6 +239,19 @@ function Loading() {
   )
 }
 
+function ticketsConstructor(tickets_count: number) {
+  const tickets = [];
+  for (let i = 1; i <= tickets_count; i++) {
+    tickets.push({
+      position: i,
+      is_sold: false,
+      sold_to: {}
+    })
+  }
+  return tickets;
+
+}
+
 function Operadora() {
   const paginationNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -250,18 +272,15 @@ function Operadora() {
     receiving_data: false
   })
   const [users, setUsers] = useState([]);
+  const [ticketKey, setTicketKey] = useState<number>(0);
+  const [selectedPage, setSelectedPage] = useState<number>(1);
   const [tickets, setTickets] = useState<ITicketsResponse>({
-    metadata: {
-      page: 0,
-      items: 0,
-      count: 0,
-      pages: 0
-    },
-    tickets: ticketsMock
+    tickets: ticketsConstructor(100)
   })
+  const [countrySelected, setCountrySelected] = useState<string | null>(null)
+  const [activeStep, setActiveStep] = useState<number>(0)
 
   const { classes } = useStyles()
-  const [selectedPage, setSelectedPage] = useState<number>(1);
 
   const theme = useMantineTheme();
 
@@ -284,7 +303,9 @@ function Operadora() {
           })
           setBuyIsOpen(false)
           setSearchValue(0)
+          setActiveStep(0)
           setHasPaymentSelected(null)
+          setCountrySelected(null)
           setIsOpenInvalidModal({
             isOpen: false,
             mode: 'valid'
@@ -322,46 +343,41 @@ function Operadora() {
 
     console.log('useEffect are going effect')
 
-    if (selectedRaffle !== null) {
-      cable.subscriptions.create('X100::TicketsChannel', {
-        connected() {
-          console.log('Connected to ActionCable');
-          setRafflesCableStatus({
-            is_connected: true,
-            receiving_data: false
-          })
-        },
+    cable.subscriptions.create('X100::TicketsChannel', {
+      connected() {
+        console.log('Connected to ActionCable');
+        setRafflesCableStatus({
+          is_connected: true,
+          receiving_data: false
+        })
+      },
 
-        disconnected() {
-          console.log('Disconnected from ActionCable');
-          setRafflesCableStatus({
-            is_connected: false,
-            receiving_data: false
-          })
-          setHasPaymentSelected(null)
-          setSelectedRaffle(null)
-          setRaffles([])
-        },
+      disconnected() {
+        console.log('Disconnected from ActionCable');
+        setRafflesCableStatus({
+          is_connected: false,
+          receiving_data: false
+        })
+        setHasPaymentSelected(null)
+        setSelectedRaffle(null)
+        setRaffles([])
+      },
 
-        received(data: any) {
-          console.log('Received data from ActionCable:', data);
-          setTickets(data)
-          setRafflesCableStatus({
-            is_connected: true,
-            receiving_data: true
-          })
-          setLoading(false)
-        },
-      })
-    }
-
-  }, [selectedRaffle])
+      received(data: any) {
+        console.log('Received data from ActionCable:', data);
+        setTickets(data)
+        setRafflesCableStatus({
+          is_connected: true,
+          receiving_data: true
+        })
+        setLoading(false)
+      },
+    })
+  }, [])
 
   function raffleActive(id: number) {
     return raffles.find((raffle) => raffle.id === id)
   }
-
-  const [ticketKey, setTicketKey] = useState<number>(0);
 
   function chooseTicket(ticketNumber: number) {
     if (ticketsSelected.includes(ticketNumber)) {
@@ -384,6 +400,27 @@ function Operadora() {
       isOpen: state,
       mode: mode
     })
+  }
+
+  function parseTickets(position: number) {
+    let parsedPosition: string;
+  
+    switch (true) {
+      case position <= 9:
+        parsedPosition = `00${position}`;
+        break;
+      case position <= 99:
+        parsedPosition = `0${position}`;
+        break;
+      case position === 1000:
+        parsedPosition = '000';
+        break;
+      default:
+        parsedPosition = position.toString();
+        break;
+    }
+  
+    return parsedPosition;
   }
 
   function apartTickets(ticket_nro: number) {
@@ -447,6 +484,8 @@ function Operadora() {
 
     const handleClose = () => {
       setBuyIsOpen(false)
+      setCountrySelected(null)
+      setActiveStep(0)
     }
 
     return (
@@ -457,34 +496,108 @@ function Operadora() {
         title="Comprar tickets"
         size="xl"
       >
-        <Group spacing={5} w="100%" mb={10}>
-          <TextInput
-            w="49.5%"
-            placeholder="Nombre"
-            label="Nombre de cliente"
-            withAsterisk
-          />
-          <TextInput
-            w="49.5%"
-            placeholder="Apellido"
-            label="Apellido de cliente"
-            withAsterisk
-          />
-        </Group>
-        <Group spacing={5} w="100%">
-          <TextInput
-            w="49.5%"
-            placeholder="Cedula"
-            label="Cedula"
-            withAsterisk
-          />
-          <TextInput
-            w="49.5%"
-            placeholder="Telefono"
-            label="Telefono"
-            withAsterisk
-          />
-        </Group>
+        <Stepper active={activeStep}>
+          <Stepper.Step
+            label="Selecciona un país"
+            description="Selecciona tu país de residencia"
+          >
+            <Text ta="center" fw={750} fz={16}>
+              Seleccione su país de residencia para poder continuar con su pago
+            </Text>
+            <Group position="center">
+              <Avatar 
+                src={VenezuelaFlag} 
+                className={countrySelected === 'Venezuela' ? classes.avatarFlagSelected : classes.avatarFlags} 
+                size={150} 
+                radius={100} 
+                mt={40} 
+                onClick={() => {
+                  countrySelected === 'Venezuela' ? setCountrySelected(null) : setCountrySelected('Venezuela')
+                }}
+              />
+              <Avatar 
+                src={USAFlag} 
+                className={countrySelected === 'USA' ? classes.avatarFlagSelected : classes.avatarFlags} 
+                size={150} 
+                radius={100} 
+                mt={40} 
+                onClick={() => {
+                  countrySelected === 'USA' ? setCountrySelected(null) : setCountrySelected('USA')
+                }}
+              />
+              <Avatar 
+                src={ColombiaFlag} 
+                className={countrySelected === 'Colombia' ? classes.avatarFlagSelected : classes.avatarFlags} 
+                size={150} 
+                radius={100} 
+                mt={40} 
+                onClick={() => {
+                  countrySelected === 'Colombia' ? setCountrySelected(null) : setCountrySelected('Colombia')
+                }}
+              />
+            </Group>
+            <Group position="apart" px={170} mt={10}>
+              <Text ta='center' fw={400} fz={16}>Venezuela</Text>
+              <Text ta='center' fw={400} fz={16}>Estados Unidos</Text>
+              <Text ta='center' fw={400} fz={16}>Colombia</Text>
+            </Group>
+            <Group position="center" mt={40}>
+              <Button 
+                disabled
+                onClick={() => setActiveStep(activeStep - 1)}
+              >
+                Atrás
+              </Button>
+              <Button 
+                disabled={countrySelected === null}
+                onClick={() => setActiveStep(activeStep + 1)}
+              >
+                Siguiente
+              </Button>
+            </Group>
+          </Stepper.Step>
+          <Stepper.Step
+            label="Introduzca los sus datos"
+            description="Debe ingresar sus datos para realizar el pago"
+          >
+            <Group 
+              position="center" 
+              mt={40}
+              px={170}
+            >
+              <Text ta="center" fw={750}>
+                Ingrese su número telefónico
+              </Text>
+              <Group
+                spacing={0}
+                w="100%"
+              >
+                <Select
+                  data={[
+                    { value: '0412', label: '0412' },
+                    { value: '0414', label: '0414' },
+                    { value: '0416', label: '0416' },
+                    { value: '0424', label: '0424' },
+                    { value: '0426', label: '0426' }
+                  ]}
+                  placeholder="0412"
+                  w={80}
+                />
+              </Group>
+              <Button 
+                onClick={() => setActiveStep(activeStep - 1)}
+              >
+                Atrás
+              </Button>
+              <Button 
+                disabled
+                onClick={() => setActiveStep(activeStep + 1)}
+              >
+                Siguiente
+              </Button>
+            </Group>
+          </Stepper.Step>
+        </Stepper>
       </Modal>
     )
   }
@@ -522,6 +635,7 @@ function Operadora() {
                           setTicketsSelected([])
                           setHasPaymentSelected(null)
                           console.log(raffle)
+                          setTickets({ tickets: ticketsConstructor(raffle.tickets_count)})
                         }}
                       />
                     ))
@@ -664,7 +778,7 @@ function Operadora() {
                       <div className={classes.ticketsList}>
                         {
                           /* Dancers */
-                          tickets.tickets.map((ticket) => {
+                          tickets.tickets.slice((selectedPage - 1) * 100, selectedPage * 100).map((ticket: ITicket) => {
                             return (
                               <div className={classes.ticketsSellContainer}>
                                 {
@@ -681,7 +795,7 @@ function Operadora() {
                                       className={ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : classes.tickets}
                                       onClick={() => chooseTicket(ticket.position)}
                                     >
-                                      <Text ta='center'>{ticket.position}</Text>
+                                      <Text ta='center'>{parseTickets(ticket.position)}</Text>
                                     </Card>
                                   )
                                 }
@@ -718,9 +832,9 @@ function Operadora() {
                                   <Text fw={700} ta="center" fz={18}>Jugadas:</Text>
                                   <Group pb={10} ml={5} position="center">
                                     {
-                                      ticketsSelected.map((ticket) => {
+                                      ticketsSelected.map((ticket: number) => {
                                         return (
-                                          <Text fz={16} fw={1000} mt={5} mb={-25} mx={-5}>{ticket}</Text>
+                                          <Text fz={16} fw={1000} mt={5} mb={-25} mx={-5}>{parseTickets(ticket)}</Text>
                                         )
                                       })
                                     }
