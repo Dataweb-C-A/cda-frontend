@@ -268,8 +268,9 @@ function Operadora() {
 
     validate: {
       email: (value) => (/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.test(value) ? null : 'Email invalido'),
-      dni: (value) => ( countrySelected === 'Venezuela' ? (/\A[VEJG]-\d{1,8}\z/.test(value)) ? null : 'Cédula invalida' : null ),
+      dni: (value) => (countrySelected === 'Venezuela' ? (/\A[VEJG]-\d{1,8}\z/.test(value)) ? null : 'Cédula invalida' : null),
       name: (value) => (value.length < 8 ? 'Nombre invalido' : null),
+      prefix: (value) => (value.length < 8 ? 'Nombre invalido' : null),
     }
   })
 
@@ -377,7 +378,7 @@ function Operadora() {
       >
         <Text>No hay rifas activas.</Text>
         <Group position="center" mt={10}>
-          <IconMoodSadDizzy stroke={1} size={35}/>
+          <IconMoodSadDizzy stroke={1} size={35} />
           <Button
             fullWidth
             leftIcon={<IconReload />}
@@ -392,7 +393,7 @@ function Operadora() {
       </div>
     )
   }
-  
+
   function Loading() {
     return (
       <>
@@ -541,6 +542,24 @@ function Operadora() {
         setActiveStep(activeStep + 1)
       })
     }
+    const [selectValue, setSelectValue] = useState<string | null>(null);
+    const [textInputValue, setTextInputValue] = useState<string>('');
+
+
+    function handleTextInputChange(value: string) {
+      const numericValue = value.replace(/\D/g, '');
+    
+      let formattedValue = numericValue;
+      if (numericValue.length > 3) {
+        formattedValue = numericValue.slice(0, 3) + '-' + numericValue.slice(3);
+      }
+      setTextInputValue(formattedValue);
+    }
+    
+    function handleSelectChange(value: string | null) {
+      setSelectValue(value);
+    }
+    
 
     return (
       <Modal
@@ -617,60 +636,59 @@ function Operadora() {
             label="Introduzca los sus datos"
             description="Debe ingresar sus datos para realizar el pago"
           >
-            <Group
-              position="center"
-              mt={10}
-              px={170}
-            >
-              <Text ta="center" fw={750}>
-                Ingrese su número telefónico
-              </Text>
-              <Group
-                spacing={5}
-                position="center"
-                w="100%"
-              >
-                <Select
-                  w={80}
-                  label={<Text>Prefijo</Text>}
-                  data={countrySelected === 'Venezuela' ? [
-                    { value: '(412)', label: '0412' },
-                    { value: '(414)', label: '0414' },
-                    { value: '(424)', label: '0424' },
-                    { value: '(416)', label: '0416' },
-                    { value: '(426)', label: '0426' }
-                  ] : countrySelected === 'USA' ? USANumbers : ColombiaNumbers}
-                  placeholder={
-                    countrySelected === 'Venezuela' ? '0412'
-                      : countrySelected === 'USA' ? '812' 
-                        : '314'
-                  }
-                  searchable
-                  nothingFound={<QuestionMark />}
-                  error={form.errors.prefix}
-                  mb={15}
-                  {...form.getInputProps("prefix")}
-                />
-                <TextInput
-                  label={<Text>Número telefónico</Text>}
-                  placeholder="111-1111"
-                  mb={15}
-                  error={form.errors.phone}
-                  {...form.getInputProps("phone")}
-                />
+            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+              <Group position="center" mt={10} px={170}>
+                <Text ta="center" fw={750}>
+                  Ingrese su número telefónico
+                </Text>
+                <Group spacing={5} position="center" w="100%">
+                  <Select
+                    w={80}
+                    label={<Text>Prefijo</Text>}
+                    data={countrySelected === 'Venezuela' ? [
+                      { value: '(412)', label: '0412' },
+                      { value: '(414)', label: '0414' },
+                      { value: '(424)', label: '0424' },
+                      { value: '(416)', label: '0416' },
+                      { value: '(426)', label: '0426' }
+                    ] : countrySelected === 'USA' ? USANumbers : ColombiaNumbers}
+                    placeholder={
+                      countrySelected === 'Venezuela' ? '0412'
+                        : countrySelected === 'USA' ? '812'
+                          : '314'
+                    }
+                    searchable
+                    nothingFound={<QuestionMark />}
+                    onChange={(value) => handleSelectChange(value)}
+                    value={selectValue}
+                    error={form.errors.prefix}
+                    mb={15}
+                  />
+                  <TextInput
+                    label={<Text>Número telefónico</Text>}
+                    placeholder="111-1111"
+                    mb={15}
+                    maxLength={8}
+                    onChange={(event) => {
+                      handleTextInputChange(event.currentTarget.value)
+                      console.log(`${countryPrefix} ${selectValue} ${textInputValue}`)
+                    }}
+                    value={textInputValue}
+                  />
+                </Group>
+                <Button
+                  onClick={() => setActiveStep(activeStep - 1)}
+                >
+                  Atrás
+                </Button>
+                <Button
+                  disabled={!phoneRegex.test(`${countryPrefix} ${selectValue} ${textInputValue}`)}
+                  onClick={(e) => secondNextStep(e.preventDefault())}
+                >
+                  Siguiente
+                </Button>
               </Group>
-              <Button
-                onClick={() => setActiveStep(activeStep - 1)}
-              >
-                Atrás
-              </Button>
-              <Button
-                disabled={!phoneRegex.test(`${countryPrefix} (${prefix}) ${phone}`)}
-                onClick={(e) => secondNextStep(e.preventDefault())}
-              >
-                Siguiente
-              </Button>
-            </Group>
+            </form>
           </Stepper.Step>
           <Stepper.Step
             label="Verificación"
