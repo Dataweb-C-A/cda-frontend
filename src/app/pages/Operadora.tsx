@@ -4,7 +4,7 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, NumberInput, useMantineTheme, Checkbox, Modal, Select, Stepper, Avatar, TextInput } from "@mantine/core"
+import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, NumberInput, useMantineTheme, Checkbox, Modal, Select, Stepper, Avatar, TextInput, Title, Divider } from "@mantine/core"
 import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
@@ -16,6 +16,7 @@ import ColombiaFlag from "../assets/images/colombia_flag.jpg"
 import USANumbers from "../assets/data/usaNumbers.json"
 import ColombiaNumbers from "../assets/data/colombiaNumbers.json"
 import { useForm } from "@mantine/form"
+import RifamaxLogo from '../assets/images/rifamax-logo.png'
 
 interface IStatus {
   is_connected: boolean;
@@ -204,7 +205,7 @@ const useStyles = createStyles((theme) => ({
     transition: '0.6s',
     boxShadow: "0px 0px 24px 17px rgba(46,255,245,0.36)",
     cursor: 'pointer'
-  }
+  },
 }));
 
 function ticketsConstructor(tickets_count: number) {
@@ -224,7 +225,7 @@ function Operadora() {
 
   const [raffles, setRaffles] = useState<IRaffle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
@@ -531,9 +532,9 @@ function Operadora() {
 
     const secondNextStep = (preventDefault: void) => {
       preventDefault
-      axios.get("http://localhost:3000/x100/client", {
+      axios.get("http://localhost:3000/x100/clients", {
         params: {
-          phone: `${countryPrefix} ${form.values.prefix} ${form.values.phone}`
+          phone: `${countryPrefix} ${selectValue} ${textInputValue}`
         }
       }).then((res) => {
         setClient(res.data)
@@ -693,7 +694,77 @@ function Operadora() {
           <Stepper.Step
             label="Verificación"
             description="Confirmación y verificación"
-          ></Stepper.Step>
+          >
+            <Group
+              position="center"
+              mt={20}
+            >
+              <Card
+                bg='white'
+                w="48.5%"
+                radius="sm"
+                className="receipt-cutoff"
+              >
+                <img src={RifamaxLogo}
+                  style={{ position: 'absolute', opacity: 0.06, top: -10, left: -35}}
+                />
+                <Title order={3} fw={600} c='black' ta="center">{client?.name}</Title>
+                <Title order={4} fw={300} c='black' ta="center">{client?.phone}</Title>
+                <Title order={4} fw={300} c='black' ta="center">{client?.dni}</Title>
+                <Divider my={10} variant="dashed"/>
+                <Group position="apart">
+                  <Title order={6} fw={600} c='black'>
+                    Productos
+                  </Title>
+                  <Title order={6} fw={600} c='black'>
+                    Cantidad
+                  </Title>
+                  <Title order={6} fw={600} c='black'>
+                    Precio
+                  </Title>
+                  <Title order={6} fw={600} c='black'>
+                    Descuento
+                  </Title>
+                </Group>
+                <ScrollArea h={100} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden'}} >
+                  {
+                    ticketsSelected.map((ticket) => {
+                      return(
+                        <Group position="apart">
+                          <Title order={6} ml={20} fw={300} c='black'>
+                            {ticket}
+                          </Title>
+                          <Title order={6} fw={300} c='black'>
+                            1.00
+                          </Title>
+                          <Title order={6} fw={300} ta="end" c='black'>
+                            {raffleActive(selectedRaffle || 0)?.price_unit}.00$
+                          </Title>
+                          <Title order={6} fw={300} mr={15} c='black'>
+                            0.00
+                          </Title>
+                        </Group>
+                      )
+                    })
+                  }
+                </ScrollArea>
+                <Divider my={10} variant="dashed"/>
+                <Group position="apart">
+                  <Title order={4} fw={650} c='black'>
+                    Total:
+                  </Title>
+                  <Title order={4} fw={300} ta="end" c='black'>
+                    {Number(raffleActive(selectedRaffle || 0)?.price_unit) * ticketsSelected.length}.00$
+                  </Title>
+                </Group>
+              </Card>
+              <Avatar
+                color="light"
+                style={{ width: '48.5%', height: 250}}
+                radius="xl"
+              />
+            </Group>
+          </Stepper.Step>
         </Stepper>
       </Modal>
     )
