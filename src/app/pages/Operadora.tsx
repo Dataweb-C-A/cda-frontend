@@ -8,13 +8,14 @@ import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image
 import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
+import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconCategory, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
 import USAFlag from "../assets/images/usa_flag.jpg"
 import ColombiaFlag from "../assets/images/colombia_flag.jpg"
 import USANumbers from "../assets/data/usaNumbers.json"
 import ColombiaNumbers from "../assets/data/colombiaNumbers.json"
+import { useForm } from "@mantine/form"
 
 interface IStatus {
   is_connected: boolean;
@@ -91,7 +92,7 @@ const useStyles = createStyles((theme) => ({
     marginTop: '5px',
     paddingRight: theme.spacing.xs,
     background: theme.colors.dark[6],
-    borderRadius: '0 20px 20px 0',
+    borderRadius: '0 5px 5px 0',
     [theme.fn.smallerThan('sm')]: {
       position: 'absolute',
       width: '100%',
@@ -194,52 +195,17 @@ const useStyles = createStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.colors.blue[9],
       transition: '0.6s',
-      boxShadow: "0px 0px 93px 0px rgba(46,255,245,0.63)",
+      boxShadow: "0px 0px 24px 17px rgba(46,255,245,0.36)",
       cursor: 'pointer',
     },
   },
   avatarFlagSelected: {
     backgroundColor: theme.colors.blue[9],
     transition: '0.6s',
-    boxShadow: "0px 0px 93px 0px rgba(46,255,245,0.63)",
+    boxShadow: "0px 0px 24px 17px rgba(46,255,245,0.36)",
     cursor: 'pointer'
   }
 }));
-
-function RaffleListEmpty() {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)'
-      }}
-    >
-      <Text>No hay rifas activas.</Text>
-    </div>
-  )
-}
-
-function Loading() {
-  return (
-    <>
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
-        }}
-      >
-        <div style={{ display: 'flex' }}>
-          <Loader />
-          <Text mt={5} ml={5}>Cargando rifas...</Text>
-        </div>
-      </div>
-    </>
-  )
-}
 
 function ticketsConstructor(tickets_count: number) {
   const tickets = [];
@@ -251,7 +217,6 @@ function ticketsConstructor(tickets_count: number) {
     })
   }
   return tickets;
-
 }
 
 function Operadora() {
@@ -274,8 +239,8 @@ function Operadora() {
     receiving_data: false
   })
   const [users, setUsers] = useState([]);
-  const [ticketKey, setTicketKey] = useState<number>(0);
-  const [selectedPage, setSelectedPage] = useState<number>(1);
+  const [ticketKey, setTicketKey] = useState<number>(0)
+  const [selectedPage, setSelectedPage] = useState<number>(1)
   const [tickets, setTickets] = useState<ITicketsResponse>({
     tickets: ticketsConstructor(100)
   })
@@ -284,10 +249,29 @@ function Operadora() {
   const [prefix, setPrefix] = useState<string | null>(null)
   const [phone, setPhone] = useState<string>('')
   const [countryPrefix, setCountryPrefix] = useState<string | null>(null)
+  const [reload, setReload] = useState<number>(0)
+  const [client, setClient] = useState<IClient | null>(null)
 
   const { classes } = useStyles()
 
   const theme = useMantineTheme();
+
+  const form = useForm({
+    initialValues: {
+      phone: '',
+      prefix: '',
+      countryPrefix: '',
+      email: '',
+      dni: '',
+      name: ''
+    },
+
+    validate: {
+      email: (value) => (/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.test(value) ? null : 'Email invalido'),
+      dni: (value) => ( countrySelected === 'Venezuela' ? (/\A[VEJG]-\d{1,8}\z/.test(value)) ? null : 'Cédula invalida' : null ),
+      name: (value) => (value.length < 8 ? 'Nombre invalido' : null),
+    }
+  })
 
   useEffect(() => {
     if (rafflesCableStatus.is_connected === false) {
@@ -311,6 +295,7 @@ function Operadora() {
           setActiveStep(0)
           setHasPaymentSelected(null)
           setCountrySelected(null)
+          setClient(null)
           setIsOpenInvalidModal({
             isOpen: false,
             mode: 'valid'
@@ -378,7 +363,55 @@ function Operadora() {
         setLoading(false)
       },
     })
-  }, [])
+  }, [reload])
+
+  function RaffleListEmpty() {
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        }}
+      >
+        <Text>No hay rifas activas.</Text>
+        <Group position="center" mt={10}>
+          <IconMoodSadDizzy stroke={1} size={35}/>
+          <Button
+            fullWidth
+            leftIcon={<IconReload />}
+            onClick={(e) => {
+              setReload(reload + 1)
+              e.preventDefault()
+            }}
+          >
+            Recargar
+          </Button>
+        </Group>
+      </div>
+    )
+  }
+  
+  function Loading() {
+    return (
+      <>
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+          }}
+        >
+          <div style={{ display: 'flex' }}>
+            <Loader />
+            <Text mt={5} ml={5}>Cargando rifas...</Text>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   function raffleActive(id: number) {
     return raffles.find((raffle) => raffle.id === id)
@@ -488,11 +521,25 @@ function Operadora() {
   }
 
   function BuyModal() {
-
     const handleClose = () => {
       setBuyIsOpen(false)
       setCountrySelected(null)
       setActiveStep(0)
+      setClient(null)
+    }
+
+    const secondNextStep = (preventDefault: void) => {
+      preventDefault
+      axios.get("http://localhost:3000/x100/client", {
+        params: {
+          phone: `${countryPrefix} ${form.values.prefix} ${form.values.phone}`
+        }
+      }).then((res) => {
+        setClient(res.data)
+        setActiveStep(activeStep + 1)
+      }).catch(() => {
+        setActiveStep(activeStep + 1)
+      })
     }
 
     return (
@@ -572,7 +619,7 @@ function Operadora() {
           >
             <Group
               position="center"
-              mt={40}
+              mt={10}
               px={170}
             >
               <Text ta="center" fw={750}>
@@ -600,12 +647,16 @@ function Operadora() {
                   }
                   searchable
                   nothingFound={<QuestionMark />}
-                  onChange={(value) => setPrefix(value)}
+                  error={form.errors.prefix}
+                  mb={15}
+                  {...form.getInputProps("prefix")}
                 />
                 <TextInput
                   label={<Text>Número telefónico</Text>}
                   placeholder="111-1111"
-                  onChange={(event) => setPhone(event.currentTarget.value)}
+                  mb={15}
+                  error={form.errors.phone}
+                  {...form.getInputProps("phone")}
                 />
               </Group>
               <Button
@@ -615,7 +666,7 @@ function Operadora() {
               </Button>
               <Button
                 disabled={!phoneRegex.test(`${countryPrefix} (${prefix}) ${phone}`)}
-                onClick={() => setActiveStep(activeStep + 1)}
+                onClick={(e) => secondNextStep(e.preventDefault())}
               >
                 Siguiente
               </Button>
