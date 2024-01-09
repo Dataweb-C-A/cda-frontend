@@ -530,6 +530,8 @@ function Operadora() {
     const [Dni, setDni] = useState<string>('')
     const [terms, setTerms] = useState<boolean>(false)
     const [initDNI, setInitDNI] = useState<string | null>('V-');
+    const [email, setEmail] = useState<string>('');
+    const [emailIsValid, setEmailIsValid] = useState(true);
 
     const handleClose = () => {
       setBuyIsOpen(false)
@@ -583,6 +585,17 @@ function Operadora() {
       setDni(newDni);
     };
 
+    const isValidEmail = (email: string) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    };
+
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newEmail = event.currentTarget.value;
+
+      setEmail(newEmail);
+    };
+
     const createClient = () => {
       axios.post("http://localhost:3000/x100/clients", {
         x100_client: {
@@ -600,6 +613,9 @@ function Operadora() {
         console.log(e)
       })
     }
+
+
+
     return (
       <Modal
         opened={buyIsOpen}
@@ -755,6 +771,7 @@ function Operadora() {
                 <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>
                 <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.phone : phone}</Title>
                 <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${initDNI}${Dni}`}</Title>
+                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${email}`}</Title>
                 <Divider my={10} variant="dashed" />
                 <Group position="apart">
                   <Title order={6} fw={600} c='black'>
@@ -845,6 +862,12 @@ function Operadora() {
                           onChange={handleDniChange}
                         />
                       </Group>
+                      <TextInput
+                        placeholder="Correo electronico"
+                        mt={10}
+                        value={email}
+                        onChange={handleEmailChange}
+                      />
                       <Checkbox
                         checked={terms}
                         onChange={() => setTerms(!terms)}
@@ -871,7 +894,7 @@ function Operadora() {
                   </Button>
                 ) : (
                   <Button
-                    disabled={!name || !lastName || !Dni || !terms}
+                    disabled={!name || !lastName || !Dni || !terms || !isValidEmail(email)}
                     onClick={() => createClient()}
                   >
                     Comprar
@@ -880,9 +903,6 @@ function Operadora() {
               }
             </Group>
           </Stepper.Step>
-          <Stepper.Completed>
-
-          </Stepper.Completed>
         </Stepper>
       </Modal>
     )
