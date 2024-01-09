@@ -523,6 +523,14 @@ function Operadora() {
   }
 
   function BuyModal() {
+    const [selectValue, setSelectValue] = useState<string | null>(null);
+    const [textInputValue, setTextInputValue] = useState<string>('');
+    const [name, setName] = useState<string>('')
+    const [lastName, setlastName] = useState<string>('')
+    const [Dni, setDni] = useState<string>('')
+    const [terms, setTerms] = useState<boolean>(false)
+    const [phoneClient, setPhoneClient] = useState<string>('')
+    
     const handleClose = () => {
       setBuyIsOpen(false)
       setCountrySelected(null)
@@ -530,8 +538,17 @@ function Operadora() {
       setClient(null)
     }
 
-    const secondNextStep = (preventDefault: void) => {
-      preventDefault
+    function handleTextInputChange(value: string) {
+      const numericValue = value.replace(/\D/g, '');
+      
+      let formattedValue = numericValue;
+      if (numericValue.length > 3) {
+        formattedValue = numericValue.slice(0, 3) + '-' + numericValue.slice(3);
+      }
+      setTextInputValue(formattedValue);
+    }
+
+    const secondNextStep = (phone: string) => {
       axios.get("http://localhost:3000/x100/clients", {
         params: {
           phone: `${countryPrefix} ${selectValue} ${textInputValue}`
@@ -539,22 +556,12 @@ function Operadora() {
       }).then((res) => {
         setClient(res.data)
         setActiveStep(activeStep + 1)
-      }).catch(() => {
+        console.log(res.data)
+      }).catch((e) => {
+        setClient(null)
+        console.log(e)
         setActiveStep(activeStep + 1)
       })
-    }
-    const [selectValue, setSelectValue] = useState<string | null>(null);
-    const [textInputValue, setTextInputValue] = useState<string>('');
-
-
-    function handleTextInputChange(value: string) {
-      const numericValue = value.replace(/\D/g, '');
-    
-      let formattedValue = numericValue;
-      if (numericValue.length > 3) {
-        formattedValue = numericValue.slice(0, 3) + '-' + numericValue.slice(3);
-      }
-      setTextInputValue(formattedValue);
     }
     
     function handleSelectChange(value: string | null) {
@@ -660,7 +667,12 @@ function Operadora() {
                     }
                     searchable
                     nothingFound={<QuestionMark />}
-                    onChange={(value) => handleSelectChange(value)}
+                    onChange={
+                      (value) => { 
+                        handleSelectChange(value) 
+                        setPhoneClient(`${countryPrefix} ${selectValue} ${textInputValue}`)
+                      }
+                    }
                     value={selectValue}
                     error={form.errors.prefix}
                     mb={15}
@@ -684,7 +696,7 @@ function Operadora() {
                 </Button>
                 <Button
                   disabled={!phoneRegex.test(`${countryPrefix} ${selectValue} ${textInputValue}`)}
-                  onClick={(e) => secondNextStep(e.preventDefault())}
+                  onClick={(e) => secondNextStep(`${countryPrefix} ${selectValue} ${textInputValue}`)}
                 >
                   Siguiente
                 </Button>
@@ -705,12 +717,14 @@ function Operadora() {
                 radius="sm"
                 className="receipt-cutoff"
               >
-                <img src={RifamaxLogo}
-                  style={{ position: 'absolute', opacity: 0.06, top: -10, left: -35}}
-                />
-                <Title order={3} fw={600} c='black' ta="center">{client?.name}</Title>
-                <Title order={4} fw={300} c='black' ta="center">{client?.phone}</Title>
-                <Title order={4} fw={300} c='black' ta="center">{client?.dni}</Title>
+                { terms && (
+                  <img src={RifamaxLogo}
+                    style={{ position: 'absolute', opacity: 0.06, top: 80, left: -35}}
+                  />
+                )}
+                <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>
+                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.phone : phoneClient}</Title>
+                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : Dni}</Title>
                 <Divider my={10} variant="dashed"/>
                 <Group position="apart">
                   <Title order={6} fw={600} c='black'>
@@ -726,22 +740,22 @@ function Operadora() {
                     Descuento
                   </Title>
                 </Group>
-                <ScrollArea h={100} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden'}} >
+                <ScrollArea h={210} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden'}} >
                   {
                     ticketsSelected.map((ticket) => {
                       return(
                         <Group position="apart">
                           <Title order={6} ml={20} fw={300} c='black'>
-                            {ticket}
+                            {parseTickets(ticket)}
                           </Title>
-                          <Title order={6} fw={300} c='black'>
+                          <Title order={6} ml={10} fw={300} c='black'>
                             1.00
                           </Title>
                           <Title order={6} fw={300} ta="end" c='black'>
                             {raffleActive(selectedRaffle || 0)?.price_unit}.00$
                           </Title>
                           <Title order={6} fw={300} mr={15} c='black'>
-                            0.00
+                            0%
                           </Title>
                         </Group>
                       )
@@ -758,11 +772,50 @@ function Operadora() {
                   </Title>
                 </Group>
               </Card>
-              <Avatar
-                color="light"
-                style={{ width: '48.5%', height: 250}}
-                radius="xl"
-              />
+              {
+                client === null && (
+                  <Card w="48.5%" h={325}>
+                    <div style={{ position: 'absolute', top: '30%', left: '0', padding: '0 10px 0 10px'}}>
+                      <Text ta="center" fw={750}>Personaliza tu ticket</Text>
+                      <Group spacing={5} mt={10}>
+                        <TextInput 
+                          style={{ width: "49.2%" }} 
+                          placeholder="Nombre" 
+                          onChange={(event) => setName(event.currentTarget.value)}
+                        />
+                        <TextInput 
+                          style={{ width: "49.2%" }} 
+                          placeholder="Apellido" 
+                          onChange={(event) => setlastName(event.currentTarget.value)}
+                        />
+                      </Group>
+                      <TextInput 
+                        placeholder="Cedula o DNI" 
+                        mt={10}
+                        onChange={(e) => setDni(e.currentTarget.value)}
+                      />
+                      <Checkbox
+                        checked={terms}
+                        onChange={() => setTerms(!terms)} 
+                        mt={10} 
+                        label="Acepto los términos y condiciones"
+                      />
+                    </div>
+                  </Card>
+                )
+              }
+            </Group>
+            <Group position="center" mt={30}>
+              <Button
+                onClick={() => setActiveStep(activeStep - 1)}
+              >
+                Atrás
+              </Button>
+              <Button
+                onClick={() => setActiveStep(activeStep + 1)}
+              >
+                Comprar
+              </Button>
             </Group>
           </Stepper.Step>
         </Stepper>
@@ -993,58 +1046,62 @@ function Operadora() {
                             <Text fw={700} fz={16} ta="start">Fecha de cierre:</Text>
                             <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY')}</Text>
                           </Group>
+                          
                           {
                             ticketsSelected.length > 0 && (
-                              <Card>
+                              <Card bg="white" className="mini-cutoff">
                                 <small>
-                                  <Text fw={700} ta="center" fz={18}>Jugadas:</Text>
-                                  <Group pb={10} ml={5} position="center">
-                                    {
-                                      ticketsSelected.map((ticket: number) => {
-                                        return (
-                                          <Text fz={16} fw={1000} mt={5} mb={-25} mx={-5}>{parseTickets(ticket)}</Text>
-                                        )
-                                      })
-                                    }
+                                <Divider my={10} variant="dashed"/>
+                                  <Group position="apart">
+                                    <Title order={6} fw={600} c='black'>
+                                      Prod.
+                                    </Title>
+                                    <Title order={6} fw={600} c='black'>
+                                      Cant.
+                                    </Title>
+                                    <Title order={6} fw={600} c='black'>
+                                      Precio.
+                                    </Title>
+                                    <Title order={6} fw={600} c='black'>
+                                      Descto.
+                                    </Title>
                                   </Group>
-                                  <Text fw={700} fz={18} ta="center" mt={20}>Total:</Text>
-                                  <Text fw={1000} fz={16} mt={5} mb={20} ta="center">{ticketsSelected.length * (raffleActive(selectedRaffle)?.price_unit || 0)}$</Text>
-                                </small>
-                                <Text fw={700} ta="center" mt={-10} mb={10} fz={18}>
-                                  Seleccione una moneda
-                                </Text>
-                                <Group w="100%" mt={-5} mb={10} position="apart">
-                                  <Text fw={700} fz={16} ml={10}>$</Text>
-                                  <Text fw={700} fz={16} ml={10}>COP</Text>
-                                  <Text fw={700} fz={16}>BsD</Text>
-                                </Group>
-                                <Group w="100%" mt={-5} mb={10} position="apart">
-                                  <Checkbox
-                                    size="lg"
-                                    checked={hasPaymentSelected === '$'}
-                                    onChange={() => {
-                                      setHasPaymentSelected("$")
-                                    }}
-                                  />
-                                  <Checkbox
-                                    size="lg"
-                                    checked={hasPaymentSelected === 'COP'}
-                                    onChange={() => {
-                                      setHasPaymentSelected("COP")
-                                    }}
-                                  />
-                                  <Checkbox
-                                    size="lg"
-                                    checked={hasPaymentSelected === 'BsD'}
-                                    onChange={() => {
-                                      setHasPaymentSelected("BsD")
-                                    }}
-                                  />
-                                </Group>
+                                  <Group pb={10} mx={0} position="center">
+                                    <ScrollArea h={105} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden'}} >
+                                      {
+                                        ticketsSelected.map((ticket) => {
+                                          return(
+                                            <Group position="apart" spacing={25}>
+                                              <Title order={6} ml={0} fw={300} c='black'>
+                                                {parseTickets(ticket)}
+                                              </Title>
+                                              <Title order={6} ml={5} fw={300} c='black'>
+                                                1.00
+                                              </Title>
+                                              <Title order={6} fw={300} ta="end" c='black'>
+                                                {raffleActive(selectedRaffle || 0)?.price_unit}.00$
+                                              </Title>
+                                              <Title order={6} ml={5} fw={300} mr={15} c='black'>
+                                                0.00
+                                              </Title>
+                                            </Group>
+                                          )
+                                        })
+                                      }
+                                    </ScrollArea>
+                                    <Group w="100%" position="apart">
+                                      <Title order={4} fw={650} c='black'>
+                                        Total:
+                                      </Title>
+                                      <Title order={4} fw={300} ta="end" c='black'>
+                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * ticketsSelected.length}.00$
+                                      </Title>
+                                    </Group>
+                                  </Group>
+                                  </small>
                                 <Button
                                   fullWidth
                                   leftIcon={<IconWallet />}
-                                  disabled={hasPaymentSelected === null}
                                   onClick={() => setBuyIsOpen(true)}
                                 >
                                   Comprar
