@@ -530,7 +530,7 @@ function Operadora() {
     const [Dni, setDni] = useState<string>('')
     const [terms, setTerms] = useState<boolean>(false)
     const [phoneClient, setPhoneClient] = useState<string>('')
-    
+
     const handleClose = () => {
       setBuyIsOpen(false)
       setCountrySelected(null)
@@ -540,7 +540,7 @@ function Operadora() {
 
     function handleTextInputChange(value: string) {
       const numericValue = value.replace(/\D/g, '');
-      
+
       let formattedValue = numericValue;
       if (numericValue.length > 3) {
         formattedValue = numericValue.slice(0, 3) + '-' + numericValue.slice(3);
@@ -563,12 +563,24 @@ function Operadora() {
         setActiveStep(activeStep + 1)
       })
     }
-    
+
     function handleSelectChange(value: string | null) {
       setSelectValue(value);
     }
-    
 
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newName = event.currentTarget.value.replace(/[^a-zA-Z]/g, '');
+      setName(newName);
+    };
+
+    const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newLastName = event.currentTarget.value.replace(/[^a-zA-Z]/g, '');
+      setlastName(newLastName);
+    };
+    const handleDniChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newDni = event.currentTarget.value.replace(/\D/g, '');
+      setDni(newDni);
+    };
     return (
       <Modal
         opened={buyIsOpen}
@@ -668,8 +680,8 @@ function Operadora() {
                     searchable
                     nothingFound={<QuestionMark />}
                     onChange={
-                      (value) => { 
-                        handleSelectChange(value) 
+                      (value) => {
+                        handleSelectChange(value)
                         setPhoneClient(`${countryPrefix} ${selectValue} ${textInputValue}`)
                       }
                     }
@@ -717,15 +729,15 @@ function Operadora() {
                 radius="sm"
                 className="receipt-cutoff"
               >
-                { terms && (
+                {terms && (
                   <img src={RifamaxLogo}
-                    style={{ position: 'absolute', opacity: 0.06, top: 80, left: -35}}
+                    style={{ position: 'absolute', opacity: 0.06, top: 80, left: -35 }}
                   />
                 )}
                 <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>
                 <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.phone : phoneClient}</Title>
                 <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : Dni}</Title>
-                <Divider my={10} variant="dashed"/>
+                <Divider my={10} variant="dashed" />
                 <Group position="apart">
                   <Title order={6} fw={600} c='black'>
                     Productos
@@ -740,10 +752,10 @@ function Operadora() {
                     Descuento
                   </Title>
                 </Group>
-                <ScrollArea h={210} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden'}} >
+                <ScrollArea h={210} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                   {
                     ticketsSelected.map((ticket) => {
-                      return(
+                      return (
                         <Group position="apart">
                           <Title order={6} ml={20} fw={300} c='black'>
                             {parseTickets(ticket)}
@@ -762,7 +774,7 @@ function Operadora() {
                     })
                   }
                 </ScrollArea>
-                <Divider my={10} variant="dashed"/>
+                <Divider my={10} variant="dashed" />
                 <Group position="apart">
                   <Title order={4} fw={650} c='black'>
                     Total:
@@ -775,29 +787,49 @@ function Operadora() {
               {
                 client === null && (
                   <Card w="48.5%" h={325}>
-                    <div style={{ position: 'absolute', top: '30%', left: '0', padding: '0 10px 0 10px'}}>
+                    <div style={{ position: 'absolute', top: '30%', left: '0', padding: '0 10px 0 10px' }}>
                       <Text ta="center" fw={750}>Personaliza tu ticket</Text>
                       <Group spacing={5} mt={10}>
-                        <TextInput 
-                          style={{ width: "49.2%" }} 
-                          placeholder="Nombre" 
-                          onChange={(event) => setName(event.currentTarget.value)}
+                        <TextInput
+                          style={{ width: '49.2%' }}
+                          placeholder="Nombre"
+                          value={name}
+                          onChange={handleNameChange}
                         />
-                        <TextInput 
-                          style={{ width: "49.2%" }} 
-                          placeholder="Apellido" 
-                          onChange={(event) => setlastName(event.currentTarget.value)}
+                        <TextInput
+                          style={{ width: '49.2%' }}
+                          placeholder="Apellido"
+                          value={lastName}
+                          onChange={handleLastNameChange}
                         />
                       </Group>
-                      <TextInput 
-                        placeholder="Cedula o DNI" 
-                        mt={10}
-                        onChange={(e) => setDni(e.currentTarget.value)}
-                      />
+                      <Group>
+                        <Select
+                          w={90}
+
+                          mt={10}
+                          defaultValue="V-"
+                          data={[
+                            { value: 'V-', label: 'V-' },
+                            { value: 'E-', label: 'E-' },
+                            { value: 'J-', label: 'J-' },
+                            { value: 'G-', label: 'G-' },
+                          ]}
+
+                        />
+                        <TextInput
+                          placeholder="Cedula o DNI"
+                          mt={10}
+                          w={232}
+                          maxLength={8}
+                          value={Dni}
+                          onChange={handleDniChange}
+                        />
+                      </Group>
                       <Checkbox
                         checked={terms}
-                        onChange={() => setTerms(!terms)} 
-                        mt={10} 
+                        onChange={() => setTerms(!terms)}
+                        mt={10}
                         label="Acepto los términos y condiciones"
                       />
                     </div>
@@ -1046,12 +1078,12 @@ function Operadora() {
                             <Text fw={700} fz={16} ta="start">Fecha de cierre:</Text>
                             <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY')}</Text>
                           </Group>
-                          
+
                           {
                             ticketsSelected.length > 0 && (
                               <Card bg="white" className="mini-cutoff">
                                 <small>
-                                <Divider my={10} variant="dashed"/>
+                                  <Divider my={10} variant="dashed" />
                                   <Group position="apart">
                                     <Title order={6} fw={600} c='black'>
                                       Prod.
@@ -1067,10 +1099,10 @@ function Operadora() {
                                     </Title>
                                   </Group>
                                   <Group pb={10} mx={0} position="center">
-                                    <ScrollArea h={105} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden'}} >
+                                    <ScrollArea h={105} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                       {
                                         ticketsSelected.map((ticket) => {
-                                          return(
+                                          return (
                                             <Group position="apart" spacing={25}>
                                               <Title order={6} ml={0} fw={300} c='black'>
                                                 {parseTickets(ticket)}
@@ -1098,7 +1130,7 @@ function Operadora() {
                                       </Title>
                                     </Group>
                                   </Group>
-                                  </small>
+                                </small>
                                 <Button
                                   fullWidth
                                   leftIcon={<IconWallet />}
