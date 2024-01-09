@@ -846,9 +846,11 @@ function Operadora() {
               </Button>
               <Button
                 onClick={() => setActiveStep(activeStep + 1)}
+                disabled={!name || !lastName || !Dni || !terms}
               >
                 Comprar
               </Button>
+
             </Group>
           </Stepper.Step>
         </Stepper>
