@@ -530,6 +530,7 @@ function Operadora() {
     const [Dni, setDni] = useState<string>('')
     const [terms, setTerms] = useState<boolean>(false)
     const [phoneClient, setPhoneClient] = useState<string>('')
+    const [initDNI, setInitDNI] = useState<string | null>('V-');
 
     const handleClose = () => {
       setBuyIsOpen(false)
@@ -736,7 +737,7 @@ function Operadora() {
                 )}
                 <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>
                 <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.phone : phoneClient}</Title>
-                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : Dni}</Title>
+                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${initDNI}${Dni}`}</Title>
                 <Divider my={10} variant="dashed" />
                 <Group position="apart">
                   <Title order={6} fw={600} c='black'>
@@ -806,14 +807,15 @@ function Operadora() {
                       <Group>
                         <Select
                           w={90}
-
+                          onChange={(e) => setInitDNI(e)}
                           mt={10}
+                          value={initDNI}
                           defaultValue="V-"
                           data={[
-                            { value: 'V-', label: 'V-' },
-                            { value: 'E-', label: 'E-' },
-                            { value: 'J-', label: 'J-' },
-                            { value: 'G-', label: 'G-' },
+                            { value: 'V-', label: 'V' },
+                            { value: 'E-', label: 'E' },
+                            { value: 'J-', label: 'J' },
+                            { value: 'G-', label: 'G' },
                           ]}
 
                         />
