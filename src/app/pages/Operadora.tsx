@@ -582,6 +582,24 @@ function Operadora() {
       const newDni = event.currentTarget.value.replace(/\D/g, '');
       setDni(newDni);
     };
+
+    const createClient = () => {
+      axios.post("http://localhost:3000/x100/clients", {
+        x100_client: {
+          name: name,
+          last_name: lastName,
+          dni: `${initDNI}${Dni}`,
+          phone: phone,
+          email: form.values.email
+        }
+      }).then((res) => {
+        console.log(res.data)
+        setClient(res.data)
+        setActiveStep(activeStep + 1)
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
     return (
       <Modal
         opened={buyIsOpen}
@@ -844,15 +862,27 @@ function Operadora() {
               >
                 Atrás
               </Button>
-              <Button
-                onClick={() => setActiveStep(activeStep + 1)}
-                disabled={!name || !lastName || !Dni || !terms}
-              >
-                Comprar
-              </Button>
-
+              {
+                client !== null ? (
+                  <Button
+                    onClick={() => setActiveStep(activeStep + 1)}
+                  >
+                    Comprar
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={!name || !lastName || !Dni || !terms}
+                    onClick={() => createClient()}
+                  >
+                    Comprar
+                  </Button>
+                )
+              }
             </Group>
           </Stepper.Step>
+          <Stepper.Completed>
+
+          </Stepper.Completed>
         </Stepper>
       </Modal>
     )
