@@ -529,9 +529,7 @@ function Operadora() {
     const [lastName, setlastName] = useState<string>('')
     const [Dni, setDni] = useState<string>('')
     const [terms, setTerms] = useState<boolean>(false)
-    const [phoneClient, setPhoneClient] = useState<string>('')
     const [initDNI, setInitDNI] = useState<string | null>('V-');
-    const isValidPhoneNumber = phoneRegex.test(`${countryPrefix} ${selectValue} ${textInputValue}`);
 
     const handleClose = () => {
       setBuyIsOpen(false)
@@ -551,6 +549,7 @@ function Operadora() {
     }
 
     const secondNextStep = (phone: string) => {
+      setPhone(phone)
       axios.get("http://localhost:3000/x100/clients", {
         params: {
           phone: `${countryPrefix} ${selectValue} ${textInputValue}`
@@ -684,7 +683,6 @@ function Operadora() {
                     onChange={
                       (value) => {
                         handleSelectChange(value)
-                        setPhoneClient(`${countryPrefix} ${selectValue} ${textInputValue}`)
                       }
                     }
                     value={selectValue}
@@ -737,15 +735,7 @@ function Operadora() {
                   />
                 )}
                 <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>
-                {isValidPhoneNumber ? (
-                  <Title order={4} fw={300} c='black' ta="center">
-                    {client !== null ? client?.phone : `${countryPrefix} ${selectValue} ${textInputValue}`}
-                  </Title>
-                ) : (
-                  <Title order={4} fw={300} c='red' ta="center">
-                    Teléfono no válido
-                  </Title>
-                )}
+                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.phone : phone}</Title>
                 <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${initDNI}${Dni}`}</Title>
                 <Divider my={10} variant="dashed" />
                 <Group position="apart">
