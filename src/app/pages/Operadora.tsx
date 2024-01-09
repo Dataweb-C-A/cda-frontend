@@ -225,7 +225,7 @@ function Operadora() {
 
   const [raffles, setRaffles] = useState<IRaffle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
