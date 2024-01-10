@@ -599,11 +599,10 @@ function Operadora() {
     const createClient = () => {
       axios.post("http://localhost:3000/x100/clients", {
         x100_client: {
-          name: name,
-          last_name: lastName,
-          dni: `${initDNI}${Dni}`,
+          name: name + ' ' + lastName,
+          dni: (countrySelected === 'Venezuela' ? `${initDNI}${Dni}` : null),
           phone: phone,
-          email: form.values.email
+          email: email
         }
       }).then((res) => {
         console.log(res.data)
@@ -770,8 +769,10 @@ function Operadora() {
                 )}
                 <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>
                 <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.phone : phone}</Title>
-                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${initDNI}${Dni}`}</Title>
-                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${email}`}</Title>
+                {
+                  countrySelected === 'Venezuela' && (<Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${initDNI}${Dni}`}</Title>)
+                }
+                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.email : `${email}`}</Title>
                 <Divider my={10} variant="dashed" />
                 <Group position="apart">
                   <Title order={6} fw={600} c='black'>
@@ -838,30 +839,33 @@ function Operadora() {
                           onChange={handleLastNameChange}
                         />
                       </Group>
-                      <Group>
-                        <Select
-                          w={90}
-                          onChange={(e) => setInitDNI(e)}
-                          mt={10}
-                          value={initDNI}
-                          defaultValue="V-"
-                          data={[
-                            { value: 'V-', label: 'V' },
-                            { value: 'E-', label: 'E' },
-                            { value: 'J-', label: 'J' },
-                            { value: 'G-', label: 'G' },
-                          ]}
-
-                        />
-                        <TextInput
-                          placeholder="Cedula o DNI"
-                          mt={10}
-                          w={232}
-                          maxLength={8}
-                          value={Dni}
-                          onChange={handleDniChange}
-                        />
-                      </Group>
+                        {
+                          countrySelected === 'Venezuela' && (
+                            <Group>
+                              <Select
+                                w={90}
+                                onChange={(e) => setInitDNI(e)}
+                                mt={10}
+                                value={initDNI}
+                                defaultValue="V-"
+                                data={[
+                                  { value: 'V-', label: 'V' },
+                                  { value: 'E-', label: 'E' },
+                                  { value: 'J-', label: 'J' },
+                                  { value: 'G-', label: 'G' },
+                                ]}
+                              />
+                              <TextInput
+                                placeholder="Cedula o DNI"
+                                mt={10}
+                                w={232}
+                                maxLength={8}
+                                value={Dni}
+                                onChange={handleDniChange}
+                              />
+                            </Group>
+                          )
+                        }
                       <TextInput
                         placeholder="Correo electronico"
                         mt={10}
@@ -894,7 +898,7 @@ function Operadora() {
                   </Button>
                 ) : (
                   <Button
-                    disabled={!name || !lastName || !Dni || !terms || !isValidEmail(email)}
+                    disabled={!name || !lastName || !terms || !isValidEmail(email) || countrySelected === "Venezuela" && (!Dni)}
                     onClick={() => createClient()}
                   >
                     Comprar
@@ -903,6 +907,77 @@ function Operadora() {
               }
             </Group>
           </Stepper.Step>
+          <Stepper.Completed>
+          <Text ta='center' fw={750} fz={24}>Su ticket ha sido comprado satisfactoriamente</Text>
+          <Group
+              position="center"
+              mt={20}
+            >
+              <Card
+                bg='white'
+                w="48.5%"
+                radius="sm"
+                className="receipt-cutoff"
+              >
+                {terms && (
+                  <img src={RifamaxLogo}
+                    style={{ position: 'absolute', opacity: 0.06, top: 80, left: -35 }}
+                  />
+                )}
+                <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>
+                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.phone : phone}</Title>
+                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${initDNI}${Dni}`}</Title>
+                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.email : `${email}`}</Title>
+                <Divider my={10} variant="dashed" />
+                <Group position="apart">
+                  <Title order={6} fw={600} c='black'>
+                    Productos
+                  </Title>
+                  <Title order={6} fw={600} c='black'>
+                    Cantidad
+                  </Title>
+                  <Title order={6} fw={600} c='black'>
+                    Precio
+                  </Title>
+                  <Title order={6} fw={600} c='black'>
+                    Descuento
+                  </Title>
+                </Group>
+                <ScrollArea h={210} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                  {
+                    ticketsSelected.map((ticket) => {
+                      return (
+                        <Group position="apart">
+                          <Title order={6} ml={20} fw={300} c='black'>
+                            {parseTickets(ticket)}
+                          </Title>
+                          <Title order={6} ml={10} fw={300} c='black'>
+                            1.00
+                          </Title>
+                          <Title order={6} fw={300} ta="end" c='black'>
+                            {raffleActive(selectedRaffle || 0)?.price_unit}.00$
+                          </Title>
+                          <Title order={6} fw={300} mr={15} c='black'>
+                            0%
+                          </Title>
+                        </Group>
+                      )
+                    })
+                  }
+                </ScrollArea>
+                <Divider my={10} variant="dashed" />
+                <Group position="apart">
+                  <Title order={4} fw={650} c='black'>
+                    Total:
+                  </Title>
+                  <Title order={4} fw={300} ta="end" c='black'>
+                    {Number(raffleActive(selectedRaffle || 0)?.price_unit) * ticketsSelected.length}.00$
+                  </Title>
+                </Group>
+              </Card>
+              </Group>
+            <Button fullWidth mt={40}>Cerrar</Button>
+          </Stepper.Completed>
         </Stepper>
       </Modal>
     )
