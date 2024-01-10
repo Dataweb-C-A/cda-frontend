@@ -8,7 +8,8 @@ import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image
 import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconCategory, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
+import { IconX } from '@tabler/icons-react';
+import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
 import USAFlag from "../assets/images/usa_flag.jpg"
@@ -223,9 +224,50 @@ function ticketsConstructor(tickets_count: number) {
 function Operadora() {
   const paginationNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  const [raffles, setRaffles] = useState<IRaffle[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
+  const [raffles, setRaffles] = useState<IRaffle[]>([
+    {
+      id: 1,
+      ad: {
+        url: "/uploads/x100/raffle/ad/13/bera.png"
+      },
+      title: "Prueba no multiple",
+      draw_type: "Progresiva",
+      status: "En venta",
+      limit: 100,
+      money: "$",
+      raffle_type: "Triple",
+      price_unit: 1.0,
+      tickets_count: 1000,
+      numbers: 123,
+      lotery: "ZULIA 7A",
+      expired_date: null,
+      init_date: "2024-01-01T00:00:00.000-04:00",
+      prizes: [],
+      winners: null,
+      has_winners: false,
+      automatic_taquillas_ids: [],
+      shared_user_id: 168,
+      created_at: "2023-12-27T17:31:50.869-04:00",
+      updated_at: "2024-01-06T19:30:22.648-04:00",
+      combos: [
+        {
+          price: 2,
+          quantity: 4
+        },
+        {
+          price: 5,
+          quantity: 7
+        },
+        {
+          price: 7,
+          quantity: 10
+        }
+      ]
+    }
+  ]);
+
+  const [loading, setLoading] = useState<boolean>(false)
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
@@ -276,47 +318,47 @@ function Operadora() {
   })
 
   useEffect(() => {
-    if (rafflesCableStatus.is_connected === false) {
-      cable.subscriptions.create('X100::RafflesChannel', {
-        connected() {
-          console.log('Connected to ActionCable');
-          setRafflesCableStatus({
-            is_connected: true,
-            receiving_data: false
-          })
-        },
+    // if (rafflesCableStatus.is_connected === false) {
+    //   cable.subscriptions.create('X100::RafflesChannel', {
+    //     connected() {
+    //       console.log('Connected to ActionCable');
+    //       setRafflesCableStatus({
+    //         is_connected: true,
+    //         receiving_data: false
+    //       })
+    //     },
 
-        disconnected() {
-          console.log('Disconnected from ActionCable');
-          setRafflesCableStatus({
-            is_connected: false,
-            receiving_data: false
-          })
-          setBuyIsOpen(false)
-          setSearchValue(0)
-          setActiveStep(0)
-          setHasPaymentSelected(null)
-          setCountrySelected(null)
-          setClient(null)
-          setIsOpenInvalidModal({
-            isOpen: false,
-            mode: 'valid'
-          })
-          setSelectedRaffle(null)
-          setRaffles([])
-        },
+    //     disconnected() {
+    //       console.log('Disconnected from ActionCable');
+    //       setRafflesCableStatus({
+    //         is_connected: false,
+    //         receiving_data: false
+    //       })
+    //       setBuyIsOpen(false)
+    //       setSearchValue(0)
+    //       setActiveStep(0)
+    //       setHasPaymentSelected(null)
+    //       setCountrySelected(null)
+    //       setClient(null)
+    //       setIsOpenInvalidModal({
+    //         isOpen: false,
+    //         mode: 'valid'
+    //       })
+    //       setSelectedRaffle(null)
+    //       setRaffles([])
+    //     },
 
-        received(data: any) {
-          console.log('Received data from ActionCable:', data);
-          setRaffles(data)
-          setRafflesCableStatus({
-            is_connected: true,
-            receiving_data: true
-          })
-          setLoading(false)
-        },
-      })
-    }
+    //     received(data: any) {
+    //       console.log('Received data from ActionCable:', data);
+    //       setRaffles(data)
+    //       setRafflesCableStatus({
+    //         is_connected: true,
+    //         receiving_data: true
+    //       })
+    //       setLoading(false)
+    //     },
+    //   })
+    // }
 
     if (users.length < 1) {
       axios
@@ -335,36 +377,36 @@ function Operadora() {
 
     console.log('useEffect are going effect')
 
-    cable.subscriptions.create('X100::TicketsChannel', {
-      connected() {
-        console.log('Connected to ActionCable');
-        setRafflesCableStatus({
-          is_connected: true,
-          receiving_data: false
-        })
-      },
+    // cable.subscriptions.create('X100::TicketsChannel', {
+    //   connected() {
+    //     console.log('Connected to ActionCable');
+    //     setRafflesCableStatus({
+    //       is_connected: true,
+    //       receiving_data: false
+    //     })
+    //   },
 
-      disconnected() {
-        console.log('Disconnected from ActionCable');
-        setRafflesCableStatus({
-          is_connected: false,
-          receiving_data: false
-        })
-        setHasPaymentSelected(null)
-        setSelectedRaffle(null)
-        setRaffles([])
-      },
+    //   disconnected() {
+    //     console.log('Disconnected from ActionCable');
+    //     setRafflesCableStatus({
+    //       is_connected: false,
+    //       receiving_data: false
+    //     })
+    //     setHasPaymentSelected(null)
+    //     setSelectedRaffle(null)
+    //     setRaffles([])
+    //   },
 
-      received(data: any) {
-        console.log('Received data from ActionCable:', data);
-        setTickets(data)
-        setRafflesCableStatus({
-          is_connected: true,
-          receiving_data: true
-        })
-        setLoading(false)
-      },
-    })
+    //   received(data: any) {
+    //     console.log('Received data from ActionCable:', data);
+    //     setTickets(data)
+    //     setRafflesCableStatus({
+    //       is_connected: true,
+    //       receiving_data: true
+    //     })
+    //     setLoading(false)
+    //   },
+    // })
   }, [reload])
 
   function RaffleListEmpty() {
@@ -839,33 +881,33 @@ function Operadora() {
                           onChange={handleLastNameChange}
                         />
                       </Group>
-                        {
-                          countrySelected === 'Venezuela' && (
-                            <Group>
-                              <Select
-                                w={90}
-                                onChange={(e) => setInitDNI(e)}
-                                mt={10}
-                                value={initDNI}
-                                defaultValue="V-"
-                                data={[
-                                  { value: 'V-', label: 'V' },
-                                  { value: 'E-', label: 'E' },
-                                  { value: 'J-', label: 'J' },
-                                  { value: 'G-', label: 'G' },
-                                ]}
-                              />
-                              <TextInput
-                                placeholder="Cedula o DNI"
-                                mt={10}
-                                w={232}
-                                maxLength={8}
-                                value={Dni}
-                                onChange={handleDniChange}
-                              />
-                            </Group>
-                          )
-                        }
+                      {
+                        countrySelected === 'Venezuela' && (
+                          <Group>
+                            <Select
+                              w={90}
+                              onChange={(e) => setInitDNI(e)}
+                              mt={10}
+                              value={initDNI}
+                              defaultValue="V-"
+                              data={[
+                                { value: 'V-', label: 'V' },
+                                { value: 'E-', label: 'E' },
+                                { value: 'J-', label: 'J' },
+                                { value: 'G-', label: 'G' },
+                              ]}
+                            />
+                            <TextInput
+                              placeholder="Cedula o DNI"
+                              mt={10}
+                              w={232}
+                              maxLength={8}
+                              value={Dni}
+                              onChange={handleDniChange}
+                            />
+                          </Group>
+                        )
+                      }
                       <TextInput
                         placeholder="Correo electronico"
                         mt={10}
@@ -908,8 +950,8 @@ function Operadora() {
             </Group>
           </Stepper.Step>
           <Stepper.Completed>
-          <Text ta='center' fw={750} fz={24}>Su ticket ha sido comprado satisfactoriamente</Text>
-          <Group
+            <Text ta='center' fw={750} fz={24}>Su ticket ha sido comprado satisfactoriamente</Text>
+            <Group
               position="center"
               mt={20}
             >
@@ -975,13 +1017,16 @@ function Operadora() {
                   </Title>
                 </Group>
               </Card>
-              </Group>
+            </Group>
             <Button fullWidth mt={40}>Cerrar</Button>
           </Stepper.Completed>
         </Stepper>
       </Modal>
     )
   }
+  const [opened, setOpened] = useState(false);
+  const [addingCombo, setAddingCombo] = useState(false);
+  const [newCombo, setNewCombo] = useState<{ quantity: number, price: number }>({ quantity: 0, price: 0 });
 
   return (
     <>
@@ -1144,12 +1189,92 @@ function Operadora() {
                     }
                     {
                       (raffleActive(selectedRaffle)?.combos || []).length > 0 && JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
-                        <Button
-                          size='xs'
-                          ml={10}
-                        >
-                          Modificar combos
-                        </Button>
+
+
+                        <>
+                          <Modal
+                            opened={opened}
+                            onClose={() => {
+                              setOpened(false);
+                              setAddingCombo(false); 
+                            }}
+                            withCloseButton={false}
+                            centered
+                            size="xl"
+                            radius="lg"
+                          >
+                            <Title ta="center" order={2}>
+                              Editar combos
+                            </Title>
+                            <ScrollArea style={{ height: 500 }}>
+                              {(raffleActive(selectedRaffle)?.combos || []).map((combo, index) => (
+                                <Group key={index} position="center">
+                                  <NumberInput
+                                    defaultValue={combo?.quantity || 0}
+                                    placeholder="Cantidad"
+                                    label="Cantidad"
+                                    radius="md"
+                                    size="md"
+                                    hideControls
+                                  />
+                                  <div style={{ marginTop: "30px" }}>
+                                    <IconX />
+                                  </div>
+                                  <NumberInput
+                                    defaultValue={combo?.price || 0}
+                                    placeholder="Precio"
+                                    label="Precio"
+                                    radius="md"
+                                    size="md"
+                                    hideControls
+                                  />
+                                </Group>
+                              ))}
+
+
+                              {addingCombo && (
+                                <Group position="center">
+                                  <NumberInput
+                                    value={newCombo.quantity}
+                                    onChange={(value) => setNewCombo({ ...newCombo, quantity: value || 0 })} 
+                                    placeholder="Nueva cantidad"
+                                    label="Cantidad"
+                                    radius="md"
+                                    size="md"
+                                    hideControls
+                                  />
+                                  <div style={{ marginTop: "30px" }}>
+                                    <IconX />
+                                  </div>
+                                  <NumberInput
+                                    value={newCombo.price}
+                                    onChange={(value) => setNewCombo({ ...newCombo, price: value || 0 })} 
+                                    placeholder="Nuevo precio"
+                                    label="Precio"
+                                    radius="md"
+                                    size="md"
+                                    hideControls
+                                  />
+                                </Group>
+                              )}
+                            </ScrollArea>
+                            <Group>
+                              <Button w={360} color="indigo" radius="md" size="md" onClick={() => setAddingCombo(true)}>
+                                Agregar combo
+                              </Button>
+                              <Button w={360} color="teal" radius="md" size="md">
+                                Guardar
+                              </Button>
+                            </Group>
+                          </Modal>
+                          <Button
+                            size='xs'
+                            ml={10}
+                            onClick={() => setOpened(true)}
+                          >
+                            Modificar combos
+                          </Button>
+                        </>
                       )
                     }
                   </div>
