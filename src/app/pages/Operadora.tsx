@@ -250,7 +250,18 @@ function Operadora() {
       created_at: "2023-12-27T17:31:50.869-04:00",
       updated_at: "2024-01-06T19:30:22.648-04:00",
       combos: [
-      
+        {
+          "price": 2,
+          "quantity": 4
+        },
+        {
+          "price": 5,
+          "quantity": 7
+        },
+        {
+          "price": 7,
+          "quantity": 10
+        }
       ]
     }
   ]);
@@ -1013,9 +1024,32 @@ function Operadora() {
     )
   }
   const [opened, setOpened] = useState(false);
-  const [addingCombo, setAddingCombo] = useState(false);
-  const [newCombo, setNewCombo] = useState<{ quantity: number, price: number }>({ quantity: 0, price: 0 });
+  const [comboInputs, setComboInputs] = useState([{ quantity: 0, price: 0 }]);
 
+
+  const addComboInput = () => {
+    setComboInputs([...comboInputs, { quantity: 0, price: 0 }]);
+  };
+
+  const loadExistingCombos = (raffleId: number) => {
+    const selectedRaffleCombos = raffles.find((raffle) => raffle.id === raffleId)?.combos || [];
+    setComboInputs(selectedRaffleCombos.map((combo) => ({ quantity: combo.quantity, price: combo.price })));
+  };
+
+  const saveCombos = () => {
+    const updatedRaffles = raffles.map((raffle) => {
+      if (raffle.id === selectedRaffle) {
+        return {
+          ...raffle,
+          combos: comboInputs.map((combo) => ({ quantity: combo.quantity, price: combo.price })),
+        };
+      }
+      return raffle;
+    });
+
+    setRaffles(updatedRaffles);
+    setOpened(false);
+  };
   return (
     <>
       <InvalidModal />
@@ -1081,7 +1115,6 @@ function Operadora() {
                       opened={opened}
                       onClose={() => {
                         setOpened(false);
-                        setAddingCombo(false);
                       }}
                       title={<Title ta="center" order={2}>Manejar  combos</Title>}
                       withCloseButton
@@ -1090,10 +1123,10 @@ function Operadora() {
                       radius="sm"
                     >
                       <ScrollArea style={{ height: 500 }}>
-                        {(raffleActive(selectedRaffle)?.combos || []).map((combo, index) => (
+                        {comboInputs.map((combo, index) => (
                           <Group key={index} position="center">
                             <NumberInput
-                              defaultValue={combo?.quantity || 0}
+                              defaultValue={combo.quantity || 0}
                               placeholder="Cantidad"
                               label="Cantidad"
                               radius="md"
@@ -1104,7 +1137,7 @@ function Operadora() {
                               <IconX />
                             </div>
                             <NumberInput
-                              defaultValue={combo?.price || 0}
+                              defaultValue={combo.price || 0}
                               placeholder="Precio"
                               label="Precio"
                               radius="md"
@@ -1113,39 +1146,12 @@ function Operadora() {
                             />
                           </Group>
                         ))}
-
-
-                        {addingCombo && (
-                          <Group position="center">
-                            <NumberInput
-                              value={newCombo.quantity}
-                              onChange={(value) => setNewCombo({ ...newCombo, quantity: value || 0 })}
-                              placeholder="Nueva cantidad"
-                              label="Cantidad"
-                              radius="sm"
-                              size="md"
-                              hideControls
-                            />
-                            <div style={{ marginTop: "30px" }}>
-                              <IconX />
-                            </div>
-                            <NumberInput
-                              value={newCombo.price}
-                              onChange={(value) => setNewCombo({ ...newCombo, price: value || 0 })}
-                              placeholder="Nuevo precio"
-                              label="Precio"
-                              radius="sm"
-                              size="md"
-                              hideControls
-                            />
-                          </Group>
-                        )}
                       </ScrollArea>
                       <Group>
-                        <Button w={360} color="indigo" radius="md" size="md" onClick={() => setAddingCombo(true)}>
+                        <Button w={360} color="indigo" radius="md" size="md" onClick={addComboInput}>
                           Agregar combo
                         </Button>
-                        <Button w={360} color="teal" radius="md" size="md">
+                        <Button w={360} color="teal" radius="md" size="md" onClick={saveCombos}>
                           Guardar
                         </Button>
                       </Group>
@@ -1269,7 +1275,11 @@ function Operadora() {
                           <Button
                             size='xs'
                             ml={10}
-                            onClick={() => setOpened(true)}
+                            onClick={() => {
+                              setSelectedRaffle(1); // Set the selected raffle ID (adjust as needed)
+                              loadExistingCombos(1);
+                              setOpened(true);
+                            }}
                           >
                             Modificar combos
                           </Button>
