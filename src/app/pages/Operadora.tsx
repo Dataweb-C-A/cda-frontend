@@ -89,7 +89,7 @@ const useStyles = createStyles((theme) => ({
     height: "100%",
   },
   raffleSidebar: {
-    // width: "100%",
+    width: "100%",
     height: "calc(100vh - 69px)",
     marginTop: '5px',
     paddingRight: theme.spacing.xs,
@@ -562,7 +562,6 @@ function Operadora() {
     const [terms, setTerms] = useState<boolean>(false)
     const [initDNI, setInitDNI] = useState<string | null>('V-');
     const [email, setEmail] = useState<string>('');
-    const [emailIsValid, setEmailIsValid] = useState(true);
 
     const handleClose = () => {
       setBuyIsOpen(false)
@@ -1078,81 +1077,79 @@ function Operadora() {
               ) : (
                 <>
                   <div style={{ display: 'flex', marginBottom: '15px', width: '100%' }}>
-                  <Modal
-                            opened={opened}
-                            onClose={() => {
-                              setOpened(false);
-                              setAddingCombo(false);
-                            }}
-                            withCloseButton={false}
-                            centered
-                            size="xl"
-                            radius="lg"
-                          >
-                            <Title ta="center" order={2}>
-                              Manejar  combos
-                            </Title>
-                            <ScrollArea style={{ height: 500 }}>
-                              {(raffleActive(selectedRaffle)?.combos || []).map((combo, index) => (
-                                <Group key={index} position="center">
-                                  <NumberInput
-                                    defaultValue={combo?.quantity || 0}
-                                    placeholder="Cantidad"
-                                    label="Cantidad"
-                                    radius="md"
-                                    size="md"
-                                    hideControls
-                                  />
-                                  <div style={{ marginTop: "30px" }}>
-                                    <IconX />
-                                  </div>
-                                  <NumberInput
-                                    defaultValue={combo?.price || 0}
-                                    placeholder="Precio"
-                                    label="Precio"
-                                    radius="md"
-                                    size="md"
-                                    hideControls
-                                  />
-                                </Group>
-                              ))}
+                    <Modal
+                      opened={opened}
+                      onClose={() => {
+                        setOpened(false);
+                        setAddingCombo(false);
+                      }}
+                      title={<Title ta="center" order={2}>Manejar  combos</Title>}
+                      withCloseButton
+                      centered
+                      size="xl"
+                      radius="sm"
+                    >
+                      <ScrollArea style={{ height: 500 }}>
+                        {(raffleActive(selectedRaffle)?.combos || []).map((combo, index) => (
+                          <Group key={index} position="center">
+                            <NumberInput
+                              defaultValue={combo?.quantity || 0}
+                              placeholder="Cantidad"
+                              label="Cantidad"
+                              radius="md"
+                              size="md"
+                              hideControls
+                            />
+                            <div style={{ marginTop: "30px" }}>
+                              <IconX />
+                            </div>
+                            <NumberInput
+                              defaultValue={combo?.price || 0}
+                              placeholder="Precio"
+                              label="Precio"
+                              radius="md"
+                              size="md"
+                              hideControls
+                            />
+                          </Group>
+                        ))}
 
 
-                              {addingCombo && (
-                                <Group position="center">
-                                  <NumberInput
-                                    value={newCombo.quantity}
-                                    onChange={(value) => setNewCombo({ ...newCombo, quantity: value || 0 })}
-                                    placeholder="Nueva cantidad"
-                                    label="Cantidad"
-                                    radius="md"
-                                    size="md"
-                                    hideControls
-                                  />
-                                  <div style={{ marginTop: "30px" }}>
-                                    <IconX />
-                                  </div>
-                                  <NumberInput
-                                    value={newCombo.price}
-                                    onChange={(value) => setNewCombo({ ...newCombo, price: value || 0 })}
-                                    placeholder="Nuevo precio"
-                                    label="Precio"
-                                    radius="md"
-                                    size="md"
-                                    hideControls
-                                  />
-                                </Group>
-                              )}
-                            </ScrollArea>
-                            <Group>
-                              <Button w={360} color="indigo" radius="md" size="md" onClick={() => setAddingCombo(true)}>
-                                Agregar combo
-                              </Button>
-                              <Button w={360} color="teal" radius="md" size="md">
-                                Guardar
-                              </Button>
-                            </Group>
-                          </Modal>
+                        {addingCombo && (
+                          <Group position="center">
+                            <NumberInput
+                              value={newCombo.quantity}
+                              onChange={(value) => setNewCombo({ ...newCombo, quantity: value || 0 })}
+                              placeholder="Nueva cantidad"
+                              label="Cantidad"
+                              radius="sm"
+                              size="md"
+                              hideControls
+                            />
+                            <div style={{ marginTop: "30px" }}>
+                              <IconX />
+                            </div>
+                            <NumberInput
+                              value={newCombo.price}
+                              onChange={(value) => setNewCombo({ ...newCombo, price: value || 0 })}
+                              placeholder="Nuevo precio"
+                              label="Precio"
+                              radius="sm"
+                              size="md"
+                              hideControls
+                            />
+                          </Group>
+                        )}
+                      </ScrollArea>
+                      <Group>
+                        <Button w={360} color="indigo" radius="md" size="md" onClick={() => setAddingCombo(true)}>
+                          Agregar combo
+                        </Button>
+                        <Button w={360} color="teal" radius="md" size="md">
+                          Guardar
+                        </Button>
+                      </Group>
+                    </Modal>
                     <ActionIcon
                       variant="default"
                       mr={5}
@@ -1251,7 +1248,7 @@ function Operadora() {
                         </>
                       )
                     }
-                        {
+                    {
                       (raffleActive(selectedRaffle)?.combos === null || (raffleActive(selectedRaffle)?.combos || []).length === 0) &&
                       JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
                         <Button
@@ -1268,7 +1265,7 @@ function Operadora() {
 
 
                         <>
-                          
+
                           <Button
                             size='xs'
                             ml={10}
@@ -1276,13 +1273,13 @@ function Operadora() {
                           >
                             Modificar combos
                           </Button>
-                          
+
                         </>
-                        
+
                       )
-                      
+
                     }
-                
+
 
                   </div>
                   <div style={{ display: 'flex', width: '100%' }}>
