@@ -21,8 +21,8 @@ import {
   MultiSelect,
   ActionIcon,
   Title,
-  Card
-
+  Card,
+  ScrollArea
 } from '@mantine/core'
 import moment from 'moment'
 import { useForm } from '@mantine/form';
@@ -30,7 +30,7 @@ import axios from 'axios'
 import { useUser } from '../../hooks/useUser'
 import { Calendar } from 'tabler-icons-react'
 import { DatePicker } from "@mantine/dates"
-import { IconUpload, IconPhoto, IconX, IconPlus, IconMinus } from '@tabler/icons-react';
+import { IconUpload, IconPhoto, IconX, IconPlus, IconMinus, IconTrash } from '@tabler/icons-react';
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 
 
@@ -298,7 +298,7 @@ function DrawsModal({
     const nuevaEtiqueta = `Premio #${premioNumber}`;
     setPremioNumber(premioNumber + 1);
     setPremios([...premios, nuevaEtiqueta]);
-    setInputValues([...inputValues, '']); 
+    setInputValues([...inputValues, '']);
   };
 
   const eliminarUltimoPremio = () => {
@@ -308,7 +308,7 @@ function DrawsModal({
       setPremios(nuevosPremios);
       setPremioNumber(premioNumber - 1);
       const nuevosInputValues = [...inputValues];
-      nuevosInputValues.pop(); 
+      nuevosInputValues.pop();
       setInputValues(nuevosInputValues);
     } else {
       setPremioNumber(2);
@@ -371,13 +371,6 @@ function DrawsModal({
     }, 10000)
   }
 
-  const SecondStep = () => {
-    return (
-      <div>
-        <Text>SecondStep</Text>
-      </div>
-    )
-  }
 
   const removeFile = (index: number, dropzone: number) => {
     if (dropzone === 1) {
@@ -391,22 +384,62 @@ function DrawsModal({
   };
 
   const previews = (fileList: FileWithPath | null, dropzone: number) => {
-      const imageUrl = fileList === null ? '' : URL.createObjectURL(fileList);
-      return (
-        <>
-        
+    const imageUrl = fileList === null ? '' : URL.createObjectURL(fileList);
+    return (
+      <>
+
         <Group position='center'>
 
-        <div >
-          <Image
-            src={imageUrl}
-            imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-          />
-        </div>
+          <div >
+            <Image
+              src={imageUrl}
+              imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
+            />
+          </div>
         </Group>
-        </>
-      );
+      </>
+    );
   };
+
+  const [combos, setCombos] = useState([{ quantity: 0, price: 0 }]);
+
+  const addComboInput = () => {
+    setCombos([...combos, { quantity: 0, price: 0 }]);
+  };
+
+  const removeComboInput = (indexToRemove: number) => {
+    const updatedCombos = combos.filter((_, index) => index !== indexToRemove);
+    setCombos(updatedCombos);
+  };
+
+
+  const handleQuantityChange = (index: number, value?: number) => {
+    const updatedCombos = [...combos];
+    updatedCombos[index].quantity = value || 0;
+    setCombos(updatedCombos);
+  };
+
+  const handlePriceChange = (index: number, value?: number) => {
+    const updatedCombos = [...combos];
+    updatedCombos[index].price = value || 0;
+    setCombos(updatedCombos);
+  };
+
+  const [highestStepVisited, setHighestStepVisited] = useState(active);
+
+  const handleStepChange = (nextStep: number) => {
+    const isOutOfBounds = nextStep > 3 || nextStep < 0;
+
+    console.log('Combos:', combos);
+    if (isOutOfBounds) {
+      return;
+    }
+
+    setActive(nextStep);
+    setHighestStepVisited((hSC) => Math.max(hSC, nextStep));
+  };
+  const isNextDisabled = combos.some((combo) => combo.quantity === 0 || combo.price === 0);
+
   return (
     <>
       <Modal
@@ -416,6 +449,55 @@ function DrawsModal({
         size="xl"
       >
         <Stepper size="md" active={active}>
+
+          <Stepper.Step label="Combos" description="edita los combos de la rifa">
+            <Title ta="center" order={2}>Manejar combos</Title>
+            <ScrollArea style={{ height: 500 }}>
+              {combos.map((combo, index) => (
+                <Group key={index} position="center">
+                  <NumberInput
+                    value={combo.quantity}
+                    placeholder="Cantidad"
+                    label="Cantidad"
+                    radius="md"
+                    size="md"
+                    hideControls
+                    onChange={(value) => handleQuantityChange(index, value)}
+                  />
+                  <div style={{ marginTop: "30px" }}>
+                    <IconX />
+                  </div>
+                  <NumberInput
+                    value={combo.price}
+                    placeholder="Precio"
+                    label="Precio"
+                    radius="md"
+                    size="md"
+                    hideControls
+                    onChange={(value) => handlePriceChange(index, value)}
+                  />
+                  <div style={{ marginTop: "30px", cursor: "pointer" }} onClick={() => removeComboInput(index)}>
+                    <IconTrash color='red' />
+                  </div>
+                </Group>
+              ))}
+            </ScrollArea>
+            <Button fullWidth color="indigo" radius="md" size="md" onClick={addComboInput}>
+              Agregar combo
+            </Button>
+
+            <Group position="center" mt="xl">
+              <Button variant="default" radius={'lg'} onClick={prevStep} disabled={
+                active === 2 ? true : false
+              }>
+                Atrás
+              </Button>
+              <Button radius={'lg'} onClick={() => handleStepChange(active + 1)} disabled={isNextDisabled}>
+                Siguiente
+              </Button>
+            </Group>
+          </Stepper.Step>
+
           <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
             <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
               <Grid>
@@ -659,7 +741,7 @@ function DrawsModal({
               <Grid>
                 <Grid.Col span={6}>
                   <NumberInput
-                  radius={'lg'}
+                    radius={'lg'}
                     label="Precio unitario"
                     placeholder="Precio unitario"
                     withAsterisk
@@ -672,7 +754,7 @@ function DrawsModal({
                 </Grid.Col>
                 <Grid.Col span={6}>
                   <Select
-                  radius={'lg'}
+                    radius={'lg'}
                     size='md'
                     mt="md"
                     label="Moneda"
@@ -731,7 +813,7 @@ function DrawsModal({
               <Grid mb={15}>
                 <Grid.Col span={6}>
                   <Select
-                  radius={'lg'}
+                    radius={'lg'}
                     size='md'
                     mb="md"
                     label="Taquilla patrocinante"
@@ -783,48 +865,48 @@ function DrawsModal({
               </Group>
               {/* <Grid>
                 <Grid.Col span={6}> */}
-                  <Group>
-                    <Text size="xl" fz="md" mb={15} inline>
-                      Imagenes de publicidad
-                    </Text>
-                    {checkedIndex === 4 ? <Text inline c='red' mt={-17} ml={-12}></Text> : <Text inline c='red' mt={-17} ml={-12}>*</Text>}
-                  </Group>
-                  <Dropzone
-                    disabled={checkedIndex === 4}
-                    radius={'lg'}
-                    className={checkedIndex === 4 ? classes.disabled2 : 'activopapi'}
-                    accept={IMAGE_MIME_TYPE}
-                    multiple={false}
-                    onDrop={(files) => {
-                      form.getInputProps('ad').onChange(files[0])
-                      setFiles(files[0])
-                    }}
-                    color={form.errors.ad ? 'red' : ''}
-                    {...form.getInputProps('ad')}
-                  >
-                    <IconPhoto size="3.2rem" stroke={1.5} />
-                    <Text size="xl" inline>
-                      Imagen de publicidad
-                    </Text>
-                    <Text size="sm" color="dimmed" inline mt={7}>
-                      presione la imagen en este area
-                    </Text>
-                  </Dropzone>
-                  {checkedIndex !== 4 && (
-                    <Text fz="sm" ta="center" c='red' mt={10} inline>
-                      {form.errors.ad}
-                    </Text>
-                  )}
-                  <SimpleGrid
-                    cols={4}
-                    breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-                    mt={previews.length > 0 ? 'xl' : 0}
-                  >
-                    {previews(files, 1)}
-                  </SimpleGrid>
+              <Group>
+                <Text size="xl" fz="md" mb={15} inline>
+                  Imagenes de publicidad
+                </Text>
+                {checkedIndex === 4 ? <Text inline c='red' mt={-17} ml={-12}></Text> : <Text inline c='red' mt={-17} ml={-12}>*</Text>}
+              </Group>
+              <Dropzone
+                disabled={checkedIndex === 4}
+                radius={'lg'}
+                className={checkedIndex === 4 ? classes.disabled2 : 'activopapi'}
+                accept={IMAGE_MIME_TYPE}
+                multiple={false}
+                onDrop={(files) => {
+                  form.getInputProps('ad').onChange(files[0])
+                  setFiles(files[0])
+                }}
+                color={form.errors.ad ? 'red' : ''}
+                {...form.getInputProps('ad')}
+              >
+                <IconPhoto size="3.2rem" stroke={1.5} />
+                <Text size="xl" inline>
+                  Imagen de publicidad
+                </Text>
+                <Text size="sm" color="dimmed" inline mt={7}>
+                  presione la imagen en este area
+                </Text>
+              </Dropzone>
+              {checkedIndex !== 4 && (
+                <Text fz="sm" ta="center" c='red' mt={10} inline>
+                  {form.errors.ad}
+                </Text>
+              )}
+              <SimpleGrid
+                cols={4}
+                breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
+                mt={previews.length > 0 ? 'xl' : 0}
+              >
+                {previews(files, 1)}
+              </SimpleGrid>
 
-                {/* </Grid.Col> */}
-                {/* <Grid.Col span={6}>
+              {/* </Grid.Col> */}
+              {/* <Grid.Col span={6}>
                   <Group>
                     <Text size="xl" fz="md" mb={15} inline>
                       Imagen de Publicidad
@@ -881,6 +963,7 @@ function DrawsModal({
               </Group>
             </form>
           </Stepper.Step>
+
           <Stepper.Step label="Verificar los datos" description="Verifica que los datos de la rifa sean correctos">
             <Card>
 
@@ -899,7 +982,7 @@ function DrawsModal({
                 <li>
                   <strong>Precio Unitario:</strong> {form.values.price_unit}
                 </li>
-              
+
                 <li>
                   <strong>Número de Tickets:</strong> {form.values.tickets_count}
                 </li>
@@ -909,8 +992,8 @@ function DrawsModal({
                 <li>
                   <strong>Números de la Rifa:</strong> {form.values.numbers}
                 </li>
-               
-                  {/* <li>
+
+                {/* <li>
                     <strong>Fecha de Inicio:</strong> {form.values.init_date}
                   </li>
                   <li>
@@ -919,8 +1002,8 @@ function DrawsModal({
                 <li>
                   <strong>Moneda:</strong> {form.values.money}
                 </li>
-               
-               
+
+
               </ul>
             </Card>
           </Stepper.Step>
