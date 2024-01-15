@@ -12,6 +12,7 @@ import {
   Button,
   Menu,
   Modal,
+  Group,
   Divider,
   Badge,
   TextInput,
@@ -975,7 +976,7 @@ export default function AccordionList({
                   </Title>
                 </Group>
               </Grid.Col>
-              <Grid.Col xs={12} md={12} lg={8}>
+              <Grid.Col xs={12} md={12} lg={8} pt={15}>
                 <Stepper color="teal" active={
                   data.status && Boolean(data.verify) ? 2 : data.status ? 1 : 0
                 } breakpoint="xs" w="100%" mt={15}>
@@ -991,6 +992,12 @@ export default function AccordionList({
                         handlePrint();
                       }}>
                         PDF
+                      </Button>
+                      <Button size="xs" disabled={data.status} onClick={() => {
+                        setPrintModal(true);
+                        handlePrint();
+                      }}>
+                        80mm
                       </Button>
                     </Group>
                   } />
@@ -1016,7 +1023,7 @@ export default function AccordionList({
                                 alignItems: 'center',
                               }}
                             >
-                              Pagar rifa
+                              Pagado
                             </Button>
                           )
                         }
@@ -1045,7 +1052,7 @@ export default function AccordionList({
                               }}
                             >
                               {/* {(data.verify || !data.status) && <IconX size={16} style={{ color: 'red', marginRight: '5px' }} />} */}
-                              Rifa no pagada
+                              No pagado
                             </Button>
                           )
                         }
@@ -1067,7 +1074,7 @@ export default function AccordionList({
                                 disabled={repeat.is_closed || repeat.is_send == false}
                               >
                                 {(repeat.refund) && <IconCommand size={16} />}
-                                Devolver Rifa
+                                Devolver rifa
                               </Button>
                               <Modal opened={opened} onClose={close} size='md' centered title="Devolver rifa">
                                 <Text mb={20}>

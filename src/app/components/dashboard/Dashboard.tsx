@@ -8,44 +8,24 @@ import {
   Input,
   Group,
   Button,
-<<<<<<< HEAD
   Table,
   Pagination,
   Modal,
   Divider,
   Paper,
-  Badge,
-  ScrollArea
-} from "@mantine/core";
+  Badge, 
+  ScrollArea 
+} from "@mantine/core";                         
 import AccordionList from "../accordionList";
-=======
-  Pagination,
-  Flex,
-  Table ,
-  Modal,
-  Divider,
-  Paper,
-  Chip,
-  Badge
-} from "@mantine/core";
-import AccordionList from "../accordionList";
-
->>>>>>> Filter fixed
 import { DatePicker } from '@mantine/dates';
 import FormModal from "../formModal";
 import RifaTicket from "./RifaTicket";
-import HelpModalBody from "./HelpModal";
+import HelpModalBody from "./HelpModal";                                                                                                                                                                                                                                                                                                                                                                                                                                
 import axios from "axios";
 import moment from "moment";
-<<<<<<< HEAD
 import { IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
-import { PDFDownloadLink, BlobProvider, Page, Text as Textwo, View, Document, StyleSheet, Image } from "@react-pdf/renderer";
+import { PDFDownloadLink, BlobProvider, Page, Text as Textwo, View, Document, StyleSheet, Image } from "@react-pdf/renderer";                                                                                   
 import RifamaxLogo from "../../assets/images/rifamax-logo.png"
-=======
-import { useHistory } from "react-router-dom";
-import { IconCheck, IconPlus, IconRepeat, IconX, IconZoomQuestion } from "@tabler/icons";
-import { IconMoodEmpty } from "@tabler/icons-react";
->>>>>>> Filter fixed
 
 interface IRifas {
   id: number;
@@ -115,16 +95,11 @@ interface IClosed {
   rifa: {
     serie: number;
     app_status: 'Enviado APP' | 'No enviado';
-<<<<<<< HEAD
     amount: number;
-=======
-    amount: number
->>>>>>> Filter fixed
     rifero: {
       name: string;
       is_block: "Bloqueado" | "Activo";
     };
-<<<<<<< HEAD
     verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente" | 0;
     denomination: "$" | "Bs" | "COP";
     rifDate: string;
@@ -142,11 +117,6 @@ interface IClosed {
     rifDate: string;
   }[];
   pendings: number;
-=======
-    verification: "Pagado" | "Devuelto" | "No pagado" | "Pendiente";
-    denomination: "$" | "Bs" | "COP";
-  }[];
->>>>>>> Filter fixed
   total: {
     bsd: number;
     dolar: number;
@@ -154,7 +124,6 @@ interface IClosed {
   }
 }
 
-<<<<<<< HEAD
 
 interface ICloseModal {
   serie: number;
@@ -169,24 +138,17 @@ interface ICloseModal {
   rifDate: string;
 }
 
-=======
->>>>>>> Filter fixed
 function Dashboard() {
   const [helpModal, setHelpModal] = useState(false);
   const [tickets, setTickets] = useState<IRifas[]>([]);
   const [loading, setLoading] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-<<<<<<< HEAD
   const [pageNumber, setPageNumber] = useState<number>(1);
-=======
-  const [pageNumber, setPageNumber] = useState(1);
->>>>>>> Filter fixed
   const [reset, setReset] = useState<number>(0);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [closeDay, setCloseDay] = useState<boolean>(false);
-<<<<<<< HEAD
   const [counter, setCounter] = useState<number>(0);
   const [isAvailable, setIsAvailable] = useState<boolean>(false)
   const [currentPage, setCurrentPage] = useState<number>(localStorage.getItem("last_page") ? Number(localStorage.getItem("last_page")) : 1);
@@ -224,58 +186,6 @@ function Dashboard() {
       cop: 1.0
     }
   });
-=======
-  const [closedData, setClosedData] = useState<IClosed>({
-    rifa: [{
-      serie: 1,
-      app_status: 'Enviado APP',
-      amount: 1.0,
-      rifero: {
-        name: 'Cargando...',
-        is_block: "Bloqueado"
-      },
-      verification: 'No pagado',
-      denomination: '$',
-    }],
-    total: {
-      bsd: 1.0,
-      dolar: 1.0,
-      cop: 1.0
-    }
-  });
-
-  useEffect(() => {
-    axios.get("https://rifa-max.com/api/v1/rifas/closed", {
-      headers: {
-        ContentType: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response) => {
-      setClosedData(response.data)
-    })
-    .catch((err) => {
-      console.error(err)
-    })
-  }, [closeDay])
-
-  const getData = () => {
-    axios
-      .get(`https://rifa-max.com/api/v1/rifas/actives_no_tickets`, {
-        headers: {
-          ContentType: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) => {
-        setLoading(false);
-        setTickets(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
->>>>>>> Filter fixed
 
   const styles = StyleSheet.create({
     body: {
@@ -316,7 +226,6 @@ function Dashboard() {
     setPageNumber(1);
     setOpenForm(false);
   };
-<<<<<<< HEAD
 
   useEffect(() => {
     setIsAvailable(false)
@@ -362,30 +271,6 @@ function Dashboard() {
     }, 3000)
   };
 
-=======
-
-  const handleScrollEvent = async () => {
-    const totalHeight = document.documentElement.scrollHeight;
-    const innerHeight = window.innerHeight;
-    const scrollTop = document.documentElement.scrollTop;
-
-    try {
-      if (innerHeight + scrollTop + 1 >= totalHeight) {
-        setPageNumber((prev) => prev + 1);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScrollEvent);
-
-    return () => window.removeEventListener("scroll", handleScrollEvent);
-  }, []);
-
-  const history = useHistory();
->>>>>>> Filter fixed
 
   const handleScrollEvent = async () => {
     const totalHeight = document.documentElement.scrollHeight;
@@ -450,7 +335,6 @@ function Dashboard() {
   };
   const elements = ('rifa' in closedData ? closedData.rifa : []) as IClosed['rifa'];
 
-<<<<<<< HEAD
   const rows = elements.map((element: ICloseModal) => (
     <tr key={element.serie}>
       <td style={{ textAlign: 'center' }}>{element.serie}</td>
@@ -580,46 +464,12 @@ function Dashboard() {
         size="lg"
         mt={-44}
         title={`Cierre del dia de hoy: ${moment().format('DD/MM/YYYY')}`}
-=======
- const rows = elements.map((element: any, index: number) => (
-    <tr key={index}>
-      <td style={{ textAlign: 'center' }}>{element.serie}</td>
-      <td style={{ textAlign: 'center' }}>{element.app_status}</td>
-      <td style={{ textAlign: 'center' }}><Badge color={element.verification == 'Pagado' ? 'teal' : element.verification == 'Devuelto' ? 'blue' : element.app_status === 'No enviado' ? 'yellow' : element.verification == 0 ? 'grape' : 'red'}>{element.app_status == 'No enviado' ? 'Pendiente' : element.verification == 0 ? "Enviado APP" : element.verification}</Badge></td>
-      <td style={{ textAlign: 'center' }}>{element.verification === 'No pagado' ? 'No ha pagado' : `${element.amount} ${element.denomination}`}</td>
-      <td style={{ textAlign: 'center' }}>{element.rifero.name}</td>
-    </tr>
-  ));
-
-  const filteredTickets = tickets
-    .filter((ticket) => {
-      if (!searchValue) {
-        return true;
-      }
-      const searchString = searchValue.toLowerCase();
-      const awardSign = ticket.awardSign?.toLowerCase() || "";
-      const riferoName = ticket.user.name.toLowerCase() || "";
-      const awardNoSign = ticket.awardNoSign?.toLowerCase() || "";
-      return (
-        awardSign.includes(searchString) ||
-        riferoName.includes(searchString) ||
-        awardNoSign.includes(searchString)
-      );
-    });
-
-  const CloseDayModal = () => {
-    return (
-      <Modal
-        size="lg"
-        title="Cerrar día"
->>>>>>> Filter fixed
         onClose={() => setCloseDay(false)}
         centered
         opened={closeDay}
       >
         <Divider label="Cuadre de hoy" mt={20} labelPosition="center" variant="dashed" />
         <Paper w="100%" py={50}>
-<<<<<<< HEAD
           <Table striped highlightOnHover>
             <ScrollArea h={185}>
               <thead>
@@ -670,35 +520,6 @@ function Dashboard() {
         </Paper>
         <Divider label="Total" labelPosition="center" variant="dashed" mt={-30} mb={20} />
         <Card w="100%" p={30} mb={40}>
-=======
-        <Table striped highlightOnHover>
-        <thead>
-          <tr>
-            <th style={{ textAlign: 'center' }}>Serie</th>
-            <th style={{ textAlign: 'center' }}>Enviado</th>
-            <th style={{ textAlign: 'center' }}>Verificación</th>
-            <th style={{ textAlign: 'center' }}>Monto</th>
-            <th style={{ textAlign: 'center' }}>Rifero</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
-        {
-          closedData.rifa.length === 0 && (
-            <>
-              <Text ta='center' pt={55} pb={0} fw={500} fz={20}>
-                No hay rifas para mostrar
-              </Text>
-              <Text ta="center" pb={10} mt={5}>
-                <IconZoomQuestion size={40}/>
-              </Text>
-            </>
-          )
-        }
-        </Paper>
-        <Divider label="Total" labelPosition="center" variant="dashed" mt={-20} mb={40}/>
-        <Card w="100%" p={50} mb={40}>
->>>>>>> Filter fixed
           <Group w="100%">
             <div style={{ width: '30.33%' }}>
               <Text fw={200} ta="center">
@@ -726,7 +547,6 @@ function Dashboard() {
             </div>
           </Group>
         </Card>
-<<<<<<< HEAD
         <Group mt={-40} w="100%">
           <PDFDownloadLink
             document={<TableMock />}
@@ -826,12 +646,6 @@ function Dashboard() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const visibleTickets = filteredTickets.reverse().slice(startIndex, endIndex);
-=======
-        <Button color="blue" w="100%" leftIcon={<IconCheck />} onClick={() => setCloseDay(false)}>Confirmar</Button>
-      </Modal>
-    )
-  }
->>>>>>> Filter fixed
 
   return (
     <>
@@ -860,11 +674,7 @@ function Dashboard() {
                     Estado de las Rifas diarias
                   </Text>
                 </Title>
-<<<<<<< HEAD
                 <Group mb={15}>
-=======
-                <Group mb={15} mt={-20}>
->>>>>>> Filter fixed
                   <DatePicker
                     w="150px"
                     placeholder="Seleccionar fecha"
@@ -879,7 +689,6 @@ function Dashboard() {
                     placeholder="Seleccionar fecha"
                     inputFormat="YYYY-MM-DD"
                     label="Hasta"
-<<<<<<< HEAD
                     variant="filled"
                     value={endDate}
                     onChange={(date) => setEndDate(date)}
@@ -952,78 +761,6 @@ function Dashboard() {
                     Cerrar día
                   </Button>
                 </Group>
-=======
-                    variant="filled"
-                    value={endDate}
-                    onChange={(date) => setEndDate(date)}
-                  />
-                  <Input.Wrapper
-                    label="Filtrar por:"
-                  >
-                    <Input
-                      variant="filled"
-                      placeholder="Premio, rifero o número de premiado"
-                      radius="sm"
-                      size="sm"
-                      w="260px"
-                      value={searchValue}
-                      onChange={handleSearchChange}
-                    />
-                  </Input.Wrapper>
-                  <Group spacing={0} mt={0}>
-                    <Button
-                      mt={25}
-                      onClick={() => filterByDate()}
-                      p={7}
-                      fz={14}
-                      style={{ borderRadius: '5px 0 0 5px' }}
-                    >
-                      Filtrar
-                    </Button>
-                    <Button
-                      mt={25}
-                      color="red"
-                      p={7}
-                      fz={14}
-                      style={{ borderRadius: '0 5px 5px 0' }}
-                      onClick={() => {
-                        setEndDate(null)
-                        setStartDate(null)
-                        setReset(reset + 1)
-                      }}
-                    >
-                      <IconRepeat size={16}/>
-                    </Button>
-                    <Group position="right" mt={25}>
-                      <FormModal
-                        variant="filled"
-                        color="blue"
-                        style={{ position: 'absolute', right: 15 }}
-                        leftIcon={<IconPlus />}
-                        className="btn-rifa"
-                        onClick={() => setOpenForm((prevState) => !prevState)}
-                        onClose={() => closeForm()}
-                        open={openForm}
-                      >
-                        Agregar Rifa
-                      </FormModal>
-                      {/* <Button onClick={() => setCloseDay(true)} leftIcon={<IconX />} color='red' style={{ position: 'absolute', width: '130px', right: 15 }}>
-                        Cerrar día
-                      </Button> */}
-                    </Group>
-                  </Group>
-
-                </Group>
-
-
-
-                {/* <Pagination
-                  total={Math.ceil(tickets.length / perPage)}
-                  onChange={(value) => setCurrentPage(value)}
-                /> */}
-              </Grid.Col>
-              <Grid.Col md={2} sm={12}>
->>>>>>> Filter fixed
               </Grid.Col>
             </Grid>
             {loading ? (
@@ -1032,7 +769,6 @@ function Dashboard() {
               </div>
             ) : (
               <>
-<<<<<<< HEAD
                 <Pagination
                   total={Math.ceil(filteredTickets.length / itemsPerPage)}
                   page={currentPage}
@@ -1044,9 +780,6 @@ function Dashboard() {
                   siblings={100}
                 />
                 {visibleTickets.map((ticket: IRifas) => (
-=======
-                {filteredTickets.sort(compareById).map((ticket: IRifas) => (
->>>>>>> Filter fixed
                   <AccordionList
                     key={ticket.id}
                     repeat={ticket}
@@ -1057,12 +790,8 @@ function Dashboard() {
                       status: ticket.is_send,
                       pin: !!ticket.pin,
                       pinNumber: ticket.pin || null,
-<<<<<<< HEAD
                       verify: ticket.verify,
                       created_at: ticket.rifDate
-=======
-                      verify: ticket.verify
->>>>>>> Filter fixed
                     }}
                     dataPDF={{
                       agency: ticket.user.name,
@@ -1087,7 +816,6 @@ function Dashboard() {
                     />
                   </AccordionList>
                 ))}
-<<<<<<< HEAD
                 <Pagination
                   total={Math.ceil(filteredTickets.length / itemsPerPage)}
                   page={currentPage}
@@ -1095,8 +823,6 @@ function Dashboard() {
                   mt={10}
                   siblings={100}
                 />
-=======
->>>>>>> Filter fixed
               </>
             )}
             {tickets.length === 0 && (
