@@ -224,49 +224,9 @@ function ticketsConstructor(tickets_count: number) {
 function Operadora() {
   const paginationNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  const [raffles, setRaffles] = useState<IRaffle[]>([
-    {
-      id: 1,
-      ad: {
-        url: "/uploads/x100/raffle/ad/13/bera.png"
-      },
-      title: "Prueba no multiple",
-      draw_type: "Progresiva",
-      status: "En venta",
-      limit: 100,
-      money: "$",
-      raffle_type: "Triple",
-      price_unit: 1.0,
-      tickets_count: 1000,
-      numbers: 123,
-      lotery: "ZULIA 7A",
-      expired_date: null,
-      init_date: "2024-01-01T00:00:00.000-04:00",
-      prizes: [],
-      winners: null,
-      has_winners: false,
-      automatic_taquillas_ids: [],
-      shared_user_id: 168,
-      created_at: "2023-12-27T17:31:50.869-04:00",
-      updated_at: "2024-01-06T19:30:22.648-04:00",
-      combos: [
-        {
-          "price": 2,
-          "quantity": 4
-        },
-        {
-          "price": 5,
-          "quantity": 7
-        },
-        {
-          "price": 7,
-          "quantity": 10
-        }
-      ]
-    }
-  ]);
+  const [raffles, setRaffles] = useState<IRaffle[]>([]);
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
@@ -318,47 +278,47 @@ function Operadora() {
   })
 
   useEffect(() => {
-    // if (rafflesCableStatus.is_connected === false) {
-    //   cable.subscriptions.create('X100::RafflesChannel', {
-    //     connected() {
-    //       console.log('Connected to ActionCable');
-    //       setRafflesCableStatus({
-    //         is_connected: true,
-    //         receiving_data: false
-    //       })
-    //     },
+    if (rafflesCableStatus.is_connected === false) {
+      cable.subscriptions.create('X100::RafflesChannel', {
+        connected() {
+          console.log('Connected to ActionCable');
+          setRafflesCableStatus({
+            is_connected: true,
+            receiving_data: false
+          })
+        },
 
-    //     disconnected() {
-    //       console.log('Disconnected from ActionCable');
-    //       setRafflesCableStatus({
-    //         is_connected: false,
-    //         receiving_data: false
-    //       })
-    //       setBuyIsOpen(false)
-    //       setSearchValue(0)
-    //       setActiveStep(0)
-    //       setHasPaymentSelected(null)
-    //       setCountrySelected(null)
-    //       setClient(null)
-    //       setIsOpenInvalidModal({
-    //         isOpen: false,
-    //         mode: 'valid'
-    //       })
-    //       setSelectedRaffle(null)
-    //       setRaffles([])
-    //     },
+        disconnected() {
+          console.log('Disconnected from ActionCable');
+          setRafflesCableStatus({
+            is_connected: false,
+            receiving_data: false
+          })
+          setBuyIsOpen(false)
+          setSearchValue(0)
+          setActiveStep(0)
+          setHasPaymentSelected(null)
+          setCountrySelected(null)
+          setClient(null)
+          setIsOpenInvalidModal({
+            isOpen: false,
+            mode: 'valid'
+          })
+          setSelectedRaffle(null)
+          setRaffles([])
+        },
 
-    //     received(data: any) {
-    //       console.log('Received data from ActionCable:', data);
-    //       setRaffles(data)
-    //       setRafflesCableStatus({
-    //         is_connected: true,
-    //         receiving_data: true
-    //       })
-    //       setLoading(false)
-    //     },
-    //   })
-    // }
+        received(data: any) {
+          console.log('Received data from ActionCable:', data);
+          setRaffles(data)
+          setRafflesCableStatus({
+            is_connected: true,
+            receiving_data: true
+          })
+          setLoading(false)
+        },
+      })
+    }
 
     if (users.length < 1) {
       axios
@@ -377,36 +337,36 @@ function Operadora() {
 
     console.log('useEffect are going effect')
 
-    // cable.subscriptions.create('X100::TicketsChannel', {
-    //   connected() {
-    //     console.log('Connected to ActionCable');
-    //     setRafflesCableStatus({
-    //       is_connected: true,
-    //       receiving_data: false
-    //     })
-    //   },
+    cable.subscriptions.create('X100::TicketsChannel', {
+      connected() {
+        console.log('Connected to ActionCable');
+        setRafflesCableStatus({
+          is_connected: true,
+          receiving_data: false
+        })
+      },
 
-    //   disconnected() {
-    //     console.log('Disconnected from ActionCable');
-    //     setRafflesCableStatus({
-    //       is_connected: false,
-    //       receiving_data: false
-    //     })
-    //     setHasPaymentSelected(null)
-    //     setSelectedRaffle(null)
-    //     setRaffles([])
-    //   },
+      disconnected() {
+        console.log('Disconnected from ActionCable');
+        setRafflesCableStatus({
+          is_connected: false,
+          receiving_data: false
+        })
+        setHasPaymentSelected(null)
+        setSelectedRaffle(null)
+        setRaffles([])
+      },
 
-    //   received(data: any) {
-    //     console.log('Received data from ActionCable:', data);
-    //     setTickets(data)
-    //     setRafflesCableStatus({
-    //       is_connected: true,
-    //       receiving_data: true
-    //     })
-    //     setLoading(false)
-    //   },
-    // })
+      received(data: any) {
+        console.log('Received data from ActionCable:', data);
+        setTickets(data)
+        setRafflesCableStatus({
+          is_connected: true,
+          receiving_data: true
+        })
+        setLoading(false)
+      },
+    })
   }, [reload])
 
   function RaffleListEmpty() {
@@ -593,7 +553,7 @@ function Operadora() {
 
     const secondNextStep = (phone: string) => {
       setPhone(phone)
-      axios.get("http://localhost:3000/x100/clients", {
+      axios.get("https://mock.rifa-max.com/x100/clients", {
         params: {
           phone: `${countryPrefix} ${selectValue} ${textInputValue}`
         }
@@ -638,7 +598,7 @@ function Operadora() {
     };
 
     const createClient = () => {
-      axios.post("http://localhost:3000/x100/clients", {
+      axios.post("https://mock.rifa-max.com/x100/clients", {
         x100_client: {
           name: name + ' ' + lastName,
           dni: (countrySelected === 'Venezuela' ? `${initDNI}${Dni}` : null),
@@ -1254,7 +1214,7 @@ function Operadora() {
                         </>
                       )
                     }
-                    {
+                    {/* {
                       (raffleActive(selectedRaffle)?.combos === null || (raffleActive(selectedRaffle)?.combos || []).length === 0) &&
                       JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
                         <Button
@@ -1265,8 +1225,8 @@ function Operadora() {
                           Agregar combos
                         </Button>
                       )
-                    }
-                    {
+                    } */}
+                    {/* {
                       (raffleActive(selectedRaffle)?.combos || []).length > 0 && JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
 
 
@@ -1288,7 +1248,7 @@ function Operadora() {
 
                       )
 
-                    }
+                    } */}
 
 
                   </div>
@@ -1328,7 +1288,7 @@ function Operadora() {
                       <div className={classes.raffleInfo}>
                         <Card withBorder mt={0} className={classes.raffleInfoCard}>
                           <Text fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
-                          <Image src={`http://localhost:3000/${raffleActive(selectedRaffle)?.ad?.url}`} />
+                          <Image src={`https://mock.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Tipo:</Text>
                             <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.tickets_count}</Text>
@@ -1350,6 +1310,7 @@ function Operadora() {
                             ticketsSelected.length > 0 && (
                               <Card bg="white" className="mini-cutoff">
                                 <small>
+                                  <Text ta="center" fw={700} color='black'>Informacion de compra</Text> 
                                   <Divider my={10} variant="dashed" />
                                   <Group position="apart">
                                     <Title order={6} fw={600} c='black'>
@@ -1361,27 +1322,21 @@ function Operadora() {
                                     <Title order={6} fw={600} c='black'>
                                       Precio.
                                     </Title>
-                                    <Title order={6} fw={600} c='black'>
-                                      Descto.
-                                    </Title>
                                   </Group>
-                                  <Group pb={10} mx={0} position="center">
+                                  <Group pb={10} mx={0} position="apart">
                                     <ScrollArea h={105} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                       {
                                         ticketsSelected.map((ticket) => {
                                           return (
                                             <Group position="apart" spacing={25}>
-                                              <Title order={6} ml={0} fw={300} c='black'>
+                                              <Title order={6} fw={300} c='black'>
                                                 {parseTickets(ticket)}
                                               </Title>
-                                              <Title order={6} ml={5} fw={300} c='black'>
+                                              <Title order={6} mr={31} ml={43} fw={300} c='black'>
                                                 1.00
                                               </Title>
                                               <Title order={6} fw={300} ta="end" c='black'>
                                                 {raffleActive(selectedRaffle || 0)?.price_unit}.00$
-                                              </Title>
-                                              <Title order={6} ml={5} fw={300} mr={15} c='black'>
-                                                0.00
                                               </Title>
                                             </Group>
                                           )

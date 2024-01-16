@@ -113,6 +113,7 @@ function DrawsModal({
   const [checkedIndex, setCheckedIndex] = useState(0);
   const [ownerLabel, setOwnerLabel] = useState<IWhitelist[]>([])
   const [allTaquillas, setAllTaquillas] = useState<boolean>(true)
+  const [combos, setCombos] = useState([{ quantity: 0, price: 0 }]);
   const [visibleTaquillas, setVisibleTaquillas] = useState<IVisibleTaquillas[]>([
     {
       label: "Cargando...",
@@ -184,6 +185,7 @@ function DrawsModal({
       // second_prize: null,
       init_date: null,
       visible_taquillas_ids: [],
+      combos: combos,
       expired_date: null,
       money: '$',
       ad: null,
@@ -331,7 +333,7 @@ function DrawsModal({
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
 
-    axios.post('http://localhost:3000/x100/raffles', { x100_raffle: values }, {
+    axios.post('https://mock.rifa-max.com/x100/raffles', { x100_raffle: values }, {
       headers: {
         "Content-Type": ["application/json", "multipart/form-data"],
         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -400,8 +402,6 @@ function DrawsModal({
       </>
     );
   };
-
-  const [combos, setCombos] = useState([{ quantity: 0, price: 0 }]);
 
   const addComboInput = () => {
     setCombos([...combos, { quantity: 0, price: 0 }]);
