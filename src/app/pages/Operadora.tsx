@@ -422,17 +422,19 @@ function Operadora() {
   }
 
   function chooseTicket(ticketNumber: number) {
-    if (ticketsSelected.includes(ticketNumber)) {
-      setTicketsSelected(ticketsSelected.filter((ticket) => ticket !== ticketNumber));
+    const isTicketSelected = ticketsSelected.includes(ticketNumber);
+  
+    if (isTicketSelected) {
+      setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
+      setTotalPrice((prevTotal) => prevTotal - 1); 
     } else {
-      setTicketsSelected([...ticketsSelected, ticketNumber]);
+      setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
+      setTotalPrice((prevTotal) => prevTotal + 1); 
     }
-
+  
     setTicketKey((prevKey) => prevKey + 1);
-
-    setTotalPrice((prevTotal) => prevTotal + 1);
   }
-
+  
 
 
   function cleanSelection() {
@@ -476,30 +478,21 @@ function Operadora() {
 
   const handleComboClick = (quantity: number, price: number) => {
     const newTicketsSelected = [...ticketsSelected];
-  
-    const availableTicketsOnPage = tickets.tickets
-      .slice((selectedPage - 1) * 100, selectedPage * 100)
-      .filter((ticket: ITicket) => !ticket.is_sold && !newTicketsSelected.includes(ticket.position))
-      .map((ticket: ITicket) => ticket.position);
-  
-    if (availableTicketsOnPage.length === 0) {
-      setSelectedPage((prevPage) => Math.min(prevPage + 1, paginationNumbers.length));
-      return;
+
+    for (let i = 0; i < quantity; i++) {
+      const randomTicketNumber = Math.floor(Math.random() * 999) + 1;
+
+      if (!newTicketsSelected.includes(randomTicketNumber)) {
+        newTicketsSelected.push(randomTicketNumber);
+      }
     }
-  
-    for (let i = 0; i < Math.min(quantity, availableTicketsOnPage.length); i++) {
-      const randomIndex = Math.floor(Math.random() * availableTicketsOnPage.length);
-      const randomTicketNumber = availableTicketsOnPage[randomIndex];
-  
-      newTicketsSelected.push(randomTicketNumber);
-      availableTicketsOnPage.splice(randomIndex, 1);
-    }
-  
+
     setTicketsSelected(newTicketsSelected);
     setTicketKey((prevKey) => prevKey + 1);
+
     setTotalPrice((prevTotal) => prevTotal + price);
   };
-  
+
   const handleSearch = () => {
     apartTickets(searchValue || 0);
     setSearchValue(null);
