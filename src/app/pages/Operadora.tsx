@@ -232,7 +232,7 @@ function Operadora() {
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
-  const [searchValue, setSearchValue] = useState<number>(0)
+  const [searchValue, setSearchValue] = useState<number | null>(null);
   const [isOpenInvalidTicketModal, setIsOpenInvalidModal] = useState<ITicketModal>({
     isOpen: false,
     mode: 'valid'
@@ -466,6 +466,11 @@ function Operadora() {
 
     return parsedPosition;
   }
+  const [ticketListKey, setTicketListKey] = useState<number>(0);
+  const handleSearch = () => {
+    apartTickets(searchValue || 0);
+    setSearchValue(null); // Set the input to null
+  };
 
   function apartTickets(ticket_nro: number) {
     const ticketSelected = tickets.tickets.find((ticket) => ticket.position === ticket_nro);
@@ -484,6 +489,10 @@ function Operadora() {
 
     const newTickets = [...ticketsSelected, ticketSelected.position];
     setTicketsSelected(newTickets);
+
+    setTicketKey((prevKey) => prevKey + 1);
+
+    setTicketListKey((prevKey) => prevKey + 1);
 
     return handleInvalidModal(false, 'valid');
   }
@@ -991,10 +1000,7 @@ function Operadora() {
     setComboInputs([...comboInputs, { quantity: 0, price: 0 }]);
   };
 
-  const loadExistingCombos = (raffleId: number) => {
-    const selectedRaffleCombos = raffles.find((raffle) => raffle.id === raffleId)?.combos || [];
-    setComboInputs(selectedRaffleCombos.map((combo) => ({ quantity: combo.quantity, price: combo.price })));
-  };
+
 
   const saveCombos = () => {
     const updatedRaffles = raffles.map((raffle) => {
@@ -1150,10 +1156,12 @@ function Operadora() {
                     >
                       <IconChevronRight />
                     </ActionIcon>
+
                     <NumberInput
                       size="xs"
                       hideControls
                       placeholder="Buscar número"
+                      value={searchValue || undefined}
                       onChange={(value: number) => setSearchValue(value)}
                       icon={
                         <Card px={2} py={0} m={0} ml={2} className={classes.searchButton}>
@@ -1163,16 +1171,15 @@ function Operadora() {
                       style={{ borderRadius: '5px 0 0 5px' }}
                       ml={10}
                     />
+
                     <Button
                       size='xs'
                       ml={0}
                       color="blue"
-                      onClick={() => apartTickets(searchValue)}
+                      onClick={handleSearch}
                       style={{ borderRadius: '0 5px 5px 0' }}
                     >
-                      <IconSearch
-                        size={22}
-                      />
+                      <IconSearch size={22} />
                     </Button>
                     <Button
                       size='xs'
@@ -1310,7 +1317,7 @@ function Operadora() {
                             ticketsSelected.length > 0 && (
                               <Card bg="white" className="mini-cutoff">
                                 <small>
-                                  <Text ta="center" fw={700} color='black'>Informacion de compra</Text> 
+                                  <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
                                   <Divider my={10} variant="dashed" />
                                   <Group position="apart">
                                     <Title order={6} fw={600} c='black'>
