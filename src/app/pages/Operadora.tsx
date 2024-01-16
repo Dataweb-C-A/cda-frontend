@@ -429,13 +429,18 @@ function Operadora() {
     }
 
     setTicketKey((prevKey) => prevKey + 1);
+
+    setTotalPrice((prevTotal) => prevTotal + 1);
   }
+
 
 
   function cleanSelection() {
-    setTicketsSelected([])
-    setHasPaymentSelected(null)
+    setTicketsSelected([]);
+    setHasPaymentSelected(null);
+    setTotalPrice(0);
   }
+
 
   function handleInvalidModal(state: boolean, mode: string) {
     setIsOpenInvalidModal({
@@ -467,9 +472,28 @@ function Operadora() {
     return parsedPosition;
   }
   const [ticketListKey, setTicketListKey] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  const handleComboClick = (quantity: number, price: number) => {
+    const newTicketsSelected = [...ticketsSelected];
+
+    for (let i = 0; i < quantity; i++) {
+      const randomTicketNumber = Math.floor(Math.random() * 999) + 1;
+
+      if (!newTicketsSelected.includes(randomTicketNumber)) {
+        newTicketsSelected.push(randomTicketNumber);
+      }
+    }
+
+    setTicketsSelected(newTicketsSelected);
+    setTicketKey((prevKey) => prevKey + 1);
+
+    setTotalPrice((prevTotal) => prevTotal + price);
+  };
+
   const handleSearch = () => {
     apartTickets(searchValue || 0);
-    setSearchValue(null); // Set the input to null
+    setSearchValue(null);
   };
 
   function apartTickets(ticket_nro: number) {
@@ -993,29 +1017,7 @@ function Operadora() {
     )
   }
   const [opened, setOpened] = useState(false);
-  const [comboInputs, setComboInputs] = useState([{ quantity: 0, price: 0 }]);
 
-
-  const addComboInput = () => {
-    setComboInputs([...comboInputs, { quantity: 0, price: 0 }]);
-  };
-
-
-
-  const saveCombos = () => {
-    const updatedRaffles = raffles.map((raffle) => {
-      if (raffle.id === selectedRaffle) {
-        return {
-          ...raffle,
-          combos: comboInputs.map((combo) => ({ quantity: combo.quantity, price: combo.price })),
-        };
-      }
-      return raffle;
-    });
-
-    setRaffles(updatedRaffles);
-    setOpened(false);
-  };
   return (
     <>
       <InvalidModal />
@@ -1077,51 +1079,7 @@ function Operadora() {
               ) : (
                 <>
                   <div style={{ display: 'flex', marginBottom: '15px', width: '100%' }}>
-                    <Modal
-                      opened={opened}
-                      onClose={() => {
-                        setOpened(false);
-                      }}
-                      title={<Title ta="center" order={2}>Manejar  combos</Title>}
-                      withCloseButton
-                      centered
-                      size="xl"
-                      radius="sm"
-                    >
-                      <ScrollArea style={{ height: 500 }}>
-                        {comboInputs.map((combo, index) => (
-                          <Group key={index} position="center">
-                            <NumberInput
-                              defaultValue={combo.quantity || 0}
-                              placeholder="Cantidad"
-                              label="Cantidad"
-                              radius="md"
-                              size="md"
-                              hideControls
-                            />
-                            <div style={{ marginTop: "30px" }}>
-                              <IconX />
-                            </div>
-                            <NumberInput
-                              defaultValue={combo.price || 0}
-                              placeholder="Precio"
-                              label="Precio"
-                              radius="md"
-                              size="md"
-                              hideControls
-                            />
-                          </Group>
-                        ))}
-                      </ScrollArea>
-                      <Group>
-                        <Button w={360} color="indigo" radius="md" size="md" onClick={addComboInput}>
-                          Agregar combo
-                        </Button>
-                        <Button w={360} color="teal" radius="md" size="md" onClick={saveCombos}>
-                          Guardar
-                        </Button>
-                      </Group>
-                    </Modal>
+
                     <ActionIcon
                       variant="default"
                       mr={5}
@@ -1191,71 +1149,38 @@ function Operadora() {
                         onClick={() => cleanSelection()}
                       />
                     </Button>
-                    {
-                      raffleActive(selectedRaffle)?.combos === null ? (
-                        JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
-                          <Button
-                            size='xs'
-                            ml={10}
-                          >
-                            Agregar combos
-                          </Button>
-                        )
-                      ) : (
-                        <>
-                          {
-                            (raffleActive(selectedRaffle)?.combos || []).map((combo) => {
-                              return (
-                                <>
-                                  <Button
-                                    size='xs'
-                                    ml={10}
-                                    color="teal"
-                                  >
-                                    {combo.quantity} x {combo.price}$
-                                  </Button>
-                                </>
-                              )
-                            })
-                          }
-                        </>
-                      )
-                    }
-                    {/* {
-                      (raffleActive(selectedRaffle)?.combos === null || (raffleActive(selectedRaffle)?.combos || []).length === 0) &&
+                    {raffleActive(selectedRaffle)?.combos === null ? (
                       JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
                         <Button
                           size='xs'
                           ml={10}
-                          onClick={() => setOpened(true)}
                         >
                           Agregar combos
                         </Button>
                       )
-                    } */}
-                    {/* {
-                      (raffleActive(selectedRaffle)?.combos || []).length > 0 && JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
+                    ) : (
+                      <>
+                        {
+                          (raffleActive(selectedRaffle)?.combos || []).map((combo) => {
+                            return (
+                              <>
+                                <Button
+                                  size='xs'
+                                  ml={10}
+                                  color="teal"
+                                  onClick={() => handleComboClick(combo.quantity, combo.price)}
+                                >
+                                  {combo.quantity} x {combo.price}$
+                                </Button>
+                              </>
+                            );
+                          })
+                        }
 
 
-                        <>
+                      </>
+                    )}
 
-                          <Button
-                            size='xs'
-                            ml={10}
-                            onClick={() => {
-                              setSelectedRaffle(1); // Set the selected raffle ID (adjust as needed)
-                              loadExistingCombos(1);
-                              setOpened(true);
-                            }}
-                          >
-                            Modificar combos
-                          </Button>
-
-                        </>
-
-                      )
-
-                    } */}
 
 
                   </div>
@@ -1355,9 +1280,11 @@ function Operadora() {
                                         Total:
                                       </Title>
                                       <Title order={4} fw={300} ta="end" c='black'>
-                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * ticketsSelected.length}.00$
+                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00$
                                       </Title>
                                     </Group>
+
+
                                   </Group>
                                 </small>
                                 <Button
