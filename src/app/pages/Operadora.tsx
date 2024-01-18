@@ -38,9 +38,13 @@ interface ITicket {
   sold_to: IClient | {}
 }
 
-interface ICableTicket { 
+interface ICableTicket {
   raffle_id: number,
   tickets: number[]
+}
+interface ICableTicket {
+  raffle_id: number;
+  positions: number[];
 }
 
 interface ITicketModal {
@@ -238,6 +242,8 @@ function Operadora() {
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
+  const [isInvalidTicketPurchase, setIsInvalidTicketPurchase] = useState<boolean>(false);
+
   const [isOpenInvalidTicketModal, setIsOpenInvalidModal] = useState<ITicketModal>({
     isOpen: false,
     mode: 'valid'
@@ -429,26 +435,31 @@ function Operadora() {
 
   function chooseTicket(ticketNumber: number) {
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
-  
+
     if (isTicketSelected) {
       setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
-      setTotalPrice((prevTotal) => prevTotal - 1); 
+      setTotalPrice((prevTotal) => prevTotal - 1);
     } else {
-      setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
-      setTotalPrice((prevTotal) => prevTotal + 1); 
+      const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticketNumber);
+
+      if (!isTicketSold) {
+        setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
+        setTotalPrice((prevTotal) => prevTotal + 1);
+      } else {
+        setIsInvalidTicketPurchase(true);
+        return;
+      }
     }
-  
+
     setTicketKey((prevKey) => prevKey + 1);
   }
-  
-
 
   function cleanSelection() {
+    setIsInvalidTicketPurchase(false);
     setTicketsSelected([]);
     setHasPaymentSelected(null);
     setTotalPrice(0);
   }
-
 
   function handleInvalidModal(state: boolean, mode: string) {
     setIsOpenInvalidModal({
@@ -1195,33 +1206,27 @@ function Operadora() {
                     <div className={classes.ticketsListContainer}>
                       { /* Raffle tickets */}
                       <div className={classes.ticketsList}>
-                        {
-                          /* Dancers */
-                          tickets.tickets.slice((selectedPage - 1) * 100, selectedPage * 100).map((ticket: ITicket) => {
-                            return (
-                              <div className={classes.ticketsSellContainer}>
-                                {
-                                  ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.tickets?.includes(ticket.position) ? (
-                                    <Card
-                                      key={ticket.position}
-                                      className={classes.ticketsSold}
-                                    >
-                                      <Text ta='center'>{ticket.position}</Text>
-                                    </Card>
-                                  ) : (
-                                    <Card
-                                      key={ticket.position + ticketKey}
-                                      className={ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : classes.tickets}
-                                      onClick={() => chooseTicket(ticket.position)}
-                                    >
-                                      <Text ta='center'>{parseTickets(ticket.position)}</Text>
-                                    </Card>
-                                  )
-                                }
-                              </div>
-                            )
-                          })
-                        }
+                        {tickets.tickets.slice((selectedPage - 1) * 100, selectedPage * 100).map((ticket: ITicket) => {
+                          const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticket.position);
+
+                          return (
+                            <div className={classes.ticketsSellContainer}>
+                              {isTicketSold ? (
+                                <Card key={ticket.position} className={classes.ticketsSold}>
+                                  <Text ta='center'>{ticket.position}</Text>
+                                </Card>
+                              ) : (
+                                <Card
+                                  key={ticket.position + ticketKey}
+                                  className={ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : classes.tickets}
+                                  onClick={() => chooseTicket(ticket.position)}
+                                >
+                                  <Text ta='center'>{parseTickets(ticket.position)}</Text>
+                                </Card>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
@@ -1267,9 +1272,16 @@ function Operadora() {
                                     <ScrollArea h={105} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                       {
                                         ticketsSelected.map((ticket) => {
+                                          const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticket);
+
+                                          if (isTicketSold) {
+                                            cleanSelection();
+                                            return null;
+                                          }
+
                                           return (
                                             <Group position="apart" spacing={25}>
-                                              <Title order={6} fw={300} c='black'>
+                                              <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                 {parseTickets(ticket)}
                                               </Title>
                                               <Title order={6} mr={31} ml={43} fw={300} c='black'>
@@ -1279,9 +1291,12 @@ function Operadora() {
                                                 {raffleActive(selectedRaffle || 0)?.price_unit}.00$
                                               </Title>
                                             </Group>
-                                          )
+                                          );
                                         })
                                       }
+
+
+
                                     </ScrollArea>
                                     <Group w="100%" position="apart">
                                       <Title order={4} fw={650} c='black'>
