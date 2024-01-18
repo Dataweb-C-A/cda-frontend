@@ -7,6 +7,20 @@ interface IRaffleCombos {
   price: number;
 }
 
+interface IUsers { 
+  id: number;
+  avatar: string | null;
+  name: string;
+  role: string;
+  dni: string;
+  email: string;
+  phone: string;
+  slug: string | null;
+  is_active: boolean | null;
+  rifero_ids: number[];
+  module_assigned: number[];
+}
+
 export interface IRaffle {
   id: number;
   ad: null | IAdnoucement;
@@ -27,9 +41,10 @@ export interface IRaffle {
   has_winners: boolean;
   automatic_taquillas_ids: number[];
   shared_user_id: number;
+  shared_user: IUsers;
   created_at: string;
   updated_at: string;
-  combos: IRaffleCombos[] | null
+  combos: IRaffleCombos[] | null;
 }
 
 export interface IPrize {
