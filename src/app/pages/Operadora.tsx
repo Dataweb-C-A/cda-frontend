@@ -243,6 +243,8 @@ function Operadora() {
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
   const [isInvalidTicketPurchase, setIsInvalidTicketPurchase] = useState<boolean>(false);
+  const [buyingTickets, setBuyingTickets] = useState<number[]>([]);
+
 
   const [isOpenInvalidTicketModal, setIsOpenInvalidModal] = useState<ITicketModal>({
     isOpen: false,
@@ -268,7 +270,12 @@ function Operadora() {
   const [ticketsSold, setTicketsSold] = useState<ICableTicket[]>([])
 
   const { classes } = useStyles()
-
+  const handleClose = () => {
+    setBuyIsOpen(false)
+    setCountrySelected(null)
+    setActiveStep(0)
+    setClient(null)
+  }
   const theme = useMantineTheme();
 
   const form = useForm({
@@ -288,7 +295,7 @@ function Operadora() {
       prefix: (value) => (value.length < 8 ? 'Nombre invalido' : null),
     }
   })
-
+  
   useEffect(() => {
     if (rafflesCableStatus.is_connected === false) {
       cable.subscriptions.create('X100::RafflesChannel', {
@@ -435,24 +442,33 @@ function Operadora() {
 
   function chooseTicket(ticketNumber: number) {
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
-
+  
     if (isTicketSelected) {
       setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
       setTotalPrice((prevTotal) => prevTotal - 1);
     } else {
       const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticketNumber);
-
+  
       if (!isTicketSold) {
         setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
         setTotalPrice((prevTotal) => prevTotal + 1);
       } else {
-        setIsInvalidTicketPurchase(true);
-        return;
+        if (!buyingTickets.includes(ticketNumber)) {
+          setBuyingTickets((prevBuying) => [...prevBuying, ticketNumber]);
+  
+          handleClose();
+        }
+  
+        setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => !buyingTickets.includes(ticket)));
+        setTotalPrice((prevTotal) => prevTotal - buyingTickets.length);
+  
+        setBuyingTickets([]);
       }
     }
-
+  
     setTicketKey((prevKey) => prevKey + 1);
   }
+  
 
   function cleanSelection() {
     setIsInvalidTicketPurchase(false);
@@ -576,6 +592,8 @@ function Operadora() {
     );
   }
 
+
+
   function BuyModal() {
     const [selectValue, setSelectValue] = useState<string | null>(null);
     const [textInputValue, setTextInputValue] = useState<string>('');
@@ -586,12 +604,6 @@ function Operadora() {
     const [initDNI, setInitDNI] = useState<string | null>('V-');
     const [email, setEmail] = useState<string>('');
 
-    const handleClose = () => {
-      setBuyIsOpen(false)
-      setCountrySelected(null)
-      setActiveStep(0)
-      setClient(null)
-    }
 
     function handleTextInputChange(value: string) {
       const numericValue = value.replace(/\D/g, '');
