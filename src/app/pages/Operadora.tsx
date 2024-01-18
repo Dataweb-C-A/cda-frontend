@@ -38,6 +38,11 @@ interface ITicket {
   sold_to: IClient | {}
 }
 
+interface ICableTicket { 
+  raffle_id: number,
+  tickets: number[]
+}
+
 interface ITicketModal {
   isOpen: boolean,
   mode: string
@@ -254,6 +259,7 @@ function Operadora() {
   const [countryPrefix, setCountryPrefix] = useState<string | null>(null)
   const [reload, setReload] = useState<number>(0)
   const [client, setClient] = useState<IClient | null>(null)
+  const [ticketsSold, setTicketsSold] = useState<ICableTicket[]>([])
 
   const { classes } = useStyles()
 
@@ -357,9 +363,9 @@ function Operadora() {
         setRaffles([])
       },
 
-      received(data: any) {
+      received(data: ICableTicket[]) {
         console.log('Received data from ActionCable:', data);
-        setTickets(data)
+        setTicketsSold(data)
         setRafflesCableStatus({
           is_connected: true,
           receiving_data: true
@@ -1018,7 +1024,6 @@ function Operadora() {
       </Modal>
     )
   }
-  const [opened, setOpened] = useState(false);
 
   return (
     <>
@@ -1196,7 +1201,7 @@ function Operadora() {
                             return (
                               <div className={classes.ticketsSellContainer}>
                                 {
-                                  ticket.is_sold ? (
+                                  ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.tickets?.includes(ticket.position) ? (
                                     <Card
                                       key={ticket.position}
                                       className={classes.ticketsSold}
@@ -1223,6 +1228,7 @@ function Operadora() {
                         <Card withBorder mt={0} className={classes.raffleInfoCard}>
                           <Text fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
                           <Image src={`https://mock.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
+                          <Divider labelPosition="center" mb={10} mt={20} label="Datos de la rifa" />
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Tipo:</Text>
                             <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.tickets_count}</Text>
