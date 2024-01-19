@@ -692,7 +692,68 @@ function Operadora() {
         size="xl"
       >
         <Stepper active={activeStep}>
-
+          <Stepper.Step
+            label="Selecciona un país"
+            description="Selecciona tu país de residencia"
+          >
+            <Text ta="center" fw={750} fz={16}>
+              Seleccione su país de residencia para poder continuar con su pago
+            </Text>
+            <Group position="center">
+              <Avatar
+                src={VenezuelaFlag}
+                className={countrySelected === 'Venezuela' ? classes.avatarFlagSelected : classes.avatarFlags}
+                size={150}
+                radius={100}
+                mt={40}
+                onClick={() => {
+                  countrySelected === 'Venezuela' ? setCountrySelected(null) : setCountrySelected('Venezuela')
+                  countrySelected === 'Venezuela' ? setCountryPrefix(null) : setCountryPrefix("+58")
+                }}
+              />
+              <Avatar
+                src={USAFlag}
+                className={countrySelected === 'USA' ? classes.avatarFlagSelected : classes.avatarFlags}
+                size={150}
+                radius={100}
+                mt={40}
+                onClick={() => {
+                  countrySelected === 'USA' ? setCountrySelected(null) : setCountrySelected('USA')
+                  countrySelected === 'USA' ? setCountryPrefix(null) : setCountryPrefix("+1")
+                }}
+              />
+              <Avatar
+                src={ColombiaFlag}
+                className={countrySelected === 'Colombia' ? classes.avatarFlagSelected : classes.avatarFlags}
+                size={150}
+                radius={100}
+                mt={40}
+                onClick={() => {
+                  countrySelected === 'Colombia' ? setCountrySelected(null) : setCountrySelected('Colombia')
+                  countrySelected === 'Colombia' ? setCountryPrefix(null) : setCountryPrefix("+57")
+                }}
+              />
+            </Group>
+            <Group position="apart" px={170} mt={10}>
+              <Text ta='center' fw={400} fz={16}>Venezuela</Text>
+              <Text ta='center' fw={400} fz={16}>Estados Unidos</Text>
+              <Text ta='center' fw={400} fz={16}>Colombia</Text>
+            </Group>
+            <Group position="center" mt={40}>
+              <Button
+                disabled
+                onClick={() => setActiveStep(activeStep - 1)}
+              >
+                Atrás
+              </Button>
+              <Button
+                disabled={countrySelected === null}
+                onClick={() => setActiveStep(activeStep + 1)}
+              >
+                Siguiente
+              </Button>
+            </Group>
+          </Stepper.Step>
           <Stepper.Step
             label="Introduzca los sus datos"
             description="Debe ingresar sus datos para realizar el pago"
@@ -1053,6 +1114,7 @@ function Operadora() {
                   <div style={{ display: 'flex', marginBottom: '15px', width: '100%' }}>
                     <Modal
                       opened={opened}
+                      closeOnClickOutside={false}
                       onClose={() => setOpened(false)}
                       withCloseButton={false}
                       size="xl"
@@ -1069,8 +1131,7 @@ function Operadora() {
                           radius={100}
                           mt={40}
                           onClick={() => {
-                            countrySelected === 'Venezuela' ? setCountrySelected(null) : setCountrySelected('Venezuela')
-                            countrySelected === 'Venezuela' ? setCountryPrefix(null) : setCountryPrefix("+58")
+                            hasPaymentSelected === 'BsD' ? setHasPaymentSelected(null) : setHasPaymentSelected('BsD')
                           }}
                         />
                         <Avatar
@@ -1080,8 +1141,8 @@ function Operadora() {
                           radius={100}
                           mt={40}
                           onClick={() => {
-                            countrySelected === 'USA' ? setCountrySelected(null) : setCountrySelected('USA')
-                            countrySelected === 'USA' ? setCountryPrefix(null) : setCountryPrefix("+1")
+
+                            hasPaymentSelected === '$' ? setHasPaymentSelected(null) : setHasPaymentSelected('$')
                           }}
                         />
                         <Avatar
@@ -1091,22 +1152,25 @@ function Operadora() {
                           radius={100}
                           mt={40}
                           onClick={() => {
-                            countrySelected === 'Colombia' ? setCountrySelected(null) : setCountrySelected('Colombia')
-                            countrySelected === 'Colombia' ? setCountryPrefix(null) : setCountryPrefix("+57")
+
+                            hasPaymentSelected === 'COP' ? setHasPaymentSelected(null) : setHasPaymentSelected('COP')
                           }}
                         />
                       </Group>
-                      <Group position="apart" px={170} mt={10}>
-                        <Text ta='center' fw={400} fz={16}>Venezuela</Text>
-                        <Text ta='center' fw={400} fz={16}>Estados Unidos</Text>
-                        <Text ta='center' fw={400} fz={16}>Colombia</Text>
+                      <Group ml={-14} position="apart" px={170} mt={10}>
+                        <Text ta='center' fw={400} fz={16}>Bolivares</Text>
+                        <Text ta='center' fw={400} fz={16}>Dolares</Text>
+                        <Text ta='center' fw={400} fz={16}>Pesos</Text>
                       </Group>
                       <Group position="center" mt={40}>
-                      
                         <Button
-                          disabled={countrySelected === null}
+                          disabled={hasPaymentSelected === null}
+                          onClick={() => {
+                            console.log(hasPaymentSelected);
+                            setOpened(false);
+                          }}
                         >
-                            Continuar
+                          Continuar
                         </Button>
                       </Group>
                     </Modal>
