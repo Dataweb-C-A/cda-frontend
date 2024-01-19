@@ -41,7 +41,7 @@ export interface IRaffle {
   has_winners: boolean;
   automatic_taquillas_ids: number[];
   shared_user_id: number;
-  shared_user: IUsers;
+  agency: IUsers;
   created_at: string;
   updated_at: string;
   combos: IRaffleCombos[] | null;
