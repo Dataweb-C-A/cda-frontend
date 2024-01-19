@@ -680,9 +680,10 @@ function Operadora() {
       })
     }
 
+    
+    
 
-
-
+    
     return (
       <Modal
         opened={buyIsOpen}
@@ -1051,6 +1052,50 @@ function Operadora() {
     )
   }
   const [opened, setOpened] = useState(true);
+
+  console.log(ticketsSelected.length)
+  const calculateTotalPrice = () => {
+    if (selectedRaffle === null) {
+      return 0;
+    }
+  
+    const selectedRaffleData = raffleActive(selectedRaffle);
+  
+    if (!selectedRaffleData || !selectedRaffleData.combos) {
+      return 0;
+    }
+  
+    const ticketCount = ticketsSelected.length;
+  
+    const exactCombo = selectedRaffleData.combos.find(
+      (combo) => combo.quantity === ticketCount
+    );
+  
+    if (exactCombo) {
+      return exactCombo.price;
+    } else {
+      const individualTicketPrice =
+        selectedRaffleData.price_unit * ticketCount || 0;
+  
+      const betterCombo = selectedRaffleData.combos.find(
+        (combo) => combo.quantity < ticketCount
+      );
+  
+      if (betterCombo) {
+        const numCombos = Math.floor(ticketCount / betterCombo.quantity);
+        const totalPrice = numCombos * betterCombo.price;
+        const remainingTickets = ticketCount % betterCombo.quantity;
+        const remainingPrice =
+          selectedRaffleData.price_unit * remainingTickets;
+  
+        return totalPrice + remainingPrice;
+      } else {
+        return individualTicketPrice;
+      }
+    }
+  };
+  
+ 
   return (
     <>
       <InvalidModal />
@@ -1257,7 +1302,10 @@ function Operadora() {
                       <>
                         {
                           (raffleActive(selectedRaffle)?.combos || []).map((combo) => {
+                            console.log(`Combo: ${combo?.quantity} x ${combo?.price}$`);
+
                             return (
+                              
                               <>
                                 <Button
                                   size='xs'
@@ -1330,6 +1378,7 @@ function Operadora() {
 
                           {
                             ticketsSelected.length > 0 && (
+                              
                               <Card bg="white" className="mini-cutoff">
                                 <small>
                                   <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
@@ -1356,6 +1405,9 @@ function Operadora() {
                                           }
 
                                           return (
+                                            <>
+                                            
+                                            
                                             <Group position="apart" spacing={25}>
                                               <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                 {parseTickets(ticket)}
@@ -1367,6 +1419,9 @@ function Operadora() {
                                                 {raffleActive(selectedRaffle || 0)?.price_unit}.00$
                                               </Title>
                                             </Group>
+
+                                            
+                                            </>
                                           );
                                         })
                                       }
@@ -1375,14 +1430,21 @@ function Operadora() {
 
                                     </ScrollArea>
                                     <Group w="100%" position="apart">
+        <Title order={4} fw={650} c='black'>
+          Total:
+        </Title>
+        <Title order={4} fw={300} ta="end" c='black'>
+          {calculateTotalPrice().toFixed(2)}$
+        </Title>
+      </Group>
+                                    {/* <Group w="100%" position="apart">
                                       <Title order={4} fw={650} c='black'>
                                         Total:
                                       </Title>
                                       <Title order={4} fw={300} ta="end" c='black'>
-                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00$
+                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
                                       </Title>
-                                    </Group>
-
+                                    </Group> */}
 
                                   </Group>
                                 </small>
