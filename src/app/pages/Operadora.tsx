@@ -1165,16 +1165,16 @@ function Operadora() {
                       closeOnClickOutside={false}
                       onClose={() => setOpened(false)}
                       withCloseButton={false}
-                      size="xl"
+                      size="md"
                     >
 
                       <Text ta="center" fw={750} fz={16}>
-                        Seleccione su país de residencia para poder continuar con su pago
+                        Seleccione un metodo para continuar con su pago
                       </Text>
 
                       <Card
                         mt={20}
-
+                        py={0}
                         onClick={() => {
                           console.log(hasPaymentSelected);
                           hasPaymentSelected === 'BsD' ? setHasPaymentSelected(null) : setHasPaymentSelected('BsD')
@@ -1183,30 +1183,31 @@ function Operadora() {
                         onMouseEnter={() => setIsHovered1(true)}
                         onMouseLeave={() => setIsHovered1(false)}
                         style={{
-                          background: "#1D1E30",
+                          background: theme.colors.dark[6],
                           transition: "background 0.3s",
-                          cursor:"pointer",
-                          ...(isHovered1 && { background: "#2C2C3D" }),
+                          cursor: "pointer",
+                          ...(isHovered1 && { background: theme.colors.dark[5] }),
                         }}
                       >
 
-                        <Group mb={15}>
+                        <Group mb={15} position="apart">
 
                           <Avatar
                             src={VenezuelaFlag}
-                            size={100}
+                            size={50}
                             radius={100}
                             mt={20}
                           />
-                          <Title>
+                          <Text fw={750} fz={20} mt={20}>
                             Bolivares digitales
-                          </Title>
+                          </Text>
                         </Group>
                       </Card>
 
 
                       <Card
-                        mt={20}
+                        mt={10}
+                        py={0}
                         onClick={() => {
                           console.log(hasPaymentSelected);
                           hasPaymentSelected === '$' ? setHasPaymentSelected(null) : setHasPaymentSelected('$')
@@ -1215,29 +1216,30 @@ function Operadora() {
                         onMouseEnter={() => setIsHovered2(true)}
                         onMouseLeave={() => setIsHovered2(false)}
                         style={{
-                          background: "#1D1E30",
-                          cursor:"pointer",
+                          background: theme.colors.dark[6],
+                          cursor: "pointer",
                           transition: "background 0.3s",
-                          ...(isHovered2 && { background: "#2C2C3D" }),
+                          ...(isHovered2 && { background: theme.colors.dark[5] }),
                         }}
                       >
 
-                        <Group mb={15}>
+                        <Group mb={15} position="apart">
 
                           <Avatar
                             src={USAFlag}
-                            size={100}
+                            size={50}
                             radius={100}
                             mt={20}
                           />
-                          <Title>
-                            Dolares Americanos
-                          </Title>
+                          <Text fw={750} fz={20} mt={20}>
+                            Dolares americanos
+                          </Text>
                         </Group>
                       </Card>
 
                       <Card
-                        mt={20}
+                        mt={10}
+                        py={0}
                         onClick={() => {
                           console.log(hasPaymentSelected);
                           hasPaymentSelected === 'COP' ? setHasPaymentSelected(null) : setHasPaymentSelected('COP')
@@ -1246,22 +1248,22 @@ function Operadora() {
                         onMouseEnter={() => setIsHovered3(true)}
                         onMouseLeave={() => setIsHovered3(false)}
                         style={{
-                          background: "#1D1E30",
-                          cursor:"pointer",
+                          background: theme.colors.dark[6],
+                          cursor: "pointer",
                           transition: "background 0.3s",
-                          ...(isHovered3 && { background: "#2C2C3D" }),
+                          ...(isHovered3 && { background: theme.colors.dark[5] }),
                         }}
                       >
-                        <Group mb={15}>
+                        <Group mb={15} position="apart">
                           <Avatar
                             src={ColombiaFlag}
-                            size={100}
+                            size={50}
                             radius={100}
                             mt={20}
                           />
-                          <Title>
-                            Pesos Colombianos
-                          </Title>
+                          <Text fw={750} fz={20} mt={20}>
+                            Pesos colombianos
+                          </Text>
                         </Group>
                       </Card>
 
