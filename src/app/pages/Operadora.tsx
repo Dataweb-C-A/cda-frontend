@@ -146,7 +146,7 @@ const useStyles = createStyles((theme) => ({
     flexWrap: 'wrap'
   },
   raffleInfo: {
-    width: '21rem',
+    width: '22rem',
     display: 'flex',
     [theme.fn.smallerThan('md')]: {
       display: 'none'
@@ -680,10 +680,10 @@ function Operadora() {
       })
     }
 
-    
-    
 
-    
+
+
+
     return (
       <Modal
         opened={buyIsOpen}
@@ -1058,44 +1058,47 @@ function Operadora() {
     if (selectedRaffle === null) {
       return 0;
     }
-  
+
     const selectedRaffleData = raffleActive(selectedRaffle);
-  
+
     if (!selectedRaffleData || !selectedRaffleData.combos) {
       return 0;
     }
-  
+
     const ticketCount = ticketsSelected.length;
-  
+
     const exactCombo = selectedRaffleData.combos.find(
       (combo) => combo.quantity === ticketCount
     );
-  
+
     if (exactCombo) {
       return exactCombo.price;
     } else {
       const individualTicketPrice =
         selectedRaffleData.price_unit * ticketCount || 0;
-  
+
       const betterCombo = selectedRaffleData.combos.find(
         (combo) => combo.quantity < ticketCount
       );
-  
+
       if (betterCombo) {
         const numCombos = Math.floor(ticketCount / betterCombo.quantity);
         const totalPrice = numCombos * betterCombo.price;
         const remainingTickets = ticketCount % betterCombo.quantity;
         const remainingPrice =
           selectedRaffleData.price_unit * remainingTickets;
-  
+
         return totalPrice + remainingPrice;
       } else {
         return individualTicketPrice;
       }
     }
   };
-  
- 
+  const [isHovered1, setIsHovered1] = useState(false);
+  const [isHovered2, setIsHovered2] = useState(false);
+  const [isHovered3, setIsHovered3] = useState(false);
+
+
   return (
     <>
       <InvalidModal />
@@ -1168,56 +1171,100 @@ function Operadora() {
                       <Text ta="center" fw={750} fz={16}>
                         Seleccione su país de residencia para poder continuar con su pago
                       </Text>
-                      <Group position="center">
-                        <Avatar
-                          src={VenezuelaFlag}
-                          className={countrySelected === 'Venezuela' ? classes.avatarFlagSelected : classes.avatarFlags}
-                          size={150}
-                          radius={100}
-                          mt={40}
-                          onClick={() => {
-                            hasPaymentSelected === 'BsD' ? setHasPaymentSelected(null) : setHasPaymentSelected('BsD')
-                          }}
-                        />
-                        <Avatar
-                          src={USAFlag}
-                          className={countrySelected === 'USA' ? classes.avatarFlagSelected : classes.avatarFlags}
-                          size={150}
-                          radius={100}
-                          mt={40}
-                          onClick={() => {
 
-                            hasPaymentSelected === '$' ? setHasPaymentSelected(null) : setHasPaymentSelected('$')
-                          }}
-                        />
-                        <Avatar
-                          src={ColombiaFlag}
-                          className={countrySelected === 'Colombia' ? classes.avatarFlagSelected : classes.avatarFlags}
-                          size={150}
-                          radius={100}
-                          mt={40}
-                          onClick={() => {
+                      <Card
+                        mt={20}
 
-                            hasPaymentSelected === 'COP' ? setHasPaymentSelected(null) : setHasPaymentSelected('COP')
-                          }}
-                        />
-                      </Group>
-                      <Group ml={-14} position="apart" px={170} mt={10}>
-                        <Text ta='center' fw={400} fz={16}>Bolivares</Text>
-                        <Text ta='center' fw={400} fz={16}>Dolares</Text>
-                        <Text ta='center' fw={400} fz={16}>Pesos</Text>
-                      </Group>
-                      <Group position="center" mt={40}>
-                        <Button
-                          disabled={hasPaymentSelected === null}
-                          onClick={() => {
-                            console.log(hasPaymentSelected);
-                            setOpened(false);
-                          }}
-                        >
-                          Continuar
-                        </Button>
-                      </Group>
+                        onClick={() => {
+                          console.log(hasPaymentSelected);
+                          hasPaymentSelected === 'BsD' ? setHasPaymentSelected(null) : setHasPaymentSelected('BsD')
+                          setOpened(false);
+                        }}
+                        onMouseEnter={() => setIsHovered1(true)}
+                        onMouseLeave={() => setIsHovered1(false)}
+                        style={{
+                          background: "#1D1E30",
+                          transition: "background 0.3s",
+                          cursor:"pointer",
+                          ...(isHovered1 && { background: "#2C2C3D" }),
+                        }}
+                      >
+
+                        <Group mb={15}>
+
+                          <Avatar
+                            src={VenezuelaFlag}
+                            size={100}
+                            radius={100}
+                            mt={20}
+                          />
+                          <Title>
+                            Bolivares digitales
+                          </Title>
+                        </Group>
+                      </Card>
+
+
+                      <Card
+                        mt={20}
+                        onClick={() => {
+                          console.log(hasPaymentSelected);
+                          hasPaymentSelected === '$' ? setHasPaymentSelected(null) : setHasPaymentSelected('$')
+                          setOpened(false);
+                        }}
+                        onMouseEnter={() => setIsHovered2(true)}
+                        onMouseLeave={() => setIsHovered2(false)}
+                        style={{
+                          background: "#1D1E30",
+                          cursor:"pointer",
+                          transition: "background 0.3s",
+                          ...(isHovered2 && { background: "#2C2C3D" }),
+                        }}
+                      >
+
+                        <Group mb={15}>
+
+                          <Avatar
+                            src={USAFlag}
+                            size={100}
+                            radius={100}
+                            mt={20}
+                          />
+                          <Title>
+                            Dolares Americanos
+                          </Title>
+                        </Group>
+                      </Card>
+
+                      <Card
+                        mt={20}
+                        onClick={() => {
+                          console.log(hasPaymentSelected);
+                          hasPaymentSelected === 'COP' ? setHasPaymentSelected(null) : setHasPaymentSelected('COP')
+                          setOpened(false);
+                        }}
+                        onMouseEnter={() => setIsHovered3(true)}
+                        onMouseLeave={() => setIsHovered3(false)}
+                        style={{
+                          background: "#1D1E30",
+                          cursor:"pointer",
+                          transition: "background 0.3s",
+                          ...(isHovered3 && { background: "#2C2C3D" }),
+                        }}
+                      >
+                        <Group mb={15}>
+                          <Avatar
+                            src={ColombiaFlag}
+                            size={100}
+                            radius={100}
+                            mt={20}
+                          />
+                          <Title>
+                            Pesos Colombianos
+                          </Title>
+                        </Group>
+                      </Card>
+
                     </Modal>
                     <ActionIcon
                       variant="default"
@@ -1305,7 +1352,7 @@ function Operadora() {
                             console.log(`Combo: ${combo?.quantity} x ${combo?.price}$`);
 
                             return (
-                              
+
                               <>
                                 <Button
                                   size='xs'
@@ -1378,7 +1425,7 @@ function Operadora() {
 
                           {
                             ticketsSelected.length > 0 && (
-                              
+
                               <Card bg="white" className="mini-cutoff">
                                 <small>
                                   <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
@@ -1406,21 +1453,21 @@ function Operadora() {
 
                                           return (
                                             <>
-                                            
-                                            
-                                            <Group position="apart" spacing={25}>
-                                              <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
-                                                {parseTickets(ticket)}
-                                              </Title>
-                                              <Title order={6} mr={31} ml={43} fw={300} c='black'>
-                                                1.00
-                                              </Title>
-                                              <Title order={6} fw={300} ta="end" c='black'>
-                                                {raffleActive(selectedRaffle || 0)?.price_unit}.00$
-                                              </Title>
-                                            </Group>
 
-                                            
+
+                                              <Group position="apart" spacing={25}>
+                                                <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
+                                                  {parseTickets(ticket)}
+                                                </Title>
+                                                <Title order={6} mr={31} ml={43} fw={300} c='black'>
+                                                  1.00
+                                                </Title>
+                                                <Title order={6} fw={300} ta="end" c='black'>
+                                                  {raffleActive(selectedRaffle || 0)?.price_unit}.00$
+                                                </Title>
+                                              </Group>
+
+
                                             </>
                                           );
                                         })
@@ -1430,13 +1477,13 @@ function Operadora() {
 
                                     </ScrollArea>
                                     <Group w="100%" position="apart">
-        <Title order={4} fw={650} c='black'>
-          Total:
-        </Title>
-        <Title order={4} fw={300} ta="end" c='black'>
-          {calculateTotalPrice().toFixed(2)}$
-        </Title>
-      </Group>
+                                      <Title order={4} fw={650} c='black'>
+                                        Total:
+                                      </Title>
+                                      <Title order={4} fw={300} ta="end" c='black'>
+                                        {calculateTotalPrice().toFixed(2)}$
+                                      </Title>
+                                    </Group>
                                     {/* <Group w="100%" position="apart">
                                       <Title order={4} fw={650} c='black'>
                                         Total:
