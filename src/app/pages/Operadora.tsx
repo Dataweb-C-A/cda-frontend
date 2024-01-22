@@ -1082,6 +1082,7 @@ function Operadora() {
       );
 
       if (betterCombo) {
+        
         const numCombos = Math.floor(ticketCount / betterCombo.quantity);
         const totalPrice = numCombos * betterCombo.price;
         const remainingTickets = ticketCount % betterCombo.quantity;
@@ -1094,6 +1095,7 @@ function Operadora() {
       }
     }
   };
+
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
   const [isHovered3, setIsHovered3] = useState(false);
