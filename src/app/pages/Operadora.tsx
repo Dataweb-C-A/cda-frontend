@@ -530,9 +530,22 @@ function Operadora() {
   };
 
   const handleSearch = () => {
-    apartTickets(searchValue || 0);
+    const ticketNumber = searchValue || 0;
+  
+    const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticketNumber);
+  
+    const isTicketSelected = ticketsSelected.includes(ticketNumber);
+  
+    if (isTicketSold) {
+      handleInvalidModal(true, 'sold');
+    } else if (isTicketSelected) {
+      handleInvalidModal(true, 'selected');
+    } else {
+      apartTickets(ticketNumber);
+    }
     setSearchValue(null);
   };
+  
 
   function apartTickets(ticket_nro: number) {
     const ticketSelected = tickets.tickets.find((ticket) => ticket.position === ticket_nro);
@@ -886,7 +899,7 @@ function Operadora() {
                     Total:
                   </Title>
                   <Title order={4} fw={300} ta="end" c='black'>
-                    {Number(raffleActive(selectedRaffle || 0)?.price_unit) * ticketsSelected.length}.00$
+                  {calculateTotalPrice().toFixed(2)}$
                   </Title>
                 </Group>
               </Card>
@@ -1041,7 +1054,7 @@ function Operadora() {
                     Total:
                   </Title>
                   <Title order={4} fw={300} ta="end" c='black'>
-                    {Number(raffleActive(selectedRaffle || 0)?.price_unit) * ticketsSelected.length}.00$
+                  {calculateTotalPrice().toFixed(2)}$
                   </Title>
                 </Group>
               </Card>
@@ -1059,43 +1072,33 @@ function Operadora() {
     if (selectedRaffle === null) {
       return 0;
     }
-
+  
     const selectedRaffleData = raffleActive(selectedRaffle);
-
+  
     if (!selectedRaffleData || !selectedRaffleData.combos) {
       return 0;
     }
-
-    const ticketCount = ticketsSelected.length;
-
-    const exactCombo = selectedRaffleData.combos.find(
-      (combo) => combo.quantity === ticketCount
+  
+    let ticketCount = ticketsSelected.length;
+    let totalPrice = 0;
+  
+    const sortedCombos = selectedRaffleData.combos.sort(
+      (a, b) => b.quantity - a.quantity
     );
-
-    if (exactCombo) {
-      return exactCombo.price;
-    } else {
-      const individualTicketPrice =
-        selectedRaffleData.price_unit * ticketCount || 0;
-
-      const betterCombo = selectedRaffleData.combos.find(
-        (combo) => combo.quantity < ticketCount
-      );
-
-      if (betterCombo) {
-
-        const numCombos = Math.floor(ticketCount / betterCombo.quantity);
-        const totalPrice = numCombos * betterCombo.price;
-        const remainingTickets = ticketCount % betterCombo.quantity;
-        const remainingPrice =
-          selectedRaffleData.price_unit * remainingTickets;
-
-        return totalPrice + remainingPrice;
-      } else {
-        return individualTicketPrice;
+  
+    for (const combo of sortedCombos) {
+      while (ticketCount >= combo.quantity) {
+        totalPrice += combo.price;
+        ticketCount -= combo.quantity;
       }
     }
+  
+    const remainingPrice = selectedRaffleData.price_unit * ticketCount;
+    totalPrice += remainingPrice;
+  
+    return totalPrice;
   };
+  
 
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
