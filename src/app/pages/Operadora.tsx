@@ -32,6 +32,11 @@ interface IClient {
   email: string
 }
 
+interface IProgresses {
+  raffle_id: number,
+  progress: number
+}
+
 interface ITicket {
   position: number,
   is_sold: boolean,
@@ -146,7 +151,7 @@ const useStyles = createStyles((theme) => ({
     flexWrap: 'wrap'
   },
   raffleInfo: {
-    width: '22rem',
+    width: '23rem',
     display: 'flex',
     [theme.fn.smallerThan('md')]: {
       display: 'none'
@@ -244,6 +249,7 @@ function Operadora() {
   const [searchValue, setSearchValue] = useState<number | null>(null);
   const [isInvalidTicketPurchase, setIsInvalidTicketPurchase] = useState<boolean>(false);
   const [buyingTickets, setBuyingTickets] = useState<number[]>([]);
+  const [progresses, setProgresses] = useState<IProgresses[]>([])
 
 
   const [isOpenInvalidTicketModal, setIsOpenInvalidModal] = useState<ITicketModal>({
@@ -297,46 +303,63 @@ function Operadora() {
   })
 
   useEffect(() => {
+    axios.get("https://mock.rifa-max.com/x100/raffles", {
+      headers: {
+        ContentType: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }).then((res) => {
+      setRaffles(res.data)
+    }).catch((err) => {
+      console.log(err)
+    })
+
     if (rafflesCableStatus.is_connected === false) {
       cable.subscriptions.create('X100::RafflesChannel', {
         connected() {
           console.log('Connected to ActionCable');
           setRafflesCableStatus({
             is_connected: true,
-            receiving_data: false
-          })
+            receiving_data: false,
+          });
         },
 
         disconnected() {
           console.log('Disconnected from ActionCable');
           setRafflesCableStatus({
             is_connected: false,
-            receiving_data: false
-          })
-          setBuyIsOpen(false)
-          setSearchValue(0)
-          setActiveStep(0)
-          setHasPaymentSelected(null)
-          setCountrySelected(null)
-          setClient(null)
+            receiving_data: false,
+          });
+          setBuyIsOpen(false);
+          setSearchValue(0);
+          setActiveStep(0);
+          setHasPaymentSelected(null);
+          setCountrySelected(null);
+          setClient(null);
           setIsOpenInvalidModal({
             isOpen: false,
-            mode: 'valid'
-          })
-          setSelectedRaffle(null)
-          setRaffles([])
+            mode: 'valid',
+          });
+          setSelectedRaffle(null);
+          setRaffles([]);
         },
 
-        received(data: any) {
+        received(data: IProgresses[]) {
           console.log('Received data from ActionCable:', data);
-          setRaffles(data)
+
+          // Log progress information to the console
+          data.forEach(progress => {
+            console.log(`Raffle ID: ${progress.raffle_id}, Progress: ${progress.progress}%`);
+          });
+
+          setProgresses(data);
           setRafflesCableStatus({
             is_connected: true,
             receiving_data: true
-          })
-          setLoading(false)
+          });
+          setLoading(false);
         },
-      })
+      });
     }
 
     if (users.length < 1) {
@@ -463,7 +486,6 @@ function Operadora() {
         setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
         setTotalPrice((prevTotal) => prevTotal + 1);
       } else {
-        // setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => !buyingTickets.includes(ticket)));
         setTotalPrice((prevTotal) => prevTotal - buyingTickets.length);
       }
     }
@@ -515,7 +537,6 @@ function Operadora() {
     const newTicketsSelected = [...ticketsSelected];
 
     for (let i = 0; i < quantity; i++) {
-      // Multiplicar por la cantidad de tickets en lugar de 999
       const randomTicketNumber = Math.floor(Math.random() * tickets.tickets.length) + 1;
 
       if (!newTicketsSelected.includes(randomTicketNumber)) {
@@ -531,11 +552,11 @@ function Operadora() {
 
   const handleSearch = () => {
     const ticketNumber = searchValue || 0;
-  
+
     const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticketNumber);
-  
+
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
-  
+
     if (isTicketSold) {
       handleInvalidModal(true, 'sold');
     } else if (isTicketSelected) {
@@ -545,7 +566,7 @@ function Operadora() {
     }
     setSearchValue(null);
   };
-  
+
 
   function apartTickets(ticket_nro: number) {
     const ticketSelected = tickets.tickets.find((ticket) => ticket.position === ticket_nro);
@@ -899,7 +920,7 @@ function Operadora() {
                     Total:
                   </Title>
                   <Title order={4} fw={300} ta="end" c='black'>
-                  {calculateTotalPrice().toFixed(2)}$
+                    {calculateTotalPrice().toFixed(2)}$
                   </Title>
                 </Group>
               </Card>
@@ -1054,7 +1075,7 @@ function Operadora() {
                     Total:
                   </Title>
                   <Title order={4} fw={300} ta="end" c='black'>
-                  {calculateTotalPrice().toFixed(2)}$
+                    {calculateTotalPrice().toFixed(2)}$
                   </Title>
                 </Group>
               </Card>
@@ -1072,33 +1093,33 @@ function Operadora() {
     if (selectedRaffle === null) {
       return 0;
     }
-  
+
     const selectedRaffleData = raffleActive(selectedRaffle);
-  
+
     if (!selectedRaffleData || !selectedRaffleData.combos) {
       return 0;
     }
-  
+
     let ticketCount = ticketsSelected.length;
     let totalPrice = 0;
-  
+
     const sortedCombos = selectedRaffleData.combos.sort(
       (a, b) => b.quantity - a.quantity
     );
-  
+
     for (const combo of sortedCombos) {
       while (ticketCount >= combo.quantity) {
         totalPrice += combo.price;
         ticketCount -= combo.quantity;
       }
     }
-  
+
     const remainingPrice = selectedRaffleData.price_unit * ticketCount;
     totalPrice += remainingPrice;
-  
+
     return totalPrice;
   };
-  
+
 
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
@@ -1125,27 +1146,34 @@ function Operadora() {
             </Button>
             <ScrollArea h="100%">
               {
-                loading ? <Loading /> : (
-                  raffles.length === 0 ? <RaffleListEmpty /> : (
-                    raffles.map((raffle: IRaffle) => (
+                loading ? (
+                  <Loading />
+                ) : raffles.length === 0 ? (
+                  <RaffleListEmpty />
+                ) : (
+                  raffles.map((raffle: IRaffle) => {
+                    const progressForRaffle = progresses.find(progress => progress.raffle_id === raffle.id);
+
+                    return (
                       <RaffleCard
                         data={raffle}
+                        progress={progressForRaffle ? progressForRaffle.progress : 0}
                         key={raffle.id}
                         className={raffle.id === selectedRaffle ? classes.raffleSelectedCard : classes.raffleCard}
                         onClick={() => {
-                          setSelectedRaffle(raffle.id)
-                          setTicketsSelected([])
-                          setHasPaymentSelected(null)
-                          console.log(raffle)
-                          setTickets({ tickets: ticketsConstructor(raffle.tickets_count) })
+                          setSelectedRaffle(raffle.id);
+                          setTicketsSelected([]);
+                          setHasPaymentSelected(null);
+                          setTickets({ tickets: ticketsConstructor(raffle.tickets_count) });
                           setSelectedPage(1);
                           setOpened(true);
                         }}
                       />
-                    ))
-                  )
+                    );
+                  })
                 )
               }
+
             </ScrollArea>
           </div>
         </div>
@@ -1363,23 +1391,24 @@ function Operadora() {
                     ) : (
                       <>
                         {
-                          (raffleActive(selectedRaffle)?.combos || []).map((combo) => {
-                            console.log(`Combo: ${combo?.quantity} x ${combo?.price}$`);
+                          (raffleActive(selectedRaffle)?.combos || [])
+                            .sort((a, b) => a.quantity - b.quantity)
+                            .map((combo) => {
+                              console.log(`Combo: ${combo?.quantity} x ${combo?.price}$`);
 
-                            return (
-
-                              <>
-                                <Button
-                                  size='xs'
-                                  ml={10}
-                                  color="teal"
-                                  onClick={() => handleComboClick(combo.quantity, combo.price)}
-                                >
-                                  {combo.quantity} x {combo.price}$
-                                </Button>
-                              </>
-                            );
-                          })
+                              return (
+                                <>
+                                  <Button
+                                    size='xs'
+                                    ml={10}
+                                    color="teal"
+                                    onClick={() => handleComboClick(combo.quantity, combo.price)}
+                                  >
+                                    {combo.quantity} x {combo.price}$
+                                  </Button>
+                                </>
+                              );
+                            })
                         }
 
 
