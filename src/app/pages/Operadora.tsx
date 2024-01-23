@@ -515,7 +515,8 @@ function Operadora() {
     const newTicketsSelected = [...ticketsSelected];
 
     for (let i = 0; i < quantity; i++) {
-      const randomTicketNumber = Math.floor(Math.random() * 999) + 1;
+      // Multiplicar por la cantidad de tickets en lugar de 999
+      const randomTicketNumber = Math.floor(Math.random() * tickets.tickets.length) + 1;
 
       if (!newTicketsSelected.includes(randomTicketNumber)) {
         newTicketsSelected.push(randomTicketNumber);
@@ -1082,7 +1083,7 @@ function Operadora() {
       );
 
       if (betterCombo) {
-        
+
         const numCombos = Math.floor(ticketCount / betterCombo.quantity);
         const totalPrice = numCombos * betterCombo.price;
         const remainingTickets = ticketCount % betterCombo.quantity;
@@ -1099,7 +1100,6 @@ function Operadora() {
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
   const [isHovered3, setIsHovered3] = useState(false);
-
 
   return (
     <>
@@ -1135,6 +1135,8 @@ function Operadora() {
                           setHasPaymentSelected(null)
                           console.log(raffle)
                           setTickets({ tickets: ticketsConstructor(raffle.tickets_count) })
+                          setSelectedPage(1);
+                          setOpened(true);
                         }}
                       />
                     ))
@@ -1270,40 +1272,46 @@ function Operadora() {
                       </Card>
 
                     </Modal>
-                    <ActionIcon
-                      variant="default"
-                      mr={5}
-                      py={0}
-                      size={30}
-                      onClick={() => setSelectedPage(selectedPage - 1)}
-                      disabled={selectedPage === 1}
-                    >
-                      <IconChevronLeft />
-                    </ActionIcon>
+                    {tickets.tickets.length > 101 && (
+                      <>
+                        <ActionIcon
+                          variant="default"
+                          mr={5}
+                          py={0}
+                          size={30}
+                          onClick={() => setSelectedPage(selectedPage - 1)}
+                          disabled={selectedPage === 1}
+                        >
+                          <IconChevronLeft />
+                        </ActionIcon>
 
-                    {paginationNumbers.map((pagNumber, index) => (
-                      <Button
-                        key={index}
-                        mr={5}
-                        variant="default"
-                        color="gray"
-                        size="md"
-                        compact
-                        onClick={() => setSelectedPage(pagNumber)}
-                        className={selectedPage === pagNumber ? classes.pagActive : undefined}
-                      >
-                        {pagNumber - 1}
-                      </Button>
-                    ))}
-                    <ActionIcon
-                      variant="default"
-                      py={0}
-                      size={30}
-                      onClick={() => setSelectedPage(selectedPage + 1)}
-                      disabled={selectedPage === 10}
-                    >
-                      <IconChevronRight />
-                    </ActionIcon>
+                        {paginationNumbers.map((pagNumber, index) => (
+                          <Button
+                            key={index}
+                            mr={5}
+                            variant="default"
+                            color="gray"
+                            size="md"
+                            compact
+                            onClick={() => setSelectedPage(pagNumber)}
+                            className={selectedPage === pagNumber ? classes.pagActive : undefined}
+                          >
+                            {pagNumber - 1}
+                          </Button>
+                        ))}
+
+                        <ActionIcon
+                          variant="default"
+                          py={0}
+                          size={30}
+                          onClick={() => setSelectedPage(selectedPage + 1)}
+                          disabled={selectedPage === 10}
+                        >
+                          <IconChevronRight />
+                        </ActionIcon>
+                      </>
+                    )}
+
 
                     <NumberInput
                       size="xs"
