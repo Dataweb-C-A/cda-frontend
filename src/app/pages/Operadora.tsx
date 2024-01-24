@@ -494,8 +494,22 @@ function Operadora() {
       const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticketNumber);
 
       if (!isTicketSold && !isTicketReserved) {
-        setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
-        setTotalPrice((prevTotal) => prevTotal + 1);
+        axios.post("https://mock.rifa-max.com/x100/tickets/apart", {
+          x100_ticket: {
+            x100_raffle_id: selectedRaffle,
+            position: ticketNumber
+          }
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }).then((res) => {
+          console.log(res)
+          setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
+          setTotalPrice((prevTotal) => prevTotal + 1);
+        }).catch((err) => {
+          console.log(err)
+        })
       } else {
         setTotalPrice((prevTotal) => prevTotal - buyingTickets.length);
       }
