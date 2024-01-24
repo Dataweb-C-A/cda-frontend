@@ -46,10 +46,10 @@ type IDrawsModal = {
   onClose: () => void;
   open: boolean;
 }
-interface Combo {
+type Combo = {
   quantity: number | null;
   price: number | null;
-}
+};
 type IFile = {
   poth: string | string[];
   lastModified: number | number[];
@@ -67,6 +67,7 @@ type FormProps = {
   lotery: string;
   tickets_count: number;
   // first_prize: string;
+  prizes: string[];
   numbers: null | number | string;
   raffle_type: string;
   // second_prize: null | string | null;
@@ -116,9 +117,7 @@ function DrawsModal({
   const [checkedIndex, setCheckedIndex] = useState(0);
   const [ownerLabel, setOwnerLabel] = useState<IWhitelist[]>([])
   const [allTaquillas, setAllTaquillas] = useState<boolean>(true)
-  const [combos, setCombos] = useState([
-    { quantity: 0, price: 0 } as { quantity: number; price: number },
-  ]);
+  const [combos, setCombos] = useState<Combo[]>([]);
   const [visibleTaquillas, setVisibleTaquillas] = useState<IVisibleTaquillas[]>([
     {
       label: "Cargando...",
@@ -193,6 +192,7 @@ function DrawsModal({
       expired_date: null,
       money: '$',
       ad: null,
+      prizes: [],
       owner_id: null,
       raffle_type: 'Triple',
       fundation_id: null,
@@ -214,11 +214,11 @@ function DrawsModal({
           form.setFieldValue('limit', null);
         }
       },
-      // first_prize: (value: string) => {
-      //   if (!value) return 'Premio requerido';
-      //   if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
-      //   if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
-      // },
+      prizes: (value: string[]) => {
+        if (!value) return 'Premio requerido';
+        if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
+        if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
+      },
       // second_prize: (value: string) => {
       //   if (!value) {
       //     if (isSecondPrizeEnabled) return 'Premio requerido';
@@ -251,6 +251,21 @@ function DrawsModal({
           if (!value) return 'Fundacion Requerida';
         }
       },
+      // prizes: (value: string[]) => {
+      //   if (!value || value.length === 0) return 'Premio requerido';
+
+      //   for (let i = 0; i < value.length; i++) {
+      //     const prize = value[i];
+
+      //     if (prize.length < 5) {
+      //       return 'El premio debe tener al menos 5 caracteres';
+      //     }
+
+      //     if (prize.length > 50) {
+      //       return 'El premio debe tener menos de 50 caracteres';
+      //     }
+      //   }
+      // },
       tickets_count: (value: number) => {
         if (form.values.draw_type === 'Infinito' || form.values.draw_type === '50/50') { } else {
           if (!value) return 'Cantidad de tickets requerida';
@@ -361,7 +376,7 @@ function DrawsModal({
 
     axios.post('https://mock.rifa-max.com/x100/raffles', { x100_raffle: values }, {
       headers: {
-        "Content-Type": ["application/json", "multipart/form-data"],
+        "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((res) => {
@@ -599,17 +614,18 @@ function DrawsModal({
                 <Grid.Col span={10}>
                   <TextInput
                     size='md'
-                    label="Primer premio"
-                    placeholder="Primer premio"
-                    error={form.errors.first_prize}
+                    label="Premio"
+                    placeholder="Premio"
+                    error={form.errors.prizes}  // Modificado para reflejar el cambio
                     withAsterisk
                     radius={'lg'}
                     mt="md"
                     mb={15}
-                    {...form.getInputProps('first_prize')}
+                    {...form.getInputProps('prizes')}  // Modificado para reflejar el cambio
                   />
+
                 </Grid.Col>
-                <Grid.Col span={2}>
+                {/* <Grid.Col span={2}>
                   <Group>
                     <ActionIcon mt={48} variant="filled" onClick={agregarPremio}>
                       <IconPlus size={30} />
@@ -619,7 +635,7 @@ function DrawsModal({
                       <IconMinus size={30} />
                     </ActionIcon>
                   </Group>
-                </Grid.Col>
+                </Grid.Col> */}
               </Grid>
               <Grid>
                 {premios.map((etiqueta, index) => (
@@ -936,7 +952,7 @@ function DrawsModal({
                   {combos.map((combo, index) => (
                     <Group key={index} position="center">
                       <NumberInput
-                        value={combo.quantity}
+                        value={combo.quantity ?? undefined}
                         placeholder="Cantidad"
                         type='number'
                         label="Cantidad"
@@ -954,8 +970,7 @@ function DrawsModal({
                         <IconX />
                       </div>
                       <NumberInput
-                        value={combo.price}
-
+                        value={combo.price ?? undefined}
                         type='number'
                         placeholder="Precio"
                         label="Precio"
@@ -969,6 +984,7 @@ function DrawsModal({
                             : undefined
                         }
                       />
+
                       <div
                         style={{ marginTop: "30px", cursor: "pointer" }}
                         onClick={() => removeComboInput(index)}

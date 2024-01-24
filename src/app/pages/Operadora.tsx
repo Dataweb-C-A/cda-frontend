@@ -573,7 +573,7 @@ function Operadora() {
     if (isTicketSold) {
       handleInvalidModal(true, 'sold');
     } else if (isTicketReserved) {
-      handleInvalidModal(true, 'reserved');  // Handle reserved tickets
+      handleInvalidModal(true, 'reserved'); 
     } else if (isTicketSelected) {
       handleInvalidModal(true, 'selected');
     } else {
