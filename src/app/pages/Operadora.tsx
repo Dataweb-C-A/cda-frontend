@@ -49,7 +49,8 @@ interface ICableTicket {
 }
 interface ICableTicket {
   raffle_id: number;
-  positions: number[];
+  sold: number[];
+  reserved: number[];
 }
 
 interface ITicketModal {
@@ -71,7 +72,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   raffleSelectedCard: {
-    background: theme.colors.blue[8],
+    background: theme.colors.blue[9],
     transition: "0.35s",
     '&:hover': {
       backgroundColor: theme.colors.blue[6],
@@ -101,6 +102,15 @@ const useStyles = createStyles((theme) => ({
   rafflesContainerConstract: {
     width: "0%",
     height: "100%",
+  },
+  ticketsReserved: {
+    width: '100%',
+    height: '3.7rem',
+    marginBottom: '5px',
+    background: '#ff8000',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'not-allowed'
   },
   raffleSidebar: {
     width: "100%",
@@ -464,7 +474,7 @@ function Operadora() {
   }
 
   function isTicketIsSoldDeselect() {
-    setTicketsSelected(ticketsSelected.filter(ticket => !ticketsSold.find((item) => item.raffle_id === selectedRaffle)?.positions.includes(ticket)))
+    setTicketsSelected(ticketsSelected.filter(ticket => !ticketsSold.find((item) => item.raffle_id === selectedRaffle)?.sold.includes(ticket)))
   }
 
   useEffect(() => {
@@ -480,9 +490,10 @@ function Operadora() {
       setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
       setTotalPrice((prevTotal) => prevTotal - 1);
     } else {
-      const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticketNumber);
+      const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticketNumber);
+      const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticketNumber);
 
-      if (!isTicketSold) {
+      if (!isTicketSold && !isTicketReserved) {
         setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
         setTotalPrice((prevTotal) => prevTotal + 1);
       } else {
@@ -492,6 +503,7 @@ function Operadora() {
 
     setTicketKey((prevKey) => prevKey + 1);
   }
+
 
 
   function cleanSelection() {
@@ -553,12 +565,15 @@ function Operadora() {
   const handleSearch = () => {
     const ticketNumber = searchValue || 0;
 
-    const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticketNumber);
+    const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticketNumber);
+    const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticketNumber);
 
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
 
     if (isTicketSold) {
       handleInvalidModal(true, 'sold');
+    } else if (isTicketReserved) {
+      handleInvalidModal(true, 'reserved');  // Handle reserved tickets
     } else if (isTicketSelected) {
       handleInvalidModal(true, 'selected');
     } else {
@@ -566,6 +581,7 @@ function Operadora() {
     }
     setSearchValue(null);
   };
+
 
 
   function apartTickets(ticket_nro: number) {
@@ -596,6 +612,7 @@ function Operadora() {
   function InvalidModal() {
     const { isOpen, mode } = isOpenInvalidTicketModal;
     const isSold = mode === 'sold';
+    const isReserved = mode === 'reserved';
     const isTicketSelected = mode === 'selected';
     const ticketNumber = mode.slice(10);
 
@@ -608,12 +625,12 @@ function Operadora() {
         opened={isOpen}
         onClose={handleClose}
         withCloseButton={false}
-        title={isSold ? "Este ticket ha sido vendido" : isTicketSelected ? "El ticket ya ha sido seleccionado" : "Ticket inválido"}
+        title={isSold ? "Este ticket ha sido vendido" : isReserved ? "Este ticket está reservado" : isTicketSelected ? "El ticket ya ha sido seleccionado" : "Ticket inválido"}
         centered
       >
         <Card py={100}>
           <Text ta="center" fw={600} fz={24}>
-            {isSold ? "Este ticket ha sido vendido" : isTicketSelected ? "El ticket ya ha sido seleccionado" : `El ticket número: ${ticketNumber} no existe`}
+            {isSold ? "Este ticket ha sido vendido" : isReserved ? "Este ticket está reservado y no está disponible" : isTicketSelected ? "El ticket ya ha sido seleccionado" : `El ticket número: ${ticketNumber} no existe`}
           </Text>
         </Card>
         <Button
@@ -628,6 +645,7 @@ function Operadora() {
       </Modal>
     );
   }
+
 
 
 
@@ -1423,18 +1441,27 @@ function Operadora() {
                       { /* Raffle tickets */}
                       <div className={classes.ticketsList}>
                         {tickets.tickets.slice((selectedPage - 1) * 100, selectedPage * 100).map((ticket: ITicket) => {
-                          const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticket.position);
-                          { /* dancers */ }
+                          const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
+                          const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+
+                          const ticketClassName = isTicketSold
+                            ? classes.ticketsSold
+                            : isTicketReserved
+                              ? classes.ticketsReserved
+                              : ticketsSelected.includes(ticket.position)
+                                ? classes.ticketsSelected
+                                : classes.tickets;
+
                           return (
                             <div className={classes.ticketsSellContainer}>
                               {isTicketSold ? (
-                                <Card key={ticket.position} className={classes.ticketsSold}>
+                                <Card key={ticket.position} className={ticketClassName}>
                                   <Text ta='center'>{parseTickets(ticket.position)}</Text>
                                 </Card>
                               ) : (
                                 <Card
                                   key={ticket.position + ticketKey}
-                                  className={ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : classes.tickets}
+                                  className={ticketClassName}
                                   onClick={() => chooseTicket(ticket.position)}
                                 >
                                   <Text ta='center'>{parseTickets(ticket.position)}</Text>
@@ -1489,7 +1516,7 @@ function Operadora() {
                                     <ScrollArea h={105} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                       {
                                         ticketsSelected.map((ticket) => {
-                                          const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.positions?.includes(ticket);
+                                          const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
 
                                           if (isTicketSold) {
                                             return null;

@@ -41,7 +41,7 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
       <Text fw={300} fz={14}>
         <strong>Fecha de Cierre:</strong> { data.expired_date == null ? "Por definir" : moment(data.expired_date).format('DD/MM/YYYY') }
       </Text>
-      <Progress label={`${progress}%`} mt={5} size='xl' value={progress} />
+      <Progress label={`${progress}%`} mt={5} size='xl' value={progress < 10 ? 10 : progress } />
     </Card>
   );
 }
