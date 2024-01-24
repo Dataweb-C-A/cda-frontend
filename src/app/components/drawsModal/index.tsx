@@ -46,7 +46,10 @@ type IDrawsModal = {
   onClose: () => void;
   open: boolean;
 }
-
+interface Combo {
+  quantity: number | null;
+  price: number | null;
+}
 type IFile = {
   poth: string | string[];
   lastModified: number | number[];
@@ -113,7 +116,9 @@ function DrawsModal({
   const [checkedIndex, setCheckedIndex] = useState(0);
   const [ownerLabel, setOwnerLabel] = useState<IWhitelist[]>([])
   const [allTaquillas, setAllTaquillas] = useState<boolean>(true)
-  const [combos, setCombos] = useState([{ quantity: 0, price: 0 }]);
+  const [combos, setCombos] = useState([
+    { quantity: 0, price: 0 } as { quantity: number; price: number },
+  ]);
   const [visibleTaquillas, setVisibleTaquillas] = useState<IVisibleTaquillas[]>([
     {
       label: "Cargando...",
@@ -185,7 +190,6 @@ function DrawsModal({
       // second_prize: null,
       init_date: null,
       visible_taquillas_ids: [],
-      combos: combos,
       expired_date: null,
       money: '$',
       ad: null,
@@ -193,6 +197,7 @@ function DrawsModal({
       raffle_type: 'Triple',
       fundation_id: null,
       local_id: null,
+      combos: combos,
       shared_user_id: JSON.parse(localStorage.getItem('user') || '').id || 1
     },
     validate: {
@@ -256,6 +261,21 @@ function DrawsModal({
         if (!value) return 'Precio unitario requerido';
         if (value <= 0) return 'El precio unitario debe ser mayor a 0';
       },
+      combos: (value: any[]) => {
+        if (value.length === 0) return 'Debe agregar al menos un combo';
+
+        for (let i = 0; i < value.length; i++) {
+          const combo = value[i];
+
+          if (typeof combo.quantity !== 'number' || combo.quantity <= 0) {
+            return 'La cantidad del combo debe ser un número mayor a 0';
+          }
+
+          if (typeof combo.price !== 'number' || combo.price <= 0) {
+            return 'El precio del combo debe ser un número mayor a 0';
+          }
+        }
+      },
       numbers: (value: number) => {
         if (!value) return 'Numeros de la rifa requeridos';
         if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
@@ -286,11 +306,17 @@ function DrawsModal({
     },
   });
 
-  const closeModal = () => {
-    setActive(0)
-    form.reset()
-    onClose()
+  const closeModal = (): void => {
+    form.reset();
+    setFiles(null);
+    setActive(0);
+    onClose();
+    setCombos([
+      { quantity: null as unknown as number, price: null as unknown as number },
+    ]);
   }
+
+
 
   const [premioNumber, setPremioNumber] = useState(2);
   const [premios, setPremios] = useState<string[]>([]);
@@ -374,55 +400,54 @@ function DrawsModal({
   }
 
 
-  const removeFile = (index: number, dropzone: number) => {
-    if (dropzone === 1) {
-      const updatedFiles = files;
-      setFiles(updatedFiles);
-    } else if (dropzone === 2) {
-      const updatedFiles2 = files2
-      setFiles2(updatedFiles2);
-      form.setFieldValue('ad', null)
-    }
-  };
-
   const previews = (fileList: FileWithPath | null, dropzone: number) => {
     const imageUrl = fileList === null ? '' : URL.createObjectURL(fileList);
     return (
       <>
-
-        <Group position='center'>
-
-          <div >
-            <Image
-              src={imageUrl}
-              imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-            />
-          </div>
-        </Group>
+        {fileList !== null && (
+          <Group position='center'>
+            <div>
+              <Image
+                src={imageUrl}
+                imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
+              />
+            </div>
+          </Group>
+        )}
       </>
     );
   };
 
+  const handleQuantityChange = (index: number, value: number | undefined) => {
+    if (value !== undefined && !isNaN(value)) {
+      const updatedCombos = [...combos];
+      updatedCombos[index].quantity = Number(value);
+      setCombos(updatedCombos);
+      form.setFieldValue('combos', updatedCombos);
+    }
+  };
+
+  const handlePriceChange = (index: number, value: number | undefined) => {
+    if (value !== undefined && !isNaN(value)) {
+      const updatedCombos = [...combos];
+      updatedCombos[index].price = Number(value);
+      setCombos(updatedCombos);
+      form.setFieldValue('combos', updatedCombos);
+    }
+  };
+
+
+  const removeComboInput = (index: number) => {
+    const updatedCombos = [...combos];
+    updatedCombos.splice(index, 1);
+    setCombos(updatedCombos);
+    form.setFieldValue('combos', updatedCombos);
+  };
+
   const addComboInput = () => {
-    setCombos([...combos, { quantity: 0, price: 0 }]);
-  };
-
-  const removeComboInput = (indexToRemove: number) => {
-    const updatedCombos = combos.filter((_, index) => index !== indexToRemove);
+    const updatedCombos = [...combos, { quantity: 0, price: 0 }];
     setCombos(updatedCombos);
-  };
-
-
-  const handleQuantityChange = (index: number, value?: number) => {
-    const updatedCombos = [...combos];
-    updatedCombos[index].quantity = value || 0;
-    setCombos(updatedCombos);
-  };
-
-  const handlePriceChange = (index: number, value?: number) => {
-    const updatedCombos = [...combos];
-    updatedCombos[index].price = value || 0;
-    setCombos(updatedCombos);
+    form.setFieldValue('combos', updatedCombos);
   };
 
   const [highestStepVisited, setHighestStepVisited] = useState(active);
@@ -450,7 +475,7 @@ function DrawsModal({
       >
         <Stepper size="md" active={active}>
 
-          <Stepper.Step label="Combos" description="edita los combos de la rifa">
+          {/* <Stepper.Step label="Combos" description="edita los combos de la rifa">
             <Title ta="center" order={2}>Manejar combos</Title>
             <ScrollArea style={{ height: 500 }}>
               {combos.map((combo, index) => (
@@ -496,7 +521,7 @@ function DrawsModal({
                 Siguiente
               </Button>
             </Group>
-          </Stepper.Step>
+          </Stepper.Step> */}
 
           <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
             <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
@@ -905,6 +930,59 @@ function DrawsModal({
                 {previews(files, 1)}
               </SimpleGrid>
 
+              <Card radius={'xl'}>
+
+                <ScrollArea style={{ height: 300 }}>
+                  {combos.map((combo, index) => (
+                    <Group key={index} position="center">
+                      <NumberInput
+                        value={combo.quantity}
+                        placeholder="Cantidad"
+                        type='number'
+                        label="Cantidad"
+                        radius="md"
+                        size="md"
+                        hideControls
+                        onChange={(value) => handleQuantityChange(index, value)}
+                        error={
+                          form.errors?.combos && Array.isArray(form.errors.combos)
+                            ? form.errors.combos[index]?.quantity
+                            : undefined
+                        }
+                      />
+                      <div style={{ marginTop: "30px" }}>
+                        <IconX />
+                      </div>
+                      <NumberInput
+                        value={combo.price}
+
+                        type='number'
+                        placeholder="Precio"
+                        label="Precio"
+                        radius="md"
+                        size="md"
+                        hideControls
+                        onChange={(value) => handlePriceChange(index, value)}
+                        error={
+                          form.errors?.combos && Array.isArray(form.errors.combos)
+                            ? form.errors.combos[index]?.price
+                            : undefined
+                        }
+                      />
+                      <div
+                        style={{ marginTop: "30px", cursor: "pointer" }}
+                        onClick={() => removeComboInput(index)}
+                      >
+                        <IconTrash color="red" />
+                      </div>
+                    </Group>
+                  ))}
+                </ScrollArea>
+
+                <Button fullWidth color="indigo" radius="md" size="md" onClick={addComboInput}>
+                  Agregar combo
+                </Button>
+              </Card>
               {/* </Grid.Col> */}
               {/* <Grid.Col span={6}>
                   <Group>
@@ -1003,7 +1081,18 @@ function DrawsModal({
                   <strong>Moneda:</strong> {form.values.money}
                 </li>
 
-
+                {form.values.combos && form.values.combos.length > 0 && (
+                  <li>
+                    <strong>Combos:</strong>
+                    <ul>
+                      {form.values.combos.map((combo, index) => (
+                        <li key={index}>
+                          {index + 1}: {combo.quantity} X {combo.price}$
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                )}
               </ul>
             </Card>
           </Stepper.Step>
