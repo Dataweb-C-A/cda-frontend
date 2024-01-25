@@ -1469,6 +1469,7 @@ function Operadora() {
                               ? classes.ticketsSelected
                               : classes.tickets;
                         
+                        
 
                           return (
                             <div className={classes.ticketsSellContainer}>
@@ -1479,14 +1480,13 @@ function Operadora() {
                               ) : (
                                 <Card
                                 key={ticket.position + ticketKey}
-                                className={ticketClassName}
+                                className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
                                 onClick={() => chooseTicket(ticket.position)}
-                                style={{
-                                  background: ticketsSelected.includes(ticket.position) && !isTicketSold ? 'green' : undefined,
-                                }}
                               >
                                 <Text ta='center'>{parseTickets(ticket.position)}</Text>
                               </Card>
+                              
+
                               
                               )}
                             </div>
