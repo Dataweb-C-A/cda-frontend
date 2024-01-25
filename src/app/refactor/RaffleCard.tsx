@@ -12,6 +12,7 @@ interface IRaffleCard {
 }
 
 function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) {
+  const theme = useMantineTheme()
   return (
     <Card  
       mb={10} 
@@ -41,7 +42,7 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
       <Text fw={300} fz={14}>
         <strong>Fecha de Cierre:</strong> { data.expired_date == null ? "Por definir" : moment(data.expired_date).format('DD/MM/YYYY') }
       </Text>
-      <Progress label={`${progress}%`} mt={5} size='xl' value={progress < 10 ? 10 : progress } />
+      <Progress label={`${progress}%`} color={theme.colors.green[8]} mt={5} size='xl' value={progress < 1 ? 13 : progress > 1 ? 17 : progress } />
     </Card>
   );
 }
