@@ -590,7 +590,7 @@ function Operadora() {
     if (isTicketSold) {
       handleInvalidModal(true, 'sold');
     } else if (isTicketReserved) {
-      handleInvalidModal(true, 'reserved'); 
+      handleInvalidModal(true, 'reserved');
     } else if (isTicketSelected) {
       handleInvalidModal(true, 'selected');
     } else {
@@ -1382,6 +1382,7 @@ function Operadora() {
                     <NumberInput
                       size="xs"
                       hideControls
+                      w={125}
                       placeholder="Buscar número"
                       value={searchValue || undefined}
                       onChange={(value: number) => setSearchValue(value)}
@@ -1405,7 +1406,9 @@ function Operadora() {
                     </Button>
                     <Button
                       size='xs'
+
                       ml={10}
+                      mr={15}
                       color="red"
                       onClick={() => cleanSelection()}
                     >
@@ -1413,7 +1416,12 @@ function Operadora() {
                         size={22}
 
                       />
+
                     </Button>
+                    <Text fw={700} mr={3} fz={16} ta="start"> Precio por ticket : </Text>
+                    <Text fw={500} mr={15} fz={16} ta="end">{raffleActive(selectedRaffle)?.price_unit}$</Text>
+                    <Text fw={700} ml={8} fz={16} ta="start"> Combos : </Text>
+
                     {raffleActive(selectedRaffle)?.combos === null ? (
                       JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
                         <Button
@@ -1462,20 +1470,25 @@ function Operadora() {
                           const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
 
                           const ticketClassName = isTicketSold
-                          ? classes.ticketsSold
-                          : isTicketReserved
-                            ? classes.ticketsReserved
-                            : ticketsSelected.includes(ticket.position)
-                              ? classes.ticketsSelected
-                              : classes.tickets;
-                        
-                        
+                            ? classes.ticketsSold
+                            : isTicketReserved
+                              ? classes.ticketsReserved
+                              : ticketsSelected.includes(ticket.position)
+                                ? classes.ticketsSelected
+                                : classes.tickets;
 
+
+                                const ticketStatusLabel =
+                                isTicketReserved ? 'Reservado' : ticketsSelected.includes(ticket.position) ? 'Seleccionado' : 'Disponible';
+                              
                           return (
                             <div className={classes.ticketsSellContainer}>
                               {isTicketSold ? (
                                 <Card key={ticket.position} className={ticketClassName}>
                                   <Text ta='center'>{parseTickets(ticket.position)}</Text>
+                                  {/* <Text  fz={12} ml={-12}>
+                                  vendido
+                        </Text> */}
                                 </Card>
                               ) : (
                                 <Card
@@ -1484,14 +1497,51 @@ function Operadora() {
                                 onClick={() => chooseTicket(ticket.position)}
                               >
                                 <Text ta='center'>{parseTickets(ticket.position)}</Text>
+                                {/* <Text  fz={12} ml={-12}>
+                                  {ticketStatusLabel}
+                                </Text> */}
                               </Card>
-                              
 
-                              
+
+
                               )}
+
                             </div>
                           );
                         })}
+                        
+                        <Card style={{ background: '#4D4F66' }}>
+                          <Text>
+
+                          </Text>
+                        </Card>
+                        <Text ml={-12}>
+                          Disponible 
+                        </Text>
+                        <Card style={{ background: 'green' }}>
+                          <Text>
+
+                          </Text>
+                        </Card>
+                        <Text ml={-12}>
+                         Mi compra
+                        </Text>
+                        <Card style={{ background: '#ff8000' }}>
+                          <Text>
+
+                          </Text>
+                        </Card>
+                        <Text ml={-12}>
+                          Reservado
+                        </Text>
+                        <Card style={{ background: 'red' }}>
+                          <Text>
+
+                          </Text>
+                        </Card>
+                        <Text ml={-12}>
+                          Vendido 
+                        </Text>
                       </div>
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
@@ -1504,8 +1554,7 @@ function Operadora() {
                             <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.tickets_count}</Text>
                           </Group>
                           <Group w="100%" position='apart'>
-                            <Text fw={700} fz={16} ta="start">Precio por ticket:</Text>
-                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.price_unit}$</Text>
+
                           </Group>
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Fecha de inicio:</Text>
