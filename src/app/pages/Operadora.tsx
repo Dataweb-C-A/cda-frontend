@@ -1459,12 +1459,13 @@ function Operadora() {
                           const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
 
                           const ticketClassName = isTicketSold
-                            ? classes.ticketsSold
-                            : isTicketReserved
-                              ? classes.ticketsReserved
-                              : ticketsSelected.includes(ticket.position)
-                                ? classes.ticketsSelected
-                                : classes.tickets;
+                          ? classes.ticketsSold
+                          : isTicketReserved
+                            ? classes.ticketsReserved
+                            : ticketsSelected.includes(ticket.position)
+                              ? classes.ticketsSelected
+                              : classes.tickets;
+                        
 
                           return (
                             <div className={classes.ticketsSellContainer}>
@@ -1474,12 +1475,16 @@ function Operadora() {
                                 </Card>
                               ) : (
                                 <Card
-                                  key={ticket.position + ticketKey}
-                                  className={ticketClassName}
-                                  onClick={() => chooseTicket(ticket.position)}
-                                >
-                                  <Text ta='center'>{parseTickets(ticket.position)}</Text>
-                                </Card>
+                                key={ticket.position + ticketKey}
+                                className={ticketClassName}
+                                onClick={() => chooseTicket(ticket.position)}
+                                style={{
+                                  background: ticketsSelected.includes(ticket.position) && !isTicketSold ? 'green' : undefined,
+                                }}
+                              >
+                                <Text ta='center'>{parseTickets(ticket.position)}</Text>
+                              </Card>
+                              
                               )}
                             </div>
                           );
