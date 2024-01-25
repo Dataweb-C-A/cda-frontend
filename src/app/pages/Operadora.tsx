@@ -336,6 +336,9 @@ function Operadora() {
 
         disconnected() {
           console.log('Disconnected from ActionCable');
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000)
           setRafflesCableStatus({
             is_connected: false,
             receiving_data: false,
