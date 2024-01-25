@@ -64,13 +64,12 @@ type FormProps = {
   draw_type: string | 'Fecha limite' | 'Infinito' | 'Progresiva' | '50/50';
   limit: null | number;
   price_unit: null | number;
+  other_prizes: { content: string; number: number }[];
   lotery: string;
   tickets_count: number;
-  // first_prize: string;
   prizes: string[];
   numbers: null | number | string;
   raffle_type: string;
-  // second_prize: null | string | null;
   init_date: null | Date | string;
   visible_taquillas_ids: number[];
   expired_date: Date | string | null;
@@ -191,6 +190,7 @@ function DrawsModal({
       visible_taquillas_ids: [],
       expired_date: null,
       money: '$',
+      other_prizes: [],
       ad: null,
       prizes: [],
       owner_id: null,
@@ -229,6 +229,21 @@ function DrawsModal({
       // },
       init_date: (value: Date) => {
         if (!value) return 'Fecha de inicio requerida';
+      },
+      other_prizes: (value: { content: string; number: number }[]) => {
+        if (!value || value.length === 0) return 'Otros premios requeridos';
+
+        for (let i = 0; i < value.length; i++) {
+          const prize = value[i];
+
+          if (!prize.content) {
+            return 'El contenido del premio es obligatorio';
+          }
+
+          if (prize.number < 1) {
+            return 'El número del premio debe ser mayor a 0';
+          }
+        }
       },
       expired_date: (value: Date) => {
         if (form.values.draw_type === 'Progresiva') {
@@ -336,12 +351,18 @@ function DrawsModal({
   const [premioNumber, setPremioNumber] = useState(2);
   const [premios, setPremios] = useState<string[]>([]);
   const [inputValues, setInputValues] = useState<string[]>([]);
+  const [otherPrizes, setOtherPrizes] = useState<{ name: string; prize_position: number }[]>([]);
+  const [otherPrizesInputValues, setOtherPrizesInputValues] = useState<string[]>([]);
 
   const agregarPremio = () => {
     const nuevaEtiqueta = `Premio #${premioNumber}`;
     setPremioNumber(premioNumber + 1);
     setPremios([...premios, nuevaEtiqueta]);
     setInputValues([...inputValues, '']);
+    setOtherPrizes([...otherPrizes, { name: inputValues[inputValues.length - 1], prize_position: premioNumber }]);
+    setOtherPrizesInputValues([...otherPrizesInputValues, '']);
+    console.log('Otros Premios:', otherPrizes);
+
   };
 
   const eliminarUltimoPremio = () => {
@@ -350,19 +371,37 @@ function DrawsModal({
       nuevosPremios.pop();
       setPremios(nuevosPremios);
       setPremioNumber(premioNumber - 1);
+
       const nuevosInputValues = [...inputValues];
       nuevosInputValues.pop();
       setInputValues(nuevosInputValues);
+
+      const nuevosOtherPrizes = [...otherPrizes];
+      nuevosOtherPrizes.pop();
+      setOtherPrizes(nuevosOtherPrizes);
+
+      const nuevosOtherPrizesInputValues = [...otherPrizesInputValues];
+      nuevosOtherPrizesInputValues.pop();
+      setOtherPrizesInputValues(nuevosOtherPrizesInputValues);
+      console.log('Otros Premios:', nuevosOtherPrizes);
     } else {
       setPremioNumber(2);
     }
   };
+  const handleOtherPrizeInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const nuevosOtherPrizesInputValues = [...otherPrizesInputValues];
+    nuevosOtherPrizesInputValues[index] = e.target.value;
+    setOtherPrizesInputValues(nuevosOtherPrizesInputValues);
 
-  const handleInputChange = (index: number, value: string) => {
-    const nuevosInputValues = [...inputValues];
-    nuevosInputValues[index] = value;
-    setInputValues(nuevosInputValues);
+    const nuevosOtherPrizes = [...otherPrizes];
+    nuevosOtherPrizes[index] = { name: e.target.value, prize_position: premioNumber - otherPrizes.length + index - 1 };
+    setOtherPrizes(nuevosOtherPrizes);
+
+    console.log('Otros Premios:', nuevosOtherPrizes);
   };
+
+
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -614,18 +653,18 @@ function DrawsModal({
                 <Grid.Col span={10}>
                   <TextInput
                     size='md'
-                    label="Premio"
-                    placeholder="Premio"
-                    error={form.errors.prizes}  // Modificado para reflejar el cambio
+                    label="Primer premio"
+                    placeholder="Primer premio"
+                    error={form.errors.prizes}
                     withAsterisk
                     radius={'lg'}
                     mt="md"
                     mb={15}
-                    {...form.getInputProps('prizes')}  // Modificado para reflejar el cambio
+                    {...form.getInputProps('prizes')}
                   />
 
                 </Grid.Col>
-                {/* <Grid.Col span={2}>
+                <Grid.Col span={2}>
                   <Group>
                     <ActionIcon mt={48} variant="filled" onClick={agregarPremio}>
                       <IconPlus size={30} />
@@ -635,19 +674,21 @@ function DrawsModal({
                       <IconMinus size={30} />
                     </ActionIcon>
                   </Group>
-                </Grid.Col> */}
+                </Grid.Col>
               </Grid>
               <Grid>
-                {premios.map((etiqueta, index) => (
-                  <Grid.Col span={4}>
+
+                {otherPrizes.map((etiqueta, index) => (
+                  <Grid.Col span={4} key={index}>
                     <TextInput
-                      key={index}
                       size='md'
-                      label={etiqueta}
+                      label={`Premio #${etiqueta.prize_position}`}
                       mt={15}
                       radius={'lg'}
                       mb={10}
-                      placeholder={etiqueta}
+                      placeholder={`Premio #${etiqueta.prize_position}`}
+                      value={otherPrizesInputValues[index]}
+                      onChange={(e) => handleOtherPrizeInputChange(e, index)}
 
                     />
                   </Grid.Col>
@@ -947,7 +988,10 @@ function DrawsModal({
               </SimpleGrid>
 
               <Card radius={'xl'}>
-
+                <Title ta={"center"}>
+                  Manejar combos
+                </Title>
+                <Divider variant="dashed" mt={5} />
                 <ScrollArea style={{ height: 300 }}>
                   {combos.map((combo, index) => (
                     <Group key={index} position="center">
