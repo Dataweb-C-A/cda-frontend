@@ -4,7 +4,7 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, NumberInput, useMantineTheme, Checkbox, Modal, Select, Stepper, Avatar, TextInput, Title, Divider } from "@mantine/core"
+import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, NumberInput, useMantineTheme, Checkbox, Modal, Select, Stepper, Avatar, TextInput, Title, Divider, Badge } from "@mantine/core"
 import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
@@ -1237,9 +1237,8 @@ function Operadora() {
                       withCloseButton={false}
                       size="md"
                     >
-
                       <Text ta="center" fw={750} fz={16}>
-                        Seleccione un metodo para continuar con su pago
+                        Seleccione un método para continuar con su pago
                       </Text>
 
                       <Card
@@ -1302,7 +1301,7 @@ function Operadora() {
                             mt={20}
                           />
                           <Text fw={750} fz={20} mt={20}>
-                            Dolares americanos
+                            Dólares americanos
                           </Text>
                         </Group>
                       </Card>
@@ -1418,9 +1417,26 @@ function Operadora() {
                       />
 
                     </Button>
-                    <Text fw={700} mr={3} fz={16} ta="start"> Precio por ticket : </Text>
-                    <Text fw={500} mr={15} fz={16} ta="end">{raffleActive(selectedRaffle)?.price_unit}$</Text>
-                    <Text fw={700} ml={8} fz={16} ta="start"> Combos : </Text>
+
+                    <Badge mt={1} mr={15} color="teal" size="lg" variant={hasPaymentSelected === "$" ? 'filled' : undefined} style={{ cursor: 'pointer' }}>
+                      <Text fw={400} fz={16}>
+                        USD
+                      </Text>
+                    </Badge>
+                    <Badge mt={1} mr={15} color="teal" size="lg" variant={hasPaymentSelected === "BsD" ? 'filled' : undefined} style={{ cursor: 'pointer' }}>
+                      <Text fw={400} fz={16}>
+                        Bs.D
+                      </Text>
+                    </Badge>
+                    <Badge mt={1} mr={15} color="teal" size="lg" variant={hasPaymentSelected === "COP" ? 'filled' : undefined} style={{ cursor: 'pointer' }}>
+                      <Text fw={400} fz={16}>
+                        COP
+                      </Text>
+                    </Badge>
+                    
+                    <Text fw={300} mr={3} fz={16} mt={2} ta="start"> Ticket: </Text>
+                    <Text fw={500} mr={15} fz={16} mt={2} ta="end">{raffleActive(selectedRaffle)?.price_unit}$</Text>
+                    <Text fw={300} ml={0} mt={2} fz={16} ta="start"> Combos: </Text>
 
                     {raffleActive(selectedRaffle)?.combos === null ? (
                       JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
