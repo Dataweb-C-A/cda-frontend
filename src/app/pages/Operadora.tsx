@@ -1569,7 +1569,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-12} mt={3}>
+                          <Text ml={-7} mt={3}>
                             Disponible 
                           </Text>
                           <Card style={{ background: 'green' }}>
@@ -1577,7 +1577,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-12} mt={3}>
+                          <Text ml={-7} mt={3}>
                           Mi compra
                           </Text>
                           <Card style={{ background: '#ff8000' }}>
@@ -1585,7 +1585,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-12} mt={3}>
+                          <Text ml={-7} mt={3}>
                             Reservado
                           </Text>
                           <Card style={{ background: 'red' }}>
@@ -1593,7 +1593,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-12} mt={3}>
+                          <Text ml={-7} mt={3}>
                             Vendido 
                           </Text>
                         </Card>
