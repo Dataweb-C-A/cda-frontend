@@ -750,9 +750,17 @@ function Operadora() {
       })
     }
 
+    const precioUnitarioSinCombo = Number(raffleActive(selectedRaffle || 0)?.price_unit)
 
+    const precioTotalConCombo = Number(calculateTotalPrice().toFixed(2))
 
+    const cantidadTickets = ticketsSelected.length
 
+    const descuentoPorcentual = Math.max(0, (((precioUnitarioSinCombo * cantidadTickets) - precioTotalConCombo) / (precioUnitarioSinCombo * cantidadTickets)) * 100);
+    
+    const descuentoFormateado = descuentoPorcentual % 1 === 0
+      ? descuentoPorcentual.toFixed(0) + '%'
+      : descuentoPorcentual.toFixed(2) + '%';
 
     return (
       <Modal
@@ -942,7 +950,7 @@ function Operadora() {
                             {raffleActive(selectedRaffle || 0)?.price_unit}.00$
                           </Title>
                           <Title order={6} fw={300} mr={15} c='black'>
-                            0%
+                            { descuentoFormateado }
                           </Title>
                         </Group>
                       )
@@ -1154,8 +1162,7 @@ function Operadora() {
 
     return totalPrice;
   };
-
-
+  
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
   const [isHovered3, setIsHovered3] = useState(false);
@@ -1643,15 +1650,11 @@ function Operadora() {
                                       {
                                         ticketsSelected.map((ticket) => {
                                           const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
-
                                           if (isTicketSold) {
                                             return null;
                                           }
-
                                           return (
                                             <>
-
-
                                               <Group position="apart" spacing={25}>
                                                 <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                   {parseTickets(ticket)}
@@ -1663,15 +1666,10 @@ function Operadora() {
                                                   {raffleActive(selectedRaffle || 0)?.price_unit}.00$
                                                 </Title>
                                               </Group>
-
-
                                             </>
                                           );
                                         })
                                       }
-
-
-
                                     </ScrollArea>
                                     <Group w="100%" position="apart">
                                       <Title order={4} fw={650} c='black'>
