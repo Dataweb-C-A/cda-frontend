@@ -1418,17 +1418,53 @@ function Operadora() {
 
                     </Button>
 
-                    <Badge mt={1} mr={15} color="teal" size="lg" variant={hasPaymentSelected === "$" ? 'filled' : undefined} style={{ cursor: 'pointer' }}>
+                    <Badge 
+                      mt={1} 
+                      mr={15} 
+                      color="teal" 
+                      size="lg" 
+                      variant={hasPaymentSelected === "$" ? 'filled' : undefined} 
+                      style={{ cursor: hasPaymentSelected === '$' ? "default" : "pointer" }}
+                      onClick={() => {
+                        if (hasPaymentSelected !== '$') {
+                          setHasPaymentSelected('$')
+                        }
+                      }}
+                    >
                       <Text fw={400} fz={16}>
                         USD
                       </Text>
                     </Badge>
-                    <Badge mt={1} mr={15} color="teal" size="lg" variant={hasPaymentSelected === "BsD" ? 'filled' : undefined} style={{ cursor: 'pointer' }}>
+                    <Badge 
+                      mt={1} 
+                      mr={15} 
+                      color="teal"
+                      size="lg" 
+                      variant={hasPaymentSelected === "BsD" ? 'filled' : undefined} 
+                      style={{ cursor: hasPaymentSelected === 'BsD' ? "default" : "pointer" }}
+                      onClick={() => {
+                        if (hasPaymentSelected !== 'BsD') {
+                          setHasPaymentSelected('BsD')
+                        }
+                      }}
+                    >
                       <Text fw={400} fz={16}>
-                        Bs.D
+                        B<small>s</small>.D
                       </Text>
                     </Badge>
-                    <Badge mt={1} mr={15} color="teal" size="lg" variant={hasPaymentSelected === "COP" ? 'filled' : undefined} style={{ cursor: 'pointer' }}>
+                    <Badge 
+                      mt={1} 
+                      mr={15} 
+                      color="teal" 
+                      size="lg" 
+                      variant={hasPaymentSelected === "COP" ? 'filled' : undefined} 
+                      style={{ cursor: hasPaymentSelected === 'COP' ? "default" : "pointer" }}
+                      onClick={() => {
+                        if (hasPaymentSelected !== 'COP') {
+                          setHasPaymentSelected('COP')
+                        }
+                      }}
+                    >
                       <Text fw={400} fz={16}>
                         COP
                       </Text>
@@ -1443,6 +1479,7 @@ function Operadora() {
                         <Button
                           size='xs'
                           ml={10}
+                          mt={-2}
                         >
                           Agregar combos
                         </Button>
@@ -1460,6 +1497,7 @@ function Operadora() {
                                   <Button
                                     size='xs'
                                     ml={10}
+                                    mt={-2}
                                     color="teal"
                                     onClick={() => handleComboClick(combo.quantity, combo.price)}
                                   >
@@ -1525,39 +1563,40 @@ function Operadora() {
                             </div>
                           );
                         })}
-                        
-                        <Card style={{ background: '#4D4F66' }}>
-                          <Text>
+                        <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                          <Card style={{ background: '#4D4F66' }}>
+                            <Text>
 
+                            </Text>
+                          </Card>
+                          <Text ml={-12} mt={3}>
+                            Disponible 
+                          </Text>
+                          <Card style={{ background: 'green' }}>
+                            <Text>
+
+                            </Text>
+                          </Card>
+                          <Text ml={-12} mt={3}>
+                          Mi compra
+                          </Text>
+                          <Card style={{ background: '#ff8000' }}>
+                            <Text>
+
+                            </Text>
+                          </Card>
+                          <Text ml={-12} mt={3}>
+                            Reservado
+                          </Text>
+                          <Card style={{ background: 'red' }}>
+                            <Text>
+
+                            </Text>
+                          </Card>
+                          <Text ml={-12} mt={3}>
+                            Vendido 
                           </Text>
                         </Card>
-                        <Text ml={-12}>
-                          Disponible 
-                        </Text>
-                        <Card style={{ background: 'green' }}>
-                          <Text>
-
-                          </Text>
-                        </Card>
-                        <Text ml={-12}>
-                         Mi compra
-                        </Text>
-                        <Card style={{ background: '#ff8000' }}>
-                          <Text>
-
-                          </Text>
-                        </Card>
-                        <Text ml={-12}>
-                          Reservado
-                        </Text>
-                        <Card style={{ background: 'red' }}>
-                          <Text>
-
-                          </Text>
-                        </Card>
-                        <Text ml={-12}>
-                          Vendido 
-                        </Text>
                       </div>
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
