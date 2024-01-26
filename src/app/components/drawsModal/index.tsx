@@ -64,7 +64,7 @@ type FormProps = {
   draw_type: string | 'Fecha limite' | 'Infinito' | 'Progresiva' | '50/50';
   limit: null | number;
   price_unit: null | number;
-  other_prizes: { content: string; number: number }[];
+  // other_prizes: { content: string; number: number }[];
   lotery: string;
   tickets_count: number;
   prizes: string[];
@@ -73,6 +73,7 @@ type FormProps = {
   init_date: null | Date | string;
   visible_taquillas_ids: number[];
   expired_date: Date | string | null;
+  combos: Combo[];
   money: null | string;
   ad: IFile | null;
   owner_id: number | string | null;
@@ -190,7 +191,7 @@ function DrawsModal({
       visible_taquillas_ids: [],
       expired_date: null,
       money: '$',
-      other_prizes: [],
+      //  other_prizes: [],
       ad: null,
       prizes: [],
       owner_id: null,
@@ -230,21 +231,21 @@ function DrawsModal({
       init_date: (value: Date) => {
         if (!value) return 'Fecha de inicio requerida';
       },
-      other_prizes: (value: { content: string; number: number }[]) => {
-        if (!value || value.length === 0) return 'Otros premios requeridos';
+      // other_prizes: (value: { content: string; number: number }[]) => {
+      //   if (!value || value.length === 0) return 'Otros premios requeridos';
 
-        for (let i = 0; i < value.length; i++) {
-          const prize = value[i];
+      //   for (let i = 0; i < value.length; i++) {
+      //     const prize = value[i];
 
-          if (!prize.content) {
-            return 'El contenido del premio es obligatorio';
-          }
+      //     if (!prize.content) {
+      //       return 'El contenido del premio es obligatorio';
+      //     }
 
-          if (prize.number < 1) {
-            return 'El número del premio debe ser mayor a 0';
-          }
-        }
-      },
+      //     if (prize.number < 1) {
+      //       return 'El número del premio debe ser mayor a 0';
+      //     }
+      //   }
+      // },
       expired_date: (value: Date) => {
         if (form.values.draw_type === 'Progresiva') {
           form.setFieldValue('expired_date', null);
@@ -346,8 +347,6 @@ function DrawsModal({
     ]);
   }
 
-
-
   const [premioNumber, setPremioNumber] = useState(2);
   const [premios, setPremios] = useState<string[]>([]);
   const [inputValues, setInputValues] = useState<string[]>([]);
@@ -413,9 +412,32 @@ function DrawsModal({
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
 
-    axios.post('https://mock.rifa-max.com/x100/raffles', { x100_raffle: values }, {
+    axios.post('https://mock.rifa-max.com/x100/raffles', {
+      x100_raffle: {
+        title: values?.title,
+        draw_type: values?.draw_type,
+        limit: values?.limit,
+        price_unit: values?.price_unit,
+        // other_prizes: values?.other_prizes,
+        lotery: values?.lotery,
+        tickets_count: values?.tickets_count,
+        prizes: values?.prizes,
+        numbers: values?.numbers,
+        raffle_type: values?.raffle_type,
+        init_date: values?.init_date,
+        visible_taquillas_ids: values?.visible_taquillas_ids,
+        expired_date: values?.expired_date,
+        combos: values?.combos !== null ? JSON.stringify(values?.combos) : null,
+        money: values?.money,
+        ad: values?.ad,
+        owner_id: values?.owner_id,
+        local_id: values?.local_id,
+        fundation_id: values?.fundation_id,
+        shared_user_id: values?.shared_user_id,
+      }
+    }, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": ["application/json", "multipart/form-data"],
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((res) => {

@@ -360,7 +360,6 @@ function Operadora() {
         received(data: IProgresses[]) {
           console.log('Received data from ActionCable:', data);
 
-          // Log progress information to the console
           data.forEach(progress => {
             console.log(`Raffle ID: ${progress.raffle_id}, Progress: ${progress.progress}%`);
           });
@@ -562,22 +561,31 @@ function Operadora() {
   const [ticketListKey, setTicketListKey] = useState<number>(0);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
-  const handleComboClick = (quantity: number, price: number) => {
+  const handleComboClick = async (quantity: number, price: number) => {
     const newTicketsSelected = [...ticketsSelected];
 
     for (let i = 0; i < quantity; i++) {
-      const randomTicketNumber = Math.floor(Math.random() * tickets.tickets.length) + 1;
+      let randomTicketNumber;
+      do {
+        randomTicketNumber = Math.floor(Math.random() * tickets.tickets.length) + 1;
+      } while (newTicketsSelected.includes(randomTicketNumber) || isTicketReservedOrSold(randomTicketNumber));
 
-      if (!newTicketsSelected.includes(randomTicketNumber)) {
-        newTicketsSelected.push(randomTicketNumber);
-      }
+      await chooseTicket(randomTicketNumber);
     }
 
-    setTicketsSelected(newTicketsSelected);
     setTicketKey((prevKey) => prevKey + 1);
-
     setTotalPrice((prevTotal) => prevTotal + price);
   };
+
+
+
+  const isTicketReservedOrSold = (ticketNumber: number): boolean => {
+    const soldData = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle);
+    const isTicketSold = soldData?.sold?.includes(ticketNumber) || false;
+    const isTicketReserved = soldData?.reserved?.includes(ticketNumber) || false;
+    return isTicketSold || isTicketReserved;
+  };
+
 
   const handleSearch = () => {
     const ticketNumber = searchValue || 0;
@@ -757,7 +765,7 @@ function Operadora() {
     const cantidadTickets = ticketsSelected.length
 
     const descuentoPorcentual = Math.max(0, (((precioUnitarioSinCombo * cantidadTickets) - precioTotalConCombo) / (precioUnitarioSinCombo * cantidadTickets)) * 100);
-    
+
     const descuentoFormateado = descuentoPorcentual % 1 === 0
       ? descuentoPorcentual.toFixed(0) + '%'
       : descuentoPorcentual.toFixed(2) + '%';
@@ -950,7 +958,7 @@ function Operadora() {
                             {raffleActive(selectedRaffle || 0)?.price_unit}.00$
                           </Title>
                           <Title order={6} fw={300} mr={15} c='black'>
-                            { descuentoFormateado }
+                            {descuentoFormateado}
                           </Title>
                         </Group>
                       )
@@ -1162,7 +1170,7 @@ function Operadora() {
 
     return totalPrice;
   };
-  
+
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
   const [isHovered3, setIsHovered3] = useState(false);
@@ -1425,12 +1433,12 @@ function Operadora() {
 
                     </Button>
 
-                    <Badge 
-                      mt={1} 
-                      mr={15} 
-                      color="teal" 
-                      size="lg" 
-                      variant={hasPaymentSelected === "$" ? 'filled' : undefined} 
+                    <Badge
+                      mt={1}
+                      mr={15}
+                      color="teal"
+                      size="lg"
+                      variant={hasPaymentSelected === "$" ? 'filled' : undefined}
                       style={{ cursor: hasPaymentSelected === '$' ? "default" : "pointer" }}
                       onClick={() => {
                         if (hasPaymentSelected !== '$') {
@@ -1442,12 +1450,12 @@ function Operadora() {
                         USD
                       </Text>
                     </Badge>
-                    <Badge 
-                      mt={1} 
-                      mr={15} 
+                    <Badge
+                      mt={1}
+                      mr={15}
                       color="teal"
-                      size="lg" 
-                      variant={hasPaymentSelected === "BsD" ? 'filled' : undefined} 
+                      size="lg"
+                      variant={hasPaymentSelected === "BsD" ? 'filled' : undefined}
                       style={{ cursor: hasPaymentSelected === 'BsD' ? "default" : "pointer" }}
                       onClick={() => {
                         if (hasPaymentSelected !== 'BsD') {
@@ -1459,12 +1467,12 @@ function Operadora() {
                         B<small>s</small>.D
                       </Text>
                     </Badge>
-                    <Badge 
-                      mt={1} 
-                      mr={15} 
-                      color="teal" 
-                      size="lg" 
-                      variant={hasPaymentSelected === "COP" ? 'filled' : undefined} 
+                    <Badge
+                      mt={1}
+                      mr={15}
+                      color="teal"
+                      size="lg"
+                      variant={hasPaymentSelected === "COP" ? 'filled' : undefined}
                       style={{ cursor: hasPaymentSelected === 'COP' ? "default" : "pointer" }}
                       onClick={() => {
                         if (hasPaymentSelected !== 'COP') {
@@ -1476,7 +1484,7 @@ function Operadora() {
                         COP
                       </Text>
                     </Badge>
-                    
+
                     <Text fw={300} mr={3} fz={16} mt={2} ta="start"> Ticket: </Text>
                     <Text fw={500} mr={15} fz={16} mt={2} ta="end">{raffleActive(selectedRaffle)?.price_unit}$</Text>
                     <Text fw={300} ml={0} mt={2} fz={16} ta="start"> Combos: </Text>
@@ -1539,9 +1547,9 @@ function Operadora() {
                                 : classes.tickets;
 
 
-                                const ticketStatusLabel =
-                                isTicketReserved ? 'Reservado' : ticketsSelected.includes(ticket.position) ? 'Seleccionado' : 'Disponible';
-                              
+                          const ticketStatusLabel =
+                            isTicketReserved ? 'Reservado' : ticketsSelected.includes(ticket.position) ? 'Seleccionado' : 'Disponible';
+
                           return (
                             <div className={classes.ticketsSellContainer}>
                               {isTicketSold ? (
@@ -1553,15 +1561,15 @@ function Operadora() {
                                 </Card>
                               ) : (
                                 <Card
-                                key={ticket.position + ticketKey}
-                                className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
-                                onClick={() => chooseTicket(ticket.position)}
-                              >
-                                <Text ta='center'>{parseTickets(ticket.position)}</Text>
-                                {/* <Text  fz={12} ml={-12}>
+                                  key={ticket.position + ticketKey}
+                                  className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
+                                  onClick={() => chooseTicket(ticket.position)}
+                                >
+                                  <Text ta='center'>{parseTickets(ticket.position)}</Text>
+                                  {/* <Text  fz={12} ml={-12}>
                                   {ticketStatusLabel}
                                 </Text> */}
-                              </Card>
+                                </Card>
 
 
 
@@ -1577,7 +1585,7 @@ function Operadora() {
                             </Text>
                           </Card>
                           <Text ml={-7} mt={3}>
-                            Disponible 
+                            Disponible
                           </Text>
                           <Card style={{ background: 'green' }}>
                             <Text>
@@ -1585,7 +1593,7 @@ function Operadora() {
                             </Text>
                           </Card>
                           <Text ml={-7} mt={3}>
-                          Mi compra
+                            Mi compra
                           </Text>
                           <Card style={{ background: '#ff8000' }}>
                             <Text>
@@ -1601,7 +1609,7 @@ function Operadora() {
                             </Text>
                           </Card>
                           <Text ml={-7} mt={3}>
-                            Vendido 
+                            Vendido
                           </Text>
                         </Card>
                       </div>
