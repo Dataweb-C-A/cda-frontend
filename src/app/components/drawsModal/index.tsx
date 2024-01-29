@@ -64,7 +64,6 @@ type FormProps = {
   draw_type: string | 'Fecha limite' | 'Infinito' | 'Progresiva' | '50/50';
   limit: null | number;
   price_unit: null | number;
-  // other_prizes: { content: string; number: number }[];
   lotery: string;
   tickets_count: number;
   prizes: string[];
@@ -427,7 +426,7 @@ function DrawsModal({
         init_date: values?.init_date,
         visible_taquillas_ids: values?.visible_taquillas_ids,
         expired_date: values?.expired_date,
-        combos: values?.combos !== null ? JSON.stringify(values?.combos) : null,
+        combos: values?.combos !== null ? (values?.combos) : null,
         money: values?.money,
         ad: values?.ad,
         owner_id: values?.owner_id,
@@ -525,21 +524,6 @@ function DrawsModal({
     setCombos(updatedCombos);
     form.setFieldValue('combos', updatedCombos);
   };
-
-  const [highestStepVisited, setHighestStepVisited] = useState(active);
-
-  const handleStepChange = (nextStep: number) => {
-    const isOutOfBounds = nextStep > 3 || nextStep < 0;
-
-    console.log('Combos:', combos);
-    if (isOutOfBounds) {
-      return;
-    }
-
-    setActive(nextStep);
-    setHighestStepVisited((hSC) => Math.max(hSC, nextStep));
-  };
-  const isNextDisabled = combos.some((combo) => combo.quantity === 0 || combo.price === 0);
 
   return (
     <>

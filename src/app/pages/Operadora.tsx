@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
+import EmojiSuccess from '/src/app/assets/images/emoji-fiesta-success.png'
 import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
@@ -254,7 +255,7 @@ function Operadora() {
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
-  const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'BsD' | null>(null)
+  const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'Bs.D' | null>(null)
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
   const [isInvalidTicketPurchase, setIsInvalidTicketPurchase] = useState<boolean>(false);
@@ -284,7 +285,7 @@ function Operadora() {
   const [reload, setReload] = useState<number>(0)
   const [client, setClient] = useState<IClient | null>(null)
   const [ticketsSold, setTicketsSold] = useState<ICableTicket[]>([])
-
+  const endpoint = 'https://mock.rifa-max.com/shared/exchanges';
   const { classes } = useStyles()
   const handleClose = () => {
     setBuyIsOpen(false)
@@ -487,7 +488,7 @@ function Operadora() {
 
   function chooseTicket(ticketNumber: number) {
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
-  
+
     if (isTicketSelected) {
       axios.post("https://mock.rifa-max.com/x100/tickets/available", {
         x100_ticket: {
@@ -523,15 +524,14 @@ function Operadora() {
         console.log(err)
       })
     }
-  
+
     setTicketKey((prevKey) => prevKey + 1);
   }
 
   function cleanSelection() {
     setIsInvalidTicketPurchase(false);
-    setHasPaymentSelected(null);
     setTotalPrice(0);
-  
+
     ticketsSelected.forEach(ticketNumber => {
       axios.post("https://mock.rifa-max.com/x100/tickets/available", {
         x100_ticket: {
@@ -548,10 +548,10 @@ function Operadora() {
         console.log(err);
       });
     });
-  
+
     setTicketsSelected([]);
   }
-  
+
 
   function handleInvalidModal(state: boolean, mode: string) {
     setIsOpenInvalidModal({
@@ -601,15 +601,12 @@ function Operadora() {
     setTotalPrice((prevTotal) => prevTotal + price);
   };
 
-
-
   const isTicketReservedOrSold = (ticketNumber: number): boolean => {
     const soldData = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle);
     const isTicketSold = soldData?.sold?.includes(ticketNumber) || false;
     const isTicketReserved = soldData?.reserved?.includes(ticketNumber) || false;
     return isTicketSold || isTicketReserved;
   };
-
 
   const handleSearch = () => {
     const ticketNumber = searchValue || 0;
@@ -774,13 +771,58 @@ function Operadora() {
           email: email
         }
       }).then((res) => {
-        console.log(res.data)
-        setClient(res.data)
-        setActiveStep(activeStep + 1)
+        console.log(res.data);
+        setClient(res.data);
+        setActiveStep(activeStep + 1);
+
+        handleCompra(res.data.id);
       }).catch((e) => {
-        console.log(e)
+        console.log(e);
+      });
+    };
+
+    const handleCompra = (clientId: string) => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No se encontró el token en el almacenamiento local");
+        return;
+      }
+
+      const requestData = {
+        x100_ticket: {
+          x100_raffle_id: selectedRaffle,
+          x100_client_id: clientId,
+          positions: ticketsSelected.map(ticket => ticket),
+          price: calculateTotalPrice().toFixed(2),
+          money: hasPaymentSelected ? "$" : ""
+        }
+      };
+
+      fetch("https://mock.rifa-max.com/x100/tickets/sell", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(requestData)
       })
-    }
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Error al comprar los boletos");
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Boletos comprados exitosamente", data);
+          setActiveStep(activeStep + 1);
+        })
+        .catch(error => {
+          console.error("Error al comprar los boletos", error);
+        });
+    };
+
+
 
     const precioUnitarioSinCombo = Number(raffleActive(selectedRaffle || 0)?.price_unit)
 
@@ -927,6 +969,7 @@ function Operadora() {
               </Group>
             </form>
           </Stepper.Step>
+
           <Stepper.Step
             label="Verificación"
             description="Confirmación y verificación"
@@ -995,7 +1038,7 @@ function Operadora() {
                     Total:
                   </Title>
                   <Title order={4} fw={300} ta="end" c='black'>
-                    {calculateTotalPrice().toFixed(2)}$
+                    {calculateTotalPrice().toFixed(2)}  {" " + hasPaymentSelected}
                   </Title>
                 </Group>
               </Card>
@@ -1071,91 +1114,34 @@ function Operadora() {
               {
                 client !== null ? (
                   <Button
-                    onClick={() => setActiveStep(activeStep + 1)}
+                    onClick={() => handleCompra(client?.id.toString())}
                   >
                     Comprar
                   </Button>
+
+
+
                 ) : (
                   <Button
                     disabled={!name || !lastName || !terms || !isValidEmail(email) || countrySelected === "Venezuela" && (!Dni)}
-                    onClick={() => createClient()}
+                    onClick={() => {
+                      createClient();
+                    }}
                   >
                     Comprar
                   </Button>
+
                 )
               }
             </Group>
           </Stepper.Step>
           <Stepper.Completed>
-            <Text ta='center' fw={750} fz={24}>Su ticket ha sido comprado satisfactoriamente</Text>
-            <Group
-              position="center"
-              mt={20}
-            >
-              <Card
-                bg='white'
-                w="48.5%"
-                radius="sm"
-                className="receipt-cutoff"
-              >
-                {terms && (
-                  <img src={RifamaxLogo}
-                    style={{ position: 'absolute', opacity: 0.06, top: 80, left: -35 }}
-                  />
-                )}
-                <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>
-                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.phone : phone}</Title>
-                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${initDNI}${Dni}`}</Title>
-                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.email : `${email}`}</Title>
-                <Divider my={10} variant="dashed" />
-                <Group position="apart">
-                  <Title order={6} fw={600} c='black'>
-                    Productos
-                  </Title>
-                  <Title order={6} fw={600} c='black'>
-                    Cantidad
-                  </Title>
-                  <Title order={6} fw={600} c='black'>
-                    Precio
-                  </Title>
-                  <Title order={6} fw={600} c='black'>
-                    Descuento
-                  </Title>
-                </Group>
-                <ScrollArea h={210} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
-                  {
-                    ticketsSelected.map((ticket) => {
-                      return (
-                        <Group position="apart">
-                          <Title order={6} ml={20} fw={300} c='black'>
-                            {parseTickets(ticket)}
-                          </Title>
-                          <Title order={6} ml={10} fw={300} c='black'>
-                            1.00
-                          </Title>
-                          <Title order={6} fw={300} ta="end" c='black'>
-                            {raffleActive(selectedRaffle || 0)?.price_unit}.00$
-                          </Title>
-                          <Title order={6} fw={300} mr={15} c='black'>
-                            0%
-                          </Title>
-                        </Group>
-                      )
-                    })
-                  }
-                </ScrollArea>
-                <Divider my={10} variant="dashed" />
-                <Group position="apart">
-                  <Title order={4} fw={650} c='black'>
-                    Total:
-                  </Title>
-                  <Title order={4} fw={300} ta="end" c='black'>
-                    {calculateTotalPrice().toFixed(2)}$
-                  </Title>
-                </Group>
-              </Card>
-            </Group>
-            <Button fullWidth mt={40}>Cerrar</Button>
+              <Title order={4} c="green" ta="center" my={10}>COMPRA REALIZADA</Title>
+              <Image src={EmojiSuccess} mx='auto' my={20} width={125} height={125} alt="Emoji de fiesta" style={{ userSelect: 'none' }}/>
+              
+            <Button fullWidth onClick={handleClose} mt={40}>Cerrar</Button>
+
+
           </Stepper.Completed>
         </Stepper>
       </Modal>
@@ -1164,6 +1150,21 @@ function Operadora() {
   const [opened, setOpened] = useState(true);
 
   console.log(ticketsSelected.length)
+  const [exchangeRates, setExchangeRates] = useState<{ value_bs: number; value_cop: number } | null>(null);
+
+  const fetchExchangeRates = async () => {
+    try {
+      const response = await axios.get(endpoint);
+      setExchangeRates(response.data);
+    } catch (error) {
+      console.error('Error al obtener los datos de intercambio:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchExchangeRates();
+  }, []);
+
   const calculateTotalPrice = () => {
     if (selectedRaffle === null) {
       return 0;
@@ -1192,8 +1193,15 @@ function Operadora() {
     const remainingPrice = selectedRaffleData.price_unit * ticketCount;
     totalPrice += remainingPrice;
 
+    if (hasPaymentSelected === 'Bs.D' && exchangeRates) {
+      totalPrice *= exchangeRates.value_bs;
+    } else if (hasPaymentSelected === 'COP' && exchangeRates) {
+      totalPrice *= exchangeRates.value_cop;
+    }
+
     return totalPrice;
   };
+
 
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
@@ -1285,7 +1293,7 @@ function Operadora() {
                         py={0}
                         onClick={() => {
                           console.log(hasPaymentSelected);
-                          hasPaymentSelected === 'BsD' ? setHasPaymentSelected(null) : setHasPaymentSelected('BsD')
+                          hasPaymentSelected === 'Bs.D' ? setHasPaymentSelected(null) : setHasPaymentSelected('Bs.D')
                           setOpened(false);
                         }}
                         onMouseEnter={() => setIsHovered1(true)}
@@ -1478,11 +1486,11 @@ function Operadora() {
                       mr={15}
                       color="teal"
                       size="lg"
-                      variant={hasPaymentSelected === "BsD" ? 'filled' : undefined}
-                      style={{ cursor: hasPaymentSelected === 'BsD' ? "default" : "pointer" }}
+                      variant={hasPaymentSelected === "Bs.D" ? 'filled' : undefined}
+                      style={{ cursor: hasPaymentSelected === 'Bs.D' ? "default" : "pointer" }}
                       onClick={() => {
-                        if (hasPaymentSelected !== 'BsD') {
-                          setHasPaymentSelected('BsD')
+                        if (hasPaymentSelected !== 'Bs.D') {
+                          setHasPaymentSelected('Bs.D')
                         }
                       }}
                     >
@@ -1702,12 +1710,14 @@ function Operadora() {
                                         })
                                       }
                                     </ScrollArea>
+
                                     <Group w="100%" position="apart">
                                       <Title order={4} fw={650} c='black'>
                                         Total:
                                       </Title>
                                       <Title order={4} fw={300} ta="end" c='black'>
-                                        {calculateTotalPrice().toFixed(2)}$
+
+                                        {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected}
                                       </Title>
                                     </Group>
                                     {/* <Group w="100%" position="apart">
