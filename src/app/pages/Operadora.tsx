@@ -487,47 +487,71 @@ function Operadora() {
 
   function chooseTicket(ticketNumber: number) {
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
-
+  
     if (isTicketSelected) {
-      setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
-      setTotalPrice((prevTotal) => prevTotal - 1);
+      axios.post("https://mock.rifa-max.com/x100/tickets/available", {
+        x100_ticket: {
+          x100_raffle_id: selectedRaffle,
+          position: ticketNumber
+        }
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      }).then((res) => {
+        console.log(res)
+        setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
+        setTotalPrice((prevTotal) => prevTotal - 1);
+      }).catch((err) => {
+        console.log(err)
+      })
     } else {
-      const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticketNumber);
-      const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticketNumber);
-
-      if (!isTicketSold && !isTicketReserved) {
-        axios.post("https://mock.rifa-max.com/x100/tickets/apart", {
-          x100_ticket: {
-            x100_raffle_id: selectedRaffle,
-            position: ticketNumber
-          }
-        }, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        }).then((res) => {
-          console.log(res)
-          setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
-          setTotalPrice((prevTotal) => prevTotal + 1);
-        }).catch((err) => {
-          console.log(err)
-        })
-      } else {
-        setTotalPrice((prevTotal) => prevTotal - buyingTickets.length);
-      }
+      axios.post("https://mock.rifa-max.com/x100/tickets/apart", {
+        x100_ticket: {
+          x100_raffle_id: selectedRaffle,
+          position: ticketNumber
+        }
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      }).then((res) => {
+        console.log(res)
+        setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
+        setTotalPrice((prevTotal) => prevTotal + 1);
+      }).catch((err) => {
+        console.log(err)
+      })
     }
-
+  
     setTicketKey((prevKey) => prevKey + 1);
   }
 
-
-
   function cleanSelection() {
     setIsInvalidTicketPurchase(false);
-    setTicketsSelected([]);
     setHasPaymentSelected(null);
     setTotalPrice(0);
+  
+    ticketsSelected.forEach(ticketNumber => {
+      axios.post("https://mock.rifa-max.com/x100/tickets/available", {
+        x100_ticket: {
+          x100_raffle_id: selectedRaffle,
+          position: ticketNumber
+        }
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      }).then((res) => {
+        console.log(res);
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+  
+    setTicketsSelected([]);
   }
+  
 
   function handleInvalidModal(state: boolean, mode: string) {
     setIsOpenInvalidModal({
@@ -1287,7 +1311,6 @@ function Operadora() {
                           </Text>
                         </Group>
                       </Card>
-
 
                       <Card
                         mt={10}
