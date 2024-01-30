@@ -75,7 +75,6 @@ type FormProps = {
   combos: Combo[];
   money: null | string;
   ad: IFile | null;
-  owner_id: number | string | null;
   local_id: number | string | null;
   fundation_id: number | string | null;
   shared_user_id: number;
@@ -190,7 +189,6 @@ function DrawsModal({
       money: '$',
       ad: null,
       prizes: [],
-      owner_id: null,
       raffle_type: 'Triple',
       fundation_id: null,
       local_id: null,
@@ -271,12 +269,6 @@ function DrawsModal({
       numbers: (value: number) => {
         if (!value) return 'Numeros de la rifa requeridos';
         if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
-      },
-      owner_id: (value: number | string | null) => {
-        if (form.values.draw_type != '50/50') {
-          if (value === null) return 'Agencia requerida'
-        }
-
       },
       money: (value: string) => {
         if (!value) return 'Moneda requerida';
@@ -376,7 +368,6 @@ function DrawsModal({
         combos: values?.combos !== null ? (values?.combos) : null,
         money: values?.money,
         ad: values?.ad,
-        owner_id: values?.owner_id,
         local_id: values?.local_id,
         fundation_id: values?.fundation_id,
         shared_user_id: values?.shared_user_id,
@@ -780,23 +771,24 @@ function DrawsModal({
                 </Text>
               )}
 
-              <Grid>
-                <Grid.Col span={6}>
                   <NumberInput
                     radius={'lg'}
                     label="Precio unitario"
                     placeholder="Precio unitario"
                     withAsterisk
+                    mx="20%"
+                    w={400}
                     size='md'
                     mt="md"
                     error={form.errors.price_unit}
                     hideControls
                     {...form.getInputProps('price_unit')}
                   />
-                </Grid.Col>
-                <Grid.Col span={6}>
                   <Select
                     radius={'lg'}
+                    style={{
+                      display:"none"
+                    }}
                     size='md'
                     mt="md"
                     label="Moneda"
@@ -810,8 +802,7 @@ function DrawsModal({
                     ]}
                     {...form.getInputProps('money')}
                   />
-                </Grid.Col>
-              </Grid>
+               
               {/* <Grid mb={10}>
                 <Grid.Col span={6}>
                   <Select
@@ -852,63 +843,17 @@ function DrawsModal({
                 </Grid.Col>
               </Grid> */}
 
-              <Grid mb={15}>
-                <Grid.Col span={6}>
-                  <Select
-                    radius={'lg'}
-                    size='md'
-                    mb="md"
-                    label="Taquilla patrocinante"
-                    disabled={
-                      form.getInputProps('draw_type').value === '50/50'
-                    }
-                    placeholder="Elige una taquilla disponible"
-                    withAsterisk={
-                      form.getInputProps('draw_type').value === 'Infinito' || form.getInputProps('draw_type').value === 'Progresiva' || form.getInputProps('draw_type').value === 'Fecha limite'
-                    }
-
-                    error={form.errors.owner_id}
-                    data={visibleTaquillas.map((item: any) => {
-                      return { value: item.value, label: item.label }
-                    })}
-                    {...form.getInputProps('owner_id')}
-                  />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <MultiSelect
-                    size='md'
-                    radius={'lg'}
-                    mb="md"
-                    label="Taquillas visibles"
-                    disabled={allTaquillas}
-                    placeholder="Elige una taquilla disponible"
-                    error={form.errors.visible_taquillas_ids}
-                    data={visibleTaquillas.map((item: any) => {
-                      return { value: item.value, label: item.label }
-                    })}
-                    {...form.getInputProps('visible_taquillas_ids')}
-                  />
-                </Grid.Col>
-              </Grid>
+             
               <Group
                 mt={-25}
                 position='right'
               >
-                <Switch
-                  label="Seleccionar todas"
-                  checked={true}
-                // onChange={(e) => {
-                //   if (e.target.checked) {
-                //     form.getInputProps('visible_taquillas_ids').onChange([])
-                //   }
-                //   setAllTaquillas(e.target.checked)
-                // }} 
-                />
+               
               </Group>
               {/* <Grid>
                 <Grid.Col span={6}> */}
               <Group>
-                <Text size="xl" fz="md" mb={15} inline>
+                <Text mt={35} size="xl" fz="md" mb={15} inline>
                   Imagenes de publicidad
                 </Text>
                 {checkedIndex === 4 ? <Text inline c='red' mt={-17} ml={-12}></Text> : <Text inline c='red' mt={-17} ml={-12}>*</Text>}

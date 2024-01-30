@@ -162,7 +162,7 @@ const useStyles = createStyles((theme) => ({
     flexWrap: 'wrap'
   },
   raffleInfo: {
-    width: '23rem',
+    width: '25rem',
     display: 'flex',
     [theme.fn.smallerThan('md')]: {
       display: 'none'
@@ -610,12 +610,12 @@ function Operadora() {
 
   const handleSearch = () => {
     const ticketNumber = searchValue || 0;
-
+  
     const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticketNumber);
     const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticketNumber);
-
+  
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
-
+  
     if (isTicketSold) {
       handleInvalidModal(true, 'sold');
     } else if (isTicketReserved) {
@@ -623,12 +623,29 @@ function Operadora() {
     } else if (isTicketSelected) {
       handleInvalidModal(true, 'selected');
     } else {
-      apartTickets(ticketNumber);
+      axios.post("https://mock.rifa-max.com/x100/tickets/apart", {
+        x100_ticket: {
+          x100_raffle_id: selectedRaffle,
+          position: ticketNumber
+        }
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      .then((res) => {
+        console.log(res);
+        setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
+        setTotalPrice((prevTotal) => prevTotal + 1);
+      })
+      .catch((err) => {
+        console.log(err);
+        // Handle error
+      });
     }
     setSearchValue(null);
   };
-
-
+  
 
   function apartTickets(ticket_nro: number) {
     const ticketSelected = tickets.tickets.find((ticket) => ticket.position === ticket_nro);
@@ -691,9 +708,6 @@ function Operadora() {
       </Modal>
     );
   }
-
-
-
 
   function BuyModal() {
     const [selectValue, setSelectValue] = useState<string | null>(null);
@@ -1021,9 +1035,14 @@ function Operadora() {
                           <Title order={6} ml={10} fw={300} c='black'>
                             1.00
                           </Title>
-                          <Title order={6} fw={300} ta="end" c='black'>
-                            {raffleActive(selectedRaffle || 0)?.price_unit}.00$
-                          </Title>
+                          <Title order={6}    fw={300}  c='black'>
+                                                  {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'Bs.D' && exchangeRates?.value_bs
+                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " Bs.D"
+                                                    : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                      ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
+                                                      : raffleActive(selectedRaffle || 0)?.price_unit + " $"
+                                                  }
+                                                </Title>
                           <Title order={6} fw={300} mr={15} c='black'>
                             {descuentoFormateado}
                           </Title>
@@ -1136,9 +1155,9 @@ function Operadora() {
             </Group>
           </Stepper.Step>
           <Stepper.Completed>
-              <Title order={4} c="green" ta="center" my={10}>COMPRA REALIZADA</Title>
-              <Image src={EmojiSuccess} mx='auto' my={20} width={125} height={125} alt="Emoji de fiesta" style={{ userSelect: 'none' }}/>
-              
+            <Title order={4} c="green" ta="center" my={10}>COMPRA REALIZADA</Title>
+            <Image src={EmojiSuccess} mx='auto' my={20} width={125} height={125} alt="Emoji de fiesta" style={{ userSelect: 'none' }} />
+
             <Button fullWidth onClick={handleClose} mt={40}>Cerrar</Button>
 
 
@@ -1201,7 +1220,6 @@ function Operadora() {
 
     return totalPrice;
   };
-
 
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
@@ -1597,9 +1615,9 @@ function Operadora() {
                                   onClick={() => chooseTicket(ticket.position)}
                                 >
                                   <Text ta='center'>{parseTickets(ticket.position)}</Text>
-                                  {/* <Text  fz={12} ml={-12}>
+                                   <Text  fz={12} ml={-12}>
                                   {ticketStatusLabel}
-                                </Text> */}
+                                </Text> 
                                 </Card>
 
 
@@ -1680,12 +1698,12 @@ function Operadora() {
                                     <Title order={6} fw={600} c='black'>
                                       Cant.
                                     </Title>
-                                    <Title order={6} fw={600} c='black'>
+                                    <Title order={6} mr={25} fw={600} c='black'>
                                       Precio.
                                     </Title>
                                   </Group>
                                   <Group pb={10} mx={0} position="apart">
-                                    <ScrollArea h={105} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                    <ScrollArea h={105} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                       {
                                         ticketsSelected.map((ticket) => {
                                           const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
@@ -1694,17 +1712,25 @@ function Operadora() {
                                           }
                                           return (
                                             <>
-                                              <Group position="apart" spacing={25}>
+                                             
+                                                <Group position="apart">
+
                                                 <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                   {parseTickets(ticket)}
                                                 </Title>
-                                                <Title order={6} mr={31} ml={43} fw={300} c='black'>
+                                                <Title order={6}  fw={300} c='black'>
                                                   1.00
                                                 </Title>
-                                                <Title order={6} fw={300} ta="end" c='black'>
-                                                  {raffleActive(selectedRaffle || 0)?.price_unit}.00$
+                                                <Title order={6}    fw={300}  c='black'>
+                                                  {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'Bs.D' && exchangeRates?.value_bs
+                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " Bs.D"
+                                                    : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                      ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
+                                                      : raffleActive(selectedRaffle || 0)?.price_unit + " $"
+                                                  }
                                                 </Title>
-                                              </Group>
+                                                </Group>
+
                                             </>
                                           );
                                         })
