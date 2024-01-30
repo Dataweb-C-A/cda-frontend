@@ -714,7 +714,7 @@ function Dashboard() {
               onClose={() => setHelpModal(false)}
             />
           )}
-          <Card withBorder radius="lg" mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
+          <Card radius="sm" mx={15} shadow={"0 0 7px 0 #5f5f5f3d"}>
             <CloseDayModal />
             <Grid>
               <Grid.Col md={9} sm={12}>
@@ -726,7 +726,7 @@ function Dashboard() {
                 </Title>
                 <Group mb={15}>
                   <DatePicker
-                    radius="lg"
+                    radius="sm"
                     size="md"
                     w="156px"
                     placeholder="Seleccionar fecha"
@@ -737,7 +737,7 @@ function Dashboard() {
                     onChange={(date) => setStartDate(date)}
                   />
                   <DatePicker
-                    radius="lg"
+                    radius="sm"
                     size="md"
                     w="156px"
                     placeholder="Seleccionar fecha"
@@ -753,7 +753,7 @@ function Dashboard() {
                     <Input
                       variant="filled"
                       placeholder="Premio, rifero o número de premiado"
-                      radius="lg"
+                      radius="sm"
                       size="md"
                       w="295px"
                       value={searchValue}
@@ -766,16 +766,16 @@ function Dashboard() {
                       onClick={() => filterByDate()}
                       p={7}
                       fz={14}
-                      style={{ borderRadius: '15px 0 0 15px' }}
+                      style={{ borderRadius: '5px 0 0 5px' }}
                     >
                       Filtrar
                     </Button>
                     <Button
-                      mt={25}
+                      mt={25.9}
                       color="red"
                       p={7}
                       fz={14}
-                      style={{ borderRadius: '0 15px 15px 0' }}
+                      style={{ borderRadius: '0 5px 5px 0' }}
                       onClick={() => {
                         setEndDate(null)
                         setStartDate(null)
@@ -801,7 +801,7 @@ function Dashboard() {
                   <FormModal
                     variant="filled"
                     color="blue"
-                    style={{ position: 'absolute', right: 155 ,borderRadius: '7px ' }}
+                    style={{ position: 'absolute', right: 155, borderRadius: '5px' }}
                     leftIcon={<IconPlus />}
                     className="btn-rifa"
                     onClick={() => setOpenForm((prevState) => !prevState)}
@@ -812,13 +812,13 @@ function Dashboard() {
                     Agregar Rifa
                   </FormModal>
                   <Button  
-                  radius="md"
-                  size="md" 
-                  fz={12}
+                  radius="sm"
+                  size="sm" 
+                  fz={14}
                   onClick={() => setCloseDay(true)} 
                   leftIcon={<IconX />} 
                   color='red' 
-                  style={{ position: 'absolute', width: '130px', right: 15 }}>
+                  style={{ position: 'absolute', right: 15 }}>
                     Cerrar día
                   </Button>
                 </Group>

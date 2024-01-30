@@ -987,7 +987,7 @@ export default function AccordionList({
         )}
       </Modal>
       <SendModal />
-      <Accordion.Item key={data.id} value={data.id.toString()} style={{ border: `1px solid ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
+      <Accordion.Item key={data.id} value={data.id.toString()} style={{ borderBottom: `0.125rem dotted ${theme.colorScheme === 'dark' ? '#4d4f66' : 'light'}`, borderRadius: 0 }}>
         <AccordionControl >
 
           <div style={{ width: '100%', display: 'flex' }}>

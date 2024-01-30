@@ -524,7 +524,7 @@ function DrawsModal({
                     label="Titulo"
                     placeholder="Titulo"
                     size='md'
-                    radius={'lg'}
+                    radius={'md'}
                     withAsterisk
                     error={form.errors.title}
                     {...form.getInputProps('title')}
@@ -535,7 +535,7 @@ function DrawsModal({
                     label="Numeros de la rifa"
                     placeholder="Numeros de la rifa"
                     size='md'
-                    radius={'lg'}
+                    radius={'md'}
                     withAsterisk
                     hideControls
                     error={form.errors.numbers}
@@ -631,7 +631,7 @@ function DrawsModal({
                       size='md'
                       label={`Premio #${etiqueta.prize_position}`}
                       mt={15}
-                      radius={'lg'}
+                      radius={'md'}
                       mb={10}
                       placeholder={`Premio #${etiqueta.prize_position}`}
                       value={otherPrizesInputValues[index]}
@@ -650,7 +650,7 @@ function DrawsModal({
 
                     label='Fecha de la rifa'
                     placeholder='Fecha de la rifa'
-                    radius={'lg'}
+                    radius={'md'}
                     withAsterisk
                     size='md'
                     fullWidth
@@ -670,7 +670,7 @@ function DrawsModal({
                     label='Fecha de expiracion'
                     placeholder='Fecha de expiracion'
                     size='md'
-                    radius={'lg'}
+                    radius={'md'}
                     fullWidth
                     defaultValue={
                       form.getInputProps('draw_type').value === 'Progresiva' ? null :
@@ -772,7 +772,7 @@ function DrawsModal({
               )}
 
                   <NumberInput
-                    radius={'lg'}
+                    radius={'md'}
                     label="Precio unitario"
                     placeholder="Precio unitario"
                     withAsterisk
@@ -785,7 +785,7 @@ function DrawsModal({
                     {...form.getInputProps('price_unit')}
                   />
                   <Select
-                    radius={'lg'}
+                    radius={'md'}
                     style={{
                       display:"none"
                     }}
@@ -860,7 +860,7 @@ function DrawsModal({
               </Group>
               <Dropzone
                 disabled={checkedIndex === 4}
-                radius={'lg'}
+                radius={'md'}
                 className={checkedIndex === 4 ? classes.disabled2 : 'activopapi'}
                 accept={IMAGE_MIME_TYPE}
                 multiple={false}
@@ -892,7 +892,7 @@ function DrawsModal({
                 {previews(files, 1)}
               </SimpleGrid>
 
-              <Card radius={'xl'}>
+              <Card radius={'md'}>
                 <Title ta={"center"}>
                   Manejar combos
                 </Title>
@@ -997,12 +997,12 @@ function DrawsModal({
                 </Grid.Col> */}
               {/* </Grid> */}
               <Group position="center" mt="xl">
-                <Button variant="default" radius={'lg'} onClick={prevStep} disabled={
+                <Button variant="default" radius={'md'} onClick={prevStep} disabled={
                   active === 2 ? true : false
                 }>
                   Atrás
                 </Button>
-                <Button radius={'lg'} type="submit">Siguiente</Button>
+                <Button radius={'md'} type="submit">Siguiente</Button>
               </Group>
             </form>
           </Stepper.Step>

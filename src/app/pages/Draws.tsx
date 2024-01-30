@@ -85,7 +85,7 @@ function Draws({ }: IDraws) {
   const handleClose = () => {
     setOpenForm(false)
   }
-  https://img.freepik.com/foto-gratis/resumen-bombilla-creativa-sobre-fondo-azul-brillante-ia-generativa_188544-8090.jpg?w=740&t=st=1703706764~exp=1703707364~hmac=58c12baaeb7cb47a8ea9ebe06156e32597a343b03dac2a77269438c0f3f5014f
+  
   return (
     <>
       <Navbar profiles={profiles} links={links} />
@@ -154,7 +154,7 @@ function Draws({ }: IDraws) {
         </Grid>
         {
           draws.length === 0 ? (
-            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap"}}>
+            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
               <Text fz={30} fw={100} ta="center" mt={100} style={{ width: "100%" }}>
                 No hay sorteos, sé el primero en crear uno.
               </Text>

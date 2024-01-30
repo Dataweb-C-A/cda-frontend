@@ -112,10 +112,10 @@ function Riferos() {
           <section className="riferos">
             <Navbar profiles={users} links={links} />
             <Card
-              withBorder radius="lg"
-              mx={15}
+              radius="sm"
+              mx={7}
               shadow={"0 0 7px 0 #5f5f5f3d"}
-              mt={15}
+              mt={10}
               style={{ overflowX: "auto" }}
             >
               <Grid>
@@ -131,7 +131,7 @@ function Riferos() {
                     placeholder="Buscar por nombre, apellido o cédula"
                     value={search}
                     name="value"
-                    radius="lg"
+                    radius="sm"
                     size="lg"
                     onChange={handleSearch}
                     className="search-riferos"

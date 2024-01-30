@@ -1,7 +1,6 @@
 import { FaHome } from "react-icons/fa";
 import { BsWallet2, BsBuilding, BsJoystick} from "react-icons/bs";
 import { BiMoney } from "react-icons/bi";
-import { TbBrandAppleArcade } from "react-icons/tb";
 import { FiUsers } from 'react-icons/fi'
 import { MdAttachMoney, MdSupportAgent } from "react-icons/md";
 import { IconNotes } from '@tabler/icons-react';
@@ -31,7 +30,10 @@ export const links = [
   { name: 'Reportes', url: '/reports', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <BsBuilding size={20} strokeWidth={0} />, role: 'Admin' },
   // { name: 'Rifas', url: '/rifas', chevron: true, icon: <BsTicketPerforated size={20} strokeWidth={0} /> },
   // { name: 'Usuarios', url: '/users', chevron: false, icon: <FiUsers size={20} strokeWidth={1.5} /> },
-  // { name: 'Agentes', url: '/agencies', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <MdSupportAgent size={20} strokeWidth={0} />, role: 'Admin' },
+  { name: 'Rifamax X100', url: '/x100', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconPokerChip size={20} strokeWidth={1.5 } />, role: 'Admin' },
+  { name: 'Rifamax X100', url: '/x100', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconPokerChip size={20} strokeWidth={1.5 } />, role: 'Taquilla' },
+  { name: 'Mis rifas X100', url: '/draws', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconHomePlus size={20} strokeWidth={1.5 } />, role: 'Admin' },
+  { name: 'Mis rifas X100', url: '/draws', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconHomePlus size={20} strokeWidth={1.5 } />, role: 'Taquilla' },
    { name: 'Operadora', url: '/draws', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <BiMoney size={20} strokeWidth={0} />, role: 'Admin' },
   { name: 'Monedas', url: '/exchange', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <MdAttachMoney size={20} />, role: 'Admin' },
   // { name: 'Wallet', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, url: '/wallet', chevron: false, icon: <BsWallet2 size={20} strokeWidth={0} /> },

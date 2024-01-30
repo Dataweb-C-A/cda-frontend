@@ -164,7 +164,7 @@ function Reporterifa({ }: Props) {
         <>
         <Navbar profiles={profiles} links={links} />
   
-        <Grid grow gutter={20} m={5} >
+        <Grid grow gutter={20} my={5} mx={0.1}>
           <Grid.Col span={4}>
             <Cards
               left={0}
@@ -194,7 +194,7 @@ function Reporterifa({ }: Props) {
           </Grid.Col>
         </Grid>
   
-        <Card withBorder radius="lg"  shadow="sm" mx={15} mt={5} h="80vh">
+        <Card radius="sm"  shadow="sm" mx={8} mt={5} h="calc(85vh - 2rem)">
           <Grid>
             <Grid.Col xl={6} md={6} xs={12}>
               <Title order={2} fw={500} mb={20}>

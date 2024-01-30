@@ -1,7 +1,7 @@
 import React, { useEffect, useState, lazy } from 'react'
 import Navbar from '../components/navbar'
 import { links } from '../assets/data/links'
-import { useMantineTheme } from '@mantine/core'
+import { createStyles, useMantineTheme } from '@mantine/core'
 import { useHistory } from 'react-router-dom'
 import RifamaxLogo from '../assets/images/rifamax-logo.png'
 import axios from 'axios'
@@ -43,6 +43,16 @@ interface DrawData {
   location: string;
   foundation: string;
 }
+
+const useStyles = createStyles((theme, _params) => ({
+  lobbyCard: {
+    '&:hover': {
+      background: theme.colors.dark[5],
+      boxShadow: "0 0 2px 4px #fff, 0 0 2px 4px #f0f, 0 0 2px 4px #0ff",
+      transition: '0.7s'
+    }
+  }
+}))
 
 function Lobby() {
   const [users, setUsers] = useState<any>([])
@@ -149,7 +159,7 @@ function Lobby() {
 
   const games = [
     { label: "Rifamax", redirect: '/rifamax' },
-    { label: "X100", redirect: '/draws' },
+    { label: "X100", redirect: '/x100' },
   ];
 
 
@@ -160,6 +170,7 @@ function Lobby() {
     is5050User = user.name.substring(0, 5) === "50 50";
   }
 
+  const { classes } = useStyles();
 
   return (
     <>
@@ -173,8 +184,11 @@ function Lobby() {
       {is5050User ? (
         <>
           <Card
-            withBorder
-            radius="lg" mx={15} mt={15} shadow="0 0 7px 0 #5f5f5f3d">
+            radius="lg" 
+            mx={15} 
+            mt={15} 
+            shadow="0 0 7px 0 #5f5f5f3d"
+          >
             <Group position='center' >
               <Title>
 
@@ -243,8 +257,8 @@ function Lobby() {
                 style={{ textDecoration: 'none' }}
               >
                 <Card
-                  withBorder
-                  radius="lg"
+                  radius="sm"
+                  className={classes.lobbyCard}
                   shadow="xl"
                   style={
                     !profile.access_permissions.includes(game.label)
