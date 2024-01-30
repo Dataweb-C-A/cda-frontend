@@ -183,14 +183,11 @@ function DrawsModal({
       price_unit: null,
       lotery: 'ZULIA 7A',
       tickets_count: 0,
-      // first_prize: '',
       numbers: null,
-      // second_prize: null,
       init_date: null,
       visible_taquillas_ids: [],
       expired_date: null,
       money: '$',
-      //  other_prizes: [],
       ad: null,
       prizes: [],
       owner_id: null,
@@ -219,32 +216,11 @@ function DrawsModal({
         if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
         if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
       },
-      // second_prize: (value: string) => {
-      //   if (!value) {
-      //     if (isSecondPrizeEnabled) return 'Premio requerido';
-      //   } else {
-      //     if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
-      //     if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
-      //   }
-      // },
+
       init_date: (value: Date) => {
         if (!value) return 'Fecha de inicio requerida';
       },
-      // other_prizes: (value: { content: string; number: number }[]) => {
-      //   if (!value || value.length === 0) return 'Otros premios requeridos';
 
-      //   for (let i = 0; i < value.length; i++) {
-      //     const prize = value[i];
-
-      //     if (!prize.content) {
-      //       return 'El contenido del premio es obligatorio';
-      //     }
-
-      //     if (prize.number < 1) {
-      //       return 'El número del premio debe ser mayor a 0';
-      //     }
-      //   }
-      // },
       expired_date: (value: Date) => {
         if (form.values.draw_type === 'Progresiva') {
           form.setFieldValue('expired_date', null);
@@ -266,21 +242,7 @@ function DrawsModal({
           if (!value) return 'Fundacion Requerida';
         }
       },
-      // prizes: (value: string[]) => {
-      //   if (!value || value.length === 0) return 'Premio requerido';
 
-      //   for (let i = 0; i < value.length; i++) {
-      //     const prize = value[i];
-
-      //     if (prize.length < 5) {
-      //       return 'El premio debe tener al menos 5 caracteres';
-      //     }
-
-      //     if (prize.length > 50) {
-      //       return 'El premio debe tener menos de 50 caracteres';
-      //     }
-      //   }
-      // },
       tickets_count: (value: number) => {
         if (form.values.draw_type === 'Infinito' || form.values.draw_type === '50/50') { } else {
           if (!value) return 'Cantidad de tickets requerida';
@@ -346,60 +308,45 @@ function DrawsModal({
     ]);
   }
 
-  const [premioNumber, setPremioNumber] = useState(2);
-  const [premios, setPremios] = useState<string[]>([]);
-  const [inputValues, setInputValues] = useState<string[]>([]);
-  const [otherPrizes, setOtherPrizes] = useState<{ name: string; prize_position: number }[]>([]);
-  const [otherPrizesInputValues, setOtherPrizesInputValues] = useState<string[]>([]);
+  const [premios, setPremios] = useState(['Premio #1']);
+  const [otherPrizes, setOtherPrizes] = useState([{ name: '', prize_position: 1 }]);
+  const [inputValues, setInputValues] = useState(['']);
+  const [otherPrizesInputValues, setOtherPrizesInputValues] = useState(['']);
+
 
   const agregarPremio = () => {
-    const nuevaEtiqueta = `Premio #${premioNumber}`;
-    setPremioNumber(premioNumber + 1);
+    const nuevaEtiqueta = `Premio #${premios.length + 1}`;
     setPremios([...premios, nuevaEtiqueta]);
     setInputValues([...inputValues, '']);
-    setOtherPrizes([...otherPrizes, { name: inputValues[inputValues.length - 1], prize_position: premioNumber }]);
+    setOtherPrizes([...otherPrizes, { name: '', prize_position: premios.length + 1 }]);
     setOtherPrizesInputValues([...otherPrizesInputValues, '']);
     console.log('Otros Premios:', otherPrizes);
-
   };
+
 
   const eliminarUltimoPremio = () => {
-    if (premios.length > 0) {
-      const nuevosPremios = [...premios];
-      nuevosPremios.pop();
+    if (premios.length > 1) {
+      const nuevosPremios = premios.slice(0, -1);
       setPremios(nuevosPremios);
-      setPremioNumber(premioNumber - 1);
-
-      const nuevosInputValues = [...inputValues];
-      nuevosInputValues.pop();
-      setInputValues(nuevosInputValues);
-
-      const nuevosOtherPrizes = [...otherPrizes];
-      nuevosOtherPrizes.pop();
-      setOtherPrizes(nuevosOtherPrizes);
-
-      const nuevosOtherPrizesInputValues = [...otherPrizesInputValues];
-      nuevosOtherPrizesInputValues.pop();
-      setOtherPrizesInputValues(nuevosOtherPrizesInputValues);
-      console.log('Otros Premios:', nuevosOtherPrizes);
-    } else {
-      setPremioNumber(2);
+      setInputValues(inputValues.slice(0, -1));
+      setOtherPrizes(nuevosPremios.map((etiqueta, index) => ({ name: otherPrizes[index].name, prize_position: index + 1 })));
+      setOtherPrizesInputValues(otherPrizesInputValues.slice(0, -1));
+      console.log('Otros Premios:', nuevosPremios);
     }
   };
+
+
   const handleOtherPrizeInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const nuevosOtherPrizesInputValues = [...otherPrizesInputValues];
     nuevosOtherPrizesInputValues[index] = e.target.value;
     setOtherPrizesInputValues(nuevosOtherPrizesInputValues);
 
     const nuevosOtherPrizes = [...otherPrizes];
-    nuevosOtherPrizes[index] = { name: e.target.value, prize_position: premioNumber - otherPrizes.length + index - 1 };
+    nuevosOtherPrizes[index] = { name: e.target.value, prize_position: index + 1 };
     setOtherPrizes(nuevosOtherPrizes);
 
     console.log('Otros Premios:', nuevosOtherPrizes);
   };
-
-
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -460,11 +407,6 @@ function DrawsModal({
     nextStep(values)
     console.log(values)
   }
-
-  const handleSecondPrizeSwitchChange = () => {
-    setSecondPrizeEnabled(!isSecondPrizeEnabled);
-  };
-
 
   if (active === 2) {
     setTimeout(() => {
@@ -656,7 +598,7 @@ function DrawsModal({
                 /> */}
               </Group>
               <Grid>
-                <Grid.Col span={10}>
+                {/* <Grid.Col span={10}>
                   <TextInput
                     size='md'
                     label="Primer premio"
@@ -669,19 +611,27 @@ function DrawsModal({
                     {...form.getInputProps('prizes')}
                   />
 
-                </Grid.Col>
+                </Grid.Col> */}
                 <Grid.Col span={2}>
-                  <Group>
-                    <ActionIcon mt={48} variant="filled" onClick={agregarPremio}>
-                      <IconPlus size={30} />
-                    </ActionIcon>
 
-                    <ActionIcon mt={48} variant="filled" onClick={eliminarUltimoPremio}>
-                      <IconMinus size={30} />
-                    </ActionIcon>
-                  </Group>
                 </Grid.Col>
               </Grid>
+
+              <Group position='center'>
+                <Title ta={"center"}>
+                  Premios
+                </Title>
+                <ActionIcon variant="filled" onClick={agregarPremio}>
+                  <IconPlus />
+                </ActionIcon>
+
+                {premios.length > 1 && (
+                  <ActionIcon variant="filled" onClick={eliminarUltimoPremio}>
+                    <IconMinus size={30} />
+                  </ActionIcon>
+                )}
+              </Group>
+              <Divider variant="dashed" mt={5} />
               <Grid>
 
                 {otherPrizes.map((etiqueta, index) => (
@@ -699,10 +649,14 @@ function DrawsModal({
                     />
                   </Grid.Col>
                 ))}
+
               </Grid>
-              <Grid>
+              <Divider variant="dashed" mt={5} />
+
+              <Grid mt={10}>
                 <Grid.Col span={6}>
                   <DatePicker
+
                     label='Fecha de la rifa'
                     placeholder='Fecha de la rifa'
                     radius={'lg'}
