@@ -66,7 +66,6 @@ type FormProps = {
   price_unit: null | number;
   lotery: string;
   tickets_count: number;
-  prizes: string[];
   numbers: null | number | string;
   raffle_type: string;
   init_date: null | Date | string;
@@ -125,6 +124,10 @@ function DrawsModal({
   const [isSecondPrizeEnabled, setSecondPrizeEnabled] = useState(false);
   const [files, setFiles] = useState<FileWithPath | null>(null);
   const [files2, setFiles2] = useState<FileWithPath | null>(null);
+  const [premios, setPremios] = useState(['Premio #1']);
+  const [otherPrizes, setOtherPrizes] = useState([{ name: '', prize_position: 1 }]);
+  const [inputValues, setInputValues] = useState(['']);
+  const [otherPrizesInputValues, setOtherPrizesInputValues] = useState(['']);
 
   useEffect(() => {
     axios.get("https://api.rifamax.app/whitelists").then((res) => {
@@ -188,7 +191,6 @@ function DrawsModal({
       expired_date: null,
       money: '$',
       ad: null,
-      prizes: [],
       raffle_type: 'Triple',
       fundation_id: null,
       local_id: null,
@@ -209,16 +211,9 @@ function DrawsModal({
           form.setFieldValue('limit', null);
         }
       },
-      prizes: (value: string[]) => {
-        if (!value) return 'Premio requerido';
-        if (value.length < 5) return 'El premio debe tener al menos 5 caracteres';
-        if (value.length > 50) return 'El premio debe tener menos de 50 caracteres';
-      },
-
       init_date: (value: Date) => {
         if (!value) return 'Fecha de inicio requerida';
       },
-
       expired_date: (value: Date) => {
         if (form.values.draw_type === 'Progresiva') {
           form.setFieldValue('expired_date', null);
@@ -300,12 +295,6 @@ function DrawsModal({
     ]);
   }
 
-  const [premios, setPremios] = useState(['Premio #1']);
-  const [otherPrizes, setOtherPrizes] = useState([{ name: '', prize_position: 1 }]);
-  const [inputValues, setInputValues] = useState(['']);
-  const [otherPrizesInputValues, setOtherPrizesInputValues] = useState(['']);
-
-
   const agregarPremio = () => {
     const nuevaEtiqueta = `Premio #${premios.length + 1}`;
     setPremios([...premios, nuevaEtiqueta]);
@@ -356,13 +345,12 @@ function DrawsModal({
         draw_type: values?.draw_type,
         limit: values?.limit,
         price_unit: values?.price_unit,
-        // other_prizes: values?.other_prizes,
         lotery: values?.lotery,
         tickets_count: values?.tickets_count,
-        prizes: values?.prizes,
         numbers: values?.numbers,
         raffle_type: values?.raffle_type,
         init_date: values?.init_date,
+        prizes: otherPrizes,
         visible_taquillas_ids: values?.visible_taquillas_ids,
         expired_date: values?.expired_date,
         combos: values?.combos !== null ? (values?.combos) : null,
@@ -609,34 +597,32 @@ function DrawsModal({
               </Grid>
 
               <Group position='center'>
-                <Title ta={"center"}>
+                <Title fz={25} fw={700} ta={"center"}>
                   Premios
                 </Title>
+              </Group>
+              <Group position='center' my={10}>
                 <ActionIcon variant="filled" onClick={agregarPremio}>
                   <IconPlus />
                 </ActionIcon>
 
-                {premios.length > 1 && (
-                  <ActionIcon variant="filled" onClick={eliminarUltimoPremio}>
-                    <IconMinus size={30} />
-                  </ActionIcon>
-                )}
+                <ActionIcon variant="filled" disabled={premios.length <= 1} onClick={eliminarUltimoPremio}>
+                  <IconMinus size={30} />
+                </ActionIcon>
               </Group>
               <Divider variant="dashed" mt={5} />
               <Grid>
-
                 {otherPrizes.map((etiqueta, index) => (
                   <Grid.Col span={4} key={index}>
                     <TextInput
                       size='md'
-                      label={`Premio #${etiqueta.prize_position}`}
+                      label={`Posición: ${etiqueta.prize_position}`}
                       mt={15}
                       radius={'md'}
                       mb={10}
                       placeholder={`Premio #${etiqueta.prize_position}`}
                       value={otherPrizesInputValues[index]}
                       onChange={(e) => handleOtherPrizeInputChange(e, index)}
-
                     />
                   </Grid.Col>
                 ))}
@@ -776,10 +762,9 @@ function DrawsModal({
                     label="Precio unitario"
                     placeholder="Precio unitario"
                     withAsterisk
-                    mx="20%"
-                    w={400}
+                    w="100%"
                     size='md'
-                    mt="md"
+                    my="md"
                     error={form.errors.price_unit}
                     hideControls
                     {...form.getInputProps('price_unit')}
@@ -791,6 +776,8 @@ function DrawsModal({
                     }}
                     size='md'
                     mt="md"
+                    mb='md'
+                    w="100%"
                     label="Moneda"
                     placeholder="Elige una moneda"
                     withAsterisk
@@ -893,7 +880,7 @@ function DrawsModal({
               </SimpleGrid>
 
               <Card radius={'md'}>
-                <Title ta={"center"}>
+                <Title ta={"center"} fz={24} mb={20}>
                   Manejar combos
                 </Title>
                 <Divider variant="dashed" mt={5} />
@@ -1002,7 +989,7 @@ function DrawsModal({
                 }>
                   Atrás
                 </Button>
-                <Button radius={'md'} type="submit">Siguiente</Button>
+                <Button radius={'md'} type="submit" disabled={otherPrizes[0].name === ''}>Siguiente</Button>
               </Group>
             </form>
           </Stepper.Step>

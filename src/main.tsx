@@ -8,11 +8,11 @@ import './app/assets/scss/styles.scss'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './app/pages/Login'
 import Operadora from './app/pages/Operadora'
-import App2 from './App'
+// import App2 from './App'
 import AuthRouter from './app/components/auth/authRouter'
 import Riferos from './app/pages/Riferos'
-import { Router as Routing } from './app/config/router/router'
-import Exchange from './app/pages/Exchange'
+// import { Router as Routing } from './app/config/router/router'
+// import Exchange from './app/pages/Exchange'
 import Reports from './app/pages/Reports'
 import Reporterifa from './app/pages/Reporterifa'
 import Draws from './app/pages/Draws'
@@ -27,7 +27,7 @@ import New50y50t from './app/pages/New50y50t'
 import it5050 from './app/pages/it5050'
 import award from './app/pages/Award'
 import Rifa100public from './app/pages/Rifa100public'
-import Logint from './app/pages/Logint'
+// import Logint from './app/pages/Logint'
 
 
 type AppProps = {
@@ -252,7 +252,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <AuthRouter path="/x100" component={Operadora} isPrivate />
           <AuthRouter path="/reports" component={Reports} isPrivate />
           <AuthRouter path="/reportes-rifa" component={Reporterifa} isPrivate />
-          <AuthRouter path="/exchange" component={Exchange} isPrivate />
+          {/* <AuthRouter path="/exchange" component={Exchange} isPrivate /> */}
           <AuthRouter path="/draws" component={Draws} isPrivate />
           <AuthRouter path="/logint" component={Cuadre} isPrivate />
           <AuthRouter path="/cuadre" component={Cuadre} isPrivate />
