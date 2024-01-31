@@ -43,6 +43,7 @@ function Draws({}: IDraws) {
   });
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState<boolean>(true)
 
   const closeForm = () => {
     setOpenForm(false);
@@ -101,6 +102,7 @@ function Draws({}: IDraws) {
       .then((response) => response.json())
       .then((data: Raffle) => {
         const { raffles, metadata } = data;
+        setLoading(false)
         setRaffleData({ raffles, metadata });
         setCurrentPage(1); // Reset to page 1 after search
       })
@@ -116,14 +118,14 @@ function Draws({}: IDraws) {
     )
     .map((element, index) => (
       <tr key={index}>
-        <td style={{ fontSize: '19px' }}>{element.title}</td>
-        <td style={{ fontSize: '19px' }}>{element.prizes.length > 0 ? element.prizes[0].name : ''}</td>
-        <td style={{ fontSize: '19px' }}>{formatDate(element.init_date)}</td>
-        <td style={{ fontSize: '19px' }}>{formatDate(element.expired_date)}</td>
-        <td style={{ fontSize: '19px' }}>{element.draw_type}</td>
-        <td style={{ fontSize: '19px' }}>{element.limit}</td>
-        <td style={{ fontSize: '19px' }}>{element.price_unit} $</td>
-        <td style={{ fontSize: '19px' }}>{element.current_progress} %</td>
+        <td style={{ fontSize: '15px' }}>{element.title}</td>
+        <td style={{ fontSize: '15px' }}>{element.prizes.length > 0 ? element.prizes.map((item) => item.name + ' ') : ''}</td>
+        <td style={{ fontSize: '15px' }}>{formatDate(element.init_date)}</td>
+        <td style={{ fontSize: '15px' }}>{formatDate(element.expired_date)}</td>
+        <td style={{ fontSize: '15px' }}>{element.draw_type}</td>
+        <td style={{ fontSize: '15px' }}>{element.limit}%</td>
+        <td style={{ fontSize: '15px' }}>{element.price_unit} $</td>
+        <td style={{ fontSize: '15px' }}>{element.current_progress} %</td>
       </tr>
     ));
 
@@ -139,51 +141,51 @@ function Draws({}: IDraws) {
     <>
       <Navbar profiles={profiles} links={links} />
       {
-        localStorage.getItem("printer") ? null : (
-          <Modal
-            opened={modalState}
-            onClose={() => setModalState(false)}
-            title={<Text fw={700} fz={20} ta="center">Seleccione tipo de impresora</Text>}
-            withCloseButton={false}
-            closeOnClickOutside={false}
-            closeOnEscape={false}
-            centered
-          >
-            <Text mb={20}>
-              Debe seleccionar el tipo de impresora para este computador.
-            </Text>
-            <Group ml="10%">
-              <Button
-                variant="filled"
-                color="blue"
-                onClick={() => {
-                  localStorage.setItem("printer", "80mm")
-                  setModalState(false)
-                }}
-              >
-                Impresora 80mm
-              </Button>
-              <Button
-                variant="filled"
-                color="blue"
-                onClick={() => {
-                  localStorage.setItem("printer", "58mm")
-                  setModalState(false)
-                }}
-              >
-                Impresora 58mm
-              </Button>
-            </Group>
-          </Modal>
-        )
+        // localStorage.getItem("printer") ? null : (
+        //   <Modal
+        //     opened={modalState}
+        //     onClose={() => setModalState(false)}
+        //     title={<Text fw={700} fz={20} ta="center">Seleccione tipo de impresora</Text>}
+        //     withCloseButton={false}
+        //     closeOnClickOutside={false}
+        //     closeOnEscape={false}
+        //     centered
+        //   >
+        //     <Text mb={20}>
+        //       Debe seleccionar el tipo de impresora para este computador.
+        //     </Text>
+        //     <Group ml="10%">
+        //       <Button
+        //         variant="filled"
+        //         color="blue"
+        //         onClick={() => {
+        //           localStorage.setItem("printer", "80mm")
+        //           setModalState(false)
+        //         }}
+        //       >
+        //         Impresora 80mm
+        //       </Button>
+        //       <Button
+        //         variant="filled"
+        //         color="blue"
+        //         onClick={() => {
+        //           localStorage.setItem("printer", "58mm")
+        //           setModalState(false)
+        //         }}
+        //       >
+        //         Impresora 58mm
+        //       </Button>
+        //     </Group>
+        //   </Modal>
+        // )
       }
       <Card mx={5} mt={10} shadow={"0 0 7px 0 #5f5f5f3d"}>
         <Grid>
           <Grid.Col md={5} sm={12}>
             <Title order={2} fw={500} mb={20}>
-              Operadoras
+              Mi rifas X100
               <Text fw={300} fz={20} mb={-7}>
-                Reportes de las rifas de motos realizadas en el mes
+                Reportes de las rifas X100 activas en este momento
               </Text>
             </Title>
           </Grid.Col>
@@ -191,13 +193,13 @@ function Draws({}: IDraws) {
             <DrawsModal
               variant="filled"
               color="blue"
-              style={{ float: "right" }}
+              style={{ float: "right", right: 10, top: 10, width: '300px' }}
               className="btn-rifa"
               onClick={() => setOpenForm(!openForm)}
               onClose={() => closeForm()}
               open={openForm}
             >
-              Agregar rifa moto
+              Crear Rifa X100
             </DrawsModal>
           </Grid.Col>
         </Grid>
@@ -207,33 +209,43 @@ function Draws({}: IDraws) {
           radius="md"
           size="md"
           w={355}
+          display="none"
           value={searchTerm}
           onChange={handleSearchChange}
         />
-        <Pagination mt={15} total={raffleData.metadata.pages} size="lg" radius="md" onChange={handlePageChange} />
+        <Pagination mt={15} total={raffleData.metadata.pages} size="md" radius="md" onChange={handlePageChange} />
       
-        {raffleData.raffles.length > 0 ? (
+        {raffleData.raffles.length == 0 && loading == false ? (
+          <>
+            <Text ta="center" mt={50} fw={750} fz={25}>¡Oops!, No tienes ninguna rifa disponible.</Text>
+            <Text ta="center" mb={70} fw={300} fz={20}> ¡Sé el primero en crear una!</Text>
+          </>
+        ) : (
           <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
             <thead>
               <tr>
-                <th style={{ fontSize: "30px", textAlign: "center"}}> Título</th>
-                <th style={{ fontSize: "30px", textAlign: "center" }}>Premio</th>
-                <th style={{ fontSize: "30px", textAlign: "center" }}>Fecha de inicio</th>
-                <th style={{ fontSize: "30px", textAlign: "center" }}>Fecha de finalización</th>
-                <th style={{ fontSize: "30px", textAlign: "center" }}>Tipo de rifa</th>
-                <th style={{ fontSize: "30px", textAlign: "center" }}>Límite</th>
-                <th style={{ fontSize: "30px", textAlign: "center" }}>Precio unitario</th>
-                <th style={{ fontSize: "30px", textAlign: "center" }}>Progreso</th>
+                <th style={{ fontSize: "15px", textAlign: "center"}}> Título</th>
+                <th style={{ fontSize: "15px", textAlign: "center" }}>Premio</th>
+                <th style={{ fontSize: "15px", textAlign: "center" }}>Fecha de inicio</th>
+                <th style={{ fontSize: "15px", textAlign: "center" }}>Fecha de finalización</th>
+                <th style={{ fontSize: "15px", textAlign: "center" }}>Tipo de rifa</th>
+                <th style={{ fontSize: "15px", textAlign: "center" }}>Límite</th>
+                <th style={{ fontSize: "15px", textAlign: "center" }}>Precio por ticket</th>
+                <th style={{ fontSize: "15px", textAlign: "center" }}>Progreso</th>
               </tr>
             </thead>
-            <tbody>{filteredRows}</tbody>
+            <tbody style={{ textAlign: 'center' }}>{filteredRows}</tbody>
           </Table>
-        ) : (
-          <Group position='center'>
-
-            <Loader mt={50} size="xl" variant="dots" />
-          </Group>
         )}
+
+        {
+          loading && (
+            <Group position='center'>
+              <Loader my={150} size="xl" variant="dots" />
+              <Text ta="center">Cargando Rifas...</Text>
+            </Group>
+          )
+        }
 
       </Card>
     </>

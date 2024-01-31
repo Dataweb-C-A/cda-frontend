@@ -191,8 +191,7 @@ export default function TableSort({ data }: TableSortProps) {
         icon={<IconSearch size="1.3rem" stroke={2} />}
         value={search}
         w={340}
-        radius="lg"
-        size="lg"
+        size="md"
         onChange={handleSearchChange}
       />
       <ScrollArea type="scroll" style={{ height: 755 }}>

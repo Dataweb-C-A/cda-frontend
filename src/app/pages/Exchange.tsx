@@ -80,7 +80,7 @@ function Exchange() {
   return (
     <>
       <Navbar profiles={profiles} links={links} />
-      <Card withBorder radius="lg"  shadow="sm"  mx={10} mt={15} h="99%">
+      <Card withBorder radius="sm" shadow="sm"  mx={10} mt={10} h="99%">
         <Grid>
           <Grid.Col span={6}>
             <Title order={2} fw={500} mb={20}>

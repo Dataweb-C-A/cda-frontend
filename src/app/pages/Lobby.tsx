@@ -313,11 +313,11 @@ function Lobby() {
                     >
                       <Card
                         radius="sm"
-                        className={profile.access_permissions.includes(game.label) && (profile.role !== 'Rifero') ? classes.lobbyCard : undefined}
+                        className={(!profile.access_permissions.includes(game.label) || (profile.role === 'Rifero' && profile.access_permissions.includes('Rifamax'))) ? undefined : classes.lobbyCard}
                         shadow="xl"
                         bg={theme.colors.dark[7]}
                         style={
-                          !profile.access_permissions.includes(game.label)
+                          !profile.access_permissions.includes(game.label) || (profile.role === 'Rifero' && profile.access_permissions.includes('Rifamax'))
                             ? { opacity: 0.2, cursor: 'not-allowed' }
                             : { cursor: 'pointer' }
                         }
