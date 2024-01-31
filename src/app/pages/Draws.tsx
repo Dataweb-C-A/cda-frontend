@@ -1,91 +1,140 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { links } from '../assets/data/links'
-import Navbar from '../components/navbar'
-import { Card, Stepper, Grid, Button, Modal, Title, Text, Loader, Group } from '@mantine/core'
-import Table from '../components/table/drawtable'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { links } from '../assets/data/links';
+import Navbar from '../components/navbar';
+import { Card, Table, Grid, Button, Modal, Title, Text, Pagination, Loader, Input, Group } from '@mantine/core';
 import DrawsModal from '../components/drawsModal';
-import { BiHappy } from 'react-icons/bi'
-import { IconMoodHappy } from '@tabler/icons'
+import { BiHappy } from 'react-icons/bi';
+import { IconMoodHappy } from '@tabler/icons';
+import { IconSearch } from '@tabler/icons';
 
-interface IDraws { }
+interface IDraws {}
+interface Raffle {
+  raffles: {
+    title: string;
+    prizes: { name: string; prize_position: number }[];
+    init_date: string;
+    expired_date: string | null;
+    draw_type: string;
+    limit: number;
+    price_unit: number;
+    current_progress: number;
+  }[];
+  metadata: {
+    page: number;
+    count: number;
+    items: number;
+    pages: number;
+  };
+}
 
-function Draws({ }: IDraws) {
-  const [profiles, setProfiles] = useState([])
-  const [openForm, setOpenForm] = useState(false)
-  const [modalState, setModalState] = useState(true)
-  const [draws, setDraws] = useState<{ 
-    title: string ;
-    first_prize: string ;
-    init_date: string ;
-    expired_date:string ;
-    draw_type:string ;
-    limit:string ;
-    price_unit:string ;
-    current: number;
-  }[]>([]);
-
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    axios
-    .get(
-      'https://api.rifamax.app/api/public/draws',
-      {
-        headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW0iOiJyaWZhbWF4Iiwic2VjcmV0IjoiZjJkN2ZhNzE3NmE3NmJiMGY1NDI2ODc4OTU5YzRmNWRjMzVlN2IzMWYxYzE1MjYzNThhMDlmZjkwYWE5YmFlMmU4NTc5NzM2MDYzN2VlODBhZTk1NzE3ZjEzNGEwNmU1NDIzNjc1ZjU4ZDIzZDUwYmI5MGQyNTYwNjkzNDMyOTYiLCJoYXNoX2RhdGUiOiJNb24gTWF5IDI5IDIwMjMgMDg6NTE6NTggR01ULTA0MDAgKFZlbmV6dWVsYSBUaW1lKSJ9.ad-PNZjkjuXalT5rJJw9EN6ZPvj-1a_5iS-2Kv31Kww`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      }
-    )
-    .then((res) => {
-      const drawsData = res.data.map((draw: any) => ({
-        title: draw.title,
-        first_prize: draw.first_prize,
-        init_date: draw.init_date,
-        expired_date: draw.expired_date,
-        draw_type: draw.draw_type,
-        limit: draw.limit,
-        price_unit: draw.price_unit,
-        current: draw.progress.current 
-      }));
-      setDraws(drawsData);
-      setLoading(false);
-    })
-    
-    .catch((err) => {
-      console.log(err);
-    });
-  
-  }, [])
-
-  useEffect(() => {
-    axios.get('https://rifa-max.com/api/v1/riferos', {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-      .then(res => {
-        setProfiles(res.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }, [])
+function Draws({}: IDraws) {
+  const [profiles, setProfiles] = useState([]);
+  const [openForm, setOpenForm] = useState(false);
+  const [modalState, setModalState] = useState(true);
+  const [raffleData, setRaffleData] = useState<Raffle>({
+    raffles: [],
+    metadata: {
+      page: 0,
+      count: 0,
+      items: 0,
+      pages: 0,
+    },
+  });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const closeForm = () => {
-    setOpenForm(false)
-  }
+    setOpenForm(false);
+  };
 
   const handleOpen = () => {
-    setOpenForm(true)
-  }
+    setOpenForm(true);
+  };
 
   const handleClose = () => {
-    setOpenForm(false)
+    setOpenForm(false);
+  };
+
+  function formatDate(dateString: string | null) {
+    if (!dateString) return 'Por confirmar';
+
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString().padStart(4, '0');
+    return `${day}/${month}/${year}`;
   }
-  
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token not found in localStorage');
+      return;
+    }
+
+    fetch(`https://mock.rifa-max.com/x100/draws/raffle_stats?items_per_page=13&current_page=${currentPage}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data: Raffle) => {
+        const { raffles, metadata } = data;
+        setRaffleData({ raffles, metadata });
+      })
+      .catch((error) => console.error('Error fetching raffle data:', error));
+  }, [currentPage]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token not found in localStorage');
+      return;
+    }
+
+    fetch(`https://mock.rifa-max.com/x100/draws/raffle_stats?items_per_page=13&current_page=1&search=${searchTerm}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data: Raffle) => {
+        const { raffles, metadata } = data;
+        setRaffleData({ raffles, metadata });
+        setCurrentPage(1); // Reset to page 1 after search
+      })
+      .catch((error) => console.error('Error fetching raffle data:', error));
+  }, [searchTerm]);
+
+  const filteredRows = raffleData.raffles
+    .filter(
+      (element) =>
+        element.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (element.prizes.length > 0 && element.prizes[0].name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        formatDate(element.init_date).toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .map((element, index) => (
+      <tr key={index}>
+        <td style={{ fontSize: '19px' }}>{element.title}</td>
+        <td style={{ fontSize: '19px' }}>{element.prizes.length > 0 ? element.prizes[0].name : ''}</td>
+        <td style={{ fontSize: '19px' }}>{formatDate(element.init_date)}</td>
+        <td style={{ fontSize: '19px' }}>{formatDate(element.expired_date)}</td>
+        <td style={{ fontSize: '19px' }}>{element.draw_type}</td>
+        <td style={{ fontSize: '19px' }}>{element.limit}</td>
+        <td style={{ fontSize: '19px' }}>{element.price_unit} $</td>
+        <td style={{ fontSize: '19px' }}>{element.current_progress} %</td>
+      </tr>
+    ));
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.currentTarget.value);
+  };
+
   return (
     <>
       <Navbar profiles={profiles} links={links} />
@@ -140,7 +189,7 @@ function Draws({ }: IDraws) {
           </Grid.Col>
           <Grid.Col md={7} sm={8}>
             <DrawsModal
-              variant="filled"  
+              variant="filled"
               color="blue"
               style={{ float: "right" }}
               className="btn-rifa"
@@ -152,22 +201,40 @@ function Draws({ }: IDraws) {
             </DrawsModal>
           </Grid.Col>
         </Grid>
-        {
-          draws.length === 0 ? (
-            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
-              <Text fz={30} fw={100} ta="center" mt={100} style={{ width: "100%" }}>
-                No hay sorteos, sé el primero en crear uno.
-              </Text>
-              <IconMoodHappy strokeWidth={.6} style={{ width: 300, height: 300, marginBottom: 100}}/>
-            </div>
-          ) : (
-            loading ? (
-              <div>Loading...</div>
-            ) : (
-              <Table data={draws} />
-            )
-          )
-        }
+        <Input
+          icon={<IconSearch />}
+          placeholder="Buscar por título, premio o fecha de inicio"
+          radius="md"
+          size="md"
+          w={355}
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+        <Pagination mt={15} total={raffleData.metadata.pages} size="lg" radius="md" onChange={handlePageChange} />
+      
+        {raffleData.raffles.length > 0 ? (
+          <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
+            <thead>
+              <tr>
+                <th style={{ fontSize: "30px", textAlign: "center"}}> Título</th>
+                <th style={{ fontSize: "30px", textAlign: "center" }}>Premio</th>
+                <th style={{ fontSize: "30px", textAlign: "center" }}>Fecha de inicio</th>
+                <th style={{ fontSize: "30px", textAlign: "center" }}>Fecha de finalización</th>
+                <th style={{ fontSize: "30px", textAlign: "center" }}>Tipo de rifa</th>
+                <th style={{ fontSize: "30px", textAlign: "center" }}>Límite</th>
+                <th style={{ fontSize: "30px", textAlign: "center" }}>Precio unitario</th>
+                <th style={{ fontSize: "30px", textAlign: "center" }}>Progreso</th>
+              </tr>
+            </thead>
+            <tbody>{filteredRows}</tbody>
+          </Table>
+        ) : (
+          <Group position='center'>
+
+            <Loader mt={50} size="xl" variant="dots" />
+          </Group>
+        )}
+
       </Card>
     </>
   )

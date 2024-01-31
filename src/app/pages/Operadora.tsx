@@ -1615,9 +1615,9 @@ function Operadora() {
                                   onClick={() => chooseTicket(ticket.position)}
                                 >
                                   <Text ta='center'>{parseTickets(ticket.position)}</Text>
-                                   <Text  fz={12} ml={-12}>
+                                   {/* <Text  fz={12} ml={-12}>
                                   {ticketStatusLabel}
-                                </Text> 
+                                </Text>  */}
                                 </Card>
 
 
