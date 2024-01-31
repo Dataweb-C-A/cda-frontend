@@ -285,8 +285,14 @@ function Lobby() {
                   {profile.email}
                 </Title>
                 <div>
-                  <div style={{ position: 'absolute', bottom: 5 }}>
-                    <Button fullWidth color="red">Cerrar Sesión</Button>
+                  <div style={{ position: 'absolute', bottom: 10, width: '95%', left:'2.7%' }}>
+                    <Button 
+                      fullWidth 
+                      color="red"
+                      onClick={() => history.push('/login')}
+                    >
+                      Cerrar Sesión
+                    </Button>
                   </div>
                 </div>
               </Card>
