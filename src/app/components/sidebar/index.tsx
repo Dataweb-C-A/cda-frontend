@@ -93,6 +93,7 @@ function Sidebar({ profile, links, open, title, onClose, position, children, siz
                   label={link.name}
                   description={
                     <Text
+                      fw={700}
                       size={link.descriptionSize || 10}
                       color={link.descriptionColor || 'blue'}
                     >
