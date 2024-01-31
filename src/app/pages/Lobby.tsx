@@ -1,7 +1,7 @@
 import React, { useEffect, useState, lazy } from 'react'
 import Navbar from '../components/navbar'
 import { links } from '../assets/data/links'
-import { createStyles, useMantineTheme } from '@mantine/core'
+import { Button, Text, createStyles, useMantineTheme } from '@mantine/core'
 import { useHistory } from 'react-router-dom'
 import RifamaxLogo from '../assets/images/rifamax-logo.png'
 import axios from 'axios'
@@ -11,8 +11,10 @@ import {
   Loader,
   Card,
   Table,
+  Avatar,
   Input,
   Title,
+  Grid,
   ScrollArea
 } from '@mantine/core';
 import Newrifa50y50 from './Newrifa50y50';
@@ -170,6 +172,12 @@ function Lobby() {
     is5050User = user.name.substring(0, 5) === "50 50";
   }
 
+  const getInitials = (name: string) => {
+    const names = name.split(' ');
+    if (names.length === 1) return names[0].charAt(0);
+    return `${names[0].charAt(0)}${names[names.length - 1].charAt(0)}`.toUpperCase();
+  };
+
   const { classes } = useStyles();
 
   return (
@@ -206,12 +214,9 @@ function Lobby() {
 
             {draws.length > 0 ? (
               <ScrollArea type="scroll" style={{ height: 755 }}>
-
-
                 <Table fontSize="lg" striped highlightOnHover withBorder withColumnBorders>
                   <thead>
                     <tr>
-
                       <th>id</th>
                       <th>Evento</th>
                       <th>Fecha de inicio</th>
@@ -248,37 +253,85 @@ function Lobby() {
         </>
       ) : (
         <>
-
-
-          <Group position="center" mt={10}>
-            {games.map((game, index) => (
-              <Link
-                to={!profile.access_permissions.includes(game.label) ? '/' : game.redirect}
-                style={{ textDecoration: 'none' }}
+          <Grid style={{ overflowY: 'hidden' }}>
+            <Grid.Col lg={3} orderXs={2} sm={5}>
+              <Card
+                mt={10}
+                ml={0}
+                h={'calc(100vh - 5rem)'}
               >
-                <Card
-                  radius="sm"
-                  className={classes.lobbyCard}
-                  shadow="xl"
-                  style={
-                    !profile.access_permissions.includes(game.label)
-                      ? { opacity: 0.2, cursor: 'not-allowed' }
-                      : { cursor: 'pointer' }
-                  }
-                >
-                  <Image
-                    key={index}
-                    radius="md"
-                    src={RifamaxLogo}
-                    mt={25}
-                    width={300}
-                    height={120}
-                    caption={game.label}
-                  />
-                </Card>
-              </Link>
-            ))}
-          </Group>
+                <Title fw={750} fz={23} mb={20}>Mi Perfil</Title>
+                <Group>
+                  <Avatar
+                    size={250}
+                    w="100%"
+                    radius="xl"
+                    color='light'
+                    alt={profile.name}
+                  >
+                    {getInitials(profile.name)}
+                  </Avatar>
+                </Group>
+                <Title fw={700} mt={30} fz={25} ta="center">
+                  {profile.name}
+                </Title>
+                <Title fw={350} mt={10} fz={25} ta="center">
+                  {profile.role}
+                </Title>
+                <Title fw={350} mt={10} fz={25} ta="center">
+                  {profile.cedula}
+                </Title>
+                <Title fw={350} mt={10} fz={25} ta="center">
+                  {profile.email}
+                </Title>
+                <div>
+                  <div style={{ position: 'absolute', bottom: 5 }}>
+                    <Button fullWidth color="red">Cerrar Sesión</Button>
+                  </div>
+                </div>
+              </Card>
+            </Grid.Col>
+            <Grid.Col lg={9} xs={0} sm={7}>
+              <Card
+                mt={10}
+                ml={10}
+                mr={-5}
+                h={'calc(100vh - 5rem)'}
+              >
+                <Title fw={750} fz={23} mb={20}>Lobby</Title>
+                <Group position="center" mt={10} w="100%">
+                  {games.map((game, index) => (
+                    <Link
+                      to={!profile.access_permissions.includes(game.label) ? '/' : game.redirect}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Card
+                        radius="sm"
+                        className={profile.access_permissions.includes(game.label) && (profile.role !== 'Rifero') ? classes.lobbyCard : undefined}
+                        shadow="xl"
+                        bg={theme.colors.dark[7]}
+                        style={
+                          !profile.access_permissions.includes(game.label)
+                            ? { opacity: 0.2, cursor: 'not-allowed' }
+                            : { cursor: 'pointer' }
+                        }
+                      >
+                        <Image
+                          key={index}
+                          radius="md"
+                          src={RifamaxLogo}
+                          mt={25}
+                          width={300}
+                          height={120}
+                          caption={game.label}
+                        />
+                      </Card>
+                    </Link>
+                  ))}
+                </Group>
+              </Card>
+            </Grid.Col>
+          </Grid>
         </>
       )}
     </>
