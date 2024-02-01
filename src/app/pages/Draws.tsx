@@ -8,7 +8,7 @@ import { BiHappy } from 'react-icons/bi';
 import { IconMoodHappy } from '@tabler/icons';
 import { IconSearch } from '@tabler/icons';
 
-interface IDraws {}
+interface IDraws { }
 interface Raffle {
   raffles: {
     title: string;
@@ -28,7 +28,7 @@ interface Raffle {
   };
 }
 
-function Draws({}: IDraws) {
+function Draws({ }: IDraws) {
   const [profiles, setProfiles] = useState([]);
   const [openForm, setOpenForm] = useState(false);
   const [modalState, setModalState] = useState(true);
@@ -74,7 +74,7 @@ function Draws({}: IDraws) {
       return;
     }
 
-    fetch(`https://mock.rifa-max.com/x100/draws/raffle_stats?items_per_page=13&current_page=${currentPage}`, {
+    fetch(`https://api.rifa-max.com/x100/draws/raffle_stats?items_per_page=13&current_page=${currentPage}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -94,7 +94,7 @@ function Draws({}: IDraws) {
       return;
     }
 
-    fetch(`https://mock.rifa-max.com/x100/draws/raffle_stats?items_per_page=13&current_page=1&search=${searchTerm}`, {
+    fetch(`https://api.rifa-max.com/x100/draws/raffle_stats?items_per_page=13&current_page=1&search=${searchTerm}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -214,7 +214,7 @@ function Draws({}: IDraws) {
           onChange={handleSearchChange}
         />
         <Pagination mt={15} total={raffleData.metadata.pages} size="md" radius="md" onChange={handlePageChange} />
-      
+
         {raffleData.raffles.length == 0 && loading == false ? (
           <>
             <Text ta="center" mt={50} fw={750} fz={25}>¡Oops!, No tienes ninguna rifa disponible.</Text>
@@ -224,7 +224,7 @@ function Draws({}: IDraws) {
           <Table mt={15} striped highlightOnHover withBorder withColumnBorders>
             <thead>
               <tr>
-                <th style={{ fontSize: "15px", textAlign: "center"}}> Título</th>
+                <th style={{ fontSize: "15px", textAlign: "center" }}> Título</th>
                 <th style={{ fontSize: "15px", textAlign: "center" }}>Premio</th>
                 <th style={{ fontSize: "15px", textAlign: "center" }}>Fecha de inicio</th>
                 <th style={{ fontSize: "15px", textAlign: "center" }}>Fecha de finalización</th>

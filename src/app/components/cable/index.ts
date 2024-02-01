@@ -1,4 +1,4 @@
-import * as ActionCable from 'actioncable';
+import * as ActionCable from "actioncable";
 
-const cable = ActionCable.createConsumer('wss://mock.rifa-max.com/cable');
+const cable = ActionCable.createConsumer("wss://api.rifa-max.com/cable");
 export default cable;

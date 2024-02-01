@@ -339,7 +339,7 @@ function DrawsModal({
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
 
-    axios.post('https://mock.rifa-max.com/x100/raffles', {
+    axios.post('https://api.rifa-max.com/x100/raffles', {
       x100_raffle: {
         title: values?.title,
         draw_type: values?.draw_type,
@@ -757,39 +757,39 @@ function DrawsModal({
                 </Text>
               )}
 
-                  <NumberInput
-                    radius={'md'}
-                    label="Precio unitario"
-                    placeholder="Precio unitario"
-                    withAsterisk
-                    w="100%"
-                    size='md'
-                    my="md"
-                    error={form.errors.price_unit}
-                    hideControls
-                    {...form.getInputProps('price_unit')}
-                  />
-                  <Select
-                    radius={'md'}
-                    style={{
-                      display:"none"
-                    }}
-                    size='md'
-                    mt="md"
-                    mb='md'
-                    w="100%"
-                    label="Moneda"
-                    placeholder="Elige una moneda"
-                    withAsterisk
-                    error={form.errors.money}
-                    data={[
-                      { value: 'BsF', label: 'Bolivares' },
-                      { value: '$', label: 'Dolares Estadounidenses' },
-                      { value: 'COP', label: 'Pesos Colombianos' }
-                    ]}
-                    {...form.getInputProps('money')}
-                  />
-               
+              <NumberInput
+                radius={'md'}
+                label="Precio unitario"
+                placeholder="Precio unitario"
+                withAsterisk
+                w="100%"
+                size='md'
+                my="md"
+                error={form.errors.price_unit}
+                hideControls
+                {...form.getInputProps('price_unit')}
+              />
+              <Select
+                radius={'md'}
+                style={{
+                  display: "none"
+                }}
+                size='md'
+                mt="md"
+                mb='md'
+                w="100%"
+                label="Moneda"
+                placeholder="Elige una moneda"
+                withAsterisk
+                error={form.errors.money}
+                data={[
+                  { value: 'BsF', label: 'Bolivares' },
+                  { value: '$', label: 'Dolares Estadounidenses' },
+                  { value: 'COP', label: 'Pesos Colombianos' }
+                ]}
+                {...form.getInputProps('money')}
+              />
+
               {/* <Grid mb={10}>
                 <Grid.Col span={6}>
                   <Select
@@ -830,12 +830,12 @@ function DrawsModal({
                 </Grid.Col>
               </Grid> */}
 
-             
+
               <Group
                 mt={-25}
                 position='right'
               >
-               
+
               </Group>
               {/* <Grid>
                 <Grid.Col span={6}> */}

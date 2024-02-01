@@ -285,7 +285,7 @@ function Operadora() {
   const [reload, setReload] = useState<number>(0)
   const [client, setClient] = useState<IClient | null>(null)
   const [ticketsSold, setTicketsSold] = useState<ICableTicket[]>([])
-  const endpoint = 'https://mock.rifa-max.com/shared/exchanges';
+  const endpoint = 'https://api.rifa-max.com/shared/exchanges';
   const { classes } = useStyles()
   const handleClose = () => {
     setBuyIsOpen(false)
@@ -314,7 +314,7 @@ function Operadora() {
   })
 
   useEffect(() => {
-    axios.get("https://mock.rifa-max.com/x100/raffles", {
+    axios.get("https://api.rifa-max.com/x100/raffles", {
       headers: {
         ContentType: "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -490,7 +490,7 @@ function Operadora() {
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
 
     if (isTicketSelected) {
-      axios.post("https://mock.rifa-max.com/x100/tickets/available", {
+      axios.post("https://api.rifa-max.com/x100/tickets/available", {
         x100_ticket: {
           x100_raffle_id: selectedRaffle,
           position: ticketNumber
@@ -507,7 +507,7 @@ function Operadora() {
         console.log(err)
       })
     } else {
-      axios.post("https://mock.rifa-max.com/x100/tickets/apart", {
+      axios.post("https://api.rifa-max.com/x100/tickets/apart", {
         x100_ticket: {
           x100_raffle_id: selectedRaffle,
           position: ticketNumber
@@ -533,7 +533,7 @@ function Operadora() {
     setTotalPrice(0);
 
     ticketsSelected.forEach(ticketNumber => {
-      axios.post("https://mock.rifa-max.com/x100/tickets/available", {
+      axios.post("https://api.rifa-max.com/x100/tickets/available", {
         x100_ticket: {
           x100_raffle_id: selectedRaffle,
           position: ticketNumber
@@ -610,12 +610,12 @@ function Operadora() {
 
   const handleSearch = () => {
     const ticketNumber = searchValue || 0;
-  
+
     const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticketNumber);
     const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticketNumber);
-  
+
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
-  
+
     if (isTicketSold) {
       handleInvalidModal(true, 'sold');
     } else if (isTicketReserved) {
@@ -623,7 +623,7 @@ function Operadora() {
     } else if (isTicketSelected) {
       handleInvalidModal(true, 'selected');
     } else {
-      axios.post("https://mock.rifa-max.com/x100/tickets/apart", {
+      axios.post("https://api.rifa-max.com/x100/tickets/apart", {
         x100_ticket: {
           x100_raffle_id: selectedRaffle,
           position: ticketNumber
@@ -633,19 +633,19 @@ function Operadora() {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       })
-      .then((res) => {
-        console.log(res);
-        setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
-        setTotalPrice((prevTotal) => prevTotal + 1);
-      })
-      .catch((err) => {
-        console.log(err);
-        // Handle error
-      });
+        .then((res) => {
+          console.log(res);
+          setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
+          setTotalPrice((prevTotal) => prevTotal + 1);
+        })
+        .catch((err) => {
+          console.log(err);
+          // Handle error
+        });
     }
     setSearchValue(null);
   };
-  
+
 
   function apartTickets(ticket_nro: number) {
     const ticketSelected = tickets.tickets.find((ticket) => ticket.position === ticket_nro);
@@ -732,7 +732,7 @@ function Operadora() {
 
     const secondNextStep = (phone: string) => {
       setPhone(phone)
-      axios.get("https://mock.rifa-max.com/x100/clients", {
+      axios.get("https://api.rifa-max.com/x100/clients", {
         params: {
           phone: `${countryPrefix} ${selectValue} ${textInputValue}`
         }
@@ -777,7 +777,7 @@ function Operadora() {
     };
 
     const createClient = () => {
-      axios.post("https://mock.rifa-max.com/x100/clients", {
+      axios.post("https://api.rifa-max.com/x100/clients", {
         x100_client: {
           name: name + ' ' + lastName,
           dni: (countrySelected === 'Venezuela' ? `${initDNI}${Dni}` : null),
@@ -813,7 +813,7 @@ function Operadora() {
         }
       };
 
-      fetch("https://mock.rifa-max.com/x100/tickets/sell", {
+      fetch("https://api.rifa-max.com/x100/tickets/sell", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1035,14 +1035,14 @@ function Operadora() {
                           <Title order={6} ml={10} fw={300} c='black'>
                             1.00
                           </Title>
-                          <Title order={6}    fw={300}  c='black'>
-                                                  {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'Bs.D' && exchangeRates?.value_bs
-                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " Bs.D"
-                                                    : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
-                                                      ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
-                                                      : raffleActive(selectedRaffle || 0)?.price_unit + " $"
-                                                  }
-                                                </Title>
+                          <Title order={6} fw={300} c='black'>
+                            {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'Bs.D' && exchangeRates?.value_bs
+                              ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " Bs.D"
+                              : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
+                                : raffleActive(selectedRaffle || 0)?.price_unit + " $"
+                            }
+                          </Title>
                           <Title order={6} fw={300} mr={15} c='black'>
                             {descuentoFormateado}
                           </Title>
@@ -1615,7 +1615,7 @@ function Operadora() {
                                   onClick={() => chooseTicket(ticket.position)}
                                 >
                                   <Text ta='center'>{parseTickets(ticket.position)}</Text>
-                                   {/* <Text  fz={12} ml={-12}>
+                                  {/* <Text  fz={12} ml={-12}>
                                   {ticketStatusLabel}
                                 </Text>  */}
                                 </Card>
@@ -1666,7 +1666,7 @@ function Operadora() {
                       <div className={classes.raffleInfo}>
                         <Card withBorder mt={0} className={classes.raffleInfoCard}>
                           <Text fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
-                          <Image src={`https://mock.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
+                          <Image src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
                           <Divider labelPosition="center" mb={10} mt={20} label="Datos de la rifa" />
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Tipo:</Text>
@@ -1712,16 +1712,16 @@ function Operadora() {
                                           }
                                           return (
                                             <>
-                                             
-                                                <Group position="apart">
+
+                                              <Group position="apart">
 
                                                 <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                   {parseTickets(ticket)}
                                                 </Title>
-                                                <Title order={6}  fw={300} c='black'>
+                                                <Title order={6} fw={300} c='black'>
                                                   1.00
                                                 </Title>
-                                                <Title order={6}    fw={300}  c='black'>
+                                                <Title order={6} fw={300} c='black'>
                                                   {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'Bs.D' && exchangeRates?.value_bs
                                                     ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " Bs.D"
                                                     : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
@@ -1729,7 +1729,7 @@ function Operadora() {
                                                       : raffleActive(selectedRaffle || 0)?.price_unit + " $"
                                                   }
                                                 </Title>
-                                                </Group>
+                                              </Group>
 
                                             </>
                                           );

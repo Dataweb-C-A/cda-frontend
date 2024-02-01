@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Card, Loader, ActionIcon, Flex, Input, Modal, Text, Select, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import axios, { AxiosResponse } from 'axios';
 import '../../assets/scss/cards.scss'
-import { IconSearch , IconUserPlus } from '@tabler/icons-react';
+import { IconSearch, IconUserPlus } from '@tabler/icons-react';
 import { useDispatch } from 'react-redux';
 import { setLobbyMode } from '../../config/reducers/lobbySlice';
 import { useForm } from '@mantine/form';
@@ -633,10 +633,10 @@ function TicketModal({ draw_id }: modalProps) {
     const enteredPrefijo = form2.values.prefijo.trim();
 
     try {
-      const response = await axios.get(`https://mock.rifa-max.com/x100/clients`, {
+      const response = await axios.get(`https://api.rifa-max.com/x100/clients`, {
         data: { phone: "+58 (412) 168-8466" }
       });
-      
+
       console.log('Respuesta del servidor:', response.data);
 
     } catch (error: unknown) {
@@ -911,7 +911,7 @@ function TicketModal({ draw_id }: modalProps) {
                             <Stepper active={activex} onStepClick={setActivex} breakpoint="sm" allowNextStepsSelect={false}>
 
 
-                              
+
                               <Stepper.Step label="Datos del cliente" description="Personalize su compra ">
 
                                 <form onSubmit={form2.onSubmit((values) => console.log(values))}>
@@ -1017,7 +1017,7 @@ function TicketModal({ draw_id }: modalProps) {
                                         />
                                       </Group>
                                       <Button radius="md" leftIcon={<IconUserPlus />} mt={15} w='98%' >
-                                        
+
                                         Agregar
 
                                       </Button>
@@ -1101,7 +1101,7 @@ function TicketModal({ draw_id }: modalProps) {
                                   align="center"
                                   direction="column"
                                   wrap="wrap"
-                                  
+
                                 >
                                   <Title order={3}>Premio</Title>
                                   <Text>{draws.first_prize}</Text>
