@@ -359,7 +359,6 @@ export default function AccordionList({
           <Title ta="center" my={30} order={4}>¿Desea repetir esta rifa?</Title>
           <hr />
           <form>
-
             <DatePicker
               mt={20}
               label='Fecha de la rifa'

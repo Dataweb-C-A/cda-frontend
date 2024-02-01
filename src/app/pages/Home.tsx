@@ -109,7 +109,7 @@ const Home: React.FC = () => {
   
     // Limpia el intervalo cuando el componente se desmonta
     return () => clearInterval(intervalId);
-  }, [loadingDump]);
+  }, []);
   
 
   return (
