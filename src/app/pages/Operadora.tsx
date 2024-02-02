@@ -1723,11 +1723,12 @@ function Operadora() {
                                                 </Title>
                                                 <Title order={6} fw={300} c='black'>
                                                   {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'Bs.D' && exchangeRates?.value_bs
-                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " Bs.D"
+                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " Bs.D"
                                                     : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
-                                                      ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
-                                                      : raffleActive(selectedRaffle || 0)?.price_unit + " $"
+                                                      ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
+                                                      : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
                                                   }
+
                                                 </Title>
                                               </Group>
 
