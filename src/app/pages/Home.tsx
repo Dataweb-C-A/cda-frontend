@@ -105,7 +105,7 @@ const Home: React.FC = () => {
     fetchData();
   
     // Configurar un intervalo para llamar a fetchData cada 10 segundos
-    const intervalId = setInterval(fetchData, 10000);
+    const intervalId = setInterval(fetchData, 50000);
   
     // Limpia el intervalo cuando el componente se desmonta
     return () => clearInterval(intervalId);

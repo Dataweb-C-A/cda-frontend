@@ -789,6 +789,7 @@ export default function AccordionList({
                     )
                     .then(() => {
                       setIsAmount(false);
+                      window.location.reload();
                       // function send() {
                       //   try {
 
