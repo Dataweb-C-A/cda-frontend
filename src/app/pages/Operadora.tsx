@@ -9,7 +9,7 @@ import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image
 import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconX } from '@tabler/icons-react';
+import { IconArrowsShuffle, IconDice, IconEgg, IconX } from '@tabler/icons-react';
 import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
@@ -19,6 +19,7 @@ import USANumbers from "../assets/data/usaNumbers.json"
 import ColombiaNumbers from "../assets/data/colombiaNumbers.json"
 import { useForm } from "@mantine/form"
 import RifamaxLogo from '../assets/images/rifamax-logo.png'
+import { IconDice1 } from "@tabler/icons-react"
 
 interface IStatus {
   is_connected: boolean;
@@ -212,6 +213,13 @@ const useStyles = createStyles((theme) => ({
     textDecoration: 'none',
     cursor: 'not-allowed'
   },
+  avatarExchange: {
+    cursor: 'pointer',
+    '&:hover': {
+      opacity: '0.65',
+      transitionDuration: '0.5s'
+    }
+  },
   searchButton: {
     '&:hover': {
       backgroundColor: theme.colors.blue[9],
@@ -257,6 +265,7 @@ function Operadora() {
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'Bs.D' | null>(null)
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
+  const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
   const [isInvalidTicketPurchase, setIsInvalidTicketPurchase] = useState<boolean>(false);
   const [buyingTickets, setBuyingTickets] = useState<number[]>([]);
@@ -279,7 +288,7 @@ function Operadora() {
   })
   const [countrySelected, setCountrySelected] = useState<string | null>(null)
   const [activeStep, setActiveStep] = useState<number>(0)
-  const [prefix, setPrefix] = useState<string | null>(null)
+  const [exchangeCounter, setExchangeCounter] = useState<number>(1)
   const [phone, setPhone] = useState<string>('')
   const [countryPrefix, setCountryPrefix] = useState<string | null>(null)
   const [reload, setReload] = useState<number>(0)
@@ -1234,6 +1243,21 @@ function Operadora() {
         links={links}
         expandScreen={false}
       />
+       {
+        exchangeCounter % 100 === 0 && (
+          <div 
+            style={{ position: 'absolute', width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.7)', top: 0, left: 0, zIndex: 999999, cursor: 'pointer' }} 
+            onClick={() => setExchangeCounter(exchangeCounter + 1)}
+          >
+            <Card
+              style={{ position: 'absolute', top: '33vh', left: '42vw' }}
+              pt={20}
+            >
+              <IconEgg size={300} stroke={0.2}/>
+            </Card>
+          </div>
+        )
+      }
       <section className={classes.pageContainer}>
         { /* Raffles Container*/}
         <div className={rafflesSidebarStatus ? classes.rafflesContainer : classes.rafflesContainerConstract}>
@@ -1325,7 +1349,6 @@ function Operadora() {
                       >
 
                         <Group mb={15} position="apart">
-
                           <Avatar
                             src={VenezuelaFlag}
                             size={50}
@@ -1633,7 +1656,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-7} mt={3}>
+                          <Text ml={-7} mt={4}>
                             Disponible
                           </Text>
                           <Card style={{ background: 'green' }}>
@@ -1641,7 +1664,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-7} mt={3}>
+                          <Text ml={-7} mt={4}>
                             Mi compra
                           </Text>
                           <Card style={{ background: '#ff8000' }}>
@@ -1649,7 +1672,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-7} mt={3}>
+                          <Text ml={-7} mt={4}>
                             Reservado
                           </Text>
                           <Card style={{ background: 'red' }}>
@@ -1657,10 +1680,49 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-7} mt={3}>
+                          <Text ml={-7} mt={4}>
                             Vendido
                           </Text>
                         </Card>
+                        {
+                          hasPaymentSelected && (
+                            <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'Bs.D' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                              <Avatar 
+                                p={-20} 
+                                radius='xl' 
+                                className={classes.avatarExchange} 
+                                onClick={() => {
+                                  let exchanges = ["$", "Bs.D", "COP"]
+
+                                  function randomExchange() { 
+                                    // @ts-ignore
+                                    return setHasPaymentSelected(exchanges[Math.floor(Math.random() * exchanges.length)])
+                                  }
+                                  setExchangeCounter(exchangeCounter + 1)
+                                  randomExchange();
+                                }}
+                                onMouseEnter={() => setHoverExchange(true)} 
+                                onMouseLeave={() => setHoverExchange(false)}
+                              >
+                                {
+                                  !hoverExchange ? (
+                                    <Text ta="center" fw={300} fz={20}>
+                                      { hasPaymentSelected }
+                                    </Text>
+                                  ) : (
+                                    <IconEgg />
+                                  )
+                                }
+                              </Avatar>
+
+                              <Text
+                                fw={300} fz={20} mt={1}
+                              >
+                                La moneda seleccionada actualmente es: <strong>{ hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'Bs.D' ? 'Bolivares digitales' : 'Pesos colombianos' }</strong>
+                              </Text>
+                            </Card>
+                          )
+                        }
                       </div>
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
@@ -1669,8 +1731,12 @@ function Operadora() {
                           <Image src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
                           <Divider labelPosition="center" mb={10} mt={20} label="Datos de la rifa" />
                           <Group w="100%" position='apart'>
-                            <Text fw={700} fz={16} ta="start">Tipo:</Text>
-                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.tickets_count}</Text>
+                            <Text fw={700} fz={16} ta="start">Tipo de rifa:</Text>
+                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({ raffleActive(selectedRaffle)?.tickets_count} números)</Text>
+                          </Group>
+                          <Group w="100%" position='apart'>
+                            <Text fw={700} fz={16} ta="start">Sorteo con:</Text>
+                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.draw_type}</Text>
                           </Group>
                           <Group w="100%" position='apart'>
 
