@@ -308,7 +308,7 @@ function Lobby() {
                 <Group position="center" mt={10} w="100%">
                   {games.map((game, index) => (
                     <Link
-                      to={!profile.access_permissions.includes(game.label) ? '/' : game.redirect}
+                      to={!profile.access_permissions.includes(game.label) || game.label === 'X100' ? '/' : game.redirect}
                       style={{ textDecoration: 'none' }}
                     >
                       <Card
