@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import axios, { AxiosResponse } from 'axios';
+import { links } from '../assets/data/links';
 import { Card, SimpleGrid, Loader, Flex, Input, Modal, Text, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
+import Navbar from '../components/navbar';
 
 interface RaffleData {
   id: number;
@@ -28,8 +30,8 @@ interface RaffleData {
 
 type Props = {}
 
-function Rifa100public({ }: Props) {
-
+function Cuponesinf({ }: Props) {
+  const [profiles, setProfiles] = useState([]);
   const [counter, setCounter] = useState<number>(0)
 
   const progre = 23;
@@ -37,17 +39,18 @@ function Rifa100public({ }: Props) {
   const apiUrl = 'http://localhost:3000/x100/raffles';
 
   axios.get(apiUrl)
-      .then((response: AxiosResponse<RaffleData>) => {
-          const raffle: RaffleData = response.data;
-  
-          console.log('Datos de la rifa:', raffle);
-      })
-      .catch((error) => {
-          console.error('Error al realizar la solicitud:', error);
-      });
+    .then((response: AxiosResponse<RaffleData>) => {
+      const raffle: RaffleData = response.data;
+
+      console.log('Datos de la rifa:', raffle);
+    })
+    .catch((error) => {
+      console.error('Error al realizar la solicitud:', error);
+    });
 
   return (
     <>
+      <Navbar profiles={profiles} links={links} />
 
       <style>
         {`
@@ -64,37 +67,37 @@ function Rifa100public({ }: Props) {
          
         `}
       </style>
-      <SimpleGrid
-        cols={2}
-        mt="10%"
-        mr={15}
-        ml={15}
-        spacing="lg"
-        breakpoints={[
-          { maxWidth: 980, cols: 3, spacing: 'md' },
-          { maxWidth: 755, cols: 2, spacing: 'sm' },
-          { maxWidth: 600, cols: 1, spacing: 'sm' },
-        ]}
-      >
+      <Group>
+
+
+        <Card shadow="sm" >
+
+          <Title ta={'center'}>
+            Seleccione su rifa
+          </Title>
+          <Divider my={7} />
+
+          <ScrollArea style={{ height: 1010, width: 350 }}>
+          </ScrollArea>
+
+        </Card>
+
         <Flex
           mih={50}
           gap="md"
-          ml="2%"
           justify="center"
           align="center"
           direction="column"
           wrap="wrap"
-          w='100%'
-          mr="25%"
+          mr="13%"
+          ml="5%"
+          w={"45% "}
 
         >
 
-          <TextInput
-            size="lg"
-            ml="-18vh"
-            placeholder="Buscar numero" label="Compra numero"  w="80%" />
 
-          <Group  >
+
+          <Group position='center' >
             <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
@@ -217,6 +220,7 @@ function Rifa100public({ }: Props) {
 
         </Flex>
 
+
         <Card shadow="sm" h="100%" radius='xl' mb={15} withBorder>
 
 
@@ -298,12 +302,11 @@ function Rifa100public({ }: Props) {
 
 
         </Card>
-
-      </SimpleGrid>
+      </Group>
 
 
     </>
   )
 }
 
-export default Rifa100public
+export default Cuponesinf
