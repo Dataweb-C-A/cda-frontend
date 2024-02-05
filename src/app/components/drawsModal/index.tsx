@@ -125,9 +125,10 @@ function DrawsModal({
   const [files, setFiles] = useState<FileWithPath | null>(null);
   const [files2, setFiles2] = useState<FileWithPath | null>(null);
   const [premios, setPremios] = useState(['Premio #1']);
-  const [otherPrizes, setOtherPrizes] = useState([{ name: '', prize_position: 1 }]);
+  const [otherPrizes, setOtherPrizes] = useState([{ name: '', prize_position: 1, days_to_award: 0 }]);
   const [inputValues, setInputValues] = useState(['']);
   const [otherPrizesInputValues, setOtherPrizesInputValues] = useState(['']);
+  
 
   useEffect(() => {
     axios.get("https://api.rifamax.app/whitelists").then((res) => {
@@ -299,36 +300,50 @@ function DrawsModal({
     const nuevaEtiqueta = `Premio #${premios.length + 1}`;
     setPremios([...premios, nuevaEtiqueta]);
     setInputValues([...inputValues, '']);
-    setOtherPrizes([...otherPrizes, { name: '', prize_position: premios.length + 1 }]);
+    
+    setOtherPrizes([...otherPrizes, { name: '', prize_position: premios.length + 1, days_to_award: 0 }]);
     setOtherPrizesInputValues([...otherPrizesInputValues, '']);
     console.log('Otros Premios:', otherPrizes);
   };
-
-
+  
   const eliminarUltimoPremio = () => {
     if (premios.length > 1) {
       const nuevosPremios = premios.slice(0, -1);
       setPremios(nuevosPremios);
       setInputValues(inputValues.slice(0, -1));
-      setOtherPrizes(nuevosPremios.map((etiqueta, index) => ({ name: otherPrizes[index].name, prize_position: index + 1 })));
+      
+      const nuevosOtherPrizes = nuevosPremios.map((etiqueta, index) => ({ 
+        name: otherPrizes[index].name, 
+        prize_position: index + 1,
+        days_to_award: index === 0 ? 0 : otherPrizes[index].days_to_award
+      }));
+      
+      setOtherPrizes(nuevosOtherPrizes);
       setOtherPrizesInputValues(otherPrizesInputValues.slice(0, -1));
       console.log('Otros Premios:', nuevosPremios);
     }
   };
+  
 
 
   const handleOtherPrizeInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const nuevosOtherPrizesInputValues = [...otherPrizesInputValues];
     nuevosOtherPrizesInputValues[index] = e.target.value;
     setOtherPrizesInputValues(nuevosOtherPrizesInputValues);
-
+  
     const nuevosOtherPrizes = [...otherPrizes];
-    nuevosOtherPrizes[index] = { name: e.target.value, prize_position: index + 1 };
+    nuevosOtherPrizes[index] = { ...otherPrizes[index], name: e.target.value };
     setOtherPrizes(nuevosOtherPrizes);
-
-    console.log('Otros Premios:', nuevosOtherPrizes);
   };
-
+  
+  const handleDaysToAwardChange = (value: number | undefined, index: number) => {
+    const newValue = value !== undefined ? value : 0;
+  
+    const nuevosOtherPrizes = [...otherPrizes];
+    nuevosOtherPrizes[index] = { ...otherPrizes[index], days_to_award: newValue };
+    setOtherPrizes(nuevosOtherPrizes);
+  };
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(inputValues);
@@ -338,7 +353,16 @@ function DrawsModal({
 
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
-
+  
+    const updatedOtherPrizes = [...otherPrizes];
+    updatedOtherPrizes[0].days_to_award = 0;
+  
+    const formattedPrizes = updatedOtherPrizes.map(prize => ({
+      name: prize.name,
+      prize_position: prize.prize_position,
+      days_to_award: prize.days_to_award
+    }));
+  
     axios.post('https://api.rifa-max.com/x100/raffles', {
       x100_raffle: {
         title: values?.title,
@@ -350,7 +374,7 @@ function DrawsModal({
         numbers: values?.numbers,
         raffle_type: values?.raffle_type,
         init_date: values?.init_date,
-        prizes: otherPrizes,
+        prizes: [formattedPrizes], 
         visible_taquillas_ids: values?.visible_taquillas_ids,
         expired_date: values?.expired_date,
         combos: values?.combos !== null ? (values?.combos) : null,
@@ -372,6 +396,8 @@ function DrawsModal({
       console.log(err)
     })
   }
+  
+  
 
   const validateDate = () => {
     if (actualDate <= validate) {
@@ -612,20 +638,37 @@ function DrawsModal({
               </Group>
               <Divider variant="dashed" mt={5} />
               <Grid>
-                {otherPrizes.map((etiqueta, index) => (
-                  <Grid.Col span={4} key={index}>
-                    <TextInput
-                      size='md'
-                      label={`Posición: ${etiqueta.prize_position}`}
-                      mt={15}
-                      radius={'md'}
-                      mb={10}
-                      placeholder={`Premio #${etiqueta.prize_position}`}
-                      value={otherPrizesInputValues[index]}
-                      onChange={(e) => handleOtherPrizeInputChange(e, index)}
-                    />
-                  </Grid.Col>
-                ))}
+              {otherPrizes.map((etiqueta, index) => (
+  <Group position='center' key={index}>
+    <TextInput
+      size='md'
+      variant="filled"
+      label={`Posición: ${etiqueta.prize_position}`}
+      mt={15}
+      radius={'md'}
+      ml={130}
+      mb={10}
+      placeholder={`Premio #${etiqueta.prize_position}`}
+      value={otherPrizesInputValues[index]}
+      onChange={(e) => handleOtherPrizeInputChange(e, index)}
+      w={index === 0 ? "43vh" : undefined} 
+    />
+    <NumberInput
+      placeholder='Premiacion'
+      size='md'
+      variant="filled"
+      hideControls
+      mt={40}
+      radius={'md'}
+      mb={10}
+      value={etiqueta.days_to_award} // Agregar el valor del days_to_award
+      onChange={(value) => handleDaysToAwardChange(value, index)} // Manejar el cambio en days_to_award
+      style={{
+        display: index === 0 ? "none" : "block"
+      }}
+    />
+  </Group>
+))}
 
               </Grid>
               <Divider variant="dashed" mt={5} />
