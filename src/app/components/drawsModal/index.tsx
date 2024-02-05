@@ -66,7 +66,6 @@ type FormProps = {
   price_unit: null | number;
   lotery: string;
   tickets_count: number;
-  numbers: null | number | string;
   raffle_type: string;
   init_date: null | Date | string;
   visible_taquillas_ids: number[];
@@ -186,7 +185,6 @@ function DrawsModal({
       price_unit: null,
       lotery: 'ZULIA 7A',
       tickets_count: 0,
-      numbers: null,
       init_date: null,
       visible_taquillas_ids: [],
       expired_date: null,
@@ -262,10 +260,7 @@ function DrawsModal({
           }
         }
       },
-      numbers: (value: number) => {
-        if (!value) return 'Numeros de la rifa requeridos';
-        if (value < 1 || value >= 1000) return 'La cantidad debe ser menor a 999 y mayor a 001';
-      },
+     
       money: (value: string) => {
         if (!value) return 'Moneda requerida';
       },
@@ -303,7 +298,7 @@ function DrawsModal({
     
     setOtherPrizes([...otherPrizes, { name: '', prize_position: premios.length + 1, days_to_award: 0 }]);
     setOtherPrizesInputValues([...otherPrizesInputValues, '']);
-    console.log('Otros Premios:', otherPrizes);
+    console.log('Premios:', otherPrizes);
   };
   
   const eliminarUltimoPremio = () => {
@@ -320,7 +315,7 @@ function DrawsModal({
       
       setOtherPrizes(nuevosOtherPrizes);
       setOtherPrizesInputValues(otherPrizesInputValues.slice(0, -1));
-      console.log('Otros Premios:', nuevosPremios);
+      console.log('Premios:', nuevosPremios);
     }
   };
   
@@ -334,7 +329,10 @@ function DrawsModal({
     const nuevosOtherPrizes = [...otherPrizes];
     nuevosOtherPrizes[index] = { ...otherPrizes[index], name: e.target.value };
     setOtherPrizes(nuevosOtherPrizes);
-  };
+
+
+    console.log('Premios:', otherPrizes);
+    };
   
   const handleDaysToAwardChange = (value: number | undefined, index: number) => {
     const newValue = value !== undefined ? value : 0;
@@ -342,6 +340,8 @@ function DrawsModal({
     const nuevosOtherPrizes = [...otherPrizes];
     nuevosOtherPrizes[index] = { ...otherPrizes[index], days_to_award: newValue };
     setOtherPrizes(nuevosOtherPrizes);
+
+    console.log('Premios:', otherPrizes);
   };
   
   const handleSubmit = (e: React.FormEvent) => {
@@ -371,7 +371,6 @@ function DrawsModal({
         price_unit: values?.price_unit,
         lotery: values?.lotery,
         tickets_count: values?.tickets_count,
-        numbers: values?.numbers,
         raffle_type: values?.raffle_type,
         init_date: values?.init_date,
         prizes: [formattedPrizes], 
@@ -532,31 +531,18 @@ function DrawsModal({
 
           <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
             <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
-              <Grid>
-                <Grid.Col span={6}>
+             
                   <TextInput
                     label="Titulo"
                     placeholder="Titulo"
                     size='md'
                     radius={'md'}
+                    w='100%'
                     withAsterisk
                     error={form.errors.title}
                     {...form.getInputProps('title')}
                   />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <NumberInput
-                    label="Numeros de la rifa"
-                    placeholder="Numeros de la rifa"
-                    size='md'
-                    radius={'md'}
-                    withAsterisk
-                    hideControls
-                    error={form.errors.numbers}
-                    {...form.getInputProps('numbers')}
-                  />
-                </Grid.Col>
-              </Grid>
+               
               <Text size="xl" fz="lg" mb={15} inline mt={25} ml="39%">
                 Elija el tipo de rifa
               </Text>
@@ -1062,10 +1048,7 @@ function DrawsModal({
                 {/* <li>
                   <strong>Premio:</strong> {form.values.first_prize}
                 </li> */}
-                <li>
-                  <strong>Números de la Rifa:</strong> {form.values.numbers}
-                </li>
-
+                
                 {/* <li>
                     <strong>Fecha de Inicio:</strong> {form.values.init_date}
                   </li>
