@@ -257,7 +257,7 @@ function Dashboard() {
   const getData = () => {
     setTimeout(() => {
       axios
-        .get(`https://rifa-max.com/api/v1/rifas/actives`, {
+        .get(`https://rifa-max.com/api/v1/rifas/actives_no_tickets`, {
           headers: {
             ContentType: "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -797,7 +797,7 @@ function Dashboard() {
                 /> */}
               </Grid.Col>
               <Grid.Col md={2} sm={12}>
-                <Group  mt={25}>
+                <Group mt={25}>
                   <FormModal
                     variant="filled"
                     color="blue"
@@ -811,14 +811,14 @@ function Dashboard() {
                   >
                     Agregar Rifa
                   </FormModal>
-                  <Button  
-                  radius="sm"
-                  size="sm" 
-                  fz={14}
-                  onClick={() => setCloseDay(true)} 
-                  leftIcon={<IconX />} 
-                  color='red' 
-                  style={{ position: 'absolute', right: 15 }}>
+                  <Button
+                    radius="sm"
+                    size="sm"
+                    fz={14}
+                    onClick={() => setCloseDay(true)}
+                    leftIcon={<IconX />}
+                    color='red'
+                    style={{ position: 'absolute', right: 15 }}>
                     Cerrar día
                   </Button>
                 </Group>
