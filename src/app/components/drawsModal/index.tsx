@@ -46,6 +46,11 @@ type IDrawsModal = {
   onClose: () => void;
   open: boolean;
 }
+type Prize = {
+  name: string;
+  prize_position: number;
+  days_to_award: Date | null;
+};
 type Combo = {
   quantity: number | null;
   price: number | null;
@@ -127,7 +132,7 @@ function DrawsModal({
   const [otherPrizes, setOtherPrizes] = useState([{ name: '', prize_position: 1, days_to_award: 0 }]);
   const [inputValues, setInputValues] = useState(['']);
   const [otherPrizesInputValues, setOtherPrizesInputValues] = useState(['']);
-  
+
 
   useEffect(() => {
     axios.get("https://api.rifamax.app/whitelists").then((res) => {
@@ -156,6 +161,7 @@ function DrawsModal({
       )
     })
   }, [])
+
   const useStyles = createStyles((theme) => ({
     disabled: {
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
@@ -260,7 +266,7 @@ function DrawsModal({
           }
         }
       },
-     
+
       money: (value: string) => {
         if (!value) return 'Moneda requerida';
       },
@@ -295,55 +301,64 @@ function DrawsModal({
     const nuevaEtiqueta = `Premio #${premios.length + 1}`;
     setPremios([...premios, nuevaEtiqueta]);
     setInputValues([...inputValues, '']);
-    
+
     setOtherPrizes([...otherPrizes, { name: '', prize_position: premios.length + 1, days_to_award: 0 }]);
     setOtherPrizesInputValues([...otherPrizesInputValues, '']);
     console.log('Premios:', otherPrizes);
   };
-  
+
   const eliminarUltimoPremio = () => {
     if (premios.length > 1) {
       const nuevosPremios = premios.slice(0, -1);
       setPremios(nuevosPremios);
       setInputValues(inputValues.slice(0, -1));
-      
-      const nuevosOtherPrizes = nuevosPremios.map((etiqueta, index) => ({ 
-        name: otherPrizes[index].name, 
+
+      const nuevosOtherPrizes = nuevosPremios.map((etiqueta, index) => ({
+        name: otherPrizes[index].name,
         prize_position: index + 1,
         days_to_award: index === 0 ? 0 : otherPrizes[index].days_to_award
       }));
-      
+
       setOtherPrizes(nuevosOtherPrizes);
       setOtherPrizesInputValues(otherPrizesInputValues.slice(0, -1));
       console.log('Premios:', nuevosPremios);
     }
   };
-  
-
 
   const handleOtherPrizeInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const nuevosOtherPrizesInputValues = [...otherPrizesInputValues];
     nuevosOtherPrizesInputValues[index] = e.target.value;
     setOtherPrizesInputValues(nuevosOtherPrizesInputValues);
-  
+
     const nuevosOtherPrizes = [...otherPrizes];
     nuevosOtherPrizes[index] = { ...otherPrizes[index], name: e.target.value };
     setOtherPrizes(nuevosOtherPrizes);
 
 
     console.log('Premios:', otherPrizes);
-    };
-  
-  const handleDaysToAwardChange = (value: number | undefined, index: number) => {
-    const newValue = value !== undefined ? value : 0;
-  
+  };
+
+  const handleDaysToAwardChange = (value: Date | null, index: number) => {
+    let newValue: number = 0;
+    let formattedDate: string = '';
+
+    if (value !== null) {
+      newValue = value.getTime();
+      const dateObj = new Date(newValue);
+      const year = dateObj.getFullYear();
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      formattedDate = `${year}/${month}/${day}`;
+      console.log('Fecha formateada:', formattedDate);
+    }
+
     const nuevosOtherPrizes = [...otherPrizes];
     nuevosOtherPrizes[index] = { ...otherPrizes[index], days_to_award: newValue };
     setOtherPrizes(nuevosOtherPrizes);
 
     console.log('Premios:', otherPrizes);
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(inputValues);
@@ -353,16 +368,16 @@ function DrawsModal({
 
   const nextStep = (values?: FormProps) => {
     setActive((current) => (current < 2 ? current + 1 : current))
-  
+
     const updatedOtherPrizes = [...otherPrizes];
     updatedOtherPrizes[0].days_to_award = 0;
-  
+
     const formattedPrizes = updatedOtherPrizes.map(prize => ({
       name: prize.name,
       prize_position: prize.prize_position,
       days_to_award: prize.days_to_award
     }));
-  
+
     axios.post('https://api.rifa-max.com/x100/raffles', {
       x100_raffle: {
         title: values?.title,
@@ -373,7 +388,7 @@ function DrawsModal({
         tickets_count: values?.tickets_count,
         raffle_type: values?.raffle_type,
         init_date: values?.init_date,
-        prizes: [formattedPrizes], 
+        prizes: [formattedPrizes],
         visible_taquillas_ids: values?.visible_taquillas_ids,
         expired_date: values?.expired_date,
         combos: values?.combos !== null ? (values?.combos) : null,
@@ -395,8 +410,6 @@ function DrawsModal({
       console.log(err)
     })
   }
-  
-  
 
   const validateDate = () => {
     if (actualDate <= validate) {
@@ -407,6 +420,7 @@ function DrawsModal({
   }
 
   const { classes } = useStyles();
+
   const onSubmit = (values?: FormProps) => {
     nextStep(values)
     console.log(values)
@@ -419,7 +433,6 @@ function DrawsModal({
       setFormModal(false)
     }, 10000)
   }
-
 
   const previews = (fileList: FileWithPath | null, dropzone: number) => {
     const imageUrl = fileList === null ? '' : URL.createObjectURL(fileList);
@@ -457,7 +470,6 @@ function DrawsModal({
     }
   };
 
-
   const removeComboInput = (index: number) => {
     const updatedCombos = [...combos];
     updatedCombos.splice(index, 1);
@@ -481,68 +493,20 @@ function DrawsModal({
       >
         <Stepper size="md" active={active}>
 
-          {/* <Stepper.Step label="Combos" description="edita los combos de la rifa">
-            <Title ta="center" order={2}>Manejar combos</Title>
-            <ScrollArea style={{ height: 500 }}>
-              {combos.map((combo, index) => (
-                <Group key={index} position="center">
-                  <NumberInput
-                    value={combo.quantity}
-                    placeholder="Cantidad"
-                    label="Cantidad"
-                    radius="md"
-                    size="md"
-                    hideControls
-                    onChange={(value) => handleQuantityChange(index, value)}
-                  />
-                  <div style={{ marginTop: "30px" }}>
-                    <IconX />
-                  </div>
-                  <NumberInput
-                    value={combo.price}
-                    placeholder="Precio"
-                    label="Precio"
-                    radius="md"
-                    size="md"
-                    hideControls
-                    onChange={(value) => handlePriceChange(index, value)}
-                  />
-                  <div style={{ marginTop: "30px", cursor: "pointer" }} onClick={() => removeComboInput(index)}>
-                    <IconTrash color='red' />
-                  </div>
-                </Group>
-              ))}
-            </ScrollArea>
-            <Button fullWidth color="indigo" radius="md" size="md" onClick={addComboInput}>
-              Agregar combo
-            </Button>
-
-            <Group position="center" mt="xl">
-              <Button variant="default" radius={'lg'} onClick={prevStep} disabled={
-                active === 2 ? true : false
-              }>
-                Atrás
-              </Button>
-              <Button radius={'lg'} onClick={() => handleStepChange(active + 1)} disabled={isNextDisabled}>
-                Siguiente
-              </Button>
-            </Group>
-          </Stepper.Step> */}
-
           <Stepper.Step label="Detalles de la rifa" description="Rellena el formulario para poder crear la rifa">
             <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
-             
-                  <TextInput
-                    label="Titulo"
-                    placeholder="Titulo"
-                    size='md'
-                    radius={'md'}
-                    w='100%'
-                    withAsterisk
-                    error={form.errors.title}
-                    {...form.getInputProps('title')}
-                  />
-               
+
+              <TextInput
+                label="Titulo"
+                placeholder="Titulo"
+                size='md'
+                radius={'md'}
+                w='100%'
+                withAsterisk
+                error={form.errors.title}
+                {...form.getInputProps('title')}
+              />
+
               <Text size="xl" fz="lg" mb={15} inline mt={25} ml="39%">
                 Elija el tipo de rifa
               </Text>
@@ -577,42 +541,15 @@ function DrawsModal({
                   }}
                   {...form.getInputProps('draw_type').value === 'Infinito' && { checked: true }}
                 />
-                {/* <Checkbox
-                  value="50/50"
-                  label="50/50"
-                  checked={checkedIndex === 4}
-                  onChange={() => {
-                    form.getInputProps('draw_type').onChange('50/50')
-                    setCheckedIndex(4)
-                  }}
-                  {...form.getInputProps('draw_type').value === '50/50' && { checked: true }}
-                /> */}
+
               </Group>
-              <Grid>
-                {/* <Grid.Col span={10}>
-                  <TextInput
-                    size='md'
-                    label="Primer premio"
-                    placeholder="Primer premio"
-                    error={form.errors.prizes}
-                    withAsterisk
-                    radius={'lg'}
-                    mt="md"
-                    mb={15}
-                    {...form.getInputProps('prizes')}
-                  />
-
-                </Grid.Col> */}
-                <Grid.Col span={2}>
-
-                </Grid.Col>
-              </Grid>
 
               <Group position='center'>
                 <Title fz={25} fw={700} ta={"center"}>
                   Premios
                 </Title>
               </Group>
+
               <Group position='center' my={10}>
                 <ActionIcon variant="filled" onClick={agregarPremio}>
                   <IconPlus />
@@ -622,41 +559,45 @@ function DrawsModal({
                   <IconMinus size={30} />
                 </ActionIcon>
               </Group>
+
               <Divider variant="dashed" mt={5} />
+
               <Grid>
-              {otherPrizes.map((etiqueta, index) => (
-  <Group position='center' key={index}>
-    <TextInput
-      size='md'
-      variant="filled"
-      label={`Posición: ${etiqueta.prize_position}`}
-      mt={15}
-      radius={'md'}
-      ml={130}
-      mb={10}
-      placeholder={`Premio #${etiqueta.prize_position}`}
-      value={otherPrizesInputValues[index]}
-      onChange={(e) => handleOtherPrizeInputChange(e, index)}
-      w={index === 0 ? "43vh" : undefined} 
-    />
-    <NumberInput
-      placeholder='Premiacion'
-      size='md'
-      variant="filled"
-      hideControls
-      mt={40}
-      radius={'md'}
-      mb={10}
-      value={etiqueta.days_to_award} // Agregar el valor del days_to_award
-      onChange={(value) => handleDaysToAwardChange(value, index)} // Manejar el cambio en days_to_award
-      style={{
-        display: index === 0 ? "none" : "block"
-      }}
-    />
-  </Group>
-))}
+                {otherPrizes.map((etiqueta, index) => (
+                  <Group position='center' key={index}>
+                    <TextInput
+                      size='md'
+                      variant="filled"
+                      label={`Posición: ${etiqueta.prize_position}`}
+                      mt={15}
+                      radius={'md'}
+                      ml={130}
+                      mb={10}
+                      placeholder={`Premio #${etiqueta.prize_position}`}
+                      value={otherPrizesInputValues[index]}
+                      onChange={(e) => handleOtherPrizeInputChange(e, index)}
+                      w={index === 0 ? "43vh" : undefined}
+                    />
+
+                    <DatePicker
+                      placeholder='Premiacion'
+                      size='md'
+                      variant="filled"
+                      mt={40}
+                      radius={'md'}
+                      
+                      mb={10}
+                      value={etiqueta.days_to_award ? new Date(etiqueta.days_to_award) : null}
+                      onChange={(value) => handleDaysToAwardChange(value, index)}
+                      style={{
+                        display: index === 0 ? "none" : "block"
+                      }}
+                    />
+                  </Group>
+                ))}
 
               </Grid>
+
               <Divider variant="dashed" mt={5} />
 
               <Grid mt={10}>
@@ -705,6 +646,7 @@ function DrawsModal({
                   />
                 </Grid.Col>
               </Grid>
+
               <Group position='center'>
                 <Text size="xl" fz="lg" mb={15} inline mt={25} ta="center">
                   Elija el conteo de tickets
@@ -717,7 +659,9 @@ function DrawsModal({
                   ) : null
                 }
               </Group>
+
               <Group mb={30} position="center">
+
                 <Checkbox
                   label="100 tickets terminales"
                   value={
@@ -743,6 +687,7 @@ function DrawsModal({
                   {...form.getInputProps('tickets_count').value === 1000 && { checked: true }}
                 />
               </Group>
+
               {
                 form.errors.tickets_count && (
                   <Divider
@@ -760,6 +705,7 @@ function DrawsModal({
                   />
                 )
               }
+
               <Group>
                 <Text mb={15} fz="md" inline>
                   Limite para cerrar la rifa (solo para las rifas progresivas)
@@ -770,6 +716,7 @@ function DrawsModal({
                   )
                 }
               </Group>
+
               <Slider mb={35}
                 disabled={form.getInputProps('draw_type').value !== 'Progresiva'}
                 marks={[
@@ -798,6 +745,7 @@ function DrawsModal({
                 hideControls
                 {...form.getInputProps('price_unit')}
               />
+
               <Select
                 radius={'md'}
                 style={{
@@ -819,46 +767,6 @@ function DrawsModal({
                 {...form.getInputProps('money')}
               />
 
-              {/* <Grid mb={10}>
-                <Grid.Col span={6}>
-                  <Select
-                    size='md'
-                    mb="md"
-                    disabled={
-                      form.getInputProps('draw_type').value != '50/50'
-                    }
-                    label="Localidad"
-                    placeholder="Elige la Localidad"
-                    withAsterisk={
-                      form.getInputProps('draw_type').value === '50/50'
-                    }
-                    error={form.errors.local_id}
-                    data={[
-                      { value: 'BsF', label: 'Monumental' },
-                    ]}
-                    {...form.getInputProps('local_id')}
-                  />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <TextInput
-                    size='md'
-                    label="Fundacion"
-                    disabled={
-                      form.getInputProps('draw_type').value != '50/50'
-                    }
-                    withAsterisk={
-                      form.getInputProps('draw_type').value === '50/50'
-                    }
-                    placeholder="Fundacion"
-
-                    error={form.errors.fundation_id}
-                    {...form.getInputProps('fundation_id')}
-
-
-                  />
-                </Grid.Col>
-              </Grid> */}
-
 
               <Group
                 mt={-25}
@@ -866,14 +774,14 @@ function DrawsModal({
               >
 
               </Group>
-              {/* <Grid>
-                <Grid.Col span={6}> */}
+
               <Group>
                 <Text mt={35} size="xl" fz="md" mb={15} inline>
                   Imagenes de publicidad
                 </Text>
                 {checkedIndex === 4 ? <Text inline c='red' mt={-17} ml={-12}></Text> : <Text inline c='red' mt={-17} ml={-12}>*</Text>}
               </Group>
+
               <Dropzone
                 disabled={checkedIndex === 4}
                 radius={'md'}
@@ -895,11 +803,13 @@ function DrawsModal({
                   presione la imagen en este area
                 </Text>
               </Dropzone>
+
               {checkedIndex !== 4 && (
                 <Text fz="sm" ta="center" c='red' mt={10} inline>
                   {form.errors.ad}
                 </Text>
               )}
+
               <SimpleGrid
                 cols={4}
                 breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
@@ -964,6 +874,7 @@ function DrawsModal({
                   Agregar combo
                 </Button>
               </Card>
+
               {/* </Grid.Col> */}
               {/* <Grid.Col span={6}>
                   <Group>
@@ -1012,6 +923,7 @@ function DrawsModal({
                   </SimpleGrid>
                 </Grid.Col> */}
               {/* </Grid> */}
+
               <Group position="center" mt="xl">
                 <Button variant="default" radius={'md'} onClick={prevStep} disabled={
                   active === 2 ? true : false
@@ -1048,7 +960,7 @@ function DrawsModal({
                 {/* <li>
                   <strong>Premio:</strong> {form.values.first_prize}
                 </li> */}
-                
+
                 {/* <li>
                     <strong>Fecha de Inicio:</strong> {form.values.init_date}
                   </li>
@@ -1074,8 +986,11 @@ function DrawsModal({
               </ul>
             </Card>
           </Stepper.Step>
+
         </Stepper>
+
       </Modal>
+
       <Button
         variant={variant}
         color={color}
