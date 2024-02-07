@@ -66,7 +66,7 @@ interface ITicketsResponse {
 
 const useStyles = createStyles((theme) => ({
   raffleCard: {
-    width: '18rem',
+    width: '17rem',
     background: theme.colors.dark[7],
     transition: "0.35s",
     '&:hover': {
@@ -75,7 +75,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   raffleSelectedCard: {
-    width: '18rem',
+    width: '17rem',
     background: theme.colors.blue[9],
     transition: "0.35s",
     '&:hover': {
@@ -109,7 +109,7 @@ const useStyles = createStyles((theme) => ({
     width: "100%",
     height: "100%",
   },
-  
+
   raffleSidebar: {
     width: "100%",
     marginTop: '5px',
@@ -158,7 +158,7 @@ const useStyles = createStyles((theme) => ({
     gap: '8px',
 
     [`@media (max-width: 1080px)`]: {
-    gap: '10px',
+      gap: '10px',
     },
     flexWrap: 'wrap'
   },
@@ -1589,7 +1589,7 @@ function Operadora() {
                   <div style={{ display: 'flex', width: '100%' }}>
                     <div className={classes.ticketsListContainer}>
                       { /* Raffle tickets */}
-     
+
                       <div className={classes.ticketsList}>
                         {tickets.tickets.slice((selectedPage - 1) * 200, selectedPage * 200).map((ticket: ITicket) => {
                           const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
@@ -1607,7 +1607,7 @@ function Operadora() {
                             <div className={classes.ticketsSellContainer}>
                               {isTicketSold ? (
                                 <Card key={ticket.position} className={ticketClassName}>
-                                  <Text ml={-10} mt={-10} fz="xs"  ta='left'>{parseTickets(ticket.position)}</Text>
+                                  <Text ml={-10} mt={-10} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
                                   {/* <Text  fz={12} ml={-12}>
                                   vendido
                         </Text> */}
@@ -1618,7 +1618,7 @@ function Operadora() {
                                   className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
                                   onClick={() => chooseTicket(ticket.position)}
                                 >
-                                  <Text ml={-10} mt={-10} fz="xs"  ta='left'>{parseTickets(ticket.position)}</Text>
+                                  <Text ml={-10} mt={-10} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
                                   {/* <Text  fz={12} ml={-12}>
                                   {ticketStatusLabel}
                                 </Text>  */}
