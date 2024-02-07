@@ -1687,7 +1687,7 @@ function Operadora() {
                               >
                                 {
                                   !hoverExchange ? (
-                                    <Text ta="center" fw={300} fz={10}>
+                                    <Text ta="center" fw={300} fz={15}>
                                       {hasPaymentSelected}
                                     </Text>
                                   ) : (
