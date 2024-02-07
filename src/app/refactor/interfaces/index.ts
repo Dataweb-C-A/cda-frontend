@@ -26,7 +26,7 @@ export interface IRaffle {
   ad: null | IAdnoucement;
   title: string;
   draw_type: string;
-  status: string;
+  status: 'En venta' | 'Finalizando' | 'Cerrado';
   limit: number;
   money: string;
   raffle_type: string;

@@ -66,6 +66,7 @@ interface ITicketsResponse {
 
 const useStyles = createStyles((theme) => ({
   raffleCard: {
+    width: '18rem',
     background: theme.colors.dark[7],
     transition: "0.35s",
     '&:hover': {
@@ -74,6 +75,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   raffleSelectedCard: {
+    width: '18rem',
     background: theme.colors.blue[9],
     transition: "0.35s",
     '&:hover': {
@@ -83,32 +85,34 @@ const useStyles = createStyles((theme) => ({
   },
   pageContainer: {
     display: 'flex',
-    height: '100%'
+    height: '100%',
+    margin: '0 5px 0 0'
   },
   rafflesContainer: {
-    width: "20rem",
+    width: "100%",
     height: "100%",
+    marginLeft: '5px',
     [theme.fn.smallerThan('sm')]: {
       position: 'absolute',
       zIndex: 2,
     },
   },
   ticketsContainer: {
-    width: "calc(100% - 22.3rem)",
-    marginLeft: '2rem',
+    width: "calc(100%)",
+    marginLeft: 10,
   },
   ticketsContainerExpanded: {
-    width: "calc(100% - 2.2rem)",
+    width: "calc(100%)",
     marginLeft: 30
   },
   rafflesContainerConstract: {
-    width: "0%",
+    width: "100%",
     height: "100%",
   },
   ticketsReserved: {
     width: '100%',
-    height: '3.7rem',
-    marginBottom: '5px',
+    height: '3rem',
+    margin: '-5px 0 0 0',
     background: '#ff8000',
     userSelect: 'none',
     textDecoration: 'none',
@@ -116,7 +120,6 @@ const useStyles = createStyles((theme) => ({
   },
   raffleSidebar: {
     width: "100%",
-    height: "calc(100vh - 69px)",
     marginTop: '5px',
     paddingRight: theme.spacing.xs,
     background: theme.colors.dark[6],
@@ -145,8 +148,9 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
   },
   ticketsPage: {
-    height: 'calc(100vh - 0.5rem - 64px)',
+    height: 'calc(100vh - 11rem - 64px)',
     marginTop: '5px',
+    marginLeft: '-5px',
     background: theme.colors.dark[6]
   },
   ticketsListContainer: {
@@ -165,22 +169,28 @@ const useStyles = createStyles((theme) => ({
   raffleInfo: {
     width: '25rem',
     display: 'flex',
-    [theme.fn.smallerThan('md')]: {
+    [`@media (max-width: 1080px)`]: {
       display: 'none'
-    },
+    }
   },
   raffleInfoCard: {
     background: theme.colors.dark[7],
     marginTop: "25px",
-    height: '100%'
+    height: '100%',
+    [`@media (max-width: 1080px)`]: {
+      display: 'none'
+    }
   },
   ticketsSellContainer: {
-    width: "calc(10% - 20px)"
+    width: "calc(5% - 20px)",
+    [`@media (max-width: 1080px)`]: {
+      width: "calc(10% - 20px)"
+    }
   },
   tickets: {
     width: '100%',
-    height: '3.7rem',
-    marginBottom: '5px',
+    height: '3rem',
+    margin: '-5px 0 0 0',
     background: '#4d4f66',
     userSelect: 'none',
     textDecoration: 'none',
@@ -188,8 +198,8 @@ const useStyles = createStyles((theme) => ({
   },
   ticketsSelected: {
     width: '100%',
-    height: '3.7rem',
-    marginBottom: '5px',
+    height: '3rem',
+    margin: '-5px 0 0 0',
     background: 'green',
     userSelect: 'none',
     textDecoration: 'none',
@@ -206,8 +216,8 @@ const useStyles = createStyles((theme) => ({
   },
   ticketsSold: {
     width: '100%',
-    height: '3.7rem',
-    marginBottom: '5px',
+    height: '3rem',
+    margin: '-5px 0 0 0',
     background: 'red',
     userSelect: 'none',
     textDecoration: 'none',
@@ -255,23 +265,18 @@ function ticketsConstructor(tickets_count: number) {
 }
 
 function Operadora() {
-  const paginationNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const paginationNumbers = [1, 2, 3, 4, 5];
 
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
-
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'Bs.D' | null>(null)
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
-  const [isInvalidTicketPurchase, setIsInvalidTicketPurchase] = useState<boolean>(false);
-  const [buyingTickets, setBuyingTickets] = useState<number[]>([]);
   const [progresses, setProgresses] = useState<IProgresses[]>([])
-
-
   const [isOpenInvalidTicketModal, setIsOpenInvalidModal] = useState<ITicketModal>({
     isOpen: false,
     mode: 'valid'
@@ -284,7 +289,7 @@ function Operadora() {
   const [ticketKey, setTicketKey] = useState<number>(0)
   const [selectedPage, setSelectedPage] = useState<number>(1)
   const [tickets, setTickets] = useState<ITicketsResponse>({
-    tickets: ticketsConstructor(100)
+    tickets: ticketsConstructor(1000)
   })
   const [countrySelected, setCountrySelected] = useState<string | null>(null)
   const [activeStep, setActiveStep] = useState<number>(0)
@@ -294,14 +299,18 @@ function Operadora() {
   const [reload, setReload] = useState<number>(0)
   const [client, setClient] = useState<IClient | null>(null)
   const [ticketsSold, setTicketsSold] = useState<ICableTicket[]>([])
+
   const endpoint = 'https://api.rifa-max.com/shared/exchanges';
+
   const { classes } = useStyles()
+
   const handleClose = () => {
     setBuyIsOpen(false)
     setCountrySelected(null)
     setActiveStep(0)
     setClient(null)
   }
+
   const theme = useMantineTheme();
 
   const form = useForm({
@@ -511,7 +520,6 @@ function Operadora() {
       }).then((res) => {
         console.log(res)
         setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
-        setTotalPrice((prevTotal) => prevTotal - 1);
       }).catch((err) => {
         console.log(err)
       })
@@ -528,7 +536,6 @@ function Operadora() {
       }).then((res) => {
         console.log(res)
         setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
-        setTotalPrice((prevTotal) => prevTotal + 1);
       }).catch((err) => {
         console.log(err)
       })
@@ -538,9 +545,6 @@ function Operadora() {
   }
 
   function cleanSelection() {
-    setIsInvalidTicketPurchase(false);
-    setTotalPrice(0);
-
     ticketsSelected.forEach(ticketNumber => {
       axios.post("https://api.rifa-max.com/x100/tickets/available", {
         x100_ticket: {
@@ -560,7 +564,6 @@ function Operadora() {
 
     setTicketsSelected([]);
   }
-
 
   function handleInvalidModal(state: boolean, mode: string) {
     setIsOpenInvalidModal({
@@ -591,8 +594,6 @@ function Operadora() {
 
     return parsedPosition;
   }
-  const [ticketListKey, setTicketListKey] = useState<number>(0);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const handleComboClick = async (quantity: number, price: number) => {
     const newTicketsSelected = [...ticketsSelected];
@@ -607,7 +608,6 @@ function Operadora() {
     }
 
     setTicketKey((prevKey) => prevKey + 1);
-    setTotalPrice((prevTotal) => prevTotal + price);
   };
 
   const isTicketReservedOrSold = (ticketNumber: number): boolean => {
@@ -645,7 +645,6 @@ function Operadora() {
         .then((res) => {
           console.log(res);
           setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
-          setTotalPrice((prevTotal) => prevTotal + 1);
         })
         .catch((err) => {
           console.log(err);
@@ -655,38 +654,12 @@ function Operadora() {
     setSearchValue(null);
   };
 
-
-  function apartTickets(ticket_nro: number) {
-    const ticketSelected = tickets.tickets.find((ticket) => ticket.position === ticket_nro);
-
-    if (!ticketSelected) {
-      return handleInvalidModal(true, `invalid - ${ticket_nro}`);
-    }
-
-    if (ticketSelected.is_sold) {
-      return handleInvalidModal(true, 'sold');
-    }
-
-    if (ticketsSelected.includes(ticketSelected.position)) {
-      return handleInvalidModal(true, 'selected');
-    }
-
-    const newTickets = [...ticketsSelected, ticketSelected.position];
-    setTicketsSelected(newTickets);
-
-    setTicketKey((prevKey) => prevKey + 1);
-
-    setTicketListKey((prevKey) => prevKey + 1);
-
-    return handleInvalidModal(false, 'valid');
-  }
-
   function InvalidModal() {
     const { isOpen, mode } = isOpenInvalidTicketModal;
     const isSold = mode === 'sold';
     const isReserved = mode === 'reserved';
     const isTicketSelected = mode === 'selected';
-    const ticketNumber = mode.slice(10);
+    const ticketNumber = mode.slice(5);
 
     const handleClose = () => {
       handleInvalidModal(false, '');
@@ -843,21 +816,19 @@ function Operadora() {
         .catch(error => {
           console.error("Error al comprar los boletos", error);
         });
-    };
+    }; ``
 
+    const priceUnitWithCombos = Number(raffleActive(selectedRaffle || 0)?.price_unit)
 
+    const totalPriceWithCombos = Number(calculateTotalPrice().toFixed(2))
 
-    const precioUnitarioSinCombo = Number(raffleActive(selectedRaffle || 0)?.price_unit)
+    const selectedTicketsQuantity = ticketsSelected.length
 
-    const precioTotalConCombo = Number(calculateTotalPrice().toFixed(2))
+    const porcentualDiscount = Math.max(0, (((priceUnitWithCombos * selectedTicketsQuantity) - totalPriceWithCombos) / (priceUnitWithCombos * selectedTicketsQuantity)) * 100);
 
-    const cantidadTickets = ticketsSelected.length
-
-    const descuentoPorcentual = Math.max(0, (((precioUnitarioSinCombo * cantidadTickets) - precioTotalConCombo) / (precioUnitarioSinCombo * cantidadTickets)) * 100);
-
-    const descuentoFormateado = descuentoPorcentual % 1 === 0
-      ? descuentoPorcentual.toFixed(0) + '%'
-      : descuentoPorcentual.toFixed(2) + '%';
+    const discountParser = porcentualDiscount % 1 === 0
+      ? porcentualDiscount.toFixed(0) + '%'
+      : porcentualDiscount.toFixed(2) + '%';
 
     return (
       <Modal
@@ -1053,7 +1024,7 @@ function Operadora() {
                             }
                           </Title>
                           <Title order={6} fw={300} mr={15} c='black'>
-                            {descuentoFormateado}
+                            {discountParser}
                           </Title>
                         </Group>
                       )
@@ -1175,9 +1146,9 @@ function Operadora() {
       </Modal>
     )
   }
+
   const [opened, setOpened] = useState(true);
 
-  console.log(ticketsSelected.length)
   const [exchangeRates, setExchangeRates] = useState<{ value_bs: number; value_cop: number } | null>(null);
 
   const fetchExchangeRates = async () => {
@@ -1243,17 +1214,17 @@ function Operadora() {
         links={links}
         expandScreen={false}
       />
-       {
+      {
         exchangeCounter % 100 === 0 && (
-          <div 
-            style={{ position: 'absolute', width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.7)', top: 0, left: 0, zIndex: 999999, cursor: 'pointer' }} 
+          <div
+            style={{ position: 'absolute', width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.7)', top: 0, left: 0, zIndex: 999999, cursor: 'pointer' }}
             onClick={() => setExchangeCounter(exchangeCounter + 1)}
           >
             <Card
               style={{ position: 'absolute', top: '33vh', left: '42vw' }}
               pt={20}
             >
-              <IconEgg size={300} stroke={0.2}/>
+              <IconEgg size={300} stroke={0.2} />
             </Card>
           </div>
         )
@@ -1262,45 +1233,49 @@ function Operadora() {
         { /* Raffles Container*/}
         <div className={rafflesSidebarStatus ? classes.rafflesContainer : classes.rafflesContainerConstract}>
           <div className={rafflesSidebarStatus ? classes.raffleSidebar : classes.close}>
-            <Button
-              onClick={() => setRafflesSidebarStatus(!rafflesSidebarStatus)}
-              className={classes.raffleSidebarButton}
-            >
-              <ChevronLeft style={{ marginTop: '3px', rotate: rafflesSidebarStatus ? "0deg" : '180deg', transition: '0.3s' }} />
-            </Button>
-            <ScrollArea h="100%">
+            <ScrollArea style={{ width: "100%" }}>
               {
                 loading ? (
                   <Loading />
                 ) : raffles.length === 0 ? (
                   <RaffleListEmpty />
                 ) : (
-                  raffles.map((raffle: IRaffle) => {
-                    const progressForRaffle = progresses.find(progress => progress.raffle_id === raffle.id);
+                  <>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                      {
+                        raffles.map((raffle: IRaffle) => {
+                          const progressForRaffle = progresses.find(progress => progress.raffle_id === raffle.id);
 
-                    return (
-                      <RaffleCard
-                        data={raffle}
-                        progress={progressForRaffle ? progressForRaffle.progress : 0}
-                        key={raffle.id}
-                        className={raffle.id === selectedRaffle ? classes.raffleSelectedCard : classes.raffleCard}
-                        onClick={() => {
-                          setSelectedRaffle(raffle.id);
-                          setTicketsSelected([]);
-                          setHasPaymentSelected(null);
-                          setTickets({ tickets: ticketsConstructor(raffle.tickets_count) });
-                          setSelectedPage(1);
-                          setOpened(true);
-                        }}
-                      />
-                    );
-                  })
+                          return (
+                            <>
+                              <RaffleCard
+                                data={raffle}
+                                progress={progressForRaffle ? progressForRaffle.progress : 0}
+                                key={raffle.id}
+                                className={raffle.id === selectedRaffle ? classes.raffleSelectedCard : classes.raffleCard}
+                                onClick={() => {
+                                  setSelectedRaffle(raffle.id);
+                                  setTicketsSelected([]);
+                                  setHasPaymentSelected(null);
+                                  setTickets({ tickets: ticketsConstructor(raffle.tickets_count) });
+                                  setSelectedPage(1);
+                                  setOpened(true);
+                                }}
+                              />
+                              <Divider orientation="vertical" ml={10} my={5} variant="dotted" />
+                            </>
+                          );
+                        })
+                      }
+                    </div>
+                  </>
                 )
               }
-
             </ScrollArea>
           </div>
         </div>
+      </section>
+      <section className={classes.pageContainer}>
         { /* Tickets Container*/}
         <div className={rafflesSidebarStatus ? classes.ticketsContainer : classes.ticketsContainerExpanded}>
           <Card className={classes.ticketsPage}>
@@ -1441,6 +1416,7 @@ function Operadora() {
                           <Button
                             key={index}
                             mr={5}
+                            mb={5}
                             variant="default"
                             color="gray"
                             size="md"
@@ -1463,8 +1439,6 @@ function Operadora() {
                         </ActionIcon>
                       </>
                     )}
-
-
                     <NumberInput
                       size="xs"
                       hideControls
@@ -1500,11 +1474,8 @@ function Operadora() {
                     >
                       <IconTrash
                         size={22}
-
                       />
-
                     </Button>
-
                     <Badge
                       mt={1}
                       mr={15}
@@ -1594,19 +1565,14 @@ function Operadora() {
                               );
                             })
                         }
-
-
                       </>
                     )}
-
-
-
                   </div>
                   <div style={{ display: 'flex', width: '100%' }}>
                     <div className={classes.ticketsListContainer}>
                       { /* Raffle tickets */}
                       <div className={classes.ticketsList}>
-                        {tickets.tickets.slice((selectedPage - 1) * 100, selectedPage * 100).map((ticket: ITicket) => {
+                        {tickets.tickets.slice((selectedPage - 1) * 200, selectedPage * 200).map((ticket: ITicket) => {
                           const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
                           const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
 
@@ -1617,10 +1583,6 @@ function Operadora() {
                               : ticketsSelected.includes(ticket.position)
                                 ? classes.ticketsSelected
                                 : classes.tickets;
-
-
-                          const ticketStatusLabel =
-                            isTicketReserved ? 'Reservado' : ticketsSelected.includes(ticket.position) ? 'Seleccionado' : 'Disponible';
 
                           return (
                             <div className={classes.ticketsSellContainer}>
@@ -1687,27 +1649,27 @@ function Operadora() {
                         {
                           hasPaymentSelected && (
                             <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'Bs.D' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
-                              <Avatar 
-                                p={-20} 
-                                radius='xl' 
-                                className={classes.avatarExchange} 
+                              <Avatar
+                                p={-20}
+                                radius='xl'
+                                className={classes.avatarExchange}
                                 onClick={() => {
                                   let exchanges = ["$", "Bs.D", "COP"]
 
-                                  function randomExchange() { 
+                                  function randomExchange() {
                                     // @ts-ignore
                                     return setHasPaymentSelected(exchanges[Math.floor(Math.random() * exchanges.length)])
                                   }
                                   setExchangeCounter(exchangeCounter + 1)
                                   randomExchange();
                                 }}
-                                onMouseEnter={() => setHoverExchange(true)} 
+                                onMouseEnter={() => setHoverExchange(true)}
                                 onMouseLeave={() => setHoverExchange(false)}
                               >
                                 {
                                   !hoverExchange ? (
                                     <Text ta="center" fw={300} fz={20}>
-                                      { hasPaymentSelected }
+                                      {hasPaymentSelected}
                                     </Text>
                                   ) : (
                                     <IconEgg />
@@ -1718,7 +1680,7 @@ function Operadora() {
                               <Text
                                 fw={300} fz={20} mt={1}
                               >
-                                La moneda seleccionada actualmente es: <strong>{ hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'Bs.D' ? 'Bolivares digitales' : 'Pesos colombianos' }</strong>
+                                La moneda seleccionada actualmente es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'Bs.D' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                               </Text>
                             </Card>
                           )
@@ -1732,7 +1694,7 @@ function Operadora() {
                           <Divider labelPosition="center" mb={10} mt={20} label="Datos de la rifa" />
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Tipo de rifa:</Text>
-                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({ raffleActive(selectedRaffle)?.tickets_count} números)</Text>
+                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({raffleActive(selectedRaffle)?.tickets_count} números)</Text>
                           </Group>
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={16} ta="start">Sorteo con:</Text>
@@ -1749,10 +1711,8 @@ function Operadora() {
                             <Text fw={700} fz={16} ta="start">Fecha de cierre:</Text>
                             <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY')}</Text>
                           </Group>
-
                           {
                             ticketsSelected.length > 0 && (
-
                               <Card bg="white" className="mini-cutoff">
                                 <small>
                                   <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
@@ -1778,7 +1738,6 @@ function Operadora() {
                                           }
                                           return (
                                             <>
-
                                               <Group position="apart">
 
                                                 <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
@@ -1803,7 +1762,6 @@ function Operadora() {
                                         })
                                       }
                                     </ScrollArea>
-
                                     <Group w="100%" position="apart">
                                       <Title order={4} fw={650} c='black'>
                                         Total:
@@ -1821,7 +1779,6 @@ function Operadora() {
                                         {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
                                       </Title>
                                     </Group> */}
-
                                   </Group>
                                 </small>
                                 <Button
