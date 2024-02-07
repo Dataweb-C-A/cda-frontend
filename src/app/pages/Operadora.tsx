@@ -109,15 +109,7 @@ const useStyles = createStyles((theme) => ({
     width: "100%",
     height: "100%",
   },
-  ticketsReserved: {
-    width: '100%',
-    height: '3rem',
-    margin: '-5px 0 0 0',
-    background: '#ff8000',
-    userSelect: 'none',
-    textDecoration: 'none',
-    cursor: 'not-allowed'
-  },
+  
   raffleSidebar: {
     width: "100%",
     marginTop: '5px',
@@ -160,10 +152,14 @@ const useStyles = createStyles((theme) => ({
   ticketsList: {
     width: '100%',
     [theme.fn.smallerThan('md')]: {
-      width: '100%'
+      width: '100%',
     },
     display: 'flex',
-    gap: '20px',
+    gap: '8px',
+
+    [`@media (max-width: 1080px)`]: {
+    gap: '10px',
+    },
     flexWrap: 'wrap'
   },
   raffleInfo: {
@@ -184,27 +180,45 @@ const useStyles = createStyles((theme) => ({
   ticketsSellContainer: {
     width: "calc(5% - 20px)",
     [`@media (max-width: 1080px)`]: {
-      width: "calc(10% - 20px)"
+      width: "3%",
     }
   },
   tickets: {
-    width: '100%',
+    width: '90%',
     height: '3rem',
-    margin: '-5px 0 0 0',
     background: '#4d4f66',
     userSelect: 'none',
     textDecoration: 'none',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    [`@media (max-width: 1080px)`]: {
+      width: '50%',
+      height: '2.1rem',
+    },
+  },
+  ticketsReserved: {
+    width: '90%',
+    height: '3rem',
+    background: '#ff8000',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'not-allowed',
+    [`@media (max-width: 1080px)`]: {
+      width: '50%',
+      height: '2.1rem',
+    },
   },
   ticketsSelected: {
-    width: '100%',
+    width: '90%',
     height: '3rem',
-    margin: '-5px 0 0 0',
     background: 'green',
     userSelect: 'none',
     textDecoration: 'none',
     animation: `${bounce} 3s ease-in-out infinite`,
-    cursor: 'pointer'
+    cursor: 'pointer',
+    [`@media (max-width: 1080px)`]: {
+      width: '50%',
+      height: '2.1rem',
+    },
   },
   pagActive: {
     background: theme.colors.blue[6],
@@ -215,13 +229,16 @@ const useStyles = createStyles((theme) => ({
     },
   },
   ticketsSold: {
-    width: '100%',
+    width: '90%',
     height: '3rem',
-    margin: '-5px 0 0 0',
     background: 'red',
     userSelect: 'none',
     textDecoration: 'none',
-    cursor: 'not-allowed'
+    cursor: 'not-allowed',
+    [`@media (max-width: 1080px)`]: {
+      width: '50%',
+      height: '2.1rem',
+    },
   },
   avatarExchange: {
     cursor: 'pointer',
@@ -1556,6 +1573,7 @@ function Operadora() {
                                     size='xs'
                                     ml={10}
                                     mt={-2}
+                                    fz={10}
                                     color="teal"
                                     onClick={() => handleComboClick(combo.quantity, combo.price)}
                                   >
@@ -1571,6 +1589,7 @@ function Operadora() {
                   <div style={{ display: 'flex', width: '100%' }}>
                     <div className={classes.ticketsListContainer}>
                       { /* Raffle tickets */}
+     
                       <div className={classes.ticketsList}>
                         {tickets.tickets.slice((selectedPage - 1) * 200, selectedPage * 200).map((ticket: ITicket) => {
                           const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
@@ -1588,7 +1607,7 @@ function Operadora() {
                             <div className={classes.ticketsSellContainer}>
                               {isTicketSold ? (
                                 <Card key={ticket.position} className={ticketClassName}>
-                                  <Text ta='center'>{parseTickets(ticket.position)}</Text>
+                                  <Text ml={-10} mt={-10} fz="xs"  ta='left'>{parseTickets(ticket.position)}</Text>
                                   {/* <Text  fz={12} ml={-12}>
                                   vendido
                         </Text> */}
@@ -1599,7 +1618,7 @@ function Operadora() {
                                   className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
                                   onClick={() => chooseTicket(ticket.position)}
                                 >
-                                  <Text ta='center'>{parseTickets(ticket.position)}</Text>
+                                  <Text ml={-10} mt={-10} fz="xs"  ta='left'>{parseTickets(ticket.position)}</Text>
                                   {/* <Text  fz={12} ml={-12}>
                                   {ticketStatusLabel}
                                 </Text>  */}
@@ -1668,7 +1687,7 @@ function Operadora() {
                               >
                                 {
                                   !hoverExchange ? (
-                                    <Text ta="center" fw={300} fz={20}>
+                                    <Text ta="center" fw={300} fz={10}>
                                       {hasPaymentSelected}
                                     </Text>
                                   ) : (
@@ -1678,7 +1697,7 @@ function Operadora() {
                               </Avatar>
 
                               <Text
-                                fw={300} fz={20} mt={1}
+                                fw={300} fz={15} mt={1}
                               >
                                 La moneda seleccionada actualmente es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'Bs.D' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                               </Text>
