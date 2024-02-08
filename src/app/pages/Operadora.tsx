@@ -150,7 +150,7 @@ const useStyles = createStyles((theme) => ({
     width: '100%'
   },
   ticketsList: {
-    width: '100%',
+    width: '90%',
     [theme.fn.smallerThan('md')]: {
       width: '100%',
     },
@@ -178,7 +178,7 @@ const useStyles = createStyles((theme) => ({
     }
   },
   ticketsSellContainer: {
-    width: "calc(5% - 20px)",
+    width: "calc(5% - 25px)",
     [`@media (max-width: 1080px)`]: {
       width: "3%",
     }
@@ -1707,28 +1707,28 @@ function Operadora() {
                       </div>
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
-                        <Card withBorder mt={0} className={classes.raffleInfoCard}>
-                          <Text fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
-                          <Image src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
-                          <Divider labelPosition="center" mb={10} mt={20} label="Datos de la rifa" />
+                        <Card withBorder mt={0} w={350} className={classes.raffleInfoCard}>
+                          <Text mt={-10} fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
+                          <Image mt={-20} width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
+                          <Divider  labelPosition="center" mb={10} mt={-5} label="Datos de la rifa" />
                           <Group w="100%" position='apart'>
-                            <Text fw={700} fz={16} ta="start">Tipo de rifa:</Text>
-                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({raffleActive(selectedRaffle)?.tickets_count} números)</Text>
+                            <Text fw={700} fz={13} ta="start">Tipo de rifa:</Text>
+                            <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({raffleActive(selectedRaffle)?.tickets_count} números)</Text>
                           </Group>
                           <Group w="100%" position='apart'>
-                            <Text fw={700} fz={16} ta="start">Sorteo con:</Text>
-                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.draw_type}</Text>
+                            <Text fw={700} fz={12} ta="start">Sorteo con:</Text>
+                            <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.draw_type}</Text>
                           </Group>
                           <Group w="100%" position='apart'>
 
                           </Group>
                           <Group w="100%" position='apart'>
-                            <Text fw={700} fz={16} ta="start">Fecha de inicio:</Text>
-                            <Text fw={300} fz={16} ta="end">{moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}</Text>
+                            <Text fw={700} fz={13} ta="start">Fecha de inicio:</Text>
+                            <Text fw={300} fz={13} ta="end">{moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}</Text>
                           </Group>
                           <Group w="100%" mb={10} position='apart'>
-                            <Text fw={700} fz={16} ta="start">Fecha de cierre:</Text>
-                            <Text fw={300} fz={16} ta="end">{raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY')}</Text>
+                            <Text fw={700} fz={13} ta="start">Fecha de cierre:</Text>
+                            <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY')}</Text>
                           </Group>
                           {
                             ticketsSelected.length > 0 && (
@@ -1748,7 +1748,7 @@ function Operadora() {
                                     </Title>
                                   </Group>
                                   <Group pb={10} mx={0} position="apart">
-                                    <ScrollArea h={105} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                    <ScrollArea h={73} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                       {
                                         ticketsSelected.map((ticket) => {
                                           const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
