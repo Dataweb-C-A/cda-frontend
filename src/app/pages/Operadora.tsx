@@ -157,7 +157,7 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     gap: '8px',
 
-    [`@media (max-width: 1080px)`]: {
+    [`@media (max-width: 1280px)`]: {
       gap: '10px',
     },
     flexWrap: 'wrap'
@@ -165,7 +165,7 @@ const useStyles = createStyles((theme) => ({
   raffleInfo: {
     width: '25rem',
     display: 'flex',
-    [`@media (max-width: 1080px)`]: {
+    [`@media (max-width: 1280px)`]: {
       display: 'none'
     }
   },
@@ -173,13 +173,13 @@ const useStyles = createStyles((theme) => ({
     background: theme.colors.dark[7],
     marginTop: "25px",
     height: '100%',
-    [`@media (max-width: 1080px)`]: {
+    [`@media (max-width: 1280px)`]: {
       display: 'none'
     }
   },
   ticketsSellContainer: {
     width: "calc(5% - 25px)",
-    [`@media (max-width: 1080px)`]: {
+    [`@media (max-width: 1280px)`]: {
       width: "3%",
     }
   },
@@ -190,7 +190,7 @@ const useStyles = createStyles((theme) => ({
     userSelect: 'none',
     textDecoration: 'none',
     cursor: 'pointer',
-    [`@media (max-width: 1080px)`]: {
+    [`@media (max-width: 1280px)`]: {
       width: '50%',
       height: '2.1rem',
     },
@@ -202,7 +202,7 @@ const useStyles = createStyles((theme) => ({
     userSelect: 'none',
     textDecoration: 'none',
     cursor: 'not-allowed',
-    [`@media (max-width: 1080px)`]: {
+    [`@media (max-width: 1280px)`]: {
       width: '50%',
       height: '2.1rem',
     },
@@ -215,7 +215,7 @@ const useStyles = createStyles((theme) => ({
     textDecoration: 'none',
     animation: `${bounce} 3s ease-in-out infinite`,
     cursor: 'pointer',
-    [`@media (max-width: 1080px)`]: {
+    [`@media (max-width: 1280px)`]: {
       width: '50%',
       height: '2.1rem',
     },
@@ -235,7 +235,7 @@ const useStyles = createStyles((theme) => ({
     userSelect: 'none',
     textDecoration: 'none',
     cursor: 'not-allowed',
-    [`@media (max-width: 1080px)`]: {
+    [`@media (max-width: 1280px)`]: {
       width: '50%',
       height: '2.1rem',
     },
@@ -1441,11 +1441,11 @@ function Operadora() {
                             onClick={() => setSelectedPage(pagNumber)}
                             className={selectedPage === pagNumber ? classes.pagActive : undefined}
                           >
-                            { 
+                            {
                               pagNumber === 1 ? "001-200" :
-                              pagNumber === 2 ? "201-400" :
-                              pagNumber === 3 ? "401-600" :
-                              pagNumber === 4 ? "601-800" : "801-000" 
+                                pagNumber === 2 ? "201-400" :
+                                  pagNumber === 3 ? "401-600" :
+                                    pagNumber === 4 ? "601-800" : "801-000"
                             }
                           </Button>
                         ))}
