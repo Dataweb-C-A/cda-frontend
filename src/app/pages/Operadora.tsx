@@ -14,6 +14,7 @@ import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, I
 import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
 import USAFlag from "../assets/images/usa_flag.jpg"
+import { IconEye } from '@tabler/icons-react';
 import ColombiaFlag from "../assets/images/colombia_flag.jpg"
 import USANumbers from "../assets/data/usaNumbers.json"
 import ColombiaNumbers from "../assets/data/colombiaNumbers.json"
@@ -301,6 +302,7 @@ function Operadora() {
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
   const [progresses, setProgresses] = useState<IProgresses[]>([])
+  const [modalOpen, setModalOpen] = useState(false);
   const [isOpenInvalidTicketModal, setIsOpenInvalidModal] = useState<ITicketModal>({
     isOpen: false,
     mode: 'valid'
@@ -1609,7 +1611,7 @@ function Operadora() {
                             <div className={classes.ticketsSellContainer}>
                               {isTicketSold ? (
                                 <Card key={ticket.position} className={ticketClassName}>
-                                  <Text ml={-10} mt={-10} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                                  <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
                                   {/* <Text  fz={12} ml={-12}>
                                   vendido
                         </Text> */}
@@ -1620,7 +1622,7 @@ function Operadora() {
                                   className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
                                   onClick={() => chooseTicket(ticket.position)}
                                 >
-                                  <Text ml={-10} mt={-10} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                                  <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
                                   {/* <Text  fz={12} ml={-12}>
                                   {ticketStatusLabel}
                                 </Text>  */}
@@ -1701,26 +1703,37 @@ function Operadora() {
                               <Text
                                 fw={300} fz={15} mt={7}
                               >
-                                La moneda seleccionada actualmente es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                               </Text>
                             </Card>
                           )
                         }
                         <Group spacing={0}>
-                          <Button 
-                            style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }} 
+
+
+                          <Button
+                            style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }}
                             color='teal'
                             className={classes.hiddenWhenSmall}
                             px={7}
                             disabled={ticketsSelected.length === 0}
-                            onClick={() => setBuyIsOpen(true)}  
+                            onClick={() => setBuyIsOpen(true)}
                           >
                             Comprar rifa
                           </Button>
                           <Button
+                            style={{ height: '70px', borderRadius: 0 }}
+                            className={classes.hiddenWhenSmall}
+                            px={7}
+                            disabled={ticketsSelected.length === 0}
+                            onClick={() => setModalOpen(true)}
+                          >
+                            Ver compra
+                          </Button>
+                          <Button
                             px={9}
                             className={classes.hiddenWhenSmall}
-                            style={{ height: '70px', borderRadius: '0px 5px 5px 0px'}} 
+                            style={{ height: '70px', borderRadius: '0px 5px 5px 0px' }}
                             color="red"
                             disabled={ticketsSelected.length === 0}
                             onClick={() => cleanSelection()}
@@ -1728,6 +1741,103 @@ function Operadora() {
                             <IconTrash />
                           </Button>
                         </Group>
+                        <Modal
+                          centered
+                          opened={modalOpen}
+                          onClose={() => setModalOpen(false)}
+
+                          withCloseButton={false}
+                        >
+                          <Card bg="white" className="mini-cutoff">
+                            <small>
+                              <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
+                              <Divider my={10} variant="dashed" />
+                              <Group position="apart">
+                                <Title order={6} fw={600} c='black'>
+                                  Prod.
+                                </Title>
+                                <Title order={6} fw={600} c='black'>
+                                  Cant.
+                                </Title>
+                                <Title order={6} mr={25} fw={600} c='black'>
+                                  Precio.
+                                </Title>
+                              </Group>
+                              <Group pb={10} mx={0} position="apart">
+                                <ScrollArea h={73} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                  {
+                                    ticketsSelected.map((ticket) => {
+                                      const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
+                                      if (isTicketSold) {
+                                        return null;
+                                      }
+                                      return (
+                                        <>
+                                          <Group position="apart">
+
+                                            <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
+                                              {parseTickets(ticket)}
+                                            </Title>
+                                            <Title order={6} fw={300} c='black'>
+                                              1.00
+                                            </Title>
+                                            <Title order={6} fw={300} c='black'>
+                                              {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
+                                                : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                  ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
+                                                  : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
+                                              }
+
+                                            </Title>
+                                          </Group>
+
+                                        </>
+                                      );
+                                    })
+                                  }
+                                </ScrollArea>
+                                <Group w="100%" position="apart">
+                                  <Title order={4} fw={650} c='black'>
+                                    Total:
+                                  </Title>
+                                  <Title order={4} fw={300} ta="end" c='black'>
+
+                                    {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                  </Title>
+                                </Group>
+                                {/* <Group w="100%" position="apart">
+                                      <Title order={4} fw={650} c='black'>
+                                        Total:
+                                      </Title>
+                                      <Title order={4} fw={300} ta="end" c='black'>
+                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
+                                      </Title>
+                                    </Group> */}
+                              </Group>
+                            </small>
+
+                          </Card>
+                          <Group mt={15} position="center" >
+
+                            <Button
+                            color="orange"
+                           onClick={() => setModalOpen(false)}
+                            >
+                              Seguir comprando
+                            </Button>
+                            <Button
+                              leftIcon={<IconWallet />}
+                              color="teal"
+                              onClick={() => {
+                                setBuyIsOpen(true)
+                                setModalOpen(false)
+                              }}
+                            >
+                              Terminar compra
+                            </Button>
+                          </Group>
+                        </Modal>
                       </div>
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
