@@ -158,7 +158,7 @@ const useStyles = createStyles((theme) => ({
     gap: '8px',
 
     [`@media (max-width: 1280px)`]: {
-      gap: '10px',
+      gap: '12px 24px',
     },
     flexWrap: 'wrap'
   },
@@ -191,8 +191,8 @@ const useStyles = createStyles((theme) => ({
     textDecoration: 'none',
     cursor: 'pointer',
     [`@media (max-width: 1280px)`]: {
-      width: '50%',
-      height: '2.1rem',
+      width: 'calc(70% + 1.7rem)',
+      height: '3.1rem',
     },
   },
   ticketsReserved: {
@@ -203,8 +203,9 @@ const useStyles = createStyles((theme) => ({
     textDecoration: 'none',
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
-      width: '50%',
-      height: '2.1rem',
+
+      width: 'calc(70% + 1.7rem)',
+      height: '3.1rem',
     },
   },
   ticketsSelected: {
@@ -216,8 +217,8 @@ const useStyles = createStyles((theme) => ({
     animation: `${bounce} 3s ease-in-out infinite`,
     cursor: 'pointer',
     [`@media (max-width: 1280px)`]: {
-      width: '50%',
-      height: '2.1rem',
+      width: 'calc(70% + 1.7rem)',
+      height: '3.1rem',
     },
   },
   pagActive: {
@@ -236,8 +237,8 @@ const useStyles = createStyles((theme) => ({
     textDecoration: 'none',
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
-      width: '50%',
-      height: '2.1rem',
+      width: 'calc(70% + 1.7rem)',
+      height: '3.1rem',
     },
   },
   avatarExchange: {
