@@ -87,7 +87,8 @@ const useStyles = createStyles((theme) => ({
   pageContainer: {
     display: 'flex',
     height: '100%',
-    margin: '0 5px 0 0'
+    margin: '0 5px 0 0',
+    overflow: 'hidden',
   },
   rafflesContainer: {
     width: "100%",
@@ -141,7 +142,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
   },
   ticketsPage: {
-    height: 'calc(100vh - 11rem - 64px)',
+    height: 'calc(100vh - 11rem - 32px)',
     marginTop: '5px',
     marginLeft: '-5px',
     background: theme.colors.dark[6]
