@@ -150,7 +150,7 @@ const useStyles = createStyles((theme) => ({
     width: '100%'
   },
   ticketsList: {
-    width: '90%',
+    width: '100%',
     [theme.fn.smallerThan('md')]: {
       width: '100%',
     },
@@ -289,7 +289,7 @@ function Operadora() {
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
-  const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'Bs.D' | null>(null)
+  const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'VES' | null>(null)
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
@@ -1033,8 +1033,8 @@ function Operadora() {
                             1.00
                           </Title>
                           <Title order={6} fw={300} c='black'>
-                            {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'Bs.D' && exchangeRates?.value_bs
-                              ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " Bs.D"
+                            {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                              ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " VES"
                               : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
                                 ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
                                 : raffleActive(selectedRaffle || 0)?.price_unit + " $"
@@ -1054,7 +1054,7 @@ function Operadora() {
                     Total:
                   </Title>
                   <Title order={4} fw={300} ta="end" c='black'>
-                    {calculateTotalPrice().toFixed(2)}  {" " + hasPaymentSelected}
+                    {calculateTotalPrice().toFixed(2)}  {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
                   </Title>
                 </Group>
               </Card>
@@ -1209,7 +1209,7 @@ function Operadora() {
     const remainingPrice = selectedRaffleData.price_unit * ticketCount;
     totalPrice += remainingPrice;
 
-    if (hasPaymentSelected === 'Bs.D' && exchangeRates) {
+    if (hasPaymentSelected === 'VES' && exchangeRates) {
       totalPrice *= exchangeRates.value_bs;
     } else if (hasPaymentSelected === 'COP' && exchangeRates) {
       totalPrice *= exchangeRates.value_cop;
@@ -1327,7 +1327,7 @@ function Operadora() {
                         py={0}
                         onClick={() => {
                           console.log(hasPaymentSelected);
-                          hasPaymentSelected === 'Bs.D' ? setHasPaymentSelected(null) : setHasPaymentSelected('Bs.D')
+                          hasPaymentSelected === 'VES' ? setHasPaymentSelected(null) : setHasPaymentSelected('VES')
                           setOpened(false);
                         }}
                         onMouseEnter={() => setIsHovered1(true)}
@@ -1441,7 +1441,12 @@ function Operadora() {
                             onClick={() => setSelectedPage(pagNumber)}
                             className={selectedPage === pagNumber ? classes.pagActive : undefined}
                           >
-                            {pagNumber - 1}
+                            { 
+                              pagNumber === 1 ? "001-200" :
+                              pagNumber === 2 ? "201-400" :
+                              pagNumber === 3 ? "401-600" :
+                              pagNumber === 4 ? "601-800" : "801-000" 
+                            }
                           </Button>
                         ))}
 
@@ -1449,14 +1454,15 @@ function Operadora() {
                           variant="default"
                           py={0}
                           size={30}
+                          mr={15}
                           onClick={() => setSelectedPage(selectedPage + 1)}
-                          disabled={selectedPage === 10}
+                          disabled={selectedPage === 5}
                         >
                           <IconChevronRight />
                         </ActionIcon>
                       </>
                     )}
-                    <NumberInput
+                    {/* <NumberInput
                       size="xs"
                       hideControls
                       w={125}
@@ -1470,9 +1476,9 @@ function Operadora() {
                       }
                       style={{ borderRadius: '5px 0 0 5px' }}
                       ml={10}
-                    />
+                    /> */}
 
-                    <Button
+                    {/* <Button
                       size='xs'
                       ml={0}
                       color="blue"
@@ -1480,19 +1486,8 @@ function Operadora() {
                       style={{ borderRadius: '0 5px 5px 0' }}
                     >
                       <IconSearch size={22} />
-                    </Button>
-                    <Button
-                      size='xs'
+                    </Button> */}
 
-                      ml={10}
-                      mr={15}
-                      color="red"
-                      onClick={() => cleanSelection()}
-                    >
-                      <IconTrash
-                        size={22}
-                      />
-                    </Button>
                     <Badge
                       mt={1}
                       mr={15}
@@ -1515,16 +1510,16 @@ function Operadora() {
                       mr={15}
                       color="teal"
                       size="lg"
-                      variant={hasPaymentSelected === "Bs.D" ? 'filled' : undefined}
-                      style={{ cursor: hasPaymentSelected === 'Bs.D' ? "default" : "pointer" }}
+                      variant={hasPaymentSelected === "VES" ? 'filled' : undefined}
+                      style={{ cursor: hasPaymentSelected === 'VES' ? "default" : "pointer" }}
                       onClick={() => {
-                        if (hasPaymentSelected !== 'Bs.D') {
-                          setHasPaymentSelected('Bs.D')
+                        if (hasPaymentSelected !== 'VES') {
+                          setHasPaymentSelected('VES')
                         }
                       }}
                     >
                       <Text fw={400} fz={16}>
-                        B<small>s</small>.D
+                        VES
                       </Text>
                     </Badge>
                     <Badge
@@ -1667,13 +1662,13 @@ function Operadora() {
                         </Card>
                         {
                           hasPaymentSelected && (
-                            <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'Bs.D' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                            <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                               <Avatar
                                 p={-20}
                                 radius='xl'
                                 className={classes.avatarExchange}
                                 onClick={() => {
-                                  let exchanges = ["$", "Bs.D", "COP"]
+                                  let exchanges = ["$", "VES", "COP"]
 
                                   function randomExchange() {
                                     // @ts-ignore
@@ -1699,7 +1694,7 @@ function Operadora() {
                               <Text
                                 fw={300} fz={15} mt={1}
                               >
-                                La moneda seleccionada actualmente es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'Bs.D' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                La moneda seleccionada actualmente es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                               </Text>
                             </Card>
                           )
@@ -1710,7 +1705,7 @@ function Operadora() {
                         <Card withBorder mt={0} w={350} className={classes.raffleInfoCard}>
                           <Text mt={-10} fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
                           <Image mt={-20} width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
-                          <Divider  labelPosition="center" mb={10} mt={-5} label="Datos de la rifa" />
+                          <Divider labelPosition="center" mb={10} mt={-5} label="Datos de la rifa" />
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={13} ta="start">Tipo de rifa:</Text>
                             <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({raffleActive(selectedRaffle)?.tickets_count} números)</Text>
@@ -1766,8 +1761,8 @@ function Operadora() {
                                                   1.00
                                                 </Title>
                                                 <Title order={6} fw={300} c='black'>
-                                                  {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'Bs.D' && exchangeRates?.value_bs
-                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " Bs.D"
+                                                  {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
                                                     : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
                                                       ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
                                                       : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
@@ -1787,7 +1782,7 @@ function Operadora() {
                                       </Title>
                                       <Title order={4} fw={300} ta="end" c='black'>
 
-                                        {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected}
+                                        {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
                                       </Title>
                                     </Group>
                                     {/* <Group w="100%" position="apart">
@@ -1800,13 +1795,21 @@ function Operadora() {
                                     </Group> */}
                                   </Group>
                                 </small>
-                                <Button
-                                  fullWidth
-                                  leftIcon={<IconWallet />}
-                                  onClick={() => setBuyIsOpen(true)}
-                                >
-                                  Comprar
-                                </Button>
+                                <Group w="100%" position="center" mt={10}>
+                                  <Button
+                                    leftIcon={<IconTrash />}
+                                    color="red"
+                                    onClick={() => cleanSelection()}
+                                  >
+                                    Limpiar
+                                  </Button>
+                                  <Button
+                                    leftIcon={<IconWallet />}
+                                    onClick={() => setBuyIsOpen(true)}
+                                  >
+                                    Comprar
+                                  </Button>
+                                </Group>
                               </Card>
                             )
                           }
