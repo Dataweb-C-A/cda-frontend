@@ -241,6 +241,12 @@ const useStyles = createStyles((theme) => ({
       height: '2.6rem',
     },
   },
+  hiddenWhenSmall: {
+    display: 'none',
+    [`@media (max-width: 1280px)`]: {
+      display: 'block'
+    },
+  },
   avatarExchange: {
     cursor: 'pointer',
     '&:hover': {
@@ -1633,7 +1639,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-7} mt={4}>
+                          <Text ml={-7} mt={7}>
                             Disponible
                           </Text>
                           <Card style={{ background: 'green' }}>
@@ -1641,7 +1647,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-7} mt={4}>
+                          <Text ml={-7} mt={7}>
                             Mi compra
                           </Text>
                           <Card style={{ background: '#ff8000' }}>
@@ -1649,7 +1655,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-7} mt={4}>
+                          <Text ml={-7} mt={7}>
                             Reservado
                           </Text>
                           <Card style={{ background: 'red' }}>
@@ -1657,7 +1663,7 @@ function Operadora() {
 
                             </Text>
                           </Card>
-                          <Text ml={-7} mt={4}>
+                          <Text ml={-7} mt={7}>
                             Vendido
                           </Text>
                         </Card>
@@ -1693,13 +1699,35 @@ function Operadora() {
                               </Avatar>
 
                               <Text
-                                fw={300} fz={15} mt={1}
+                                fw={300} fz={15} mt={7}
                               >
                                 La moneda seleccionada actualmente es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                               </Text>
                             </Card>
                           )
                         }
+                        <Group spacing={0}>
+                          <Button 
+                            style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }} 
+                            color='teal'
+                            className={classes.hiddenWhenSmall}
+                            px={7}
+                            disabled={ticketsSelected.length === 0}
+                            onClick={() => setBuyIsOpen(true)}  
+                          >
+                            Comprar rifa
+                          </Button>
+                          <Button
+                            px={9}
+                            className={classes.hiddenWhenSmall}
+                            style={{ height: '70px', borderRadius: '0px 5px 5px 0px'}} 
+                            color="red"
+                            disabled={ticketsSelected.length === 0}
+                            onClick={() => cleanSelection()}
+                          >
+                            <IconTrash />
+                          </Button>
+                        </Group>
                       </div>
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
