@@ -70,18 +70,7 @@ function Cuponesinf({ }: Props) {
       <Group>
 
 
-        <Card shadow="sm" >
-
-          <Title ta={'center'}>
-            Seleccione su rifa
-          </Title>
-          <Divider my={7} />
-
-          <ScrollArea style={{ height: 1010, width: 350 }}>
-          </ScrollArea>
-
-        </Card>
-
+      
         <Flex
           mih={50}
           gap="md"
@@ -89,16 +78,14 @@ function Cuponesinf({ }: Props) {
           align="center"
           direction="column"
           wrap="wrap"
-          mr="13%"
-          ml="5%"
-          w={"45% "}
+          mr="3%"
+          ml="10%"
+          w={"40% "}
 
         >
 
-
-
           <Group position='center' >
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
               <Text align='center' fz={35}>
@@ -110,7 +97,7 @@ function Cuponesinf({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
               <Text align='center' fz={35}>
@@ -122,7 +109,7 @@ function Cuponesinf({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
               <Text align='center' fz={35}>
@@ -134,7 +121,7 @@ function Cuponesinf({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg" >
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg" >
               <Text align='center' fz={35}>
                 4
               </Text>
@@ -144,7 +131,7 @@ function Cuponesinf({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
               <Text align='center' fz={35}>
@@ -156,7 +143,7 @@ function Cuponesinf({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
               <Text align='center' fz={35}>
@@ -168,7 +155,7 @@ function Cuponesinf({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
               <Text align='center' fz={35}>
@@ -180,7 +167,7 @@ function Cuponesinf({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
               <Text align='center' fz={35}>
@@ -192,7 +179,7 @@ function Cuponesinf({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"     >
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"     >
               <Text align='center' fz={35}>
                 9
               </Text>
@@ -202,7 +189,7 @@ function Cuponesinf({ }: Props) {
 
             </Card >
 
-            <Card p={85} mb={15} className="hover-card" shadow="xl" radius="lg"
+            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
 
             >
               <Text align='center' fz={35}>
@@ -285,11 +272,11 @@ function Cuponesinf({ }: Props) {
                 wrap="wrap"
               >
                 <Title order={3}>Premio</Title>
-                <Text>UNA BUSETA</Text>
+                <Text>siUNA BUSETA</Text>
                 <Title order={3}>Fecha de inicio</Title>
-                <Text>12/12/2023</Text>
+                <Text>si12/12/2023</Text>
                 <Title order={3}>Fecha de cierre</Title>
-                <Text>24/12/2023</Text>
+                <Text>si24/12/2023</Text>
 
                 <Title order={3}>Progreso</Title>
 

@@ -276,6 +276,69 @@ const useStyles = createStyles((theme) => ({
     boxShadow: "0px 0px 24px 17px rgba(46,255,245,0.36)",
     cursor: 'pointer'
   },
+  tickets100: {
+    width: '70px',
+    height: '5rem',
+    background: '#4d4f66',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'pointer',
+    [`@media (max-width: 1280px)`]: {
+      width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
+  },
+  ticketsReserved100: {
+    width: '70px',
+    height: '5rem',
+    background: '#ff8000',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'not-allowed',
+    [`@media (max-width: 1280px)`]: {
+
+      width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
+  },
+  ticketsSelected100: {
+    width: '70px',
+    height: '5rem',
+    background: 'green',
+    userSelect: 'none',
+    textDecoration: 'none',
+    animation: `${bounce} 3s ease-in-out infinite`,
+    cursor: 'pointer',
+    [`@media (max-width: 1280px)`]: {
+      width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
+  },
+  ticketsSold100: {
+    width: '70px',
+    height: '5rem',
+    background: 'red',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'not-allowed',
+    [`@media (max-width: 1280px)`]: {
+      width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
+  },
+  ticketsList100: {
+    width: '100%',
+    [theme.fn.smallerThan('md')]: {
+      width: '100%',
+    },
+    display: 'flex',
+    gap:'10px 25px',
+
+    [`@media (max-width: 1280px)`]: {
+      gap: '20px 25px',
+    },
+    flexWrap: 'wrap'
+  }
 }));
 
 function ticketsConstructor(tickets_count: number) {
@@ -295,7 +358,7 @@ function Operadora() {
 
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'VES' | null>(null)
@@ -367,13 +430,11 @@ function Operadora() {
     }).then((res) => {
       setRaffles(res.data)
     }).catch((err) => {
-      console.log(err)
     })
 
     if (rafflesCableStatus.is_connected === false) {
       cable.subscriptions.create('X100::RafflesChannel', {
         connected() {
-          console.log('Connected to ActionCable');
           setRafflesCableStatus({
             is_connected: true,
             receiving_data: false,
@@ -381,7 +442,6 @@ function Operadora() {
         },
 
         disconnected() {
-          console.log('Disconnected from ActionCable');
           setTimeout(() => {
             window.location.reload()
           }, 2000)
@@ -404,10 +464,8 @@ function Operadora() {
         },
 
         received(data: IProgresses[]) {
-          console.log('Received data from ActionCable:', data);
 
           data.forEach(progress => {
-            console.log(`Raffle ID: ${progress.raffle_id}, Progress: ${progress.progress}%`);
           });
 
           setProgresses(data);
@@ -431,15 +489,12 @@ function Operadora() {
           setUsers(res.data);
         })
         .catch((err) => {
-          console.log(err);
         });
     }
 
-    console.log('useEffect are going effect')
 
     cable.subscriptions.create('X100::TicketsChannel', {
       connected() {
-        console.log('Connected to ActionCable');
         setRafflesCableStatus({
           is_connected: true,
           receiving_data: false
@@ -447,7 +502,6 @@ function Operadora() {
       },
 
       disconnected() {
-        console.log('Disconnected from ActionCable');
         setRafflesCableStatus({
           is_connected: false,
           receiving_data: false
@@ -458,7 +512,6 @@ function Operadora() {
       },
 
       received(data: ICableTicket[]) {
-        console.log('Received data from ActionCable:', data);
         setTicketsSold(data)
         setRafflesCableStatus({
           is_connected: true,
@@ -526,7 +579,6 @@ function Operadora() {
   }
 
   useEffect(() => {
-    console.log('deselect effect going effect')
     return isTicketIsSoldDeselect()
   }, [ticketsSold])
 
@@ -545,10 +597,8 @@ function Operadora() {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       }).then((res) => {
-        console.log(res)
         setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
       }).catch((err) => {
-        console.log(err)
       })
     } else {
       axios.post("https://api.rifa-max.com/x100/tickets/apart", {
@@ -561,10 +611,8 @@ function Operadora() {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       }).then((res) => {
-        console.log(res)
         setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
       }).catch((err) => {
-        console.log(err)
       })
     }
 
@@ -583,9 +631,7 @@ function Operadora() {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       }).then((res) => {
-        console.log(res);
       }).catch((err) => {
-        console.log(err);
       });
     });
 
@@ -670,12 +716,9 @@ function Operadora() {
         }
       })
         .then((res) => {
-          console.log(res);
           setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
         })
         .catch((err) => {
-          console.log(err);
-          // Handle error
         });
     }
     setSearchValue(null);
@@ -748,10 +791,8 @@ function Operadora() {
       }).then((res) => {
         setClient(res.data)
         setActiveStep(activeStep + 1)
-        console.log(res.data)
       }).catch((e) => {
         setClient(null)
-        console.log(e)
         setActiveStep(activeStep + 1)
       })
     }
@@ -794,13 +835,11 @@ function Operadora() {
           email: email
         }
       }).then((res) => {
-        console.log(res.data);
         setClient(res.data);
         setActiveStep(activeStep + 1);
 
         handleCompra(res.data.id);
       }).catch((e) => {
-        console.log(e);
       });
     };
 
@@ -808,7 +847,6 @@ function Operadora() {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        console.error("No se encontró el token en el almacenamiento local");
         return;
       }
 
@@ -837,11 +875,9 @@ function Operadora() {
           return response.json();
         })
         .then(data => {
-          console.log("Boletos comprados exitosamente", data);
           setActiveStep(activeStep + 1);
         })
         .catch(error => {
-          console.error("Error al comprar los boletos", error);
         });
     }; ``
 
@@ -971,7 +1007,6 @@ function Operadora() {
                     maxLength={8}
                     onChange={(event) => {
                       handleTextInputChange(event.currentTarget.value)
-                      console.log(`${countryPrefix} ${selectValue} ${textInputValue}`)
                     }}
                     value={textInputValue}
                   />
@@ -1336,7 +1371,6 @@ function Operadora() {
                         mt={20}
                         py={0}
                         onClick={() => {
-                          console.log(hasPaymentSelected);
                           hasPaymentSelected === 'VES' ? setHasPaymentSelected(null) : setHasPaymentSelected('VES')
                           setOpened(false);
                         }}
@@ -1367,7 +1401,6 @@ function Operadora() {
                         mt={10}
                         py={0}
                         onClick={() => {
-                          console.log(hasPaymentSelected);
                           hasPaymentSelected === '$' ? setHasPaymentSelected(null) : setHasPaymentSelected('$')
                           setOpened(false);
                         }}
@@ -1399,7 +1432,6 @@ function Operadora() {
                         mt={10}
                         py={0}
                         onClick={() => {
-                          console.log(hasPaymentSelected);
                           hasPaymentSelected === 'COP' ? setHasPaymentSelected(null) : setHasPaymentSelected('COP')
                           setOpened(false);
                         }}
@@ -1570,7 +1602,6 @@ function Operadora() {
                           (raffleActive(selectedRaffle)?.combos || [])
                             .sort((a, b) => a.quantity - b.quantity)
                             .map((combo) => {
-                              console.log(`Combo: ${combo?.quantity} x ${combo?.price}$`);
 
                               return (
                                 <>
@@ -1594,220 +1625,217 @@ function Operadora() {
                   <div style={{ display: 'flex', width: '100%' }}>
                     <div className={classes.ticketsListContainer}>
                       { /* Raffle tickets */}
+                      {tickets.tickets.length > 101 ? (
+                        <div className={classes.ticketsList}>
+                          {tickets.tickets.slice((selectedPage - 1) * 200, selectedPage * 200).map((ticket: ITicket) => {
+                            const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
+                            const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
 
-                      <div className={classes.ticketsList}>
-                        {tickets.tickets.slice((selectedPage - 1) * 200, selectedPage * 200).map((ticket: ITicket) => {
-                          const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
-                          const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+                            const ticketClassName = isTicketSold
+                              ? classes.ticketsSold
+                              : isTicketReserved
+                                ? classes.ticketsReserved
+                                : ticketsSelected.includes(ticket.position)
+                                  ? classes.ticketsSelected
+                                  : classes.tickets;
 
-                          const ticketClassName = isTicketSold
-                            ? classes.ticketsSold
-                            : isTicketReserved
-                              ? classes.ticketsReserved
-                              : ticketsSelected.includes(ticket.position)
-                                ? classes.ticketsSelected
-                                : classes.tickets;
+                            return (
+                              <div className={classes.ticketsSellContainer}>
+                                {isTicketSold ? (
+                                  <Card key={ticket.position} className={ticketClassName}>
+                                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                                    {/* <Text  fz={12} ml={-12}>
+              vendido
+              </Text> */}
+                                  </Card>
+                                ) : (
+                                  <Card
+                                    key={ticket.position + ticketKey}
+                                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
+                                    onClick={() => chooseTicket(ticket.position)}
+                                  >
+                                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                                    {/* <Text  fz={12} ml={-12}>
+              {ticketStatusLabel}
+            </Text>  */}
+                                  </Card>
+                                )}
+                              </div>
+                            );
+                          })}
+                          {/* Resto del código permanece igual */}
+                          <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                            <Card style={{ background: '#4D4F66' }}>
+                              <Text>
 
-                          return (
-                            <div className={classes.ticketsSellContainer}>
-                              {isTicketSold ? (
-                                <Card key={ticket.position} className={ticketClassName}>
-                                  <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-                                  {/* <Text  fz={12} ml={-12}>
-                                  vendido
-                        </Text> */}
-                                </Card>
-                              ) : (
-                                <Card
-                                  key={ticket.position + ticketKey}
-                                  className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
-                                  onClick={() => chooseTicket(ticket.position)}
-                                >
-                                  <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-                                  {/* <Text  fz={12} ml={-12}>
-                                  {ticketStatusLabel}
-                                </Text>  */}
-                                </Card>
-
-
-
-                              )}
-
-                            </div>
-                          );
-                        })}
-                        <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
-                          <Card style={{ background: '#4D4F66' }}>
-                            <Text>
-
-                            </Text>
-                          </Card>
-                          <Text ml={-7} mt={7}>
-                            Disponible
-                          </Text>
-                          <Card style={{ background: 'green' }}>
-                            <Text>
-
-                            </Text>
-                          </Card>
-                          <Text ml={-7} mt={7}>
-                            Mi compra
-                          </Text>
-                          <Card style={{ background: '#ff8000' }}>
-                            <Text>
-
-                            </Text>
-                          </Card>
-                          <Text ml={-7} mt={7}>
-                            Reservado
-                          </Text>
-                          <Card style={{ background: 'red' }}>
-                            <Text>
-
-                            </Text>
-                          </Card>
-                          <Text ml={-7} mt={7}>
-                            Vendido
-                          </Text>
-                        </Card>
-                        {
-                          hasPaymentSelected && (
-                            <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
-                              <Avatar
-                                p={-20}
-                                radius='xl'
-                                className={classes.avatarExchange}
-                                onClick={() => {
-                                  let exchanges = ["$", "VES", "COP"]
-
-                                  function randomExchange() {
-                                    // @ts-ignore
-                                    return setHasPaymentSelected(exchanges[Math.floor(Math.random() * exchanges.length)])
-                                  }
-                                  setExchangeCounter(exchangeCounter + 1)
-                                  randomExchange();
-                                }}
-                                onMouseEnter={() => setHoverExchange(true)}
-                                onMouseLeave={() => setHoverExchange(false)}
-                              >
-                                {
-                                  !hoverExchange ? (
-                                    <Text ta="center" fw={300} fz={15}>
-                                      {hasPaymentSelected}
-                                    </Text>
-                                  ) : (
-                                    <IconEgg />
-                                  )
-                                }
-                              </Avatar>
-
-                              <Text
-                                fw={300} fz={15} mt={7}
-                              >
-                                La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                               </Text>
                             </Card>
-                          )
-                        }
-                        <Group spacing={0}>
+                            <Text ml={-7} mt={7}>
+                              Disponible
+                            </Text>
+                            <Card style={{ background: 'green' }}>
+                              <Text>
 
+                              </Text>
+                            </Card>
+                            <Text ml={-7} mt={7}>
+                              Mi compra
+                            </Text>
+                            <Card style={{ background: '#ff8000' }}>
+                              <Text>
 
-                          <Button
-                            style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }}
-                            color='teal'
-                            className={classes.hiddenWhenSmall}
-                            px={7}
-                            disabled={ticketsSelected.length === 0}
-                            onClick={() => setBuyIsOpen(true)}
-                          >
-                            Comprar rifa
-                          </Button>
-                          <Button
-                            style={{ height: '70px', borderRadius: 0 }}
-                            className={classes.hiddenWhenSmall}
-                            px={7}
-                            disabled={ticketsSelected.length === 0}
-                            onClick={() => setModalOpen(true)}
-                          >
-                            Ver compra
-                          </Button>
-                          <Button
-                            px={9}
-                            className={classes.hiddenWhenSmall}
-                            style={{ height: '70px', borderRadius: '0px 5px 5px 0px' }}
-                            color="red"
-                            disabled={ticketsSelected.length === 0}
-                            onClick={() => cleanSelection()}
-                          >
-                            <IconTrash />
-                          </Button>
-                        </Group>
-                        <Modal
-                          centered
-                          opened={modalOpen}
-                          onClose={() => setModalOpen(false)}
+                              </Text>
+                            </Card>
+                            <Text ml={-7} mt={7}>
+                              Reservado
+                            </Text>
+                            <Card style={{ background: 'red' }}>
+                              <Text>
 
-                          withCloseButton={false}
-                        >
-                          <Card bg="white" className="mini-cutoff">
-                            <small>
-                              <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
-                              <Divider my={10} variant="dashed" />
-                              <Group position="apart">
-                                <Title order={6} fw={600} c='black'>
-                                  Prod.
-                                </Title>
-                                <Title order={6} fw={600} c='black'>
-                                  Cant.
-                                </Title>
-                                <Title order={6} mr={25} fw={600} c='black'>
-                                  Precio.
-                                </Title>
-                              </Group>
-                              <Group pb={10} mx={0} position="apart">
-                                <ScrollArea h={73} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                              </Text>
+                            </Card>
+                            <Text ml={-7} mt={7}>
+                              Vendido
+                            </Text>
+                          </Card>
+                          {
+                            hasPaymentSelected && (
+                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                                <Avatar
+                                  p={-20}
+                                  radius='xl'
+                                  className={classes.avatarExchange}
+                                  onClick={() => {
+                                    let exchanges = ["$", "VES", "COP"]
+
+                                    function randomExchange() {
+                                      // @ts-ignore
+                                      return setHasPaymentSelected(exchanges[Math.floor(Math.random() * exchanges.length)])
+                                    }
+                                    setExchangeCounter(exchangeCounter + 1)
+                                    randomExchange();
+                                  }}
+                                  onMouseEnter={() => setHoverExchange(true)}
+                                  onMouseLeave={() => setHoverExchange(false)}
+                                >
                                   {
-                                    ticketsSelected.map((ticket) => {
-                                      const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
-                                      if (isTicketSold) {
-                                        return null;
-                                      }
-                                      return (
-                                        <>
-                                          <Group position="apart">
-
-                                            <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
-                                              {parseTickets(ticket)}
-                                            </Title>
-                                            <Title order={6} fw={300} c='black'>
-                                              1.00
-                                            </Title>
-                                            <Title order={6} fw={300} c='black'>
-                                              {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
-                                                ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
-                                                : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
-                                                  ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
-                                                  : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
-                                              }
-
-                                            </Title>
-                                          </Group>
-
-                                        </>
-                                      );
-                                    })
+                                    !hoverExchange ? (
+                                      <Text ta="center" fw={300} fz={15}>
+                                        {hasPaymentSelected}
+                                      </Text>
+                                    ) : (
+                                      <IconEgg />
+                                    )
                                   }
-                                </ScrollArea>
-                                <Group w="100%" position="apart">
-                                  <Title order={4} fw={650} c='black'>
-                                    Total:
-                                  </Title>
-                                  <Title order={4} fw={300} ta="end" c='black'>
+                                </Avatar>
 
-                                    {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                <Text
+                                  fw={300} fz={15} mt={7}
+                                >
+                                  La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                </Text>
+                              </Card>
+                            )
+                          }
+                          <Group spacing={0}>
+
+
+                            <Button
+                              style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }}
+                              color='teal'
+                              className={classes.hiddenWhenSmall}
+                              px={7}
+                              disabled={ticketsSelected.length === 0}
+                              onClick={() => setBuyIsOpen(true)}
+                            >
+                              Comprar rifa
+                            </Button>
+                            <Button
+                              style={{ height: '70px', borderRadius: 0 }}
+                              className={classes.hiddenWhenSmall}
+                              px={7}
+                              disabled={ticketsSelected.length === 0}
+                              onClick={() => setModalOpen(true)}
+                            >
+                              Ver compra
+                            </Button>
+                            <Button
+                              px={9}
+                              className={classes.hiddenWhenSmall}
+                              style={{ height: '70px', borderRadius: '0px 5px 5px 0px' }}
+                              color="red"
+                              disabled={ticketsSelected.length === 0}
+                              onClick={() => cleanSelection()}
+                            >
+                              <IconTrash />
+                            </Button>
+                          </Group>
+                          <Modal
+                            centered
+                            opened={modalOpen}
+                            onClose={() => setModalOpen(false)}
+
+                            withCloseButton={false}
+                          >
+                            <Card bg="white" className="mini-cutoff">
+                              <small>
+                                <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
+                                <Divider my={10} variant="dashed" />
+                                <Group position="apart">
+                                  <Title order={6} fw={600} c='black'>
+                                    Prod.
+                                  </Title>
+                                  <Title order={6} fw={600} c='black'>
+                                    Cant.
+                                  </Title>
+                                  <Title order={6} mr={25} fw={600} c='black'>
+                                    Precio.
                                   </Title>
                                 </Group>
-                                {/* <Group w="100%" position="apart">
+                                <Group pb={10} mx={0} position="apart">
+                                  <ScrollArea h={73} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                    {
+                                      ticketsSelected.map((ticket) => {
+                                        const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
+                                        if (isTicketSold) {
+                                          return null;
+                                        }
+                                        return (
+                                          <>
+                                            <Group position="apart">
+
+                                              <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
+                                                {parseTickets(ticket)}
+                                              </Title>
+                                              <Title order={6} fw={300} c='black'>
+                                                1.00
+                                              </Title>
+                                              <Title order={6} fw={300} c='black'>
+                                                {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                  ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
+                                                  : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
+                                                    : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
+                                                }
+
+                                              </Title>
+                                            </Group>
+
+                                          </>
+                                        );
+                                      })
+                                    }
+                                  </ScrollArea>
+                                  <Group w="100%" position="apart">
+                                    <Title order={4} fw={650} c='black'>
+                                      Total:
+                                    </Title>
+                                    <Title order={4} fw={300} ta="end" c='black'>
+
+                                      {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                    </Title>
+                                  </Group>
+                                  {/* <Group w="100%" position="apart">
                                       <Title order={4} fw={650} c='black'>
                                         Total:
                                       </Title>
@@ -1815,31 +1843,243 @@ function Operadora() {
                                         {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
                                       </Title>
                                     </Group> */}
-                              </Group>
-                            </small>
+                                </Group>
+                              </small>
 
+                            </Card>
+                            <Group mt={15} position="center" >
+
+                              <Button
+                                color="orange"
+                                onClick={() => setModalOpen(false)}
+                              >
+                                Seguir comprando
+                              </Button>
+                              <Button
+                                leftIcon={<IconWallet />}
+                                color="teal"
+                                onClick={() => {
+                                  setBuyIsOpen(true)
+                                  setModalOpen(false)
+                                }}
+                              >
+                                Terminar compra
+                              </Button>
+                            </Group>
+                          </Modal>
+                        </div>
+                      ) : (
+                        <div className={classes.ticketsList100}>
+                          {/* Aquí aplicamos las clases con sufijo "100" */}
+                          {tickets.tickets.map((ticket: ITicket) => {
+                            const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
+                            const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+
+                            const ticketClassName = isTicketSold
+                              ? classes.ticketsSold100
+                              : isTicketReserved
+                                ? classes.ticketsReserved100
+                                : ticketsSelected.includes(ticket.position)
+                                  ? classes.ticketsSelected100
+                                  : classes.tickets100;
+
+                            return (
+                              <div className={classes.ticketsSellContainer}>
+                                {isTicketSold ? (
+                                  <Card key={ticket.position} className={ticketClassName}>
+                                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+
+                                  </Card>
+                                ) : (
+                                  <Card
+                                    key={ticket.position + ticketKey}
+                                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
+                                    onClick={() => chooseTicket(ticket.position)}
+                                  >
+                                    <Text ml="20%"  fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+
+                                  </Card>
+                                )}
+
+                              </div>
+                            );
+                          })}
+                          <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                            <Card style={{ background: '#4D4F66' }}>
+                              <Text>
+
+                              </Text>
+                            </Card>
+                            <Text ml={-7} mt={7}>
+                              Disponible
+                            </Text>
+                            <Card style={{ background: 'green' }}>
+                              <Text>
+
+                              </Text>
+                            </Card>
+                            <Text ml={-7} mt={7}>
+                              Mi compra
+                            </Text>
+                            <Card style={{ background: '#ff8000' }}>
+                              <Text>
+
+                              </Text>
+                            </Card>
+                            <Text ml={-7} mt={7}>
+                              Reservado
+                            </Text>
+                            <Card style={{ background: 'red' }}>
+                              <Text>
+
+                              </Text>
+                            </Card>
+                            <Text ml={-7} mt={7}>
+                              Vendido
+                            </Text>
                           </Card>
-                          <Group mt={15} position="center" >
+                          {
+                            hasPaymentSelected && (
+                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                                <Avatar
+                                  p={-20}
+                                  radius='xl'
+                                  className={classes.avatarExchange}
+                                  onClick={() => {
+                                    let exchanges = ["$", "VES", "COP"]
 
-                            <Button
-                            color="orange"
-                           onClick={() => setModalOpen(false)}
-                            >
-                              Seguir comprando
-                            </Button>
-                            <Button
-                              leftIcon={<IconWallet />}
-                              color="teal"
-                              onClick={() => {
-                                setBuyIsOpen(true)
-                                setModalOpen(false)
-                              }}
-                            >
-                              Terminar compra
-                            </Button>
-                          </Group>
-                        </Modal>
-                      </div>
+                                    function randomExchange() {
+                                      // @ts-ignore
+                                      return setHasPaymentSelected(exchanges[Math.floor(Math.random() * exchanges.length)])
+                                    }
+                                    setExchangeCounter(exchangeCounter + 1)
+                                    randomExchange();
+                                  }}
+                                  onMouseEnter={() => setHoverExchange(true)}
+                                  onMouseLeave={() => setHoverExchange(false)}
+                                >
+                                  {
+                                    !hoverExchange ? (
+                                      <Text ta="center" fw={300} fz={15}>
+                                        {hasPaymentSelected}
+                                      </Text>
+                                    ) : (
+                                      <IconEgg />
+                                    )
+                                  }
+                                </Avatar>
+
+                                <Text
+                                  fw={300} fz={15} mt={7}
+                                >
+                                  La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                </Text>
+                              </Card>
+                            )
+                          }
+                       
+                          <Modal
+                            centered
+                            opened={modalOpen}
+                            onClose={() => setModalOpen(false)}
+
+                            withCloseButton={false}
+                          >
+                            <Card bg="white" className="mini-cutoff">
+                              <small>
+                                <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
+                                <Divider my={10} variant="dashed" />
+                                <Group position="apart">
+                                  <Title order={6} fw={600} c='black'>
+                                    Prod.
+                                  </Title>
+                                  <Title order={6} fw={600} c='black'>
+                                    Cant.
+                                  </Title>
+                                  <Title order={6} mr={25} fw={600} c='black'>
+                                    Precio.
+                                  </Title>
+                                </Group>
+                                <Group pb={10} mx={0} position="apart">
+                                  <ScrollArea h={73} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                    {
+                                      ticketsSelected.map((ticket) => {
+                                        const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
+                                        if (isTicketSold) {
+                                          return null;
+                                        }
+                                        return (
+                                          <>
+                                            <Group position="apart">
+
+                                              <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
+                                                {parseTickets(ticket)}
+                                              </Title>
+                                              <Title order={6} fw={300} c='black'>
+                                                1.00
+                                              </Title>
+                                              <Title order={6} fw={300} c='black'>
+                                                {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                  ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
+                                                  : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
+                                                    : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
+                                                }
+
+                                              </Title>
+                                            </Group>
+
+                                          </>
+                                        );
+                                      })
+                                    }
+                                  </ScrollArea>
+                                  <Group w="100%" position="apart">
+                                    <Title order={4} fw={650} c='black'>
+                                      Total:
+                                    </Title>
+                                    <Title order={4} fw={300} ta="end" c='black'>
+
+                                      {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                    </Title>
+                                  </Group>
+                                  {/* <Group w="100%" position="apart">
+                                      <Title order={4} fw={650} c='black'>
+                                        Total:
+                                      </Title>
+                                      <Title order={4} fw={300} ta="end" c='black'>
+                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
+                                      </Title>
+                                    </Group> */}
+                                </Group>
+                              </small>
+
+                            </Card>
+                            <Group mt={15} position="center" >
+
+                              <Button
+                                color="orange"
+                                onClick={() => setModalOpen(false)}
+                              >
+                                Seguir comprando
+                              </Button>
+                              <Button
+                                leftIcon={<IconWallet />}
+                                color="teal"
+                                onClick={() => {
+                                  setBuyIsOpen(true)
+                                  setModalOpen(false)
+                                }}
+                              >
+                                Terminar compra
+                              </Button>
+                            </Group>
+                          </Modal>
+                        </div>
+
+                      )}
+
+
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
                         <Card withBorder mt={0} w={350} className={classes.raffleInfoCard}>
