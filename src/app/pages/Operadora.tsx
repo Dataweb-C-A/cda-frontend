@@ -205,7 +205,6 @@ const useStyles = createStyles((theme) => ({
     textDecoration: 'none',
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
-
       width: 'calc(70% + 1.7rem)',
       height: '2.6rem',
     },
@@ -221,6 +220,7 @@ const useStyles = createStyles((theme) => ({
     [`@media (max-width: 1280px)`]: {
       width: 'calc(70% + 1.7rem)',
       height: '2.6rem',
+
     },
   },
   pagActive: {
@@ -284,8 +284,8 @@ const useStyles = createStyles((theme) => ({
     textDecoration: 'none',
     cursor: 'pointer',
     [`@media (max-width: 1280px)`]: {
-      width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      width: '60px',
+      height: '5rem',
     },
   },
   ticketsReserved100: {
@@ -297,8 +297,8 @@ const useStyles = createStyles((theme) => ({
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
 
-      width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      width: '60px',
+      height: '5rem',
     },
   },
   ticketsSelected100: {
@@ -310,8 +310,8 @@ const useStyles = createStyles((theme) => ({
     animation: `${bounce} 3s ease-in-out infinite`,
     cursor: 'pointer',
     [`@media (max-width: 1280px)`]: {
-      width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      width: '60px',
+      height: '5rem',
     },
   },
   ticketsSold100: {
@@ -322,8 +322,8 @@ const useStyles = createStyles((theme) => ({
     textDecoration: 'none',
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
-      width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      width: '60px',
+      height: '5rem',
     },
   },
   ticketsList100: {
@@ -332,10 +332,10 @@ const useStyles = createStyles((theme) => ({
       width: '100%',
     },
     display: 'flex',
-    gap:'10px 25px',
+    gap: '10px 25px',
 
     [`@media (max-width: 1280px)`]: {
-      gap: '20px 25px',
+      gap: '25px 25px',
     },
     flexWrap: 'wrap'
   }
@@ -1896,7 +1896,7 @@ function Operadora() {
                                     className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
                                     onClick={() => chooseTicket(ticket.position)}
                                   >
-                                    <Text ml="20%"  fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                                    <Text ml="20%" fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
 
                                   </Card>
                                 )}
@@ -1977,7 +1977,39 @@ function Operadora() {
                               </Card>
                             )
                           }
-                       
+                          <Group spacing={0}>
+
+
+                            <Button
+                              style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }}
+                              color='teal'
+                              className={classes.hiddenWhenSmall}
+                              px={7}
+                              disabled={ticketsSelected.length === 0}
+                              onClick={() => setBuyIsOpen(true)}
+                            >
+                              Comprar rifa
+                            </Button>
+                            <Button
+                              style={{ height: '70px', borderRadius: 0 }}
+                              className={classes.hiddenWhenSmall}
+                              px={7}
+                              disabled={ticketsSelected.length === 0}
+                              onClick={() => setModalOpen(true)}
+                            >
+                              Ver compra
+                            </Button>
+                            <Button
+                              px={9}
+                              className={classes.hiddenWhenSmall}
+                              style={{ height: '70px', borderRadius: '0px 5px 5px 0px' }}
+                              color="red"
+                              disabled={ticketsSelected.length === 0}
+                              onClick={() => cleanSelection()}
+                            >
+                              <IconTrash />
+                            </Button>
+                          </Group>
                           <Modal
                             centered
                             opened={modalOpen}
