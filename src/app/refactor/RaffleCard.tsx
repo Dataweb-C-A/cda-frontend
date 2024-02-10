@@ -21,6 +21,7 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
         onClick={onClick}
         withBorder
         style={style}
+        radius={0}
         className={className}
         pb={0}
       >
@@ -71,7 +72,7 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
           Zulia 7a 7:05 Pm
           </Title>
         </Group>
-      <Progress ml={-15} w='27.4vh'  label={`${progress}%`} color={theme.colors.green[8]} mt={0} size='xl' value={progress < 1 ? 13 : progress > 1 ? 17 : progress} />
+      <Progress ml={-15} w='28vh'  label={`${progress}%`} color={theme.colors.green[8]} mt={0} size='xl' value={progress < 1 ? 13 : progress > 1 ? 17 : progress} />
       </Card>
     </>
   );
