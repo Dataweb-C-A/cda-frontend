@@ -38,41 +38,41 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
           </Group>
         </div> */}
 
-        <Group>
-          <Title fw={400} fz={16.5}>
+        <Group mt={-15} position='apart'>
+          <Title order={6}>
             Rifa de :
           </Title>
-          <Title fw={400} fz={16.5}>
+          <Title fw={400} fz={14}>
             {data.title}
           </Title>
         </Group>
 
-        <Group>
-          <Title fw={400} fz={16.5}>
+        <Group position='apart'>
+          <Title order={6}>
             Tipo de rifa :
           </Title>
-          <Title fw={400} fz={16.5}>
+          <Title order={6}>
             {data.tickets_count} Números
           </Title>
         </Group>
-        <Group>
-          <Title fw={400} fz={16.5}>
+        <Group position='apart'>
+          <Title order={6}>
             Fecha sorteo
           </Title>
           <Title fw={400} fz={15}>
             {moment(data.init_date).format('DD/MM/YYYY hh:mm')}
           </Title>
         </Group>
-        <Group>
-          <Title fw={400} fz={16.5}>
+        <Group position='apart'>
+          <Title order={6}>
             Loteria :
           </Title>
-          <Title fw={400} fz={16.5}>
+          <Title order={6}>
           Zulia 7a 7:05 Pm
           </Title>
         </Group>
+      <Progress ml={-15} w='27.4vh'  label={`${progress}%`} color={theme.colors.green[8]} mt={0} size='xl' value={progress < 1 ? 13 : progress > 1 ? 17 : progress} />
       </Card>
-      <Progress label={`${progress}%`} color={theme.colors.green[8]} mt={0} size='lg' value={progress < 1 ? 13 : progress > 1 ? 17 : progress} />
     </>
   );
 }
