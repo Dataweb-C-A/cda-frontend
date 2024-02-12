@@ -169,6 +169,9 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     [`@media (max-width: 1280px)`]: {
       display: 'none'
+    },
+    [`@media (max-width: 1600px)`]: {
+      display: 'none'
     }
   },
   raffleInfoCard: {
@@ -176,6 +179,9 @@ const useStyles = createStyles((theme) => ({
     marginTop: "25px",
     height: '100%',
     [`@media (max-width: 1280px)`]: {
+      display: 'none'
+    },
+    [`@media (max-width: 1600px)`]: {
       display: 'none'
     }
   },
@@ -248,6 +254,9 @@ const useStyles = createStyles((theme) => ({
     [`@media (max-width: 1280px)`]: {
       display: 'block'
     },
+    [`@media (max-width: 1600px)`]: {
+      display: 'block'
+    }
   },
   avatarExchange: {
     cursor: 'pointer',
@@ -1737,7 +1746,7 @@ function Operadora() {
                               </Card>
                             )
                           }
-                          <Group spacing={0}>
+                          <Group position="apart" spacing={0}>
 
 
                             <Button
