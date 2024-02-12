@@ -1660,7 +1660,7 @@ function Operadora() {
                                 ) : (
                                   <Card
                                     key={ticket.position + ticketKey}
-                                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
+                                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
                                     onClick={() => chooseTicket(ticket.position)}
                                   >
                                     <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
