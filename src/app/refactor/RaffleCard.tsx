@@ -23,7 +23,10 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
         style={style}
         radius={0}
         className={className}
-        pb={0}
+        p={0}
+        pt={20}
+        px={4}
+        mb={10}
       >
         {/* <div style={{ position: "absolute", top: 0, right: 0 }}>
           <Group spacing={0}>
@@ -41,38 +44,38 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
 
         <Group mt={-15} position='apart'>
           <Title order={6}>
-            Rifa de :
+            Rifa de:
           </Title>
-          <Title fw={400} fz={14}>
+          <Title fw={400} fz={15}>
             {data.title}
           </Title>
         </Group>
 
         <Group position='apart'>
           <Title order={6}>
-            Tipo de rifa :
+            Tipo de rifa:
           </Title>
-          <Title order={6}>
+          <Title fw={400} fz={15}>
             {data.tickets_count} Números
           </Title>
         </Group>
         <Group position='apart'>
           <Title order={6}>
-            Fecha sorteo
+            Fecha sorteo:
           </Title>
           <Title fw={400} fz={15}>
-            {moment(data.init_date).format('DD/MM/YYYY hh:mm')}
+            {moment(data.init_date).format('DD/MM/YYYY')}
           </Title>
         </Group>
         <Group position='apart'>
           <Title order={6}>
-            Loteria :
+            Loteria:
           </Title>
-          <Title order={6}>
-          Zulia 7a 7:05 Pm
+          <Title fw={400} fz={15}>
+            Zulia 7A 7:05 PM
           </Title>
         </Group>
-      <Progress ml={-15} w='28vh'  label={`${progress}%`} color={theme.colors.green[8]} mt={0} size='xl' value={progress < 1 ? 13 : progress > 1 ? 17 : progress} />
+        <Progress h={22} mt={5} ml={-4} style={{ borderRadius: '0 !important' }} w={270} label={`${progress}%`} color={theme.colors.green[8]} size='xl' value={progress < 1 ? 13 : progress > 1 ? 17 : progress} />
       </Card>
     </>
   );

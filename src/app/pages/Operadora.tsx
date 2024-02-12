@@ -367,7 +367,7 @@ function Operadora() {
 
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(1) // change to null to use dancers through backend
+  const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'VES' | null>(null)
@@ -388,7 +388,7 @@ function Operadora() {
   const [ticketKey, setTicketKey] = useState<number>(0)
   const [selectedPage, setSelectedPage] = useState<number>(1)
   const [tickets, setTickets] = useState<ITicketsResponse>({
-    tickets: ticketsConstructor(100)
+    tickets: ticketsConstructor(1000)
   })
   const [countrySelected, setCountrySelected] = useState<string | null>(null)
   const [activeStep, setActiveStep] = useState<number>(0)
