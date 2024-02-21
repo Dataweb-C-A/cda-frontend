@@ -14,13 +14,12 @@ import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, I
 import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
 import USAFlag from "../assets/images/usa_flag.jpg"
-import { IconEye } from '@tabler/icons-react';
 import ColombiaFlag from "../assets/images/colombia_flag.jpg"
 import USANumbers from "../assets/data/usaNumbers.json"
 import ColombiaNumbers from "../assets/data/colombiaNumbers.json"
 import { useForm } from "@mantine/form"
 import RifamaxLogo from '../assets/images/rifamax-logo.png'
-import { IconDice1 } from "@tabler/icons-react"
+import { IconReceipt , IconEye} from "@tabler/icons-react"
 
 interface IStatus {
   is_connected: boolean;
@@ -142,7 +141,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
   },
   ticketsPage: {
-    height: 'calc(100vh - 11rem - 32px)',
+    height: 'calc(100vh - 11rem - 37px)',
     marginTop: '5px',
     marginLeft: '-5px',
     background: theme.colors.dark[6]
@@ -176,7 +175,6 @@ const useStyles = createStyles((theme) => ({
   },
   raffleInfoCard: {
     background: theme.colors.dark[7],
-    marginTop: "25px",
     height: '100%',
     [`@media (max-width: 1280px)`]: {
       display: 'none'
@@ -1756,6 +1754,7 @@ function Operadora() {
                               px={7}
                               disabled={ticketsSelected.length === 0}
                               onClick={() => setBuyIsOpen(true)}
+                              leftIcon={<IconReceipt/>}
                             >
                               Comprar rifa
                             </Button>
@@ -1765,6 +1764,8 @@ function Operadora() {
                               px={7}
                               disabled={ticketsSelected.length === 0}
                               onClick={() => setModalOpen(true)}
+                              leftIcon={<IconEye/>}
+                              
                             >
                               Ver compra
                             </Button>
@@ -1775,8 +1776,10 @@ function Operadora() {
                               color="red"
                               disabled={ticketsSelected.length === 0}
                               onClick={() => cleanSelection()}
+
+                              leftIcon={<IconTrash/>}
                             >
-                              <IconTrash />
+                              Limpiar compra
                             </Button>
                           </Group>
                           <Modal
@@ -1788,8 +1791,8 @@ function Operadora() {
                           >
                             <Card bg="white" className="mini-cutoff">
                               <small>
-                                <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
-                                <Divider my={10} variant="dashed" />
+                                <Text  ta="center" fw={700} color='black'>Informacion de compra</Text>
+                                <Divider  variant="dashed" />
                                 <Group position="apart">
                                   <Title order={6} fw={600} c='black'>
                                     Prod.
@@ -1995,6 +1998,7 @@ function Operadora() {
                               className={classes.hiddenWhenSmall}
                               px={7}
                               disabled={ticketsSelected.length === 0}
+                              leftIcon={<IconReceipt/>}
                               onClick={() => setBuyIsOpen(true)}
                             >
                               Comprar rifa
@@ -2005,6 +2009,7 @@ function Operadora() {
                               px={7}
                               disabled={ticketsSelected.length === 0}
                               onClick={() => setModalOpen(true)}
+                              leftIcon={<IconEye/>}
                             >
                               Ver compra
                             </Button>
@@ -2015,8 +2020,10 @@ function Operadora() {
                               color="red"
                               disabled={ticketsSelected.length === 0}
                               onClick={() => cleanSelection()}
+
+                              leftIcon={<IconTrash/>}
                             >
-                              <IconTrash />
+                              Limpiar compra
                             </Button>
                           </Group>
                           <Modal
@@ -2124,9 +2131,9 @@ function Operadora() {
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
                         <Card withBorder mt={0} w={350} className={classes.raffleInfoCard}>
-                          <Text mt={-10} fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
-                          <Image mt={-20} width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
-                          <Divider labelPosition="center" mb={10} mt={-5} label="Datos de la rifa" />
+                          <Text mt={-15} fw={700} fz={12} mb={18} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
+                          <Image mt={-20}  width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
+                          <Divider labelPosition="center"  mt={-5} label="Datos de la rifa" />
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={13} ta="start">Tipo de rifa:</Text>
                             <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({raffleActive(selectedRaffle)?.tickets_count} números)</Text>
@@ -2150,8 +2157,8 @@ function Operadora() {
                             ticketsSelected.length > 0 && (
                               <Card bg="white" className="mini-cutoff">
                                 <small>
-                                  <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
-                                  <Divider my={10} variant="dashed" />
+                                  <Text ta="center" mt={-5} fw={700} color='black'>Informacion de compra</Text>
+                                  <Divider  variant="dashed" />
                                   <Group position="apart">
                                     <Title order={6} fw={600} c='black'>
                                       Prod.
@@ -2164,7 +2171,7 @@ function Operadora() {
                                     </Title>
                                   </Group>
                                   <Group pb={10} mx={0} position="apart">
-                                    <ScrollArea h={73} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                    <ScrollArea h={65} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                       {
                                         ticketsSelected.map((ticket) => {
                                           const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
@@ -2197,7 +2204,7 @@ function Operadora() {
                                         })
                                       }
                                     </ScrollArea>
-                                    <Group w="100%" position="apart">
+                                    <Group mb={-5} w="100%" position="apart">
                                       <Title order={4} fw={650} c='black'>
                                         Total:
                                       </Title>
@@ -2216,7 +2223,7 @@ function Operadora() {
                                     </Group> */}
                                   </Group>
                                 </small>
-                                <Group w="100%" position="center" mt={10}>
+                                <Group w="100%" position="center" >
                                   <Button
                                     leftIcon={<IconTrash />}
                                     color="red"
