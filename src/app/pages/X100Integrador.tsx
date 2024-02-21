@@ -365,12 +365,20 @@ function ticketsConstructor(tickets_count: number) {
 function X100Integrador() {
   const paginationNumbers = [1, 2, 3, 4, 5];
 
+  const searchParams = new URLSearchParams(window.location.search)
+
+  const token = searchParams.get('token') || null
+
+  const currency = searchParams.get('currency') || null
+
+  const player_id = searchParams.get('player_id') || null
+
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
-  const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'VES' | null>(null)
+  const [hasPaymentSelected, setHasPaymentSelected] = useState<string | 'USD' | 'COP' | 'VES' | null>(currency)
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
@@ -429,10 +437,6 @@ function X100Integrador() {
       prefix: (value) => (value.length < 8 ? 'Nombre invalido' : null),
     }
   })
-
-  const searchParams = new URLSearchParams(window.location.search)
-
-  const token = searchParams.get('token') || null
 
   useEffect(() => {
     axios.get("https://api.rifa-max.com/x100/raffles", {
@@ -1125,7 +1129,7 @@ function X100Integrador() {
                     Total:
                   </Title>
                   <Title order={4} fw={300} ta="end" c='black'>
-                    {calculateTotalPrice().toFixed(2)}  {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                    {calculateTotalPrice().toFixed(2)}  {" " + hasPaymentSelected === "USD" ? "$" : hasPaymentSelected}
                   </Title>
                 </Group>
               </Card>
@@ -1560,11 +1564,11 @@ function X100Integrador() {
                               mr={15}
                               color="teal"
                               size="lg"
-                              variant={hasPaymentSelected === "$" ? 'filled' : undefined}
-                              style={{ cursor: hasPaymentSelected === '$' ? "default" : "pointer" }}
+                              variant={hasPaymentSelected === "USD" ? 'filled' : undefined}
+                              style={{ cursor: hasPaymentSelected === 'USD' ? "default" : "pointer" }}
                               onClick={() => {
-                                if (hasPaymentSelected !== '$') {
-                                  setHasPaymentSelected('$')
+                                if (hasPaymentSelected !== 'USD') {
+                                  setHasPaymentSelected('USD')
                                 }
                               }}
                             >
@@ -1725,7 +1729,7 @@ function X100Integrador() {
                                   </Card>
                                   {
                                     hasPaymentSelected && (
-                                      <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                                      <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                         <Avatar
                                           p={-20}
                                           radius='xl'
@@ -1757,7 +1761,7 @@ function X100Integrador() {
                                         <Text
                                           fw={300} fz={15} mt={7}
                                         >
-                                          La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                          La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                         </Text>
                                       </Card>
                                     )
@@ -1857,7 +1861,7 @@ function X100Integrador() {
                                             </Title>
                                             <Title order={4} fw={300} ta="end" c='black'>
 
-                                              {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                              {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "USD" ? "$" : hasPaymentSelected}
                                             </Title>
                                           </Group>
                                           {/* <Group w="100%" position="apart">
@@ -1965,13 +1969,13 @@ function X100Integrador() {
                                   </Card>
                                   {
                                     hasPaymentSelected && (
-                                      <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                                      <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                         <Avatar
                                           p={-20}
                                           radius='xl'
                                           className={classes.avatarExchange}
                                           onClick={() => {
-                                            let exchanges = ["$", "VES", "COP"]
+                                            let exchanges = ["USD", "VES", "COP"]
 
                                             function randomExchange() {
                                               // @ts-ignore
@@ -1997,7 +2001,7 @@ function X100Integrador() {
                                         <Text
                                           fw={300} fz={15} mt={7}
                                         >
-                                          La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                          La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                         </Text>
                                       </Card>
                                     )
@@ -2097,7 +2101,7 @@ function X100Integrador() {
                                             </Title>
                                             <Title order={4} fw={300} ta="end" c='black'>
 
-                                              {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                              {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "USD" ? "$" : hasPaymentSelected}
                                             </Title>
                                           </Group>
                                           {/* <Group w="100%" position="apart">
@@ -2219,7 +2223,7 @@ function X100Integrador() {
                                               </Title>
                                               <Title order={4} fw={300} ta="end" c='black'>
 
-                                                {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                                {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "USD" ? "$" : hasPaymentSelected}
                                               </Title>
                                             </Group>
                                             {/* <Group w="100%" position="apart">
@@ -2227,7 +2231,7 @@ function X100Integrador() {
                                         Total:
                                       </Title>
                                       <Title order={4} fw={300} ta="end" c='black'>
-                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
+                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {"$"}
                                       </Title>
                                     </Group> */}
                                           </Group>
