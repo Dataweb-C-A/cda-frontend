@@ -7,7 +7,7 @@ import { IconNotes } from '@tabler/icons-react';
 import { IconBrandGoogleAnalytics  } from '@tabler/icons-react';
 import { IconPokerChip } from "@tabler/icons"; 
 import { IconHomePlus } from '@tabler/icons-react';
-import { IconMath1Divide2 } from '@tabler/icons-react';
+import { IconMath1Divide2  , IconTrophyFilled} from '@tabler/icons-react';
 import { IconGift } from '@tabler/icons-react';
 const user = JSON.parse(localStorage.getItem('user') || '{}');
 let is5050User = false;
@@ -19,7 +19,6 @@ if (typeof user.name === 'string') {
 export const links = [
   { name: 'Lobby', url: '/', chevron: false, icon: <FaHome size={20} strokeWidth={0} />  },
   { name: 'Lobby  50 y 50', url: '/', chevron: false, icon: <FaHome size={20} strokeWidth={0} />  },
-  { name: 'Rifamax', url: '/rifamax', chevron: false, icon: <BsJoystick size={20} strokeWidth={0} />, role: 'Taquilla' },
   { name: 'Rifamax', url: '/rifamax', chevron: false, icon: <BsJoystick size={20} strokeWidth={0} />, role: 'Admin' },
   { name: 'Rifamax X100', description: '¡Nuevo!', url: '/x100', chevron: false, icon: <BsJoystick size={20} strokeWidth={0} />, role: 'Rifero' },
   { name: 'Reportes 50 y 50', url: '/reportes50y50', chevron: false, icon: <IconMath1Divide2 size={20} strokeWidth={1.5} />, hidden: !is5050User },
@@ -35,6 +34,7 @@ export const links = [
   { name: 'Rifamax X100', url: '/x100', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconPokerChip size={20} strokeWidth={1.5 } />, role: 'Admin' },
   // { name: 'Rifamax X100', url: '/x100', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconPokerChip size={20} strokeWidth={1.5 } />, role: 'Taquilla' },
   { name: 'Mis rifas X100', url: '/draws', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconHomePlus size={20} strokeWidth={1.5 } />, role: 'Admin' },
+  { name: 'Premiacion', url: '/Premiacion', chevron: false, icon: <IconTrophyFilled />, role: 'Admin' },
   // { name: 'Mis rifas X100', url: '/draws', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconHomePlus size={20} strokeWidth={1.5 } />, role: 'Taquilla' },
   // { name: 'Mis rifas X100', url: '/draws', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <IconHomePlus size={20} strokeWidth={1.5 } />, role: 'Rifero' },
   //  { name: 'Operadora', url: '/draws', description: '¡Nuevo!', descriptionColor: 'blue', descriptionSize: 9.5, chevron: false, icon: <BiMoney size={20} strokeWidth={0} />, role: 'Admin' },

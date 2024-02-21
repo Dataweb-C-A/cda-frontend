@@ -28,6 +28,7 @@ import it5050 from './app/pages/it5050'
 import award from './app/pages/Award'
 import Cupones from './app/pages/Cuponesinf'
 import X100Integrador from './app/pages/X100Integrador'
+import Premiacion from './app/pages/Premiacion'
 // import Logint from './app/pages/Logint'
 
 
@@ -252,6 +253,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/x100_integrador" component={X100Integrador} />
           <AuthRouter path="/riferos" component={Riferos} isPrivate />
           <AuthRouter path="/x100" component={Operadora} isPrivate />
+          <AuthRouter path="/Premiacion" component={Premiacion} isPrivate />
           <AuthRouter path="/reports" component={Reports} isPrivate />
           <AuthRouter path="/reportes-rifa" component={Reporterifa} isPrivate />
           {/* <AuthRouter path="/exchange" component={Exchange} isPrivate /> */}
