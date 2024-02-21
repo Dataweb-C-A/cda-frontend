@@ -31,8 +31,8 @@ const permissions: PermissionMap = {
   [Role.Taquilla]: ['/','/rifamax','/award','/New50y50t','/riferos', '/reportes-rifa','/cuadre','/infinito','/x100', '/reportes50y50','/draws',],
   [Role.Agencia]: ['/'],
   [Role.Auto]: ['/'],
-  [Role.Undefined]: ['/login'],
-  [Role.Null]: ['/login'],
+  [Role.Undefined]: ['/login', '/x100_integrador'],
+  [Role.Null]: ['/login', '/x100_integrador'],
 };
 
 

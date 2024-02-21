@@ -27,6 +27,7 @@ import New50y50t from './app/pages/New50y50t'
 import it5050 from './app/pages/it5050'
 import award from './app/pages/Award'
 import Cupones from './app/pages/Cuponesinf'
+import X100Integrador from './app/pages/X100Integrador'
 // import Logint from './app/pages/Logint'
 
 
@@ -35,7 +36,7 @@ type AppProps = {
 }
 
 interface IPrinter {
-  notification : {
+  notification: {
     id: number;
     tickets_generated: number[];
     user_id: number;
@@ -84,7 +85,7 @@ function App({ children }: AppProps) {
           } else if (paddedItem.length === 3) {
             paddedItem = `0${paddedItem}`;
           }
-  
+
           socket.send(`---------------------------------\n Numero de ticket: ${printer[0].notification.current_id} \n Numero vendido: ${paddedItem}\n Tipo de juego: 50/50 \n Fecha: ${formattedFecha}\n Localidad: Caracas\n---------------------------------\n\n\n\n\n`);
           socket.send('cut');
         });
@@ -141,9 +142,9 @@ function App({ children }: AppProps) {
         window.location.reload();
       }
     };
-  
+
     document.addEventListener("keydown", keyDownHandler);
-  
+
     axios.get('https://rifa-max.com/').then((res) => {
       const version = res.data.web_version;
       if (version !== localStorage.getItem('version')) {
@@ -153,7 +154,7 @@ function App({ children }: AppProps) {
         localStorage.setItem('version', version);
       }
     });
-  
+
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (user.email === '50-50-001@gmail.com' && socket.readyState === WebSocket.OPEN) {
       axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${user.id}&verifier=${user.expires}`)
@@ -169,10 +170,10 @@ function App({ children }: AppProps) {
           console.log(err);
         });
     }
-  
+
     const intervalId = setInterval(() => {
       // Tu código aquí...
-    
+
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       if (user.email === '50-50-001@gmail.com' && socket.readyState === WebSocket.OPEN) {
         axios.get(`https://api.rifamax.app/printer_notifications/index?user_id=${user.id}&verifier=${user.expires}`)
@@ -192,7 +193,7 @@ function App({ children }: AppProps) {
           });
       }
     }, 5000);
-    
+
     return () => {
       clearInterval(intervalId);
       document.removeEventListener("keydown", keyDownHandler);
@@ -247,7 +248,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/public_draws" component={Public} />
           <Route path="/Pot" component={Pot} />
           <Route path="/it5050/:plays?/:id?" component={it5050} />
-          <Route path="/Cupones" component={Cupones}  />
+          <Route path="/Cupones" component={Cupones} />
+          <Route path="/x100_integrador" component={X100Integrador} />
           <AuthRouter path="/riferos" component={Riferos} isPrivate />
           <AuthRouter path="/x100" component={Operadora} isPrivate />
           <AuthRouter path="/reports" component={Reports} isPrivate />
