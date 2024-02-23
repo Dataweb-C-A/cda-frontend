@@ -130,7 +130,7 @@ function DrawsModal({
   const [files2, setFiles2] = useState<FileWithPath | null>(null);
   const [premios, setPremios] = useState(['Premio #1']);
   const [otherPrizes, setOtherPrizes] = useState([
-    { name: '', prize_position: 1, days_to_award: '' }  // Cambiar 'days_to_award: null' a 'days_to_award: '''
+    { name: '', prize_position: 1, days_to_award: '' }
   ]);
   
   const [inputValues, setInputValues] = useState(['']);
@@ -320,7 +320,6 @@ function DrawsModal({
         name: otherPrizes[index].name,
         prize_position: index + 1,
         days_to_award: index === 0 ? "0" : otherPrizes[index].days_to_award.toString()
-        // Convierte el número a una cadena utilizando toString()
       }));
   
       setOtherPrizes(nuevosOtherPrizes);
@@ -331,7 +330,6 @@ function DrawsModal({
   
   const handleSelectChange = (value: string | null, index: number) => {
     const newOtherPrizes = [...otherPrizes];
-    // Si el valor es null, asignamos una cadena vacía
     newOtherPrizes[index] = { ...newOtherPrizes[index], days_to_award: value ? value : '' };
     setOtherPrizes(newOtherPrizes);
   };
@@ -583,7 +581,7 @@ function DrawsModal({
             style={{
               display: index === 0 ? "none" : "block"
             }}
-            onChange={(value) => handleSelectChange(value, index)} // Manejador de evento onChange
+            onChange={(value) => handleSelectChange(value, index)} 
           />
                   </Group>
                 ))}
