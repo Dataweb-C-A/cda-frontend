@@ -224,7 +224,7 @@ function App({ children }: AppProps) {
     >
       <Router>
         {
-          (isOutdate && window.location.pathname != "/x100_integrador")(
+          (isOutdate && window.location.pathname != "/x100_integrador") && (
             <div className="outdate" style={{ position: 'absolute', width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.8)', zIndex: 10 }}>
               <Card w="400px" top={'45%'} left={'40%'}>
                 <Title ta="center" order={3} fw={600} fz={19}>
