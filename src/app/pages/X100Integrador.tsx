@@ -1430,7 +1430,7 @@ function X100Integrador() {
                                 mt={10}
                                 py={0}
                                 onClick={() => {
-                                  hasPaymentSelected === '$' ? setHasPaymentSelected(null) : setHasPaymentSelected('$')
+                                  hasPaymentSelected === 'USD' ? setHasPaymentSelected(null) : setHasPaymentSelected('USD')
                                   setOpened(false);
                                 }}
                                 onMouseEnter={() => setIsHovered2(true)}

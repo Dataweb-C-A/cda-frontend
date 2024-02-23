@@ -368,7 +368,7 @@ function Operadora() {
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
-  const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'VES' | null>(null)
+  const [hasPaymentSelected, setHasPaymentSelected] = useState<'USD' | 'COP' | 'VES' | null>(null)
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
@@ -1408,7 +1408,7 @@ function Operadora() {
                         mt={10}
                         py={0}
                         onClick={() => {
-                          hasPaymentSelected === '$' ? setHasPaymentSelected(null) : setHasPaymentSelected('$')
+                          hasPaymentSelected === 'USD' ? setHasPaymentSelected(null) : setHasPaymentSelected('USD')
                           setOpened(false);
                         }}
                         onMouseEnter={() => setIsHovered2(true)}
@@ -1542,11 +1542,11 @@ function Operadora() {
                       mr={15}
                       color="teal"
                       size="lg"
-                      variant={hasPaymentSelected === "$" ? 'filled' : undefined}
-                      style={{ cursor: hasPaymentSelected === '$' ? "default" : "pointer" }}
+                      variant={hasPaymentSelected === "USD" ? 'filled' : undefined}
+                      style={{ cursor: hasPaymentSelected === 'USD' ? "default" : "pointer" }}
                       onClick={() => {
-                        if (hasPaymentSelected !== '$') {
-                          setHasPaymentSelected('$')
+                        if (hasPaymentSelected !== 'USD') {
+                          setHasPaymentSelected('USD')
                         }
                       }}
                     >
@@ -1707,7 +1707,7 @@ function Operadora() {
                           </Card>
                           {
                             hasPaymentSelected && (
-                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                 <Avatar
                                   p={-20}
                                   radius='xl'
@@ -1739,7 +1739,7 @@ function Operadora() {
                                 <Text
                                   fw={300} fz={15} mt={7}
                                 >
-                                  La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                  La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                 </Text>
                               </Card>
                             )
@@ -1952,7 +1952,7 @@ function Operadora() {
                           </Card>
                           {
                             hasPaymentSelected && (
-                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                 <Avatar
                                   p={-20}
                                   radius='xl'
@@ -1984,7 +1984,7 @@ function Operadora() {
                                 <Text
                                   fw={300} fz={15} mt={7}
                                 >
-                                  La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                  La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                 </Text>
                               </Card>
                             )
