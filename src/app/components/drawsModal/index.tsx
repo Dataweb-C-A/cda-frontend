@@ -49,7 +49,7 @@ type IDrawsModal = {
 type Prize = {
   name: string;
   prize_position: number;
-  days_to_award: Date | null;
+  days_to_award: string | null;
 };
 type Combo = {
   quantity: number | null;
@@ -129,7 +129,10 @@ function DrawsModal({
   const [files, setFiles] = useState<FileWithPath | null>(null);
   const [files2, setFiles2] = useState<FileWithPath | null>(null);
   const [premios, setPremios] = useState(['Premio #1']);
-  const [otherPrizes, setOtherPrizes] = useState([{ name: '', prize_position: 1, days_to_award: 0 }]);
+  const [otherPrizes, setOtherPrizes] = useState([
+    { name: '', prize_position: 1, days_to_award: '' }  // Cambiar 'days_to_award: null' a 'days_to_award: '''
+  ]);
+  
   const [inputValues, setInputValues] = useState(['']);
   const [otherPrizesInputValues, setOtherPrizesInputValues] = useState(['']);
 
@@ -302,7 +305,7 @@ function DrawsModal({
     setPremios([...premios, nuevaEtiqueta]);
     setInputValues([...inputValues, '']);
 
-    setOtherPrizes([...otherPrizes, { name: '', prize_position: premios.length + 1, days_to_award: 0 }]);
+    setOtherPrizes([...otherPrizes, { name: '', prize_position: premios.length + 1, days_to_award: '' }]);
     setOtherPrizesInputValues([...otherPrizesInputValues, '']);
     console.log('Premios:', otherPrizes);
   };
@@ -312,19 +315,27 @@ function DrawsModal({
       const nuevosPremios = premios.slice(0, -1);
       setPremios(nuevosPremios);
       setInputValues(inputValues.slice(0, -1));
-
+  
       const nuevosOtherPrizes = nuevosPremios.map((etiqueta, index) => ({
         name: otherPrizes[index].name,
         prize_position: index + 1,
-        days_to_award: index === 0 ? 0 : otherPrizes[index].days_to_award
+        days_to_award: index === 0 ? "0" : otherPrizes[index].days_to_award.toString()
+        // Convierte el número a una cadena utilizando toString()
       }));
-
+  
       setOtherPrizes(nuevosOtherPrizes);
       setOtherPrizesInputValues(otherPrizesInputValues.slice(0, -1));
       console.log('Premios:', nuevosPremios);
     }
   };
-
+  
+  const handleSelectChange = (value: string | null, index: number) => {
+    const newOtherPrizes = [...otherPrizes];
+    // Si el valor es null, asignamos una cadena vacía
+    newOtherPrizes[index] = { ...newOtherPrizes[index], days_to_award: value ? value : '' };
+    setOtherPrizes(newOtherPrizes);
+  };
+  
   const handleOtherPrizeInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const nuevosOtherPrizesInputValues = [...otherPrizesInputValues];
     nuevosOtherPrizesInputValues[index] = e.target.value;
@@ -338,31 +349,7 @@ function DrawsModal({
     console.log('Premios:', otherPrizes);
   };
 
-  const handleDaysToAwardChange = (value: Date | null, index: number) => {
-    let newValue: number = 0;
-    let formattedDate: string = '';
 
-    if (value !== null) {
-      newValue = value.getTime();
-      const dateObj = new Date(newValue);
-      const year = dateObj.getFullYear();
-      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
-      const day = dateObj.getDate().toString().padStart(2, '0');
-      formattedDate = `${year}/${month}/${day}`;
-      console.log('Fecha formateada:', formattedDate);
-    }
-
-    const nuevosOtherPrizes = [...otherPrizes];
-    nuevosOtherPrizes[index] = { ...otherPrizes[index], days_to_award: newValue };
-    setOtherPrizes(nuevosOtherPrizes);
-
-    console.log('Premios:', otherPrizes);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(inputValues);
-  };
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
@@ -370,7 +357,7 @@ function DrawsModal({
     setActive((current) => (current < 2 ? current + 1 : current))
 
     const updatedOtherPrizes = [...otherPrizes];
-    updatedOtherPrizes[0].days_to_award = 0;
+    updatedOtherPrizes[0].days_to_award = "";
 
     const formattedPrizes = updatedOtherPrizes.map(prize => ({
       name: prize.name,
@@ -579,20 +566,25 @@ function DrawsModal({
                       w={index === 0 ? "43vh" : undefined}
                     />
 
-                    <DatePicker
-                      placeholder='Premiacion'
-                      size='md'
-                      variant="filled"
-                      mt={40}
-                      radius={'md'}
-                      
-                      mb={10}
-                      value={etiqueta.days_to_award ? new Date(etiqueta.days_to_award) : null}
-                      onChange={(value) => handleDaysToAwardChange(value, index)}
-                      style={{
-                        display: index === 0 ? "none" : "block"
-                      }}
-                    />
+                 
+<Select
+            size='md'
+            variant="filled"
+            mt={40}
+            radius={'md'}
+            mb={10}
+            placeholder='Premiacion'
+            data={[
+              { value: '3', label: '3' },
+              { value: '5', label: '5' },
+              { value: '7', label: '7' },
+              { value: '15', label: '15' },
+            ]}
+            style={{
+              display: index === 0 ? "none" : "block"
+            }}
+            onChange={(value) => handleSelectChange(value, index)} // Manejador de evento onChange
+          />
                   </Group>
                 ))}
 
