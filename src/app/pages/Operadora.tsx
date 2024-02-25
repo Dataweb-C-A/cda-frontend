@@ -1676,9 +1676,9 @@ function Operadora() {
       ? classes.ticketsReserved
       : ticketsSelected.includes(ticket.position)
         ? classes.ticketsSelected
-        : isTicketWinner // Aquí verificamos si el ticket es un ganador
-          ? classes.ticketsWinners // Si es un ganador, aplicamos la clase correspondiente
-          : classes.tickets; // Si no es ninguno de los anteriores, aplicamos la clase por defecto
+        : isTicketWinner 
+          ? classes.ticketsWinners 
+          : classes.tickets; 
   
 
     return (

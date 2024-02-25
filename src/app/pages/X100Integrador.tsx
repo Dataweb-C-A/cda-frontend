@@ -54,6 +54,7 @@ interface ICableTicket {
   raffle_id: number;
   sold: number[];
   reserved: number[];
+  winners: number[];
 }
 
 interface ITicketModal {
@@ -237,6 +238,18 @@ const useStyles = createStyles((theme) => ({
       color: theme.colors.blue[0],
     },
   },
+  ticketsWinners: {
+    width: '90%',
+    height: '3rem',
+    background: '#5a189a',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'not-allowed',
+    [`@media (max-width: 1280px)`]: {
+      width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
+  },
   ticketsSold: {
     width: '90%',
     height: '3rem',
@@ -284,6 +297,18 @@ const useStyles = createStyles((theme) => ({
     transition: '0.6s',
     boxShadow: "0px 0px 24px 17px rgba(46,255,245,0.36)",
     cursor: 'pointer'
+  },
+  ticketsWinners100: {
+    width: '90%',
+    height: '3rem',
+    background: '#5a189a',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'not-allowed',
+    [`@media (max-width: 1280px)`]: {
+      width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
   },
   tickets100: {
     width: '70px',
@@ -368,6 +393,8 @@ function X100Integrador() {
   const searchParams = new URLSearchParams(window.location.search)
 
   const token = searchParams.get('token') || null
+
+  const userId = searchParams.get('userId') || null
 
   const currency = searchParams.get('currency') || null
 
@@ -1385,7 +1412,7 @@ function X100Integrador() {
                       ) : (
                         <>
                           <div style={{ display: 'flex', marginBottom: '15px', width: '100%' }}>
-                            <Modal
+                            {/* <Modal
                               opened={opened}
                               closeOnClickOutside={false}
                               onClose={() => setOpened(false)}
@@ -1486,7 +1513,7 @@ function X100Integrador() {
                                 </Group>
                               </Card>
 
-                            </Modal>
+                            </Modal> */}
                             {tickets.tickets.length > 101 && (
                               <>
                                 <ActionIcon
@@ -1659,6 +1686,7 @@ function X100Integrador() {
                                   {tickets.tickets.slice((selectedPage - 1) * 200, selectedPage * 200).map((ticket: ITicket) => {
                                     const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
                                     const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+                                    const isTicketWinner = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.winners?.includes(ticket.position);
 
                                     const ticketClassName = isTicketSold
                                       ? classes.ticketsSold
@@ -1666,16 +1694,16 @@ function X100Integrador() {
                                         ? classes.ticketsReserved
                                         : ticketsSelected.includes(ticket.position)
                                           ? classes.ticketsSelected
-                                          : classes.tickets;
+                                          : isTicketWinner
+                                            ? classes.ticketsWinners
+                                            : classes.tickets;
+
 
                                     return (
                                       <div className={classes.ticketsSellContainer}>
                                         {isTicketSold ? (
                                           <Card key={ticket.position} className={ticketClassName}>
                                             <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-                                            {/* <Text  fz={12} ml={-12}>
-              vendido
-              </Text> */}
                                           </Card>
                                         ) : (
                                           <Card
@@ -1684,14 +1712,12 @@ function X100Integrador() {
                                             onClick={() => chooseTicket(ticket.position)}
                                           >
                                             <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-                                            {/* <Text  fz={12} ml={-12}>
-              {ticketStatusLabel}
-            </Text>  */}
                                           </Card>
                                         )}
                                       </div>
                                     );
                                   })}
+
                                   {/* Resto del código permanece igual */}
                                   <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                                     <Card style={{ background: '#4D4F66' }}>
@@ -1903,6 +1929,7 @@ function X100Integrador() {
                                   {tickets.tickets.map((ticket: ITicket) => {
                                     const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
                                     const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+                                    const isTicketWinner = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.winners?.includes(ticket.position);
 
                                     const ticketClassName = isTicketSold
                                       ? classes.ticketsSold100
@@ -1910,14 +1937,15 @@ function X100Integrador() {
                                         ? classes.ticketsReserved100
                                         : ticketsSelected.includes(ticket.position)
                                           ? classes.ticketsSelected100
-                                          : classes.tickets100;
+                                          : isTicketWinner
+                                            ? classes.ticketsWinners100
+                                            : classes.tickets100;
 
                                     return (
                                       <div className={classes.ticketsSellContainer}>
                                         {isTicketSold ? (
                                           <Card key={ticket.position} className={ticketClassName}>
                                             <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-
                                           </Card>
                                         ) : (
                                           <Card
@@ -1926,10 +1954,8 @@ function X100Integrador() {
                                             onClick={() => chooseTicket(ticket.position)}
                                           >
                                             <Text ml="20%" fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-
                                           </Card>
                                         )}
-
                                       </div>
                                     );
                                   })}
@@ -2144,9 +2170,9 @@ function X100Integrador() {
                               { /* Raffle info   style={{ background: "#1D1E30"}} */}
                               <div className={classes.raffleInfo}>
                                 <Card withBorder mt={0} w={350} className={classes.raffleInfoCard}>
-                                  <Text mt={-10} fw={700} fz={20} mb={10} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
+                                  <Text mt={-15} fw={700} fz={12} mb={18} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
                                   <Image mt={-20} width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
-                                  <Divider labelPosition="center" mb={10} mt={-5} label="Datos de la rifa" />
+                                  <Divider labelPosition="center" mt={-5} label="Datos de la rifa" />
                                   <Group w="100%" position='apart'>
                                     <Text fw={700} fz={13} ta="start">Tipo de rifa:</Text>
                                     <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({raffleActive(selectedRaffle)?.tickets_count} números)</Text>
@@ -2170,8 +2196,8 @@ function X100Integrador() {
                                     ticketsSelected.length > 0 && (
                                       <Card bg="white" className="mini-cutoff">
                                         <small>
-                                          <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
-                                          <Divider my={10} variant="dashed" />
+                                          <Text ta="center" mt={-5} fw={700} color='black'>Informacion de compra</Text>
+                                          <Divider variant="dashed" />
                                           <Group position="apart">
                                             <Title order={6} fw={600} c='black'>
                                               Prod.
@@ -2184,7 +2210,7 @@ function X100Integrador() {
                                             </Title>
                                           </Group>
                                           <Group pb={10} mx={0} position="apart">
-                                            <ScrollArea h={73} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                            <ScrollArea h={65} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                               {
                                                 ticketsSelected.map((ticket) => {
                                                   const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
@@ -2217,13 +2243,13 @@ function X100Integrador() {
                                                 })
                                               }
                                             </ScrollArea>
-                                            <Group w="100%" position="apart">
+                                            <Group mb={-5} w="100%" position="apart">
                                               <Title order={4} fw={650} c='black'>
                                                 Total:
                                               </Title>
                                               <Title order={4} fw={300} ta="end" c='black'>
 
-                                                {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "USD" ? "$" : hasPaymentSelected}
+                                                {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
                                               </Title>
                                             </Group>
                                             {/* <Group w="100%" position="apart">
@@ -2231,12 +2257,12 @@ function X100Integrador() {
                                         Total:
                                       </Title>
                                       <Title order={4} fw={300} ta="end" c='black'>
-                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {"$"}
+                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
                                       </Title>
                                     </Group> */}
                                           </Group>
                                         </small>
-                                        <Group w="100%" position="center" mt={10}>
+                                        <Group w="100%" position="center" >
                                           <Button
                                             leftIcon={<IconTrash />}
                                             color="red"
