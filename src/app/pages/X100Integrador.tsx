@@ -394,7 +394,9 @@ function X100Integrador() {
 
   const token = searchParams.get('token') || null
 
-  const userId = searchParams.get('userId') || null
+  const [userId, setUserId] = useState(null);
+
+  const [error, setError] = useState(false);
 
   const currency = searchParams.get('currency') || null
 
@@ -565,6 +567,18 @@ function X100Integrador() {
       },
     })
   }, [reload])
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const userIdFromParams = searchParams.get('userId');
+
+    if (!userIdFromParams) {
+      setError(true);
+    } else {
+      //setUserId(userIdFromParams);
+    }
+  }, []);
+
 
   function RaffleListEmpty() {
     return (
@@ -1408,6 +1422,7 @@ function X100Integrador() {
                           }}
                         >
                           <Text>Seleccione una rifa para ver los tickets.</Text>
+
                         </div>
                       ) : (
                         <>
