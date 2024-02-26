@@ -49,8 +49,9 @@ type IDrawsModal = {
 type Prize = {
   name: string;
   prize_position: number;
-  days_to_award: string | null;
+  days_to_award: number | null;
 };
+
 type Combo = {
   quantity: number | null;
   price: number | null;
@@ -129,12 +130,12 @@ function DrawsModal({
   const [files, setFiles] = useState<FileWithPath | null>(null);
   const [files2, setFiles2] = useState<FileWithPath | null>(null);
   const [premios, setPremios] = useState(['Premio #1']);
-  const [otherPrizes, setOtherPrizes] = useState([
-    { name: '', prize_position: 1, days_to_award: '' }
+  const [otherPrizes, setOtherPrizes] = useState<Prize[]>([
+    { name: '', prize_position: 1, days_to_award: 0 }
   ]);
-  
+
   const [inputValues, setInputValues] = useState(['']);
-  const [otherPrizesInputValues, setOtherPrizesInputValues] = useState(['']);
+  const [otherPrizesInputValues, setOtherPrizesInputValues] = useState<string[]>(['']);
 
 
   useEffect(() => {
@@ -301,63 +302,55 @@ function DrawsModal({
   }
 
   const agregarPremio = () => {
-    const nuevaEtiqueta = `Premio #${premios.length + 1}`;
-    setPremios([...premios, nuevaEtiqueta]);
-    setInputValues([...inputValues, '']);
-
-    setOtherPrizes([...otherPrizes, { name: '', prize_position: premios.length + 1, days_to_award: '' }]);
+    const newPrizePosition = otherPrizes.length + 1;
+    const newPrize = { name: '', prize_position: newPrizePosition, days_to_award: null };
+    setOtherPrizes([...otherPrizes, newPrize]);
     setOtherPrizesInputValues([...otherPrizesInputValues, '']);
-    console.log('Premios:', otherPrizes);
   };
 
   const eliminarUltimoPremio = () => {
-    if (premios.length > 1) {
-      const nuevosPremios = premios.slice(0, -1);
-      setPremios(nuevosPremios);
-      setInputValues(inputValues.slice(0, -1));
-  
-      const nuevosOtherPrizes = nuevosPremios.map((etiqueta, index) => ({
-        name: otherPrizes[index].name,
-        prize_position: index + 1,
-        days_to_award: index === 0 ? "0" : otherPrizes[index].days_to_award.toString()
-      }));
-  
-      setOtherPrizes(nuevosOtherPrizes);
+    if (otherPrizes.length > 1) {
+      const newPrizes = otherPrizes.slice(0, -1);
+      setOtherPrizes(newPrizes);
       setOtherPrizesInputValues(otherPrizesInputValues.slice(0, -1));
-      console.log('Premios:', nuevosPremios);
     }
   };
-  
-  const handleSelectChange = (value: string | null, index: number) => {
-    const newOtherPrizes = [...otherPrizes];
-    newOtherPrizes[index] = { ...newOtherPrizes[index], days_to_award: value ? value : '' };
-    setOtherPrizes(newOtherPrizes);
-  };
-  
+
   const handleOtherPrizeInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const nuevosOtherPrizesInputValues = [...otherPrizesInputValues];
-    nuevosOtherPrizesInputValues[index] = e.target.value;
-    setOtherPrizesInputValues(nuevosOtherPrizesInputValues);
+    const newPrizes = [...otherPrizes];
+    const newValue = parseInt(e.target.value);
 
-    const nuevosOtherPrizes = [...otherPrizes];
-    nuevosOtherPrizes[index] = { ...otherPrizes[index], name: e.target.value };
-    setOtherPrizes(nuevosOtherPrizes);
+    if (newPrizes[index].prize_position === 1) {
+      newPrizes[index] = { ...newPrizes[index], name: e.target.value, days_to_award: 0 };
+    } else {
+      newPrizes[index] = { ...newPrizes[index], name: e.target.value, days_to_award: isNaN(newValue) ? null : newValue };
+    }
 
-
-    console.log('Premios:', otherPrizes);
+    setOtherPrizes(newPrizes);
+    setOtherPrizesInputValues([...otherPrizesInputValues.slice(0, index), e.target.value, ...otherPrizesInputValues.slice(index + 1)]);
   };
 
+  const handleSelectChange = (value: string | null, index: number) => {
+    const newPrizes = [...otherPrizes];
+    const newValue = value ? parseInt(value) : null;
+
+    if (newPrizes[index].prize_position === 1) {
+      newPrizes[index] = { ...newPrizes[index], days_to_award: 0 };
+    } else {
+      newPrizes[index] = { ...newPrizes[index], days_to_award: newValue };
+    }
+
+    setOtherPrizes(newPrizes);
+  };
 
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   const nextStep = (values?: FormProps) => {
-    setActive((current) => (current < 2 ? current + 1 : current))
+    setActive((current) => (current < 2 ? current + 1 : current));
 
-    const updatedOtherPrizes = [...otherPrizes];
-    updatedOtherPrizes[0].days_to_award = "";
 
-    const formattedPrizes = updatedOtherPrizes.map(prize => ({
+    const formattedPrizes = otherPrizes.map(prize => ({
       name: prize.name,
       prize_position: prize.prize_position,
       days_to_award: prize.days_to_award
@@ -373,7 +366,7 @@ function DrawsModal({
         tickets_count: values?.tickets_count,
         raffle_type: values?.raffle_type,
         init_date: values?.init_date,
-        prizes: [formattedPrizes],
+        prizes: formattedPrizes,
         visible_taquillas_ids: values?.visible_taquillas_ids,
         expired_date: values?.expired_date,
         combos: values?.combos !== null ? (values?.combos) : null,
@@ -385,16 +378,19 @@ function DrawsModal({
       }
     }, {
       headers: {
-        "Content-Type": ["application/json", "multipart/form-data"],
+        "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((res) => {
-      console.log(res)
-      closeModal()
+      console.log(res);
+      closeModal();
     }).catch((err) => {
-      console.log(err)
-    })
-  }
+      console.log(err);
+    });
+  };
+
+
+
 
   const validateDate = () => {
     if (actualDate <= validate) {
@@ -564,25 +560,25 @@ function DrawsModal({
                       w={index === 0 ? "43vh" : undefined}
                     />
 
-                 
-<Select
-            size='md'
-            variant="filled"
-            mt={40}
-            radius={'md'}
-            mb={10}
-            placeholder='Premiacion'
-            data={[
-              { value: '3', label: '3' },
-              { value: '5', label: '5' },
-              { value: '7', label: '7' },
-              { value: '15', label: '15' },
-            ]}
-            style={{
-              display: index === 0 ? "none" : "block"
-            }}
-            onChange={(value) => handleSelectChange(value, index)} 
-          />
+
+                    <Select
+                      size='md'
+                      variant="filled"
+                      mt={40}
+                      radius={'md'}
+                      mb={10}
+                      placeholder='Premiacion'
+                      data={[
+                        { value: '3', label: '3' },
+                        { value: '5', label: '5' },
+                        { value: '7', label: '7' },
+                        { value: '15', label: '15' },
+                      ]}
+                      style={{
+                        display: index === 0 ? "none" : "block"
+                      }}
+                      onChange={(value) => handleSelectChange(value, index)}
+                    />
                   </Group>
                 ))}
 
