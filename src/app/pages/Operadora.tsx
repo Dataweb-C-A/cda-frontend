@@ -19,7 +19,7 @@ import USANumbers from "../assets/data/usaNumbers.json"
 import ColombiaNumbers from "../assets/data/colombiaNumbers.json"
 import { useForm } from "@mantine/form"
 import RifamaxLogo from '../assets/images/rifamax-logo.png'
-import { IconReceipt , IconEye} from "@tabler/icons-react"
+import { IconReceipt , IconEye,IconCrown} from "@tabler/icons-react"
 
 interface IStatus {
   is_connected: boolean;
@@ -53,6 +53,7 @@ interface ICableTicket {
   raffle_id: number;
   sold: number[];
   reserved: number[];
+  winners: number[];
 }
 
 interface ITicketModal {
@@ -212,6 +213,18 @@ const useStyles = createStyles((theme) => ({
       width: 'calc(70% + 1.7rem)',
       height: '2.6rem',
     },
+  },  
+  ticketsWinners: {
+    width: '90%',
+    height: '3rem',
+    background: '#5a189a',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'not-allowed',
+    [`@media (max-width: 1280px)`]: {
+      width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
   },
   ticketsSelected: {
     width: '90%',
@@ -295,6 +308,18 @@ const useStyles = createStyles((theme) => ({
       height: '5rem',
     },
   },
+  ticketsWinners100: {
+    width: '90%',
+    height: '3rem',
+    background: '#5a189a',
+    userSelect: 'none',
+    textDecoration: 'none',
+    cursor: 'not-allowed',
+    [`@media (max-width: 1280px)`]: {
+      width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
+  },
   ticketsReserved100: {
     width: '70px',
     height: '5rem',
@@ -368,7 +393,7 @@ function Operadora() {
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
-  const [hasPaymentSelected, setHasPaymentSelected] = useState<'$' | 'COP' | 'VES' | null>(null)
+  const [hasPaymentSelected, setHasPaymentSelected] = useState<'USD' | 'COP' | 'VES' | null>(null)
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
@@ -582,8 +607,13 @@ function Operadora() {
   }
 
   function isTicketIsSoldDeselect() {
-    setTicketsSelected(ticketsSelected.filter(ticket => !ticketsSold.find((item) => item.raffle_id === selectedRaffle)?.sold.includes(ticket)))
+    setTicketsSelected(ticketsSelected.filter(ticket => {
+      const isTicketSold = ticketsSold.find((item) => item.raffle_id === selectedRaffle)?.sold.includes(ticket);
+      const isTicketWinner = ticketsSold.find((item) => item.raffle_id === selectedRaffle)?.winners?.includes(ticket);
+      return !(isTicketSold || isTicketWinner);
+    }));
   }
+  
 
   useEffect(() => {
     return isTicketIsSoldDeselect()
@@ -1408,7 +1438,7 @@ function Operadora() {
                         mt={10}
                         py={0}
                         onClick={() => {
-                          hasPaymentSelected === '$' ? setHasPaymentSelected(null) : setHasPaymentSelected('$')
+                          hasPaymentSelected === 'USD' ? setHasPaymentSelected(null) : setHasPaymentSelected('USD')
                           setOpened(false);
                         }}
                         onMouseEnter={() => setIsHovered2(true)}
@@ -1525,9 +1555,9 @@ function Operadora() {
                       }
                       style={{ borderRadius: '5px 0 0 5px' }}
                       ml={10}
-                    /> */}
+                    />
 
-                    {/* <Button
+                    <Button
                       size='xs'
                       ml={0}
                       color="blue"
@@ -1542,11 +1572,11 @@ function Operadora() {
                       mr={15}
                       color="teal"
                       size="lg"
-                      variant={hasPaymentSelected === "$" ? 'filled' : undefined}
-                      style={{ cursor: hasPaymentSelected === '$' ? "default" : "pointer" }}
+                      variant={hasPaymentSelected === "USD" ? 'filled' : undefined}
+                      style={{ cursor: hasPaymentSelected === 'USD' ? "default" : "pointer" }}
                       onClick={() => {
-                        if (hasPaymentSelected !== '$') {
-                          setHasPaymentSelected('$')
+                        if (hasPaymentSelected !== 'USD') {
+                          setHasPaymentSelected('USD')
                         }
                       }}
                     >
@@ -1634,42 +1664,43 @@ function Operadora() {
                       { /* Raffle tickets */}
                       {tickets.tickets.length > 101 ? (
                         <div className={classes.ticketsList}>
+                          {/* aqui */}
                           {tickets.tickets.slice((selectedPage - 1) * 200, selectedPage * 200).map((ticket: ITicket) => {
-                            const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
-                            const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+    const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
+    const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+    const isTicketWinner = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.winners?.includes(ticket.position);
 
-                            const ticketClassName = isTicketSold
-                              ? classes.ticketsSold
-                              : isTicketReserved
-                                ? classes.ticketsReserved
-                                : ticketsSelected.includes(ticket.position)
-                                  ? classes.ticketsSelected
-                                  : classes.tickets;
+    const ticketClassName = isTicketSold
+    ? classes.ticketsSold
+    : isTicketReserved
+      ? classes.ticketsReserved
+      : ticketsSelected.includes(ticket.position)
+        ? classes.ticketsSelected
+        : isTicketWinner 
+          ? classes.ticketsWinners 
+          : classes.tickets; 
+  
 
-                            return (
-                              <div className={classes.ticketsSellContainer}>
-                                {isTicketSold ? (
-                                  <Card key={ticket.position} className={ticketClassName}>
-                                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-                                    {/* <Text  fz={12} ml={-12}>
-              vendido
-              </Text> */}
-                                  </Card>
-                                ) : (
-                                  <Card
-                                    key={ticket.position + ticketKey}
-                                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
-                                    onClick={() => chooseTicket(ticket.position)}
-                                  >
-                                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-                                    {/* <Text  fz={12} ml={-12}>
-              {ticketStatusLabel}
-            </Text>  */}
-                                  </Card>
-                                )}
-                              </div>
-                            );
-                          })}
+    return (
+        <div className={classes.ticketsSellContainer}>
+            {isTicketSold ? (
+                <Card key={ticket.position} className={ticketClassName}>
+                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                </Card>
+            ) : (
+                <Card
+                    key={ticket.position + ticketKey}
+                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
+                    onClick={() => chooseTicket(ticket.position)}
+                >
+                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                </Card>
+            )}
+        </div>
+    );
+})}
+
+
                           {/* Resto del código permanece igual */}
                           <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                             <Card style={{ background: '#4D4F66' }}>
@@ -1707,7 +1738,7 @@ function Operadora() {
                           </Card>
                           {
                             hasPaymentSelected && (
-                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                 <Avatar
                                   p={-20}
                                   radius='xl'
@@ -1739,7 +1770,7 @@ function Operadora() {
                                 <Text
                                   fw={300} fz={15} mt={7}
                                 >
-                                  La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                  La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                 </Text>
                               </Card>
                             )
@@ -1884,38 +1915,39 @@ function Operadora() {
                         <div className={classes.ticketsList100}>
                           {/* Aquí aplicamos las clases con sufijo "100" */}
                           {tickets.tickets.map((ticket: ITicket) => {
-                            const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
-                            const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+  const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
+  const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+  const isTicketWinner = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.winners?.includes(ticket.position);
 
-                            const ticketClassName = isTicketSold
-                              ? classes.ticketsSold100
-                              : isTicketReserved
-                                ? classes.ticketsReserved100
-                                : ticketsSelected.includes(ticket.position)
-                                  ? classes.ticketsSelected100
-                                  : classes.tickets100;
+  const ticketClassName = isTicketSold
+    ? classes.ticketsSold100
+    : isTicketReserved
+      ? classes.ticketsReserved100
+      : ticketsSelected.includes(ticket.position)
+        ? classes.ticketsSelected100
+        : isTicketWinner 
+          ? classes.ticketsWinners100 
+          : classes.tickets100; 
 
-                            return (
-                              <div className={classes.ticketsSellContainer}>
-                                {isTicketSold ? (
-                                  <Card key={ticket.position} className={ticketClassName}>
-                                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+  return (
+    <div className={classes.ticketsSellContainer}>
+      {isTicketSold ? (
+        <Card key={ticket.position} className={ticketClassName}>
+          <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+        </Card>
+      ) : (
+        <Card
+          key={ticket.position + ticketKey}
+          className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
+          onClick={() => chooseTicket(ticket.position)}
+        >
+          <Text ml="20%" fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+        </Card>
+      )}
+    </div>
+  );
+})}
 
-                                  </Card>
-                                ) : (
-                                  <Card
-                                    key={ticket.position + ticketKey}
-                                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
-                                    onClick={() => chooseTicket(ticket.position)}
-                                  >
-                                    <Text ml="20%" fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-
-                                  </Card>
-                                )}
-
-                              </div>
-                            );
-                          })}
                           <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                             <Card style={{ background: '#4D4F66' }}>
                               <Text>
@@ -1952,7 +1984,7 @@ function Operadora() {
                           </Card>
                           {
                             hasPaymentSelected && (
-                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === '$' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                 <Avatar
                                   p={-20}
                                   radius='xl'
@@ -1984,7 +2016,7 @@ function Operadora() {
                                 <Text
                                   fw={300} fz={15} mt={7}
                                 >
-                                  La moneda seleccionada es: <strong>{hasPaymentSelected === '$' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                  La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                 </Text>
                               </Card>
                             )

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react-swc'
 import viteSvgr from "vite-plugin-svgr";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 
-const manifestForPlugin: Partial<VitePWAOptions> = { 
+const manifestForPlugin: Partial<VitePWAOptions> = {
   registerType: "autoUpdate",
   includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
   workbox: {
@@ -53,14 +53,14 @@ const manifestForPlugin: Partial<VitePWAOptions> = {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(), 
-    VitePWA({ 
-      registerType: 'autoUpdate', 
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
       workbox: {
         clientsClaim: true,
         skipWaiting: true
-      } 
+      }
     }
   )],
-  base: "./" 
+  base: "./"
 })
