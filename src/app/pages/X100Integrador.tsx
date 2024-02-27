@@ -400,8 +400,6 @@ function X100Integrador() {
 
   const currency = searchParams.get('currency') || null
 
-  const player_id = searchParams.get('player_id') || null
-
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
@@ -525,8 +523,8 @@ function X100Integrador() {
 
         received(data: IProgresses[]) {
 
-          data.forEach(progress => {
-          });
+          // data.forEach(progress => {
+          // });
 
           setProgresses(data);
           setRafflesCableStatus({
@@ -583,14 +581,7 @@ function X100Integrador() {
   }, [reload])
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const userIdFromParams = searchParams.get('userId');
 
-    if (!userIdFromParams) {
-      setError(true);
-    } else {
-      //setUserId(userIdFromParams);
-    }
   }, []);
 
 
