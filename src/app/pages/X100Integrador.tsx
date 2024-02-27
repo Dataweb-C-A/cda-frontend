@@ -411,6 +411,17 @@ function X100Integrador() {
   const urlParams = new URLSearchParams(window.location.search);
   const currencyParam = urlParams.get('currency');
   const money = currencyParam === 'COP' || currencyParam === 'USD' || currencyParam === 'VES' ? currencyParam : 'nou';
+  const playerIdParam = urlParams.get('playerId');
+  if (playerIdParam !== null) {
+    const playerId = parseInt(playerIdParam);
+    if (!isNaN(playerId)) {
+      console.log("El valor de playerId es un número:", playerId);
+    } else {
+      console.log("El valor de playerId no es un número.");
+    }
+  } else {
+    console.log("No se encontró el parámetro playerId en la URL.");
+  }
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
@@ -1161,8 +1172,8 @@ function X100Integrador() {
   return (
     <>
       {
-token !== 'rm_live_ed8c46ee-06fb-4d12-b194-387ddb3578d0' || (money !== "USD" && money !== "COP" && money !== "VES") ?  <Unauthorized /> :
-(
+        token !== 'rm_live_ed8c46ee-06fb-4d12-b194-387ddb3578d0' || (money !== "USD" && money !== "COP" && money !== "VES") || (playerIdParam !== null && isNaN(parseInt(playerIdParam))) ? <Unauthorized /> :
+          (
             <>
               <InvalidModal />
               <BuyModal />
