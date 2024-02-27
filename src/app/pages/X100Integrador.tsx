@@ -899,24 +899,24 @@ function X100Integrador() {
       setEmail(newEmail);
     };
 
-    const createClient = () => {
-      axios.post("https://api.rifa-max.com/x100/clients", {
-        x100_client: {
-          name: name + ' ' + lastName,
-          dni: (countrySelected === 'Venezuela' ? `${initDNI}${Dni}` : null),
-          phone: phone,
-          email: email
-        }
-      }).then((res) => {
-        setClient(res.data);
-        setActiveStep(activeStep + 1);
+    // const createClient = () => {
+    //   axios.post("https://api.rifa-max.com/x100/clients", {
+    //     x100_client: {
+    //       name: name + ' ' + lastName,
+    //       dni: (countrySelected === 'Venezuela' ? `${initDNI}${Dni}` : null),
+    //       phone: phone,
+    //       email: email
+    //     }
+    //   }).then((res) => {
+    //     setClient(res.data);
+    //     setActiveStep(activeStep + 1);
 
-        handleCompra(res.data.id);
-      }).catch((e) => {
-      });
-    };
+    //     handleCompra(res.data.id);
+    //   }).catch((e) => {
+    //   });
+    // };
 
-    const handleCompra = (clientId: string) => {
+    const handleCompra = () => {
       if (!token) {
         return;
       }
@@ -924,10 +924,10 @@ function X100Integrador() {
       const requestData = {
         x100_ticket: {
           x100_raffle_id: selectedRaffle,
-          x100_client_id: clientId,
+          x100_client_id: 5,
           positions: ticketsSelected.map(ticket => ticket),
           price: calculateTotalPrice().toFixed(2),
-          money: hasPaymentSelected ? "$" : ""
+          money: hasPaymentSelected ? "USD" : "USD"
         }
       };
 
@@ -950,7 +950,7 @@ function X100Integrador() {
         })
         .catch(error => {
         });
-    }; ``
+    }; 
 
     const priceUnitWithCombos = Number(raffleActive(selectedRaffle || 0)?.price_unit)
 
@@ -973,133 +973,11 @@ function X100Integrador() {
         size="xl"
       >
         <Stepper active={activeStep}>
-          <Stepper.Step
-            label="Selecciona un país"
-            description="Selecciona tu país de residencia"
-          >
-            <Text ta="center" fw={750} fz={16}>
-              Seleccione su país de residencia para poder continuar con su pago
-            </Text>
-            <Group position="center">
-              <Avatar
-                src={VenezuelaFlag}
-                className={countrySelected === 'Venezuela' ? classes.avatarFlagSelected : classes.avatarFlags}
-                size={150}
-                radius={100}
-                mt={40}
-                onClick={() => {
-                  countrySelected === 'Venezuela' ? setCountrySelected(null) : setCountrySelected('Venezuela')
-                  countrySelected === 'Venezuela' ? setCountryPrefix(null) : setCountryPrefix("+58")
-                }}
-              />
-              <Avatar
-                src={USAFlag}
-                className={countrySelected === 'USA' ? classes.avatarFlagSelected : classes.avatarFlags}
-                size={150}
-                radius={100}
-                mt={40}
-                onClick={() => {
-                  countrySelected === 'USA' ? setCountrySelected(null) : setCountrySelected('USA')
-                  countrySelected === 'USA' ? setCountryPrefix(null) : setCountryPrefix("+1")
-                }}
-              />
-              <Avatar
-                src={ColombiaFlag}
-                className={countrySelected === 'Colombia' ? classes.avatarFlagSelected : classes.avatarFlags}
-                size={150}
-                radius={100}
-                mt={40}
-                onClick={() => {
-                  countrySelected === 'Colombia' ? setCountrySelected(null) : setCountrySelected('Colombia')
-                  countrySelected === 'Colombia' ? setCountryPrefix(null) : setCountryPrefix("+57")
-                }}
-              />
-            </Group>
-            <Group position="apart" px={170} mt={10}>
-              <Text ta='center' fw={400} fz={16}>Venezuela</Text>
-              <Text ta='center' fw={400} fz={16}>Estados Unidos</Text>
-              <Text ta='center' fw={400} fz={16}>Colombia</Text>
-            </Group>
-            <Group position="center" mt={40}>
-              <Button
-                disabled
-                onClick={() => setActiveStep(activeStep - 1)}
-              >
-                Atrás
-              </Button>
-              <Button
-                disabled={countrySelected === null}
-                onClick={() => setActiveStep(activeStep + 1)}
-              >
-                Siguiente
-              </Button>
-            </Group>
-          </Stepper.Step>
-          <Stepper.Step
-            label="Introduzca los sus datos"
-            description="Debe ingresar sus datos para realizar el pago"
-          >
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <Group position="center" mt={10} px={170}>
-                <Text ta="center" fw={750}>
-                  Ingrese su número telefónico
-                </Text>
-                <Group spacing={5} position="center" w="100%">
-                  <Select
-                    w={80}
-                    label={<Text>Prefijo</Text>}
-                    data={countrySelected === 'Venezuela' ? [
-                      { value: '(412)', label: '0412' },
-                      { value: '(414)', label: '0414' },
-                      { value: '(424)', label: '0424' },
-                      { value: '(416)', label: '0416' },
-                      { value: '(426)', label: '0426' }
-                    ] : countrySelected === 'USA' ? USANumbers : ColombiaNumbers}
-                    placeholder={
-                      countrySelected === 'Venezuela' ? '0412'
-                        : countrySelected === 'USA' ? '812'
-                          : '314'
-                    }
-                    searchable
-                    nothingFound={<QuestionMark />}
-                    onChange={
-                      (value) => {
-                        handleSelectChange(value)
-                      }
-                    }
-                    value={selectValue}
-                    error={form.errors.prefix}
-                    mb={15}
-                  />
-                  <TextInput
-                    label={<Text>Número telefónico</Text>}
-                    placeholder="111-1111"
-                    mb={15}
-                    maxLength={8}
-                    onChange={(event) => {
-                      handleTextInputChange(event.currentTarget.value)
-                    }}
-                    value={textInputValue}
-                  />
-                </Group>
-                <Button
-                  onClick={() => setActiveStep(activeStep - 1)}
-                >
-                  Atrás
-                </Button>
-                <Button
-                  disabled={!phoneRegex.test(`${countryPrefix} ${selectValue} ${textInputValue}`)}
-                  onClick={(e) => secondNextStep(`${countryPrefix} ${selectValue} ${textInputValue}`)}
-                >
-                  Siguiente
-                </Button>
-              </Group>
-            </form>
-          </Stepper.Step>
+       
 
           <Stepper.Step
             label="Verificación"
-            description="Confirmación y verificación"
+            description="Verificación"
           >
             <Group
               position="center"
@@ -1174,68 +1052,7 @@ function X100Integrador() {
                   </Title>
                 </Group>
               </Card>
-              {
-                client === null && (
-                  <Card w="48.5%" h={325}>
-                    <div style={{ position: 'absolute', top: '30%', left: '0', padding: '0 10px 0 10px' }}>
-                      <Text ta="center" fw={750}>Personaliza tu ticket</Text>
-                      <Group spacing={5} mt={10}>
-                        <TextInput
-                          style={{ width: '49.2%' }}
-                          placeholder="Nombre"
-                          value={name}
-                          onChange={handleNameChange}
-                        />
-                        <TextInput
-                          style={{ width: '49.2%' }}
-                          placeholder="Apellido"
-                          value={lastName}
-                          onChange={handleLastNameChange}
-                        />
-                      </Group>
-                      {
-                        countrySelected === 'Venezuela' && (
-                          <Group>
-                            <Select
-                              w={90}
-                              onChange={(e) => setInitDNI(e)}
-                              mt={10}
-                              value={initDNI}
-                              defaultValue="V-"
-                              data={[
-                                { value: 'V-', label: 'V' },
-                                { value: 'E-', label: 'E' },
-                                { value: 'J-', label: 'J' },
-                                { value: 'G-', label: 'G' },
-                              ]}
-                            />
-                            <TextInput
-                              placeholder="Cedula o DNI"
-                              mt={10}
-                              w={232}
-                              maxLength={8}
-                              value={Dni}
-                              onChange={handleDniChange}
-                            />
-                          </Group>
-                        )
-                      }
-                      <TextInput
-                        placeholder="Correo electronico"
-                        mt={10}
-                        value={email}
-                        onChange={handleEmailChange}
-                      />
-                      <Checkbox
-                        checked={terms}
-                        onChange={() => setTerms(!terms)}
-                        mt={10}
-                        label="Acepto los términos y condiciones"
-                      />
-                    </div>
-                  </Card>
-                )
-              }
+       
             </Group>
             <Group position="center" mt={30}>
               <Button
@@ -1246,7 +1063,7 @@ function X100Integrador() {
               {
                 client !== null ? (
                   <Button
-                    onClick={() => handleCompra(client?.id.toString())}
+                    // onClick={() => handleCompra(client?.id.toString())}
                   >
                     Comprar
                   </Button>
@@ -1255,13 +1072,11 @@ function X100Integrador() {
 
                 ) : (
                   <Button
-                    disabled={!name || !lastName || !terms || !isValidEmail(email) || countrySelected === "Venezuela" && (!Dni)}
-                    onClick={() => {
-                      createClient();
-                    }}
-                  >
-                    Comprar
-                  </Button>
+                  onClick={() => handleCompra()}
+                >
+                  Comprar
+                </Button>
+                
 
                 )
               }
