@@ -408,6 +408,9 @@ function X100Integrador() {
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<string | 'USD' | 'COP' | 'VES' | null>(currency)
+  const urlParams = new URLSearchParams(window.location.search);
+  const currencyParam = urlParams.get('currency');
+  const money = currencyParam === 'COP' || currencyParam === 'USD' || currencyParam === 'VES' ? currencyParam : 'nou';
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
@@ -921,13 +924,15 @@ function X100Integrador() {
         return;
       }
 
+
+
       const requestData = {
         x100_ticket: {
           x100_raffle_id: selectedRaffle,
           x100_client_id: 5,
           positions: ticketsSelected.map(ticket => ticket),
           price: calculateTotalPrice().toFixed(2),
-          money: hasPaymentSelected ? "USD" : "USD"
+          money: money
         }
       };
 
@@ -950,7 +955,7 @@ function X100Integrador() {
         })
         .catch(error => {
         });
-    }; 
+    };
 
     const priceUnitWithCombos = Number(raffleActive(selectedRaffle || 0)?.price_unit)
 
@@ -973,7 +978,7 @@ function X100Integrador() {
         size="xl"
       >
         <Stepper active={activeStep}>
-       
+
 
           <Stepper.Step
             label="Verificación"
@@ -1027,9 +1032,9 @@ function X100Integrador() {
                             1.00
                           </Title>
                           <Title order={6} fw={300} c='black'>
-                            {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                            {raffleActive(selectedRaffle || 0) && money === 'VES' && exchangeRates?.value_bs
                               ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " VES"
-                              : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                              : money === 'COP' && exchangeRates?.value_cop
                                 ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
                                 : raffleActive(selectedRaffle || 0)?.price_unit + " $"
                             }
@@ -1048,11 +1053,11 @@ function X100Integrador() {
                     Total:
                   </Title>
                   <Title order={4} fw={300} ta="end" c='black'>
-                    {calculateTotalPrice().toFixed(2)}  {" " + hasPaymentSelected === "USD" ? "$" : hasPaymentSelected}
+                    {calculateTotalPrice().toFixed(2)}  {" " + money === "USD" ? "$" : money}
                   </Title>
                 </Group>
               </Card>
-       
+
             </Group>
             <Group position="center" mt={30}>
               <Button
@@ -1063,7 +1068,7 @@ function X100Integrador() {
               {
                 client !== null ? (
                   <Button
-                    // onClick={() => handleCompra(client?.id.toString())}
+                  // onClick={() => handleCompra(client?.id.toString())}
                   >
                     Comprar
                   </Button>
@@ -1072,11 +1077,11 @@ function X100Integrador() {
 
                 ) : (
                   <Button
-                  onClick={() => handleCompra()}
-                >
-                  Comprar
-                </Button>
-                
+                    onClick={() => handleCompra()}
+                  >
+                    Comprar
+                  </Button>
+
 
                 )
               }
@@ -1140,9 +1145,9 @@ function X100Integrador() {
     const remainingPrice = selectedRaffleData.price_unit * ticketCount;
     totalPrice += remainingPrice;
 
-    if (hasPaymentSelected === 'VES' && exchangeRates) {
+    if (money === 'VES' && exchangeRates) {
       totalPrice *= exchangeRates.value_bs;
-    } else if (hasPaymentSelected === 'COP' && exchangeRates) {
+    } else if (money === 'COP' && exchangeRates) {
       totalPrice *= exchangeRates.value_cop;
     }
 
@@ -1156,8 +1161,8 @@ function X100Integrador() {
   return (
     <>
       {
-        token !== 'rm_live_ed8c46ee-06fb-4d12-b194-387ddb3578d0' ? <Unauthorized /> :
-          (
+token !== 'rm_live_ed8c46ee-06fb-4d12-b194-387ddb3578d0' || (money !== "USD" && money !== "COP" && money !== "VES") ?  <Unauthorized /> :
+(
             <>
               <InvalidModal />
               <BuyModal />
@@ -1421,13 +1426,13 @@ function X100Integrador() {
                               mr={15}
                               color="teal"
                               size="lg"
-                              variant={hasPaymentSelected === "USD" ? 'filled' : undefined}
-                              style={{ cursor: hasPaymentSelected === 'USD' ? "default" : "pointer" }}
-                              onClick={() => {
-                                if (hasPaymentSelected !== 'USD') {
-                                  setHasPaymentSelected('USD')
-                                }
-                              }}
+                              variant={money === "USD" ? 'filled' : undefined}
+                              style={{ cursor: money === 'USD' ? "default" : "pointer" }}
+                            // onClick={() => {
+                            //   if (money !== 'USD') {
+                            //     setHasPaymentSelected('USD')
+                            //   }
+                            // }}
                             >
                               <Text fw={400} fz={16}>
                                 USD
@@ -1438,13 +1443,13 @@ function X100Integrador() {
                               mr={15}
                               color="teal"
                               size="lg"
-                              variant={hasPaymentSelected === "VES" ? 'filled' : undefined}
-                              style={{ cursor: hasPaymentSelected === 'VES' ? "default" : "pointer" }}
-                              onClick={() => {
-                                if (hasPaymentSelected !== 'VES') {
-                                  setHasPaymentSelected('VES')
-                                }
-                              }}
+                              variant={money === "VES" ? 'filled' : undefined}
+                              style={{ cursor: money === 'VES' ? "default" : "pointer" }}
+                            // onClick={() => {
+                            //   if (money !== 'VES') {
+                            //     setHasPaymentSelected('VES')
+                            //   }
+                            // }}
                             >
                               <Text fw={400} fz={16}>
                                 VES
@@ -1455,13 +1460,13 @@ function X100Integrador() {
                               mr={15}
                               color="teal"
                               size="lg"
-                              variant={hasPaymentSelected === "COP" ? 'filled' : undefined}
-                              style={{ cursor: hasPaymentSelected === 'COP' ? "default" : "pointer" }}
-                              onClick={() => {
-                                if (hasPaymentSelected !== 'COP') {
-                                  setHasPaymentSelected('COP')
-                                }
-                              }}
+                              variant={money === "COP" ? 'filled' : undefined}
+                              style={{ cursor: money === 'COP' ? "default" : "pointer" }}
+                            // onClick={() => {
+                            //   if (money !== 'COP') {
+                            //     setHasPaymentSelected('COP')
+                            //   }
+                            // }}
                             >
                               <Text fw={400} fz={16}>
                                 COP
@@ -1584,8 +1589,8 @@ function X100Integrador() {
                                     </Text>
                                   </Card>
                                   {
-                                    hasPaymentSelected && (
-                                      <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                                    money && (
+                                      <Card style={{ display: 'flex', gap: '15px', background: money === 'USD' ? theme.colors.teal[8] : money === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                         <Avatar
                                           p={-20}
                                           radius='xl'
@@ -1595,7 +1600,7 @@ function X100Integrador() {
 
                                             function randomExchange() {
                                               // @ts-ignore
-                                              return setHasPaymentSelected(exchanges[Math.floor(Math.random() * exchanges.length)])
+                                              return money(exchanges[Math.floor(Math.random() * exchanges.length)])
                                             }
                                             setExchangeCounter(exchangeCounter + 1)
                                             randomExchange();
@@ -1606,7 +1611,7 @@ function X100Integrador() {
                                           {
                                             !hoverExchange ? (
                                               <Text ta="center" fw={300} fz={15}>
-                                                {hasPaymentSelected}
+                                                {money}
                                               </Text>
                                             ) : (
                                               <IconEgg />
@@ -1617,7 +1622,7 @@ function X100Integrador() {
                                         <Text
                                           fw={300} fz={15} mt={7}
                                         >
-                                          La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                          La moneda seleccionada es: <strong>{money === 'USD' ? 'Dolares américanos' : money === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                         </Text>
                                       </Card>
                                     )
@@ -1696,9 +1701,9 @@ function X100Integrador() {
                                                         1.00
                                                       </Title>
                                                       <Title order={6} fw={300} c='black'>
-                                                        {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                        {raffleActive(selectedRaffle || 0) && money === 'VES' && exchangeRates?.value_bs
                                                           ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
-                                                          : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                          : money === 'COP' && exchangeRates?.value_cop
                                                             ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
                                                             : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
                                                         }
@@ -1717,7 +1722,7 @@ function X100Integrador() {
                                             </Title>
                                             <Title order={4} fw={300} ta="end" c='black'>
 
-                                              {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "USD" ? "$" : hasPaymentSelected}
+                                              {calculateTotalPrice().toFixed(2)} {" " + money === "USD" ? "$" : money}
                                             </Title>
                                           </Group>
                                           {/* <Group w="100%" position="apart">
@@ -1824,8 +1829,8 @@ function X100Integrador() {
                                     </Text>
                                   </Card>
                                   {
-                                    hasPaymentSelected && (
-                                      <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                                    money && (
+                                      <Card style={{ display: 'flex', gap: '15px', background: money === 'USD' ? theme.colors.teal[8] : money === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                         <Avatar
                                           p={-20}
                                           radius='xl'
@@ -1835,7 +1840,7 @@ function X100Integrador() {
 
                                             function randomExchange() {
                                               // @ts-ignore
-                                              return setHasPaymentSelected(exchanges[Math.floor(Math.random() * exchanges.length)])
+                                              return money(exchanges[Math.floor(Math.random() * exchanges.length)])
                                             }
                                             setExchangeCounter(exchangeCounter + 1)
                                             randomExchange();
@@ -1846,7 +1851,7 @@ function X100Integrador() {
                                           {
                                             !hoverExchange ? (
                                               <Text ta="center" fw={300} fz={15}>
-                                                {hasPaymentSelected}
+                                                {money}
                                               </Text>
                                             ) : (
                                               <IconEgg />
@@ -1857,7 +1862,7 @@ function X100Integrador() {
                                         <Text
                                           fw={300} fz={15} mt={7}
                                         >
-                                          La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                          La moneda seleccionada es: <strong>{money === 'USD' ? 'Dolares américanos' : money === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                         </Text>
                                       </Card>
                                     )
@@ -1936,9 +1941,9 @@ function X100Integrador() {
                                                         1.00
                                                       </Title>
                                                       <Title order={6} fw={300} c='black'>
-                                                        {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                        {raffleActive(selectedRaffle || 0) && money === 'VES' && exchangeRates?.value_bs
                                                           ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
-                                                          : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                          : money === 'COP' && exchangeRates?.value_cop
                                                             ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
                                                             : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
                                                         }
@@ -1957,7 +1962,7 @@ function X100Integrador() {
                                             </Title>
                                             <Title order={4} fw={300} ta="end" c='black'>
 
-                                              {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "USD" ? "$" : hasPaymentSelected}
+                                              {calculateTotalPrice().toFixed(2)} {" " + money === "USD" ? "$" : money}
                                             </Title>
                                           </Group>
                                           {/* <Group w="100%" position="apart">
@@ -2001,7 +2006,7 @@ function X100Integrador() {
                               <div className={classes.raffleInfo}>
                                 <Card withBorder mt={0} w={350} className={classes.raffleInfoCard}>
                                   <Text mt={-15} fw={700} fz={12} mb={18} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
-                                  <Image mt={-20} width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
+                                  <Image mt={-20} width={150} height={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
                                   <Divider labelPosition="center" mt={-5} label="Datos de la rifa" />
                                   <Group w="100%" position='apart'>
                                     <Text fw={700} fz={13} ta="start">Tipo de rifa:</Text>
@@ -2058,9 +2063,9 @@ function X100Integrador() {
                                                           1.00
                                                         </Title>
                                                         <Title order={6} fw={300} c='black'>
-                                                          {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                          {raffleActive(selectedRaffle || 0) && money === 'VES' && exchangeRates?.value_bs
                                                             ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
-                                                            : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                            : money === 'COP' && exchangeRates?.value_cop
                                                               ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
                                                               : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
                                                           }
@@ -2079,7 +2084,7 @@ function X100Integrador() {
                                               </Title>
                                               <Title order={4} fw={300} ta="end" c='black'>
 
-                                                {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                                {calculateTotalPrice().toFixed(2)} {" " + money === "VES" ? "VES" : money}
                                               </Title>
                                             </Group>
                                             {/* <Group w="100%" position="apart">
