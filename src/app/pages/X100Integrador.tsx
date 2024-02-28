@@ -441,17 +441,20 @@ function X100Integrador() {
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<string | 'USD' | 'COP' | 'VES'>(currencyParam ?? 'null')
   const money = hasPaymentSelected === 'COP' || hasPaymentSelected === 'USD' || hasPaymentSelected === 'VES' ? hasPaymentSelected : 'nou';
-  const playerIdParam = urlParams.get('playerId');
-  if (playerIdParam !== null) {
+  
+  const playerIdParam = urlParams.get('player_id');
+if (playerIdParam !== null) {
     const playerId = parseInt(playerIdParam);
     if (!isNaN(playerId)) {
-      console.log("El valor de playerId es un número:", playerId);
+        console.log("El valor de playerId es un número:", playerId);
     } else {
-      console.log("El valor de playerId no es un número.");
+        console.log("El valor de playerId no es un número.");
     }
-  } else {
+} else {
     console.log("No se encontró el parámetro playerId en la URL.");
-  }
+}
+  
+
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<number | null>(null);
