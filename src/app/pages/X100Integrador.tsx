@@ -80,6 +80,24 @@ interface IBalance {
   currency: string
 }
 
+interface IStructureCDA {
+  data: {
+    balance: string,
+    currency: 'COP' | 'USD' | 'VES',
+    data: {
+      user: {
+        username: string,
+        email: string,
+        name: string,
+        lastname: string,
+        status: boolean
+      }
+    },
+    player_id: number,
+    wallet_id: number
+  }
+}
+
 const useStyles = createStyles((theme) => ({
   raffleCard: {
     width: '17rem',
@@ -606,7 +624,7 @@ function X100Integrador() {
     setForceToUpdate(forceToUpdate + 1)
   }
 
-  const registerClient = (player: IPlayer) => { // To Do work
+  const registerClient = (player: IPlayer) => { // To Do 
     axios.post("https://api.rifa-max.com/x100/clients", {
       x100_client: {
         name: player.name,
@@ -621,11 +639,17 @@ function X100Integrador() {
   useEffect(() => {
     setForceLoading(true)
     axios.get(`https://dataweb.testcda.com/wallets_rifas?player_id=${playerIdParam}&currency=${hasPaymentSelected}`)
-      .then((res) => {
+      .then((res: IStructureCDA) => {
         setForceLoading(false)
         setBalance({
           balance: Number(res.data.balance),
           currency: res.data.currency
+        })
+        setPlayer({
+          integrator_id: res.data.player_id,
+          integrator_type: "CDA",
+          name: res.data.data.user.name,
+          email: res.data.data.user.email
         })
       }).catch(() => {
         setError(true)
@@ -636,12 +660,16 @@ function X100Integrador() {
     setForceLoading(true)
     if (token === "rm_live_ed8c46ee-06fb-4d12-b194-387ddb3578d0") {
       axios.get(`https://dataweb.testcda.com/wallets_rifas?player_id=${playerIdParam}&currency=${hasPaymentSelected}`)
-        .then((res) => {
+        .then((res: IStructureCDA) => {
           setPlayer({
             integrator_id: res.data.player_id,
             integrator_type: "CDA",
-            name: res.data.user.name,
-            email: res.data.user.email
+            name: res.data.data.user.name,
+            email: res.data.data.user.email
+          })
+          setBalance({
+            balance: Number(res.data.balance),
+            currency: res.data.currency
           })
           setForceLoading(false)
         }).catch(() => {
@@ -1274,6 +1302,24 @@ function X100Integrador() {
                                         key={raffle.id}
                                         className={raffle.id === selectedRaffle ? classes.raffleSelectedCard : classes.raffleCard}
                                         onClick={() => {
+                                          if (player !== null) {
+                                            axios.post("https://api.rifa-max.com/x100/clients/integrator", {
+                                              x100_client: {
+                                                name: player.name,
+                                                email: player.email,
+                                                integrator_id: player.integrator_id,
+                                                integrator_type: 'CDA'
+                                              }
+                                            }, {
+                                              headers: {
+                                                Authorization: `Bearer ${token}`
+                                              }
+                                            }).then((res) => {
+                                              console.log("Client creado:", res.data)
+                                            }).catch((err) => {
+                                              console.log("Error al crear el cliente:", err)
+                                            })
+                                          }
                                           setSelectedRaffle(raffle.id);
                                           setTicketsSelected([]);
                                           setTickets({ tickets: ticketsConstructor(raffle.tickets_count) });
