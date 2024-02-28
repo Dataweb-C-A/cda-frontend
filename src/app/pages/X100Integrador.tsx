@@ -32,7 +32,9 @@ interface IClient {
   name: string,
   dni: string,
   phone: string,
-  email: string
+  email: string,
+  integrator_id: number | null,
+  integrator_type: string | null,
 }
 
 interface IProgresses {
@@ -64,6 +66,18 @@ interface ITicketModal {
 
 interface ITicketsResponse {
   tickets: ITicket[]
+}
+
+interface IPlayer {
+  integrator_id: number,
+  integrator_type: string,
+  name: string,
+  email: string,
+}
+
+interface IBalance {
+  balance: number,
+  currency: string
 }
 
 const useStyles = createStyles((theme) => ({
@@ -399,16 +413,16 @@ function X100Integrador() {
   const [error, setError] = useState(false);
 
   const currency = searchParams.get('currency') || null
+  const urlParams = new URLSearchParams(window.location.search);
+  const currencyParam = urlParams.get('currency');
 
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
-  const [hasPaymentSelected, setHasPaymentSelected] = useState<string | 'USD' | 'COP' | 'VES' | null>(currency)
-  const urlParams = new URLSearchParams(window.location.search);
-  const currencyParam = urlParams.get('currency');
-  const money = currencyParam === 'COP' || currencyParam === 'USD' || currencyParam === 'VES' ? currencyParam : 'nou';
+  const [hasPaymentSelected, setHasPaymentSelected] = useState<string | 'USD' | 'COP' | 'VES'>(currencyParam ?? 'null')
+  const money = hasPaymentSelected === 'COP' || hasPaymentSelected === 'USD' || hasPaymentSelected === 'VES' ? hasPaymentSelected : 'nou';
   const playerIdParam = urlParams.get('playerId');
   if (playerIdParam !== null) {
     const playerId = parseInt(playerIdParam);
@@ -447,6 +461,14 @@ function X100Integrador() {
   const [reload, setReload] = useState<number>(0)
   const [client, setClient] = useState<IClient | null>(null)
   const [ticketsSold, setTicketsSold] = useState<ICableTicket[]>([])
+  const [forceToUpdate, setForceToUpdate] = useState<number>(0)
+  const [forceLoading, setForceLoading] = useState<boolean>(false)
+  const [spendCounter, setSpendCounter] = useState<number>(0)
+  const [player, setPlayer] = useState<IPlayer | null>(null)
+  const [balance, setBalance] = useState<IBalance>({
+    balance: 0,
+    currency: hasPaymentSelected
+  })
 
   const endpoint = 'https://api.rifa-max.com/shared/exchanges';
 
@@ -510,7 +532,6 @@ function X100Integrador() {
           setBuyIsOpen(false);
           setSearchValue(0);
           setActiveStep(0);
-          setHasPaymentSelected(null);
           setCountrySelected(null);
           setClient(null);
           setIsOpenInvalidModal({
@@ -546,8 +567,6 @@ function X100Integrador() {
         .then((res) => {
           setUsers(res.data);
         })
-        .catch((err) => {
-        });
     }
 
 
@@ -564,7 +583,6 @@ function X100Integrador() {
           is_connected: false,
           receiving_data: false
         })
-        setHasPaymentSelected(null)
         setSelectedRaffle(null)
         setRaffles([])
       },
@@ -580,10 +598,57 @@ function X100Integrador() {
     })
   }, [reload])
 
+  function changeCurrency(currency: string) {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('currency', currency);
+    const newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+    history.pushState(null, '', newRelativePathQuery);
+    setForceToUpdate(forceToUpdate + 1)
+  }
+
+  const registerClient = (player: IPlayer) => { // To Do work
+    axios.post("https://api.rifa-max.com/x100/clients", {
+      x100_client: {
+        name: player.name,
+        email: player.email,
+        integrator_id: player.integrator_id,
+        integrator_type: 'CDA'
+      }
+    }, {
+    })
+  }
+
   useEffect(() => {
+    setForceLoading(true)
+    axios.get(`https://dataweb.testcda.com/wallets_rifas?player_id=${playerIdParam}&currency=${hasPaymentSelected}`)
+      .then((res) => {
+        setForceLoading(false)
+        setBalance({
+          balance: Number(res.data.balance),
+          currency: res.data.currency
+        })
+      }).catch(() => {
+        setError(true)
+      })
+  }, [forceToUpdate, spendCounter]);
 
-  }, []);
-
+  useEffect(() => {
+    setForceLoading(true)
+    if (token === "rm_live_ed8c46ee-06fb-4d12-b194-387ddb3578d0") {
+      axios.get(`https://dataweb.testcda.com/wallets_rifas?player_id=${playerIdParam}&currency=${hasPaymentSelected}`)
+        .then((res) => {
+          setPlayer({
+            integrator_id: res.data.player_id,
+            integrator_type: "CDA",
+            name: res.data.user.name,
+            email: res.data.user.email
+          })
+          setForceLoading(false)
+        }).catch(() => {
+          setError(true)
+        })
+    }
+  }, [])
 
   function RaffleListEmpty() {
     return (
@@ -708,9 +773,7 @@ function X100Integrador() {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      }).then((res) => {
-      }).catch((err) => {
-      });
+      })
     });
 
     setTicketsSelected([]);
@@ -915,7 +978,6 @@ function X100Integrador() {
     //   }).then((res) => {
     //     setClient(res.data);
     //     setActiveStep(activeStep + 1);
-
     //     handleCompra(res.data.id);
     //   }).catch((e) => {
     //   });
@@ -925,16 +987,14 @@ function X100Integrador() {
       if (!token) {
         return;
       }
-
-
-
       const requestData = {
         x100_ticket: {
           x100_raffle_id: selectedRaffle,
-          x100_client_id: 5,
+          x100_client_id: player?.integrator_id,
           positions: ticketsSelected.map(ticket => ticket),
           price: calculateTotalPrice().toFixed(2),
-          money: money
+          money: money,
+          integrator: 'CDA'
         }
       };
 
@@ -950,6 +1010,7 @@ function X100Integrador() {
           if (!response.ok) {
             throw new Error("Error al comprar los boletos");
           }
+          setSpendCounter(spendCounter + 1)
           return response.json();
         })
         .then(data => {
@@ -1092,10 +1153,7 @@ function X100Integrador() {
           <Stepper.Completed>
             <Title order={4} c="green" ta="center" my={10}>COMPRA REALIZADA</Title>
             <Image src={EmojiSuccess} mx='auto' my={20} width={125} height={125} alt="Emoji de fiesta" style={{ userSelect: 'none' }} />
-
             <Button fullWidth onClick={handleClose} mt={40}>Cerrar</Button>
-
-
           </Stepper.Completed>
         </Stepper>
       </Modal>
@@ -1156,23 +1214,31 @@ function X100Integrador() {
     return totalPrice;
   };
 
-  const [isHovered1, setIsHovered1] = useState(false);
-  const [isHovered2, setIsHovered2] = useState(false);
-  const [isHovered3, setIsHovered3] = useState(false);
-
   return (
     <>
       {
         token !== 'rm_live_ed8c46ee-06fb-4d12-b194-387ddb3578d0' || (money !== "USD" && money !== "COP" && money !== "VES") || (playerIdParam !== null && isNaN(parseInt(playerIdParam))) ? <Unauthorized /> :
           (
             <>
+              {
+                forceLoading === true && (
+                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.7)', zIndex: 999999, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Loading />
+                  </div>
+                )
+              }
               <InvalidModal />
               <BuyModal />
               {
                 exchangeCounter % 100 === 0 && (
                   <div
                     style={{ position: 'absolute', width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.7)', top: 0, left: 0, zIndex: 999999, cursor: 'pointer' }}
-                    onClick={() => setExchangeCounter(exchangeCounter + 1)}
+                    onClick={() => {
+                      let currencies = ["VES", "USD", "COP"];
+                      let randomCurrency = currencies[Math.floor(Math.random() * currencies.length)];
+                      changeCurrency(randomCurrency);
+                      setExchangeCounter(exchangeCounter + 1)
+                    }}
                   >
                     <Card
                       style={{ position: 'absolute', top: '33vh', left: '42vw' }}
@@ -1210,7 +1276,6 @@ function X100Integrador() {
                                         onClick={() => {
                                           setSelectedRaffle(raffle.id);
                                           setTicketsSelected([]);
-                                          setHasPaymentSelected(null);
                                           setTickets({ tickets: ticketsConstructor(raffle.tickets_count) });
                                           setSelectedPage(1);
                                           setOpened(true);
@@ -1430,6 +1495,10 @@ function X100Integrador() {
                               size="lg"
                               variant={money === "USD" ? 'filled' : undefined}
                               style={{ cursor: money === 'USD' ? "default" : "pointer" }}
+                              onClick={() => {
+                                changeCurrency("USD")
+                                setHasPaymentSelected('USD')
+                              }}
                             // onClick={() => {
                             //   if (money !== 'USD') {
                             //     setHasPaymentSelected('USD')
@@ -1447,6 +1516,10 @@ function X100Integrador() {
                               size="lg"
                               variant={money === "VES" ? 'filled' : undefined}
                               style={{ cursor: money === 'VES' ? "default" : "pointer" }}
+                              onClick={() => {
+                                changeCurrency("VES")
+                                setHasPaymentSelected('VES')
+                              }}
                             // onClick={() => {
                             //   if (money !== 'VES') {
                             //     setHasPaymentSelected('VES')
@@ -1464,6 +1537,10 @@ function X100Integrador() {
                               size="lg"
                               variant={money === "COP" ? 'filled' : undefined}
                               style={{ cursor: money === 'COP' ? "default" : "pointer" }}
+                              onClick={() => {
+                                changeCurrency("COP")
+                                setHasPaymentSelected('COP')
+                              }}
                             // onClick={() => {
                             //   if (money !== 'COP') {
                             //     setHasPaymentSelected('COP')
@@ -1622,16 +1699,20 @@ function X100Integrador() {
                                         </Avatar>
 
                                         <Text
-                                          fw={300} fz={15} mt={7}
+                                          fw={300} fz={15} mt={-4}
                                         >
                                           La moneda seleccionada es: <strong>{money === 'USD' ? 'Dolares américanos' : money === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                          <br />
+                                          <Text
+                                            fw={750} fz={15} mt={0}
+                                          >
+                                            Saldo actual: {balance.balance + " " + balance.currency}
+                                          </Text>
                                         </Text>
                                       </Card>
                                     )
                                   }
                                   <Group position="apart" spacing={0}>
-
-
                                     <Button
                                       style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }}
                                       color='teal'
