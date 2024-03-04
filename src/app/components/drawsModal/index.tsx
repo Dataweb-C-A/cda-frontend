@@ -378,7 +378,7 @@ function DrawsModal({
       }
     }, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": ["application/json", "multipart/form-data"],
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((res) => {
