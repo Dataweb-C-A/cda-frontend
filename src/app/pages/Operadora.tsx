@@ -19,7 +19,7 @@ import USANumbers from "../assets/data/usaNumbers.json"
 import ColombiaNumbers from "../assets/data/colombiaNumbers.json"
 import { useForm } from "@mantine/form"
 import RifamaxLogo from '../assets/images/rifamax-logo.png'
-import { IconReceipt , IconEye,IconCrown} from "@tabler/icons-react"
+import { IconReceipt, IconEye, IconCrown } from "@tabler/icons-react"
 
 interface IStatus {
   is_connected: boolean;
@@ -191,7 +191,7 @@ const useStyles = createStyles((theme) => ({
     }
   },
   tickets: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: '#4d4f66',
     userSelect: 'none',
@@ -203,7 +203,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   ticketsReserved: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: '#ff8000',
     userSelect: 'none',
@@ -213,9 +213,9 @@ const useStyles = createStyles((theme) => ({
       width: 'calc(70% + 1.7rem)',
       height: '2.6rem',
     },
-  },  
+  },
   ticketsWinners: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: '#5a189a',
     userSelect: 'none',
@@ -227,7 +227,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   ticketsSelected: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: 'green',
     userSelect: 'none',
@@ -249,7 +249,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   ticketsSold: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: 'red',
     userSelect: 'none',
@@ -613,7 +613,7 @@ function Operadora() {
       return !(isTicketSold || isTicketWinner);
     }));
   }
-  
+
 
   useEffect(() => {
     return isTicketIsSoldDeselect()
@@ -1666,39 +1666,39 @@ function Operadora() {
                         <div className={classes.ticketsList}>
                           {/* aqui */}
                           {tickets.tickets.slice((selectedPage - 1) * 200, selectedPage * 200).map((ticket: ITicket) => {
-    const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
-    const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
-    const isTicketWinner = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.winners?.includes(ticket.position);
+                            const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
+                            const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+                            const isTicketWinner = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.winners?.includes(ticket.position);
 
-    const ticketClassName = isTicketSold
-    ? classes.ticketsSold
-    : isTicketReserved
-      ? classes.ticketsReserved
-      : ticketsSelected.includes(ticket.position)
-        ? classes.ticketsSelected
-        : isTicketWinner 
-          ? classes.ticketsWinners 
-          : classes.tickets; 
-  
+                            const ticketClassName = isTicketSold
+                              ? classes.ticketsSold
+                              : isTicketReserved
+                                ? classes.ticketsReserved
+                                : ticketsSelected.includes(ticket.position)
+                                  ? classes.ticketsSelected
+                                  : isTicketWinner
+                                    ? classes.ticketsWinners
+                                    : classes.tickets;
 
-    return (
-        <div className={classes.ticketsSellContainer}>
-            {isTicketSold ? (
-                <Card key={ticket.position} className={ticketClassName}>
-                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-                </Card>
-            ) : (
-                <Card
-                    key={ticket.position + ticketKey}
-                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
-                    onClick={() => chooseTicket(ticket.position)}
-                >
-                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-                </Card>
-            )}
-        </div>
-    );
-})}
+
+                            return (
+                              <div className={classes.ticketsSellContainer}>
+                                {isTicketSold ? (
+                                  <Card key={ticket.position} className={ticketClassName}>
+                                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                                  </Card>
+                                ) : (
+                                  <Card
+                                    key={ticket.position + ticketKey}
+                                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
+                                    onClick={() => chooseTicket(ticket.position)}
+                                  >
+                                    <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                                  </Card>
+                                )}
+                              </div>
+                            );
+                          })}
 
 
                           {/* Resto del código permanece igual */}
@@ -1785,7 +1785,7 @@ function Operadora() {
                               px={7}
                               disabled={ticketsSelected.length === 0}
                               onClick={() => setBuyIsOpen(true)}
-                              leftIcon={<IconReceipt/>}
+                              leftIcon={<IconReceipt />}
                             >
                               Comprar rifa
                             </Button>
@@ -1795,8 +1795,8 @@ function Operadora() {
                               px={7}
                               disabled={ticketsSelected.length === 0}
                               onClick={() => setModalOpen(true)}
-                              leftIcon={<IconEye/>}
-                              
+                              leftIcon={<IconEye />}
+
                             >
                               Ver compra
                             </Button>
@@ -1808,7 +1808,7 @@ function Operadora() {
                               disabled={ticketsSelected.length === 0}
                               onClick={() => cleanSelection()}
 
-                              leftIcon={<IconTrash/>}
+                              leftIcon={<IconTrash />}
                             >
                               Limpiar compra
                             </Button>
@@ -1822,8 +1822,8 @@ function Operadora() {
                           >
                             <Card bg="white" className="mini-cutoff">
                               <small>
-                                <Text  ta="center" fw={700} color='black'>Informacion de compra</Text>
-                                <Divider  variant="dashed" />
+                                <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
+                                <Divider variant="dashed" />
                                 <Group position="apart">
                                   <Title order={6} fw={600} c='black'>
                                     Prod.
@@ -1915,38 +1915,38 @@ function Operadora() {
                         <div className={classes.ticketsList100}>
                           {/* Aquí aplicamos las clases con sufijo "100" */}
                           {tickets.tickets.map((ticket: ITicket) => {
-  const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
-  const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
-  const isTicketWinner = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.winners?.includes(ticket.position);
+                            const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
+                            const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
+                            const isTicketWinner = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.winners?.includes(ticket.position);
 
-  const ticketClassName = isTicketSold
-    ? classes.ticketsSold100
-    : isTicketReserved
-      ? classes.ticketsReserved100
-      : ticketsSelected.includes(ticket.position)
-        ? classes.ticketsSelected100
-        : isTicketWinner 
-          ? classes.ticketsWinners100 
-          : classes.tickets100; 
+                            const ticketClassName = isTicketSold
+                              ? classes.ticketsSold100
+                              : isTicketReserved
+                                ? classes.ticketsReserved100
+                                : ticketsSelected.includes(ticket.position)
+                                  ? classes.ticketsSelected100
+                                  : isTicketWinner
+                                    ? classes.ticketsWinners100
+                                    : classes.tickets100;
 
-  return (
-    <div className={classes.ticketsSellContainer}>
-      {isTicketSold ? (
-        <Card key={ticket.position} className={ticketClassName}>
-          <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-        </Card>
-      ) : (
-        <Card
-          key={ticket.position + ticketKey}
-          className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
-          onClick={() => chooseTicket(ticket.position)}
-        >
-          <Text ml="20%" fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
-        </Card>
-      )}
-    </div>
-  );
-})}
+                            return (
+                              <div className={classes.ticketsSellContainer}>
+                                {isTicketSold ? (
+                                  <Card key={ticket.position} className={ticketClassName}>
+                                    <Text mt={10} fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
+                                  </Card>
+                                ) : (
+                                  <Card
+                                    key={ticket.position + ticketKey}
+                                    className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
+                                    onClick={() => chooseTicket(ticket.position)}
+                                  >
+                                    <Text mt={10} ml="20%" fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
+                                  </Card>
+                                )}
+                              </div>
+                            );
+                          })}
 
                           <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                             <Card style={{ background: '#4D4F66' }}>
@@ -2030,7 +2030,7 @@ function Operadora() {
                               className={classes.hiddenWhenSmall}
                               px={7}
                               disabled={ticketsSelected.length === 0}
-                              leftIcon={<IconReceipt/>}
+                              leftIcon={<IconReceipt />}
                               onClick={() => setBuyIsOpen(true)}
                             >
                               Comprar rifa
@@ -2041,7 +2041,7 @@ function Operadora() {
                               px={7}
                               disabled={ticketsSelected.length === 0}
                               onClick={() => setModalOpen(true)}
-                              leftIcon={<IconEye/>}
+                              leftIcon={<IconEye />}
                             >
                               Ver compra
                             </Button>
@@ -2053,7 +2053,7 @@ function Operadora() {
                               disabled={ticketsSelected.length === 0}
                               onClick={() => cleanSelection()}
 
-                              leftIcon={<IconTrash/>}
+                              leftIcon={<IconTrash />}
                             >
                               Limpiar compra
                             </Button>
@@ -2164,8 +2164,8 @@ function Operadora() {
                       <div className={classes.raffleInfo}>
                         <Card withBorder mt={0} w={350} className={classes.raffleInfoCard}>
                           <Text mt={-15} fw={700} fz={12} mb={18} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
-                          <Image mt={-20}  width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
-                          <Divider labelPosition="center"  mt={-5} label="Datos de la rifa" />
+                          <Image mt={-20} width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
+                          <Divider labelPosition="center" mt={-5} label="Datos de la rifa" />
                           <Group w="100%" position='apart'>
                             <Text fw={700} fz={13} ta="start">Tipo de rifa:</Text>
                             <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({raffleActive(selectedRaffle)?.tickets_count} números)</Text>
@@ -2190,7 +2190,7 @@ function Operadora() {
                               <Card bg="white" className="mini-cutoff">
                                 <small>
                                   <Text ta="center" mt={-5} fw={700} color='black'>Informacion de compra</Text>
-                                  <Divider  variant="dashed" />
+                                  <Divider variant="dashed" />
                                   <Group position="apart">
                                     <Title order={6} fw={600} c='black'>
                                       Prod.

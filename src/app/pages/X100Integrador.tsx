@@ -225,7 +225,7 @@ const useStyles = createStyles((theme) => ({
     }
   },
   tickets: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: '#4d4f66',
     userSelect: 'none',
@@ -237,7 +237,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   ticketsReserved: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: '#ff8000',
     userSelect: 'none',
@@ -249,7 +249,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   ticketsSelected: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: 'green',
     userSelect: 'none',
@@ -271,7 +271,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   ticketsWinners: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: '#5a189a',
     userSelect: 'none',
@@ -283,7 +283,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   ticketsSold: {
-    width: '90%',
+    width: '100%',
     height: '3rem',
     background: 'red',
     userSelect: 'none',
@@ -441,19 +441,19 @@ function X100Integrador() {
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
   const [hasPaymentSelected, setHasPaymentSelected] = useState<string | 'USD' | 'COP' | 'VES'>(currencyParam ?? 'null')
   const money = hasPaymentSelected === 'COP' || hasPaymentSelected === 'USD' || hasPaymentSelected === 'VES' ? hasPaymentSelected : 'nou';
-  
+
   const playerIdParam = urlParams.get('player_id');
-if (playerIdParam !== null) {
+  if (playerIdParam !== null) {
     const playerId = parseInt(playerIdParam);
     if (!isNaN(playerId)) {
-        console.log("El valor de playerId es un número:", playerId);
+      console.log("El valor de playerId es un número:", playerId);
     } else {
-        console.log("El valor de playerId no es un número.");
+      console.log("El valor de playerId no es un número.");
     }
-} else {
+  } else {
     console.log("No se encontró el parámetro playerId en la URL.");
-}
-  
+  }
+
 
   const [buyIsOpen, setBuyIsOpen] = useState<boolean>(false)
   const [hoverExchange, setHoverExchange] = useState<boolean>(false)
@@ -1912,7 +1912,7 @@ if (playerIdParam !== null) {
                                       <div className={classes.ticketsSellContainer}>
                                         {isTicketSold ? (
                                           <Card key={ticket.position} className={ticketClassName}>
-                                            <Text mt={10}  fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
+                                            <Text mt={10} fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
                                           </Card>
                                         ) : (
                                           <Card
@@ -1920,7 +1920,7 @@ if (playerIdParam !== null) {
                                             className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
                                             onClick={() => chooseTicket(ticket.position)}
                                           >
-                                            <Text  mt={10} ml="20%" fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
+                                            <Text mt={10} ml="20%" fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
                                           </Card>
                                         )}
                                       </div>
