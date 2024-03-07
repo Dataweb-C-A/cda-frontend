@@ -328,7 +328,7 @@ function Lobby() {
                           src={RifamaxLogo}
                           mt={25}
                           width={300}
-                          height={120}
+                          height={180}
                           caption={game.label}
                         />
                       </Card>

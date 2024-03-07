@@ -115,6 +115,8 @@ function Login() {
           <Image
             src={RifamaxLogo}
             alt='Rifamax'
+            height={150}
+            width={250}
             style={{ margin: '0 auto' }}
           />
           <TextInput

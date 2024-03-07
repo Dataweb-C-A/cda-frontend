@@ -13,7 +13,7 @@ import {
 } from "@tabler/icons"
 import { IconBellRingingFilled } from '@tabler/icons-react';
 import ThemeSwitcher from "../theme"
-import RifamaxLogo from "../../assets/images/rifamax-logo.png"
+import RifamaxLogo from "../../assets/images/sss.png"
 import { Link } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
 import { ChevronRight } from "tabler-icons-react"
@@ -164,8 +164,8 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
       <img
         src={RifamaxLogo}
         className="logo"
-        width="89px"
-        height="54px"
+        width="150px"
+        height="35px"
         alt="logo"
       />
       <div>
@@ -196,7 +196,8 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
             <button className={`button-user ${expandScreen ? "button-user-expandScreen" : ""}`}>
               <BsFillPersonFill className="user-icon"
                 style={{
-                  color: theme.colorScheme === "dark" ? '#fff' : '#202020'
+                  color: theme.colorScheme === "dark" ? '#fff' : '#202020',
+                  marginTop:"-10px"
                 }}
               />
             </button>
