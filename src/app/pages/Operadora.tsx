@@ -893,7 +893,7 @@ function Operadora() {
           x100_client_id: clientId,
           positions: ticketsSelected.map(ticket => ticket),
           price: calculateTotalPrice().toFixed(2),
-          money: hasPaymentSelected ? "$" : ""
+          money: hasPaymentSelected ? "USD" : ""
         }
       };
 
@@ -1119,7 +1119,7 @@ function Operadora() {
                               ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " VES"
                               : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
                                 ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
-                                : raffleActive(selectedRaffle || 0)?.price_unit + " $"
+                                : raffleActive(selectedRaffle || 0)?.price_unit + " USD"
                             }
                           </Title>
                           <Title order={6} fw={300} mr={15} c='black'>
@@ -1744,7 +1744,7 @@ function Operadora() {
                                   radius='xl'
                                   className={classes.avatarExchange}
                                   onClick={() => {
-                                    let exchanges = ["$", "VES", "COP"]
+                                    let exchanges = ["USD", "VES", "COP"]
 
                                     function randomExchange() {
                                       // @ts-ignore
@@ -1858,7 +1858,7 @@ function Operadora() {
                                                   ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
                                                   : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
                                                     ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
-                                                    : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
+                                                    : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " USD"
                                                 }
 
                                               </Title>
@@ -1990,7 +1990,7 @@ function Operadora() {
                                   radius='xl'
                                   className={classes.avatarExchange}
                                   onClick={() => {
-                                    let exchanges = ["$", "VES", "COP"]
+                                    let exchanges = ["USD", "VES", "COP"]
 
                                     function randomExchange() {
                                       // @ts-ignore
@@ -2103,7 +2103,7 @@ function Operadora() {
                                                   ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
                                                   : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
                                                     ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
-                                                    : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
+                                                    : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " USD"
                                                 }
 
                                               </Title>
@@ -2225,7 +2225,7 @@ function Operadora() {
                                                     ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
                                                     : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
                                                       ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
-                                                      : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
+                                                      : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " USD"
                                                   }
 
                                                 </Title>
