@@ -119,7 +119,7 @@ function Draws({ }: IDraws) {
     .map((element, index) => (
       <tr key={index}>
         <td style={{ fontSize: '15px' }}>{element.title}</td>
-        <td style={{ fontSize: '15px' }}>{element.prizes.length > 0 ? element.prizes.map((item) => item.name + ' ') : ''}</td>
+        <td style={{ fontSize: '15px' }}>${element.prizes.length > 0 ? element.prizes.map((item) => item.name).join(' , ') : ''}</td>
         <td style={{ fontSize: '15px' }}>{formatDate(element.init_date)}</td>
         <td style={{ fontSize: '15px' }}>{formatDate(element.expired_date)}</td>
         <td style={{ fontSize: '15px' }}>{element.draw_type}</td>
@@ -128,6 +128,7 @@ function Draws({ }: IDraws) {
         <td style={{ fontSize: '15px' }}>{element.current_progress} %</td>
       </tr>
     ));
+
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -225,7 +226,7 @@ function Draws({ }: IDraws) {
             <thead>
               <tr>
                 <th style={{ fontSize: "15px", textAlign: "center" }}> Título</th>
-                <th style={{ fontSize: "15px", textAlign: "center" }}>Premio</th>
+                <th style={{ fontSize: "15px", textAlign: "center" }}>Premios</th>
                 <th style={{ fontSize: "15px", textAlign: "center" }}>Fecha de inicio</th>
                 <th style={{ fontSize: "15px", textAlign: "center" }}>Fecha de finalización</th>
                 <th style={{ fontSize: "15px", textAlign: "center" }}>Tipo de rifa</th>

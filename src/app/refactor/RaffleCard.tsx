@@ -21,7 +21,7 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
         onClick={onClick}
         withBorder
         style={style}
-        radius={0}
+        radius={"md"}
         className={className}
         p={0}
         pt={20}

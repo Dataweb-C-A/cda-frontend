@@ -1130,7 +1130,7 @@ if (playerIdParam !== null) {
                               ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " VES"
                               : money === 'COP' && exchangeRates?.value_cop
                                 ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
-                                : raffleActive(selectedRaffle || 0)?.price_unit + " $"
+                                : raffleActive(selectedRaffle || 0)?.price_unit + " USD"
                             }
                           </Title>
                           <Title order={6} fw={300} mr={15} c='black'>
@@ -1147,7 +1147,7 @@ if (playerIdParam !== null) {
                     Total:
                   </Title>
                   <Title order={4} fw={300} ta="end" c='black'>
-                    {calculateTotalPrice().toFixed(2)}  {" " + money === "USD" ? "$" : money}
+                    {calculateTotalPrice().toFixed(2)}  {" " + money === "USD" ? "USD" : money}
                   </Title>
                 </Group>
               </Card>
@@ -1912,7 +1912,7 @@ if (playerIdParam !== null) {
                                       <div className={classes.ticketsSellContainer}>
                                         {isTicketSold ? (
                                           <Card key={ticket.position} className={ticketClassName}>
-                                            <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                                            <Text mt={10}  fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
                                           </Card>
                                         ) : (
                                           <Card
@@ -1920,7 +1920,7 @@ if (playerIdParam !== null) {
                                             className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
                                             onClick={() => chooseTicket(ticket.position)}
                                           >
-                                            <Text ml="20%" fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
+                                            <Text  mt={10} ml="20%" fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
                                           </Card>
                                         )}
                                       </div>
