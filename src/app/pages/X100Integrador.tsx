@@ -104,7 +104,7 @@ const useStyles = createStyles((theme) => ({
     background: theme.colors.dark[7],
     transition: "0.35s",
     '&:hover': {
-      backgroundColor: theme.colors.blue[9],
+      backgroundColor:"#66BCD6",
       cursor: 'pointer'
     },
   },
@@ -263,7 +263,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   pagActive: {
-    background: theme.colors.blue[6],
+    background: "#66BCD6",
     color: theme.colors.blue[0],
     '&:hover': {
       background: theme.colors.blue[6],

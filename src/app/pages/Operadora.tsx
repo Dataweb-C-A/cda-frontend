@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, ChangeEvent } from "react"
 import axios from "axios"
 import EmojiSuccess from '/src/app/assets/images/emoji-fiesta-success.png'
 import cable from "../components/cable"
@@ -799,7 +799,7 @@ function Operadora() {
   }
 
   function BuyModal() {
-    const [selectValue, setSelectValue] = useState<string | null>(null);
+    const [selectValue, setSelectValue] = useState<string>('');
     const [textInputValue, setTextInputValue] = useState<string>('');
     const [name, setName] = useState<string>('')
     const [lastName, setlastName] = useState<string>('')
@@ -834,9 +834,19 @@ function Operadora() {
       })
     }
 
-    function handleSelectChange(value: string | null) {
-      setSelectValue(value);
-    }
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const text = event.target.value.replace(/\D/g, '');
+      let formattedText = '';
+
+      if (text.length > 0) {
+        formattedText = `(${text.slice(0, 3)})`;
+      }
+
+      setSelectValue(formattedText);
+    };
+
+
+
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const newName = event.currentTarget.value.replace(/[^a-zA-Z]/g, '');
@@ -1011,54 +1021,45 @@ function Operadora() {
                   Ingrese su número telefónico
                 </Text>
                 <Group spacing={5} position="center" w="100%">
-                  <Select
-                    w={80}
+                  <TextInput
                     label={<Text>Prefijo</Text>}
-                    data={countrySelected === 'Venezuela' ? [
-                      { value: '(412)', label: '0412' },
-                      { value: '(414)', label: '0414' },
-                      { value: '(424)', label: '0424' },
-                      { value: '(416)', label: '0416' },
-                      { value: '(426)', label: '0426' }
-                    ] : countrySelected === 'USA' ? USANumbers : ColombiaNumbers}
-                    placeholder={
-                      countrySelected === 'Venezuela' ? '0412'
-                        : countrySelected === 'USA' ? '812'
-                          : '314'
-                    }
-                    searchable
-                    nothingFound={<QuestionMark />}
-                    onChange={
-                      (value) => {
-                        handleSelectChange(value)
-                      }
-                    }
-                    value={selectValue}
-                    error={form.errors.prefix}
+                    placeholder="XXX"
                     mb={15}
+                    w={120}
+                    mr={20}
+                    size="md"
+                    maxLength={5}
+                    onChange={handleInputChange}
+                    value={selectValue}
                   />
                   <TextInput
                     label={<Text>Número telefónico</Text>}
-                    placeholder="111-1111"
+                    placeholder="XXX-XXXX"
                     mb={15}
+                    size="md"
                     maxLength={8}
                     onChange={(event) => {
-                      handleTextInputChange(event.currentTarget.value)
+                      handleTextInputChange(event.currentTarget.value);
                     }}
                     value={textInputValue}
                   />
                 </Group>
+                <Group mt={-25} spacing={5} position="center" w="100%">
+                  <Text color="grey" ml={-100} mr={115}>
+                    000
+                  </Text>
+                  <Text color="grey" >
+                    000-0000
+                  </Text>
+                </Group>
+                <Button onClick={() => setActiveStep(activeStep - 1)}>Atrás</Button>
                 <Button
-                  onClick={() => setActiveStep(activeStep - 1)}
-                >
-                  Atrás
-                </Button>
-                <Button
-                  disabled={!phoneRegex.test(`${countryPrefix} ${selectValue} ${textInputValue}`)}
                   onClick={(e) => secondNextStep(`${countryPrefix} ${selectValue} ${textInputValue}`)}
+                  disabled={selectValue.length !== 5 || textInputValue.length !== 8}
                 >
                   Siguiente
                 </Button>
+
               </Group>
             </form>
           </Stepper.Step>
@@ -1187,7 +1188,7 @@ function Operadora() {
                         )
                       }
                       <TextInput
-                        placeholder="Correo electronico"
+                        placeholder="Correo electronico (OPCIONAL)"
                         mt={10}
                         value={email}
                         onChange={handleEmailChange}
@@ -1221,7 +1222,7 @@ function Operadora() {
 
                 ) : (
                   <Button
-                    disabled={!name || !lastName || !terms || !isValidEmail(email) || countrySelected === "Venezuela" && (!Dni)}
+                    disabled={!name || !lastName || !terms || countrySelected === "Venezuela" && (!Dni)}
                     onClick={() => {
                       createClient();
                     }}
@@ -1643,7 +1644,7 @@ function Operadora() {
                               return (
                                 <>
                                   <Button
-                                    size='xs'
+                                    h="35px"
                                     ml={10}
                                     mt={-2}
                                     fz={10}
@@ -1702,7 +1703,7 @@ function Operadora() {
 
 
                           {/* Resto del código permanece igual */}
-                          <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                          <Card radius={"md"} style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                             <Card style={{ background: '#4D4F66' }}>
                               <Text>
 
@@ -1738,10 +1739,10 @@ function Operadora() {
                           </Card>
                           {
                             hasPaymentSelected && (
-                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                              <Card radius='md' style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                 <Avatar
                                   p={-20}
-                                  radius='xl'
+                                  radius={"md"}
                                   className={classes.avatarExchange}
                                   onClick={() => {
                                     let exchanges = ["USD", "VES", "COP"]
@@ -2162,7 +2163,7 @@ function Operadora() {
 
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
                       <div className={classes.raffleInfo}>
-                        <Card withBorder mt={0} w={350} className={classes.raffleInfoCard}>
+                        <Card radius={"md"} withBorder mt={0} w={350} className={classes.raffleInfoCard}>
                           <Text mt={-15} fw={700} fz={12} mb={18} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
                           <Image mt={-20} width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
                           <Divider labelPosition="center" mt={-5} label="Datos de la rifa" />
@@ -2203,7 +2204,7 @@ function Operadora() {
                                     </Title>
                                   </Group>
                                   <Group pb={10} mx={0} position="apart">
-                                    <ScrollArea h={65} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                    <ScrollArea h={60} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                       {
                                         ticketsSelected.map((ticket) => {
                                           const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
