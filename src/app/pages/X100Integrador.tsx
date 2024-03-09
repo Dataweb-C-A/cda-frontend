@@ -1025,6 +1025,7 @@ function X100Integrador() {
           positions: ticketsSelected.map(ticket => ticket),
           price: calculateTotalPrice().toFixed(2),
           money: money,
+          player_id: playerIdParam,
           integrator: 'CDA'
         }
       };
