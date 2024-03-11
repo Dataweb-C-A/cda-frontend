@@ -142,7 +142,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
   },
   ticketsPage: {
-    height: 'calc(100vh - 11rem - 37px)',
+    height: 'calc(100vh - 15rem - 37px)',
     marginTop: '5px',
     marginLeft: '-5px',
     background: theme.colors.dark[6]
