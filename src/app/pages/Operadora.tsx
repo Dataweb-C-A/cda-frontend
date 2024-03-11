@@ -9,7 +9,7 @@ import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image
 import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
-import { IconArrowsShuffle, IconDice, IconEgg, IconX } from '@tabler/icons-react';
+import { IconArrowsShuffle, IconGift, IconEgg, IconX } from '@tabler/icons-react';
 import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
@@ -165,6 +165,7 @@ const useStyles = createStyles((theme) => ({
     flexWrap: 'wrap'
   },
   raffleInfo: {
+    marginTop: "-50px",
     width: '25rem',
     display: 'flex',
     [`@media (max-width: 1280px)`]: {
@@ -176,7 +177,7 @@ const useStyles = createStyles((theme) => ({
   },
   raffleInfoCard: {
     background: theme.colors.dark[7],
-    height: '100%',
+    height: '107%',
     [`@media (max-width: 1280px)`]: {
       display: 'none'
     },
@@ -1245,7 +1246,14 @@ function Operadora() {
   }
 
   const [opened, setOpened] = useState(true);
+  const [openedprize, setOpenedprize] = useState(true);
+  const abrirModalPremio = () => {
+    setOpenedprize(true);
+  };
 
+  const cerrarModalPremio = () => {
+    setOpenedprize(false);
+  };
   const [exchangeRates, setExchangeRates] = useState<{ value_bs: number; value_cop: number } | null>(null);
 
   const fetchExchangeRates = async () => {
@@ -1357,6 +1365,7 @@ function Operadora() {
                                   setTickets({ tickets: ticketsConstructor(raffle.tickets_count) });
                                   setSelectedPage(1);
                                   setOpened(true);
+                                  cerrarModalPremio();
                                 }}
                               />
                               <Divider orientation="vertical" ml={10} my={5} variant="dotted" />
@@ -1578,7 +1587,7 @@ function Operadora() {
                         }
                       }}
                     >
-                      <Text fw={400} fz={16}>
+                      <Text fw={700} fz={16}>
                         USD
                       </Text>
                     </Badge>
@@ -1595,7 +1604,7 @@ function Operadora() {
                         }
                       }}
                     >
-                      <Text fw={400} fz={16}>
+                      <Text fw={700} fz={16}>
                         VES
                       </Text>
                     </Badge>
@@ -1612,14 +1621,14 @@ function Operadora() {
                         }
                       }}
                     >
-                      <Text fw={400} fz={16}>
+                      <Text fw={700} fz={16}>
                         COP
                       </Text>
                     </Badge>
 
-                    <Text fw={300} mr={3} fz={16} mt={2} ta="start"> Ticket: </Text>
-                    <Text fw={500} mr={15} fz={16} mt={2} ta="end">{raffleActive(selectedRaffle)?.price_unit}$</Text>
-                    <Text fw={300} ml={0} mt={2} fz={16} ta="start"> Combos: </Text>
+                    <Text fw={700} mr={3} fz={16} mt={2} ta="start"> TICKET: </Text>
+                    <Text fw={700} mr={15} fz={16} mt={2} ta="end">{raffleActive(selectedRaffle)?.price_unit}$</Text>
+                    <Text fw={700} ml={0} mt={2} fz={16} ta="start"> COMBOS: </Text>
 
                     {raffleActive(selectedRaffle)?.combos === null ? (
                       JSON.parse(localStorage.getItem('user') || '{}').role === 'Admin' && (
@@ -1644,7 +1653,9 @@ function Operadora() {
                                     h="35px"
                                     ml={10}
                                     mt={-2}
-                                    fz={10}
+                                    fz={16}
+
+                                    fw={700}
                                     color="teal"
                                     onClick={() => handleComboClick(combo.quantity, combo.price)}
                                   >
@@ -2159,9 +2170,68 @@ function Operadora() {
 
 
                       { /* Raffle info   style={{ background: "#1D1E30"}} */}
+                      <Modal
+
+                        opened={openedprize}
+                        onClose={cerrarModalPremio}
+                        withCloseButton={false}
+                        centered
+                        radius='lg'
+                        size="lg"
+                      >
+                        <Title c='#56CCF2' order={1} ta='center'>
+                          Premio
+                        </Title>
+
+                        <Divider labelPosition="center" mt={-5} fz={150} label={`${raffleActive(selectedRaffle)?.title}`} />
+                        <Image w='100%' src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
+
+                      </Modal>
                       <div className={classes.raffleInfo}>
                         <Card radius={"md"} withBorder mt={0} w={350} className={classes.raffleInfoCard}>
-                          <Text mt={-15} fw={700} fz={12} mb={18} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
+                          <Group position="apart">
+
+                            <Title fz="xs" mt={-5} c='#56CCF2' >
+                              Rifa
+                            </Title>
+                            <Title mb={7} fw={700} fz="sm">
+                              {raffleActive(selectedRaffle)?.title}
+                            </Title>
+
+                          </Group>
+
+
+                          <Group position="apart">
+                            <Title c='#56CCF2' fz="xs">
+                              Tipo
+                            </Title>
+                            <Title mb={5} fw={700} fz="sm">
+                              {raffleActive(selectedRaffle)?.tickets_count} Números
+                            </Title>
+                          </Group>
+
+                          <Group position="apart">
+                            <Title c='#56CCF2' fz="xs">
+                              Fecha
+                            </Title>
+                            <Title mb={10} fw={700} fz="sm">
+                              {moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}
+                            </Title>
+                          </Group>
+                          <Group position="apart">
+                            <Title c='#56CCF2' order={6}>
+                              Loteria
+                            </Title>
+                            <Title fw={700} fz="sm">
+                              Zulia 7A
+                            </Title>
+                          </Group>
+
+
+                          <Button onClick={abrirModalPremio} leftIcon={<IconGift />} fullWidth color="yellow" radius="xs" size="xs">
+                            Ver premio
+                          </Button>
+                          {/* <Text mt={-15} fw={700} fz={12} mb={18} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
                           <Image mt={-20} width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
                           <Divider labelPosition="center" mt={-5} label="Datos de la rifa" />
                           <Group w="100%" position='apart'>
@@ -2182,10 +2252,10 @@ function Operadora() {
                           <Group w="100%" mb={10} position='apart'>
                             <Text fw={700} fz={13} ta="start">Fecha de cierre:</Text>
                             <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY')}</Text>
-                          </Group>
+                          </Group> */}
                           {
                             ticketsSelected.length > 0 && (
-                              <Card bg="white" className="mini-cutoff">
+                              <Card bg="white" radius="md" mt={10}>
                                 <small>
                                   <Text ta="center" mt={-5} fw={700} color='black'>Informacion de compra</Text>
                                   <Divider variant="dashed" />
@@ -2193,15 +2263,13 @@ function Operadora() {
                                     <Title order={6} fw={600} c='black'>
                                       Prod.
                                     </Title>
-                                    <Title order={6} fw={600} c='black'>
-                                      Cant.
-                                    </Title>
+
                                     <Title order={6} mr={25} fw={600} c='black'>
                                       Precio.
                                     </Title>
                                   </Group>
                                   <Group pb={10} mx={0} position="apart">
-                                    <ScrollArea h={60} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                    <ScrollArea h={240} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                       {
                                         ticketsSelected.map((ticket) => {
                                           const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
@@ -2215,9 +2283,7 @@ function Operadora() {
                                                 <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                   {parseTickets(ticket)}
                                                 </Title>
-                                                <Title order={6} fw={300} c='black'>
-                                                  1.00
-                                                </Title>
+
                                                 <Title order={6} fw={300} c='black'>
                                                   {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
                                                     ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"

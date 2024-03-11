@@ -80,7 +80,7 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
         <Progress h={22} mt={5} ml={-4} style={{ borderRadius: '0 !important' }} w={270} label={`${progress}%`} color={theme.colors.green[8]} size='xl' value={progress < 1 ? 13 : progress > 1 ? 17 : progress} /> */}
 
         <Group>
-          <Card h={201} ml={-5} mt={-30} style={{ background: '#68C5DF' }}>
+          <Card h={201} ml={-5} mt={-30} style={{ background: '#56CCF2' }}>
             <Text>
 
             </Text>
@@ -91,22 +91,22 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
               marginLeft: '15px'
             }}>
 
-            <Title fz="xs" mt={-5} c='#9CB6C7'>
+            <Title fz="xs" mt={-5} c='#56CCF2' >
               Rifa
             </Title>
             <Title mb={7} fw={700} fz="sm">
               {data.title}
             </Title>
 
-            <Title c='#9CB6C7' fz="xs">
-              Tipo:
+            <Title c='#56CCF2'  fz="xs">
+              Tipo
             </Title>
             <Title mb={5} fw={700} fz="sm">
               {data.tickets_count} Números
             </Title>
 
-            <Title c='#9CB6C7' fz="xs">
-              Fecha:
+            <Title c='#56CCF2'  fz="xs">
+              Fecha
             </Title>
             <Title mb={10} fw={700} fz="sm">
               {moment(data.init_date).format('DD/MM/YYYY')}
@@ -115,8 +115,8 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
             <Group mt={-15} >
               <div>
 
-                <Title c='#9CB6C7' order={6}>
-                  Loteria:
+                <Title c='#56CCF2'  order={6}>
+                  Loteria
                 </Title>
                 <Title fw={700} fz="sm">
                   Zulia 7A
@@ -129,9 +129,9 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
               >
 
                 <RingProgress
-                  ml={155}
-                  mt={-15}
-                  sections={[{ value: progress, color: 'green' }]}
+                  ml={150}
+                  mt={-30}
+                  sections={[{ value: progress, color: '#76BE34' }]}
                   thickness={8}
                   size={80}
                   label={
@@ -140,7 +140,10 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
                     </Text>
                   }
                 />
-
+                <Title
+                  ml={155} mt={-5} c='#9CB6C7' fz="sm">
+                  Progreso
+                </Title>
               </div>
 
 
