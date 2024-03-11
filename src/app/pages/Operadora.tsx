@@ -1092,9 +1092,7 @@ function Operadora() {
                   <Title order={6} fw={600} c='black'>
                     Productos
                   </Title>
-                  <Title order={6} fw={600} c='black'>
-                    Cantidad
-                  </Title>
+                 
                   <Title order={6} fw={600} c='black'>
                     Precio
                   </Title>
@@ -1102,7 +1100,7 @@ function Operadora() {
                     Descuento
                   </Title>
                 </Group>
-                <ScrollArea h={210} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                <ScrollArea h={110} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                   {
                     ticketsSelected.map((ticket) => {
                       return (
@@ -1110,9 +1108,7 @@ function Operadora() {
                           <Title order={6} ml={20} fw={300} c='black'>
                             {parseTickets(ticket)}
                           </Title>
-                          <Title order={6} ml={10} fw={300} c='black'>
-                            1.00
-                          </Title>
+                         
                           <Title order={6} fw={300} c='black'>
                             {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
                               ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " VES"
@@ -1129,6 +1125,19 @@ function Operadora() {
                     })
                   }
                 </ScrollArea>
+                <Divider my={10} variant="dashed" />
+                <Title order={4} fw={650} c='black'>
+                   Datos de la rifa:
+                  </Title>
+
+                  <Title order={6} fw={300} c='black'>
+                            {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                              ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " VES"
+                              : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
+                                : raffleActive(selectedRaffle || 0)?.price_unit + " USD"
+                            }
+                          </Title>
                 <Divider my={10} variant="dashed" />
                 <Group position="apart">
                   <Title order={4} fw={650} c='black'>
@@ -1837,9 +1846,7 @@ function Operadora() {
                                   <Title order={6} fw={600} c='black'>
                                     Prod.
                                   </Title>
-                                  <Title order={6} fw={600} c='black'>
-                                    Cant.
-                                  </Title>
+                                
                                   <Title order={6} mr={25} fw={600} c='black'>
                                     Precio.
                                   </Title>
@@ -1859,9 +1866,7 @@ function Operadora() {
                                               <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                 {parseTickets(ticket)}
                                               </Title>
-                                              <Title order={6} fw={300} c='black'>
-                                                1.00
-                                              </Title>
+                                            
                                               <Title order={6} fw={300} c='black'>
                                                 {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
                                                   ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
@@ -2082,9 +2087,7 @@ function Operadora() {
                                   <Title order={6} fw={600} c='black'>
                                     Prod.
                                   </Title>
-                                  <Title order={6} fw={600} c='black'>
-                                    Cant.
-                                  </Title>
+                                 
                                   <Title order={6} mr={25} fw={600} c='black'>
                                     Precio.
                                   </Title>
@@ -2104,9 +2107,7 @@ function Operadora() {
                                               <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                 {parseTickets(ticket)}
                                               </Title>
-                                              <Title order={6} fw={300} c='black'>
-                                                1.00
-                                              </Title>
+                                            
                                               <Title order={6} fw={300} c='black'>
                                                 {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
                                                   ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
