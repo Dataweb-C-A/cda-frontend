@@ -845,9 +845,6 @@ function Operadora() {
       setSelectValue(formattedText);
     };
 
-
-
-
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const newName = event.currentTarget.value.replace(/[^a-zA-Z]/g, '');
       setName(newName);
@@ -1080,7 +1077,7 @@ function Operadora() {
               >
                 {terms && (
                   <img src={RifamaxLogo}
-                    style={{ position: 'absolute', opacity: 0.06, top: 80, left: -35 }}
+                    style={{ position: 'absolute', opacity: 0.5, top: 80, left: -35 }}
                   />
                 )}
                 <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>

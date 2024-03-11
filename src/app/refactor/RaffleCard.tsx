@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Group, Progress, Badge, Text, Title, createStyles, useMantineTheme } from "@mantine/core";
+import { Button, Card, Group, Progress, Badge, Text, Title, createStyles, RingProgress, useMantineTheme } from "@mantine/core";
 import { IRaffle } from "./interfaces";
 import moment from "moment";
 
@@ -15,16 +15,18 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
   const theme = useMantineTheme()
   return (
     <>
+
       <Card
         ml={10}
         mt={10}
         onClick={onClick}
         withBorder
         style={style}
-        radius={"md"}
+        radius={"lg"}
         className={className}
         p={0}
         pt={20}
+        w={380}
         px={4}
         mb={10}
       >
@@ -42,7 +44,7 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
           </Group>
         </div> */}
 
-        <Group mt={-15} position='apart'>
+        {/* <Group mt={-15} position='apart'>
           <Title order={6}>
             Rifa de:
           </Title>
@@ -75,7 +77,79 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
             Zulia 7A 7:05 PM
           </Title>
         </Group>
-        <Progress h={22} mt={5} ml={-4} style={{ borderRadius: '0 !important' }} w={270} label={`${progress}%`} color={theme.colors.green[8]} size='xl' value={progress < 1 ? 13 : progress > 1 ? 17 : progress} />
+        <Progress h={22} mt={5} ml={-4} style={{ borderRadius: '0 !important' }} w={270} label={`${progress}%`} color={theme.colors.green[8]} size='xl' value={progress < 1 ? 13 : progress > 1 ? 17 : progress} /> */}
+
+        <Group>
+          <Card h={201} ml={-5} mt={-30} style={{ background: '#68C5DF' }}>
+            <Text>
+
+            </Text>
+          </Card>
+
+          <div
+            style={{
+              marginLeft: '15px'
+            }}>
+
+            <Title fz="xs" mt={-5} c='#9CB6C7'>
+              Rifa
+            </Title>
+            <Title mb={7} fw={700} fz="sm">
+              {data.title}
+            </Title>
+
+            <Title c='#9CB6C7' fz="xs">
+              Tipo:
+            </Title>
+            <Title mb={5} fw={700} fz="sm">
+              {data.tickets_count} Números
+            </Title>
+
+            <Title c='#9CB6C7' fz="xs">
+              Fecha:
+            </Title>
+            <Title mb={10} fw={700} fz="sm">
+              {moment(data.init_date).format('DD/MM/YYYY')}
+            </Title>
+
+            <Group mt={-15} >
+              <div>
+
+                <Title c='#9CB6C7' order={6}>
+                  Loteria:
+                </Title>
+                <Title fw={700} fz="sm">
+                  Zulia 7A
+                </Title>
+
+              </div>
+
+
+              <div
+              >
+
+                <RingProgress
+                  ml={155}
+                  mt={-15}
+                  sections={[{ value: progress, color: 'green' }]}
+                  thickness={8}
+                  size={80}
+                  label={
+                    <Text fz="sm" align="center" size="xl">
+                      {progress}%
+                    </Text>
+                  }
+                />
+
+              </div>
+
+
+            </Group>
+
+
+          </div>
+        </Group>
+
       </Card>
     </>
   );

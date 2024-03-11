@@ -104,7 +104,7 @@ const useStyles = createStyles((theme) => ({
     background: theme.colors.dark[7],
     transition: "0.35s",
     '&:hover': {
-      backgroundColor:"#66BCD6",
+      backgroundColor: "#66BCD6",
       cursor: 'pointer'
     },
   },
@@ -1626,7 +1626,7 @@ function X100Integrador() {
                                       return (
                                         <>
                                           <Button
-                                            size='xs'
+                                            h="35px"
                                             ml={10}
                                             mt={-2}
                                             fz={10}
@@ -1683,7 +1683,7 @@ function X100Integrador() {
                                   })}
 
                                   {/* Resto del código permanece igual */}
-                                  <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                                  <Card radius='md' style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                                     <Card style={{ background: '#4D4F66' }}>
                                       <Text>
 
@@ -1719,7 +1719,7 @@ function X100Integrador() {
                                   </Card>
                                   {
                                     money && (
-                                      <Card style={{ display: 'flex', gap: '15px', background: money === 'USD' ? theme.colors.teal[8] : money === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                                      <Card radius='md' style={{ display: 'flex', gap: '15px', background: money === 'USD' ? theme.colors.teal[8] : money === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                         <Avatar
                                           p={-20}
                                           radius='xl'
