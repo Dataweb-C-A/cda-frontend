@@ -1,8 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useState, ChangeEvent } from "react"
 import axios, { AxiosResponse } from 'axios';
 import { links } from '../assets/data/links';
-import { Card, SimpleGrid, Loader, Flex, Input, Modal, Text, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
+import { IconSearch, IconTrash, IconWallet, IconEye, IconChevronRight, IconMoodSadDizzy, IconDeviceDesktopShare, IconReload } from "@tabler/icons-react"
+import VenezuelaFlag from "../assets/images/venezuela_flag.png"
+import { Card, HoverCard, Avatar, RingProgress, Input, Modal, Select, Text, Stepper, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import Navbar from '../components/navbar';
+import { forwardRef } from 'react';
 
 interface RaffleData {
   id: number;
@@ -27,16 +30,44 @@ interface RaffleData {
   created_at: string;
   updated_at: string;
 }
-
+interface Country {
+  name: string;
+  alpha3Code: string;
+}
 type Props = {}
 
 function Cuponesinf({ }: Props) {
   const [profiles, setProfiles] = useState([]);
   const [counter, setCounter] = useState<number>(0)
-
+  const [textInputValue, setTextInputValue] = useState<string>('');
+  const [selectValue, setSelectValue] = useState<string>('');
   const progre = 23;
 
   const apiUrl = 'http://localhost:3000/x100/raffles';
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const text = event.target.value.replace(/\D/g, '');
+    let formattedText = '';
+
+    if (text.length > 0) {
+      formattedText = `(${text.slice(0, 3)})`;
+    }
+
+    setSelectValue(formattedText);
+  };
+  const [countries, setCountries] = useState<Country[]>([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get('https://restcountries.com/v3.1/all');
+        setCountries(response.data);
+      } catch (error) {
+        console.error('Error fetching countries:', error);
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   axios.get(apiUrl)
     .then((response: AxiosResponse<RaffleData>) => {
@@ -47,7 +78,60 @@ function Cuponesinf({ }: Props) {
     .catch((error) => {
       console.error('Error al realizar la solicitud:', error);
     });
+  function handleTextInputChange(value: string) {
+    const numericValue = value.replace(/\D/g, '');
 
+    let formattedValue = numericValue;
+    if (numericValue.length > 3) {
+      formattedValue = numericValue.slice(0, 3) + '-' + numericValue.slice(3);
+    }
+    setTextInputValue(formattedValue);
+  }
+
+  const data = [
+    {
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Venezuela.svg/1280px-Flag_of_Venezuela.svg.png',
+      label: 'Venezuela',
+      value: 'Venezuela',
+      description: 'venezuela',
+    },
+
+    {
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/200px-Flag_of_Colombia.svg.png',
+      label: 'Colombia',
+      value: 'Colombia',
+      description: 'Colombia',
+    },
+    {
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png',
+      label: 'Estados Unidos',
+      value: 'Estados Unidos',
+      description: 'Estados Unidos',
+    },
+  ];
+
+  interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
+    image: string;
+    label: string;
+    description: string;
+  }
+
+  const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+    ({ image, label, description, ...others }: ItemProps, ref) => (
+      <div ref={ref} {...others}>
+        <Group noWrap>
+          <Avatar src={image} />
+
+          <div>
+            <Text size="sm">{label}</Text>
+            <Text size="xs" opacity={0.65}>
+              {description}
+            </Text>
+          </div>
+        </Group>
+      </div>
+    )
+  );
   return (
     <>
       <Navbar profiles={profiles} links={links} />
@@ -67,230 +151,352 @@ function Cuponesinf({ }: Props) {
          
         `}
       </style>
-      <Group>
 
+      <Card w="48%" ml='25%' radius='lg' withBorder h='60vh' mt={105}>
 
-      
-        <Flex
-          mih={50}
-          gap="md"
-          justify="center"
-          align="center"
-          direction="column"
-          wrap="wrap"
-          mr="3%"
-          ml="10%"
-          w={"40% "}
+        <Group>
+          <div style={{ left: '0', padding: '0 10px 0 10px' }}>
+            <Group>
 
-        >
+              <Card style={{ background: '#4D4F66', width: '50px' }}>
+                <Text ml={5}>
+                  1
+                </Text>
+              </Card>
 
-          <Group position='center' >
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
+              <Card style={{ background: '#4D4F66', width: '50px' }}>
+                <Text ml={5}>
+                  3
+                </Text>
+              </Card>
 
-            >
-              <Text align='center' fz={35}>
-                1
-              </Text>
-              <Text align='center' fz={15}>
-                1$
-              </Text>
+              <Card style={{ background: '#4D4F66', width: '50px' }}>
+                <Text ml={5}>
+                  5
+                </Text>
+              </Card>
 
-            </Card >
+              <Card style={{ background: '#4D4F66', width: '50px' }}>
+                <Text ml={5}>
+                  7
+                </Text>
+              </Card>
 
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
+              <Card style={{ background: '#4D4F66', width: '50px' }}>
+                <Text ml={1}>
+                  10
+                </Text>
+              </Card>
 
-            >
-              <Text align='center' fz={35}>
-                2
-              </Text>
-              <Text align='center' fz={15}>
-                2$
-              </Text>
-
-            </Card >
-
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
-
-            >
-              <Text align='center' fz={35}>
-                3
-              </Text>
-              <Text align='center' fz={15}>
-                3$
-              </Text>
-
-            </Card >
-
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg" >
-              <Text align='center' fz={35}>
-                4
-              </Text>
-              <Text align='center' fz={15}>
-                4$
-              </Text>
-
-            </Card >
-
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
-
-            >
-              <Text align='center' fz={35}>
-                5
-              </Text>
-              <Text align='center' fz={15}>
-                5$
-              </Text>
-
-            </Card >
-
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
-
-            >
-              <Text align='center' fz={35}>
-                6
-              </Text>
-              <Text align='center' fz={15}>
-                6$
-              </Text>
-
-            </Card >
-
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
-
-            >
-              <Text align='center' fz={35}>
-                7
-              </Text>
-              <Text align='center' fz={15}>
-                7$
-              </Text>
-
-            </Card >
-
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
-
-            >
-              <Text align='center' fz={35}>
-                8
-              </Text>
-              <Text align='center' fz={15}>
-                8$
-              </Text>
-
-            </Card >
-
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"     >
-              <Text align='center' fz={35}>
-                9
-              </Text>
-              <Text align='center' fz={15}>
-                9$
-              </Text>
-
-            </Card >
-
-            <Card p={58} mb={15} className="hover-card" shadow="xl" radius="lg"
-
-            >
-              <Text align='center' fz={35}>
-                10
-              </Text>
-              <Text align='center' fz={15}>
-                10$
-              </Text>
-
-            </Card >
-
-          </Group>
+              <Card style={{ background: '#4D4F66', width: '50px' }}>
+                <Text ml={5}>
+                  +
+                </Text>
+              </Card>
 
 
 
-        </Flex>
-
-
-        <Card shadow="sm" h="100%" radius='xl' mb={15} withBorder>
-
-
-          <Text
-            mt={7}
-            fz={20}
-            ta="center"
-            fw={600}
-          >
-            Jugadas
-          </Text>
-
-          <Divider my={7} />
-          <ScrollArea h={100} type="auto">
-
-          </ScrollArea>
-          <Group position='apart' pr={20}>
-            <Text fw={600} size={20}>JUGADAS: </Text>
-            <Text fw={600} size={20}>TOTAL: $</Text>
-          </Group>
-
-
-          <br />
-          <div style={{ top: '500%', right: '-6%' }}>
-
-            <Button
-              variant="filled"
-              color="blue"
-              mt={0}
-              style={{ width: '100%' }}
-            >
-              Selecciona moneda y compra
-            </Button>
-            {/** modal compra */}
-
-          </div>
-          <Divider
-            label={'Detalles'}
-            dir='horizontal'
-            labelPosition='center'
-            variant='dashed'
-            mt={20}
-            style={{
-              zIndex: 9999999
-            }}
-            py={10}
-          />
-
-          <>
-
-            <Group position="apart">
-
-
-              <Image maw={250} src="https://intervez.com/wp-content/uploads/2022/08/WAWA1.jpeg" radius="md" alt="Premios" />
-
-              <Flex
-                mih={50}
-                gap="md"
-                justify="center"
-                align="center"
-                direction="column"
-                wrap="wrap"
-              >
-                <Title order={3}>Premio</Title>
-                <Text>siUNA BUSETA</Text>
-                <Title order={3}>Fecha de inicio</Title>
-                <Text>si12/12/2023</Text>
-                <Title order={3}>Fecha de cierre</Title>
-                <Text>si24/12/2023</Text>
-
-                <Title order={3}>Progreso</Title>
-
-
-              </Flex>
             </Group>
-            <Progress value={progre} label={`${progre}`} size="xl" mt={7} />
 
-          </>
+            <Divider my="sm" variant="dashed" />
+            <Text ta="center" fw={750}>Ingrese sus datos</Text>
+            <Group spacing={5}>
+              <TextInput
+                style={{ width: '49.2%' }}
+                label='Nombre'
+                placeholder="Nombre"
+              />
+              <TextInput
+                style={{ width: '49.2%' }}
+                label='Apellido'
+                placeholder="Apellido"
+              />
+            </Group>
+
+            <Group position="center">
+              <Select
+                w={90}
+                mt={10}
+                defaultValue="V-"
+                data={[
+                  { value: 'V-', label: 'V' },
+                  { value: 'E-', label: 'E' },
+                  { value: 'J-', label: 'J' },
+                  { value: 'G-', label: 'G' },
+                ]}
+              />
+              <TextInput
+                placeholder="Cedula o DNI"
+                mt={10}
+                w={232}
+                maxLength={8}
+              />
+            </Group>
+
+            <TextInput
+              label='Correo electronico '
+
+              style={{ width: '98%' }}
+              placeholder="Correo electronico"
+              mt={10}
+            />
+
+            <Select
+              label="Pais de residencia"
+              placeholder="Escoga un pais"
+              mt={10}
+              itemComponent={SelectItem}
+              data={data}
+              maxDropdownHeight={400}
+              nothingFound="Nobody here"
+
+            />
+            <Group mt={10}>
+
+              <TextInput
+                label={<Text>Prefijo</Text>}
+                placeholder="XXX"
+                style={{ width: '40%' }}
+                size="md"
+                maxLength={5}
+                onChange={handleInputChange}
+                value={selectValue}
+              />
+              <TextInput
+                label={<Text>Número telefónico</Text>}
+                placeholder="XXX-XXXX"
+                style={{ width: '55%' }}
+                size="md"
+                maxLength={8}
+                onChange={(event) => {
+                  handleTextInputChange(event.currentTarget.value);
+                }}
+                value={textInputValue}
+              />
+            </Group>
+            <TextInput
+
+              label='Direccion de envio'
+              mt={10}
+              placeholder="Direccion"
+            />
+            <Checkbox
+              mt={5}
+              label="Acepto los términos y condiciones"
+            />
+          </div>
+
+          <Divider orientation="vertical" />
+          <div >
+            {/* <div style={{ width: 350, marginLeft: 'auto', marginRight: 'auto' }}>
+              <Image
+                radius="md"
+                mt={-50}
+                mb={15}
+
+                width='100%'
+                height='100%'
+                src="https://bisercadigital.com/wp-content/uploads/2023/04/moto-Bera-SBR110-cc.jpg"
+                alt="Random unsplash image"
+              />
+            </div> */}
+
+            <Group>
+              <Card h={210} ml={-15} mt={-30} style={{ background: '#56CCF2' }} mb={-20}>
+                <Text>
+
+                </Text>
+              </Card>
+
+              <div>
+                <Group>
+
+                  <div>
+
+                    <Title fz="xs" mt={-5} c='#56CCF2' >
+                      Rifa
+                    </Title>
+                    <Title mb={7} fw={700} fz="sm">
+                      Rifa de moto
+                    </Title>
+                  </div>
 
 
-        </Card>
-      </Group>
+                  <IconEye style={{
+                    marginRight: '-12px'
+                  }} color="green" stroke={2} />
 
+
+
+                  <HoverCard width={480} shadow="md">
+                    <HoverCard.Target>
+                      <Text fz={12} ta="end">
+                        Ver imagen
+                      </Text>
+                    </HoverCard.Target>
+                    <HoverCard.Dropdown mt={-60} w={150} h={210} ml={-100}>
+
+                      {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
+                      <Group>
+
+                        <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
+                          <Image
+                            mt={-11}
+                            ml={15}
+                            height={205}
+                            mb={-13}
+                            src='https://bisercadigital.com/wp-content/uploads/2023/04/moto-Bera-SBR110-cc.jpg'
+                            alt="Premio"
+                          />
+                        </div>
+                        <div>
+                          <IconDeviceDesktopShare style={{
+                            marginLeft: '30px'
+                          }} color="green" stroke={2} />
+                          <Title
+                            ml={0}
+                            c='#9CB6C7' fz="sm">
+                            Ver completa
+                          </Title>
+
+                          <RingProgress
+                            sections={[{ value: 5, color: '#76BE34' }]}
+                            thickness={8}
+                            size={80}
+                            label={
+                              <Text fz="sm" align="center" size="xl">
+                                5%
+                              </Text>
+                            }
+                          />
+                          <Title
+                            ml={13}
+                            c='#9CB6C7' fz="sm">
+                            Progreso
+                          </Title>
+                        </div>
+                      </Group>
+
+
+                    </HoverCard.Dropdown>
+                  </HoverCard>
+
+                </Group>
+
+                <Title c='#56CCF2' fz="xs">
+                  Tipo
+                </Title>
+                <Title mb={7} fw={700} fz="sm">
+                  Rifa ticket
+                </Title>
+
+                <Title c='#56CCF2' fz="xs">
+                  Fecha
+                </Title>
+                <Title mb={15} fw={700} fz="sm">
+                  20/04/2024
+                </Title>
+                <Group mt={-15} >
+                  <div>
+
+                    <Title c='#56CCF2' order={6}>
+                      Loteria
+                    </Title>
+                    <Title fw={700} fz="sm">
+                      Zulia 7A
+                    </Title>
+
+                  </div>
+
+
+                  <div
+                  >
+
+                    <RingProgress
+                      ml={150}
+                      mt={-30}
+                      sections={[{ value: 5, color: '#76BE34' }]}
+                      thickness={8}
+                      size={80}
+                      label={
+                        <Text fz="sm" align="center" size="xl">
+                          5%
+                        </Text>
+                      }
+                    />
+                    <Title
+                      ml={160} mt={-5} c='#9CB6C7' fz="sm">
+                      Progreso
+                    </Title>
+                  </div>
+
+
+                </Group>
+
+
+              </div>
+            </Group>
+            <Card bg="white" w="110%" ml={-15} radius="md" mt={10} h="100%" style={{ borderRadius: '0px 0px 10px 10px' }}>
+              <small>
+                <Text ta="center" mt={15} fw={700} color='black'>Informacion de compra</Text>
+                <Divider variant="dashed" />
+                <Group position="apart">
+                  <Title order={6} fw={600} c='black'>
+                    Prod.
+                  </Title>
+
+                  <Title order={6} mr={25} fw={600} c='black'>
+                    Precio.
+                  </Title>
+                </Group>
+                <Group pb={10} mx={0} position="apart">
+                  <ScrollArea h={185} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+
+                    <Group position="apart">
+
+                      <Title order={6} fw={300} >
+                        05
+                      </Title>
+
+                      <Title order={6} fw={300} c='black'>
+                        30 $
+                      </Title>
+                    </Group>
+
+
+                  </ScrollArea>
+                  <Group mb={-5} w="100%" position="apart">
+                    <Title order={4} fw={650} c='black'>
+                      Total:
+                    </Title>
+                    <Title order={4} fw={300} ta="end" c='black'>
+                      30$
+                    </Title>
+                  </Group>
+
+                </Group>
+              </small>
+              <Group w="100%" position="center" >
+                <Button
+                  leftIcon={<IconTrash />}
+                  color="red"
+                >
+                  Limpiar
+                </Button>
+                <Button
+                  leftIcon={<IconWallet />}
+                >
+                  Comprar
+                </Button>
+              </Group>
+            </Card>
+          </div>
+
+
+
+
+        </Group>
+      </Card>
 
     </>
   )
