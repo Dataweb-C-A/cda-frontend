@@ -5,12 +5,12 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, NumberInput, useMantineTheme, Checkbox, Modal, Select, Stepper, Avatar, TextInput, Title, Divider, Badge } from "@mantine/core"
+import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, HoverCard, Card, Image, Group, RingProgress, useMantineTheme, Checkbox, Modal, Select, Stepper, Avatar, TextInput, Title, Divider, Badge } from "@mantine/core"
 import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
 import { IconArrowsShuffle, IconGift, IconEgg, IconX } from '@tabler/icons-react';
-import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
+import { IconSearch, IconTrash, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconDeviceDesktopShare, IconReload } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
 import USAFlag from "../assets/images/usa_flag.jpg"
@@ -157,6 +157,7 @@ const useStyles = createStyles((theme) => ({
       width: '100%',
     },
     display: 'flex',
+    marginRight: "-35px",
     gap: '8px',
 
     [`@media (max-width: 1280px)`]: {
@@ -165,9 +166,6 @@ const useStyles = createStyles((theme) => ({
     flexWrap: 'wrap'
   },
   raffleInfo: {
-    marginTop: "-50px",
-    width: '25rem',
-    display: 'flex',
     [`@media (max-width: 1280px)`]: {
       display: 'none'
     },
@@ -1078,7 +1076,7 @@ function Operadora() {
               >
                 {terms && (
                   <img src={RifamaxLogo}
-                    style={{ position: 'absolute', opacity: 0.5, top: 80, left: -35 }}
+                    style={{ position: 'absolute', opacity: 0.5, top: 80, left: 5 }}
                   />
                 )}
                 <Title order={3} fw={600} c='black' ta="center">{client !== null ? client?.name : `${name} ${lastName}`}</Title>
@@ -1092,7 +1090,7 @@ function Operadora() {
                   <Title order={6} fw={600} c='black'>
                     Productos
                   </Title>
-                 
+
                   <Title order={6} fw={600} c='black'>
                     Precio
                   </Title>
@@ -1100,7 +1098,7 @@ function Operadora() {
                     Descuento
                   </Title>
                 </Group>
-                <ScrollArea h={110} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                <ScrollArea h={170} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                   {
                     ticketsSelected.map((ticket) => {
                       return (
@@ -1108,7 +1106,7 @@ function Operadora() {
                           <Title order={6} ml={20} fw={300} c='black'>
                             {parseTickets(ticket)}
                           </Title>
-                         
+
                           <Title order={6} fw={300} c='black'>
                             {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
                               ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " VES"
@@ -1125,19 +1123,8 @@ function Operadora() {
                     })
                   }
                 </ScrollArea>
-                <Divider my={10} variant="dashed" />
-                <Title order={4} fw={650} c='black'>
-                   Datos de la rifa:
-                  </Title>
 
-                  <Title order={6} fw={300} c='black'>
-                            {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
-                              ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " VES"
-                              : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
-                                ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop) + " COP"
-                                : raffleActive(selectedRaffle || 0)?.price_unit + " USD"
-                            }
-                          </Title>
+
                 <Divider my={10} variant="dashed" />
                 <Group position="apart">
                   <Title order={4} fw={650} c='black'>
@@ -1846,7 +1833,7 @@ function Operadora() {
                                   <Title order={6} fw={600} c='black'>
                                     Prod.
                                   </Title>
-                                
+
                                   <Title order={6} mr={25} fw={600} c='black'>
                                     Precio.
                                   </Title>
@@ -1866,7 +1853,7 @@ function Operadora() {
                                               <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                 {parseTickets(ticket)}
                                               </Title>
-                                            
+
                                               <Title order={6} fw={300} c='black'>
                                                 {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
                                                   ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
@@ -2087,7 +2074,7 @@ function Operadora() {
                                   <Title order={6} fw={600} c='black'>
                                     Prod.
                                   </Title>
-                                 
+
                                   <Title order={6} mr={25} fw={600} c='black'>
                                     Precio.
                                   </Title>
@@ -2107,7 +2094,7 @@ function Operadora() {
                                               <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
                                                 {parseTickets(ticket)}
                                               </Title>
-                                            
+
                                               <Title order={6} fw={300} c='black'>
                                                 {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
                                                   ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
@@ -2180,166 +2167,238 @@ function Operadora() {
                         radius='lg'
                         size="lg"
                       >
-                        <Title c='#56CCF2' order={1} ta='center'>
-                          Premio
-                        </Title>
-
-                        <Divider labelPosition="center" mt={-5} fz={150} label={`${raffleActive(selectedRaffle)?.title}`} />
-                        <Image w='100%' src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
 
                       </Modal>
-                      <div className={classes.raffleInfo}>
-                        <Card radius={"md"} withBorder mt={0} w={350} className={classes.raffleInfoCard}>
-                          <Group position="apart">
 
-                            <Title fz="xs" mt={-5} c='#56CCF2' >
-                              Rifa
-                            </Title>
-                            <Title mb={7} fw={700} fz="sm">
-                              {raffleActive(selectedRaffle)?.title}
-                            </Title>
+                      <Card
+                        mt={-50}
+                        withBorder
+                        radius={"lg"}
+                        p={0}
+                        pt={20}
+                        w={450}
+                        bg={theme.colors.dark[7]}
+                        px={4}
+                        mb={10}
+                        className={classes.raffleInfo}
+                      >
 
-                          </Group>
+                        <Group>
+                          <Card h={210} ml={-5} mt={-30} style={{ background: '#56CCF2' }} mb={-20}>
+                            <Text>
+
+                            </Text>
+                          </Card>
+
+                          <div>
+                            <Group>
+
+                              <div>
+
+                                <Title fz="xs" mt={-5} c='#56CCF2' >
+                                  Rifa
+                                </Title>
+                                <Title mb={7} fw={700} fz="sm">
+                                  {raffleActive(selectedRaffle)?.title}
+                                </Title>
+                              </div>
 
 
-                          <Group position="apart">
+                              <IconEye style={{
+                                marginRight: '-12px'
+                              }} color="green" stroke={2} />
+
+
+
+                              <HoverCard width={480} shadow="md">
+                                <HoverCard.Target>
+                                  <Text fz={12} ta="end">
+                                    Ver imagen
+                                  </Text>
+                                </HoverCard.Target>
+                                <HoverCard.Dropdown mt={-60} w={150} h={210} ml={-100}>
+
+                                  {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
+                                  <Group>
+
+                                    <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
+                                      <Image
+                                        mt={-11}
+                                        ml={15}
+                                        height={205}
+                                        mb={-13}
+                                        src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`}
+                                        alt="Premio"
+                                      />
+                                    </div>
+                                    <div>
+                                      <IconDeviceDesktopShare style={{
+                                        marginLeft: '30px'
+                                      }} color="green" stroke={2} />
+                                      <Title
+                                        ml={0}
+                                        c='#9CB6C7' fz="sm">
+                                        Ver completa
+                                      </Title>
+
+                                      <RingProgress
+                                        sections={[{ value: 5, color: '#76BE34' }]}
+                                        thickness={8}
+                                        size={80}
+                                        label={
+                                          <Text fz="sm" align="center" size="xl">
+                                            {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                          </Text>
+                                        }
+                                      />
+                                      <Title
+                                        ml={13}
+                                        c='#9CB6C7' fz="sm">
+                                        Progreso
+                                      </Title>
+                                    </div>
+                                  </Group>
+
+
+                                </HoverCard.Dropdown>
+                              </HoverCard>
+
+                            </Group>
+
                             <Title c='#56CCF2' fz="xs">
                               Tipo
                             </Title>
-                            <Title mb={5} fw={700} fz="sm">
+                            <Title mb={7} fw={700} fz="sm">
                               {raffleActive(selectedRaffle)?.tickets_count} Números
                             </Title>
-                          </Group>
 
-                          <Group position="apart">
                             <Title c='#56CCF2' fz="xs">
                               Fecha
                             </Title>
-                            <Title mb={10} fw={700} fz="sm">
+                            <Title mb={15} fw={700} fz="sm">
                               {moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}
                             </Title>
-                          </Group>
-                          <Group position="apart">
-                            <Title c='#56CCF2' order={6}>
-                              Loteria
-                            </Title>
-                            <Title fw={700} fz="sm">
-                              Zulia 7A
-                            </Title>
-                          </Group>
+                            <Group mt={-15} >
+                              <div>
+
+                                <Title c='#56CCF2' order={6}>
+                                  Loteria
+                                </Title>
+                                <Title fw={700} fz="sm">
+                                  Zulia 7A
+                                </Title>
+
+                              </div>
 
 
-                          <Button onClick={abrirModalPremio} leftIcon={<IconGift />} fullWidth color="yellow" radius="xs" size="xs">
-                            Ver premio
-                          </Button>
-                          {/* <Text mt={-15} fw={700} fz={12} mb={18} ta="center">{raffleActive(selectedRaffle)?.title}</Text>
-                          <Image mt={-20} width={150} ml={85} mb={2} src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
-                          <Divider labelPosition="center" mt={-5} label="Datos de la rifa" />
-                          <Group w="100%" position='apart'>
-                            <Text fw={700} fz={13} ta="start">Tipo de rifa:</Text>
-                            <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.raffle_type} ({raffleActive(selectedRaffle)?.tickets_count} números)</Text>
-                          </Group>
-                          <Group w="100%" position='apart'>
-                            <Text fw={700} fz={12} ta="start">Sorteo con:</Text>
-                            <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.draw_type}</Text>
-                          </Group>
-                          <Group w="100%" position='apart'>
+                              <div
+                              >
 
-                          </Group>
-                          <Group w="100%" position='apart'>
-                            <Text fw={700} fz={13} ta="start">Fecha de inicio:</Text>
-                            <Text fw={300} fz={13} ta="end">{moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}</Text>
-                          </Group>
-                          <Group w="100%" mb={10} position='apart'>
-                            <Text fw={700} fz={13} ta="start">Fecha de cierre:</Text>
-                            <Text fw={300} fz={13} ta="end">{raffleActive(selectedRaffle)?.expired_date == null ? "Por definir" : moment(raffleActive(selectedRaffle)?.expired_date).format('DD/MM/YYYY')}</Text>
-                          </Group> */}
-                          {
-                            ticketsSelected.length > 0 && (
-                              <Card bg="white" radius="md" mt={10}>
-                                <small>
-                                  <Text ta="center" mt={-5} fw={700} color='black'>Informacion de compra</Text>
-                                  <Divider variant="dashed" />
-                                  <Group position="apart">
-                                    <Title order={6} fw={600} c='black'>
-                                      Prod.
-                                    </Title>
+                                <RingProgress
+                                  ml={150}
+                                  mt={-30}
+                                  sections={[{ value: 5, color: '#76BE34' }]}
+                                  thickness={8}
+                                  size={80}
+                                  label={
+                                    <Text fz="sm" align="center" size="xl">
+                                      {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                    </Text>
+                                  }
+                                />
+                                <Title
+                                  ml={160} mt={-5} c='#9CB6C7' fz="sm">
+                                  Progreso
+                                </Title>
+                              </div>
 
-                                    <Title order={6} mr={25} fw={600} c='black'>
-                                      Precio.
-                                    </Title>
-                                  </Group>
-                                  <Group pb={10} mx={0} position="apart">
-                                    <ScrollArea h={240} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
-                                      {
-                                        ticketsSelected.map((ticket) => {
-                                          const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
-                                          if (isTicketSold) {
-                                            return null;
-                                          }
-                                          return (
-                                            <>
-                                              <Group position="apart">
 
-                                                <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
-                                                  {parseTickets(ticket)}
-                                                </Title>
+                            </Group>
 
-                                                <Title order={6} fw={300} c='black'>
-                                                  {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
-                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
-                                                    : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
-                                                      ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
-                                                      : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " USD"
-                                                  }
 
-                                                </Title>
-                                              </Group>
+                          </div>
+                        </Group>
+                        {
+                          ticketsSelected.length > 0 && (
+                            <Card bg="white" w="105%" ml={-5} radius="md" mt={10} h="100%" style={{ borderRadius: '0px 0px 10px 10px' }}>
+                              <small>
+                                <Text ta="center" mt={-5} fw={700} color='black'>Informacion de compra</Text>
+                                <Divider variant="dashed" />
+                                <Group position="apart">
+                                  <Title order={6} fw={600} c='black'>
+                                    Prod.
+                                  </Title>
 
-                                            </>
-                                          );
-                                        })
-                                      }
-                                    </ScrollArea>
-                                    <Group mb={-5} w="100%" position="apart">
-                                      <Title order={4} fw={650} c='black'>
-                                        Total:
-                                      </Title>
-                                      <Title order={4} fw={300} ta="end" c='black'>
-
-                                        {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
-                                      </Title>
-                                    </Group>
-                                    {/* <Group w="100%" position="apart">
-                                      <Title order={4} fw={650} c='black'>
-                                        Total:
-                                      </Title>
-                                      <Title order={4} fw={300} ta="end" c='black'>
-                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
-                                      </Title>
-                                    </Group> */}
-                                  </Group>
-                                </small>
-                                <Group w="100%" position="center" >
-                                  <Button
-                                    leftIcon={<IconTrash />}
-                                    color="red"
-                                    onClick={() => cleanSelection()}
-                                  >
-                                    Limpiar
-                                  </Button>
-                                  <Button
-                                    leftIcon={<IconWallet />}
-                                    onClick={() => setBuyIsOpen(true)}
-                                  >
-                                    Comprar
-                                  </Button>
+                                  <Title order={6} mr={25} fw={600} c='black'>
+                                    Precio.
+                                  </Title>
                                 </Group>
-                              </Card>
-                            )
-                          }
-                        </Card>
-                      </div>
+                                <Group pb={10} mx={0} position="apart">
+                                  <ScrollArea h={185} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                    {
+                                      ticketsSelected.map((ticket) => {
+                                        const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
+                                        if (isTicketSold) {
+                                          return null;
+                                        }
+                                        return (
+                                          <>
+                                            <Group position="apart">
+
+                                              <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
+                                                {parseTickets(ticket)}
+                                              </Title>
+
+                                              <Title order={6} fw={300} c='black'>
+                                                {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                  ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
+                                                  : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
+                                                    : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " USD"
+                                                }
+
+                                              </Title>
+                                            </Group>
+
+                                          </>
+                                        );
+                                      })
+                                    }
+                                  </ScrollArea>
+                                  <Group mb={-5} w="100%" position="apart">
+                                    <Title order={4} fw={650} c='black'>
+                                      Total:
+                                    </Title>
+                                    <Title order={4} fw={300} ta="end" c='black'>
+
+                                      {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                    </Title>
+                                  </Group>
+
+                                </Group>
+                              </small>
+                              <Group w="100%" position="center" >
+                                <Button
+                                  leftIcon={<IconTrash />}
+                                  color="red"
+                                  onClick={() => cleanSelection()}
+                                >
+                                  Limpiar
+                                </Button>
+                                <Button
+                                  leftIcon={<IconWallet />}
+                                  onClick={() => setBuyIsOpen(true)}
+                                >
+                                  Comprar
+                                </Button>
+                              </Group>
+                            </Card>
+                          )
+                        }
+                      </Card>
+
+
+
                     </div>
                   </div>
                 </>

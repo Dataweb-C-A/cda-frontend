@@ -172,7 +172,7 @@ const Navbar: React.FC<NavbarProps> = ({ profiles, links, expandScreen = false, 
         <div className={`button-theme ${expandScreen ? "button-theme-expandScreen" : ""}`}>
           {/* <ThemeSwitcher /> */}
         </div>
-        <Button style={{ display: user && user.role !== 'Admin' ? 'none' : 'block' }} className={`button-users ${expandScreen ? "button-users-expandScreen" : ""}`} onClick={() => setCommunityOpen(true)}>
+        <Button mt={-10} style={{ display: user && user.role !== 'Admin' ? 'none' : 'block' }} className={`button-users ${expandScreen ? "button-users-expandScreen" : ""}`} onClick={() => setCommunityOpen(true)}>
           <FaUsers className="users-icon"
             style={{
               color: theme.colorScheme === "dark" ? '#fff' : '#202020'
