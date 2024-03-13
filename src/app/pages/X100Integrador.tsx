@@ -229,6 +229,10 @@ const useStyles = createStyles((theme) => ({
       width: 'calc(70% + 1.7rem)',
       height: '2.6rem',
     },
+    [`@media (max-width: 1600px)`]: {
+      width: '50px',
+      height: '2.6rem',
+    },
   },
   ticketsReserved: {
     width: '100%',
@@ -239,6 +243,10 @@ const useStyles = createStyles((theme) => ({
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
       width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
+    [`@media (max-width: 1600px)`]: {
+      width: '50px',
       height: '2.6rem',
     },
   },
@@ -254,6 +262,10 @@ const useStyles = createStyles((theme) => ({
       width: 'calc(70% + 1.7rem)',
       height: '2.6rem',
 
+    },
+    [`@media (max-width: 1600px)`]: {
+      width: '50px',
+      height: '2.6rem',
     },
   },
   pagActive: {
@@ -275,6 +287,10 @@ const useStyles = createStyles((theme) => ({
       width: 'calc(70% + 1.7rem)',
       height: '2.6rem',
     },
+    [`@media (max-width: 1600px)`]: {
+      width: '50px',
+      height: '2.6rem',
+    },
   },
   ticketsSold: {
     width: '100%',
@@ -285,6 +301,10 @@ const useStyles = createStyles((theme) => ({
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
       width: 'calc(70% + 1.7rem)',
+      height: '2.6rem',
+    },
+    [`@media (max-width: 1600px)`]: {
+      width: '50px',
       height: '2.6rem',
     },
   },
@@ -335,6 +355,10 @@ const useStyles = createStyles((theme) => ({
       width: '60px',
       height: '5rem',
     },
+    [`@media (max-width: 1600px)`]: {
+      width: '60px',
+      height: '4rem',
+    },
   },
   tickets100: {
     width: '70px',
@@ -346,6 +370,10 @@ const useStyles = createStyles((theme) => ({
     [`@media (max-width: 1280px)`]: {
       width: '60px',
       height: '5rem',
+    },
+    [`@media (max-width: 1600px)`]: {
+      width: '60px',
+      height: '4rem',
     },
   },
   ticketsReserved100: {
@@ -359,6 +387,10 @@ const useStyles = createStyles((theme) => ({
 
       width: '60px',
       height: '5rem',
+    },
+    [`@media (max-width: 1600px)`]: {
+      width: '60px',
+      height: '4rem',
     },
   },
   ticketsSelected100: {
@@ -384,6 +416,10 @@ const useStyles = createStyles((theme) => ({
     [`@media (max-width: 1280px)`]: {
       width: '60px',
       height: '5rem',
+    },
+    [`@media (max-width: 1600px)`]: {
+      width: '60px',
+      height: '4rem',
     },
   },
   ticketsList100: {
