@@ -27,6 +27,7 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
         p={0}
         pt={20}
         w={380}
+        h={150}
         px={4}
         mb={10}
       >
@@ -91,31 +92,31 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
               marginLeft: '15px'
             }}>
 
-            <Title fz="xs" mt={-5} c='#56CCF2' >
+            <Title fz="xs" mt={-65} c='#56CCF2' >
               Rifa
             </Title>
-            <Title mb={7} fw={700} fz="sm">
+            <Title mb={3} fw={700} fz="sm">
               {data.title}
             </Title>
 
-            <Title c='#56CCF2'  fz="xs">
+            <Title c='#56CCF2' fz="xs">
               Tipo
             </Title>
             <Title mb={5} fw={700} fz="sm">
               {data.tickets_count} Números
             </Title>
 
-            <Title c='#56CCF2'  fz="xs">
+            <Title c='#56CCF2' fz="xs">
               Fecha
             </Title>
-            <Title mb={10} fw={700} fz="sm">
+            <Title mb={7} fw={700} fz="sm">
               {moment(data.init_date).format('DD/MM/YYYY')}
             </Title>
 
-            <Group mt={-15} >
+            <Group mt={-10} >
               <div>
 
-                <Title c='#56CCF2'  order={6}>
+                <Title c='#56CCF2' mb={-5} order={6}>
                   Loteria
                 </Title>
                 <Title fw={700} fz="sm">
@@ -130,7 +131,7 @@ function RaffleCard({ data, progress, style, className, onClick }: IRaffleCard) 
 
                 <RingProgress
                   ml={150}
-                  mt={-30}
+                  mt={-60}
                   sections={[{ value: progress, color: '#76BE34' }]}
                   thickness={8}
                   size={80}

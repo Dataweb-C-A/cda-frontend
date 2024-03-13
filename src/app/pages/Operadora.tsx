@@ -5,7 +5,7 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, HoverCard, Card, Image, Group, RingProgress, useMantineTheme, Checkbox, Modal, Select, Stepper, Avatar, TextInput, Title, Divider, Badge } from "@mantine/core"
+import { Loader, Button, Flex, Text, createStyles, ScrollArea, ActionIcon, HoverCard, Card, Image, Group, RingProgress, useMantineTheme, Checkbox, Modal, Select, Stepper, Avatar, TextInput, Title, Divider, Badge } from "@mantine/core"
 import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import Navbar from "../components/navbar"
@@ -89,6 +89,14 @@ const useStyles = createStyles((theme) => ({
     height: '100%',
     margin: '0 5px 0 0',
     overflow: 'hidden',
+  },
+  legend: {
+    marginRight: '0.1vh'
+    ,
+    [`@media (max-width: 1280px)`]: {
+
+      marginRight: '-1.5vh'
+    },
   },
   rafflesContainer: {
     width: "100%",
@@ -308,15 +316,15 @@ const useStyles = createStyles((theme) => ({
     },
   },
   ticketsWinners100: {
-    width: '90%',
-    height: '3rem',
+    width: '70px',
+    height: '5rem',
     background: '#5a189a',
     userSelect: 'none',
     textDecoration: 'none',
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
-      width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      width: '60px',
+      height: '5rem',
     },
   },
   ticketsReserved100: {
@@ -1707,7 +1715,7 @@ function Operadora() {
 
 
                           {/* Resto del código permanece igual */}
-                          <Card radius={"md"} style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                          <Card className={classes.legend} radius={"md"} style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                             <Card style={{ background: '#4D4F66' }}>
                               <Text>
 
@@ -1740,10 +1748,18 @@ function Operadora() {
                             <Text ml={-7} mt={7}>
                               Vendido
                             </Text>
+                            <Card style={{ background: '#5a189a' }}>
+                              <Text>
+
+                              </Text>
+                            </Card>
+                            <Text ml={-7} mt={7}>
+                              Ganador
+                            </Text>
                           </Card>
                           {
                             hasPaymentSelected && (
-                              <Card radius='md' style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                              <Card h={65} radius='md' style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                 <Avatar
                                   p={-20}
                                   radius={"md"}
@@ -1771,12 +1787,25 @@ function Operadora() {
                                     )
                                   }
                                 </Avatar>
-
-                                <Text
-                                  fw={300} fz={15} mt={7}
+                                <Flex
+                                  mih={50}
+                                  justify="flex-start"
+                                  align="flex-start"
+                                  direction="column"
+                                  wrap="wrap"
                                 >
-                                  La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
-                                </Text>
+                                  <Text
+                                    fw={300} fz={15} mt={-7}
+                                  >
+                                    La moneda seleccionada es:
+                                  </Text>
+                                  <Text
+                                    fw={300} fz={15} mt={2}
+                                  >
+                                    <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                  </Text>
+                                </Flex>
+
                               </Card>
                             )
                           }
@@ -1949,7 +1978,7 @@ function Operadora() {
                             );
                           })}
 
-                          <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                          <Card className={classes.legend} style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                             <Card style={{ background: '#4D4F66' }}>
                               <Text>
 
@@ -1982,10 +2011,18 @@ function Operadora() {
                             <Text ml={-7} mt={7}>
                               Vendido
                             </Text>
+                            <Card style={{ background: '#5a189a' }}>
+                              <Text>
+
+                              </Text>
+                            </Card>
+                            <Text ml={-7} mt={7}>
+                              Ganador
+                            </Text>
                           </Card>
                           {
                             hasPaymentSelected && (
-                              <Card style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                              <Card h={65} style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                 <Avatar
                                   p={-20}
                                   radius='xl'
@@ -2014,11 +2051,24 @@ function Operadora() {
                                   }
                                 </Avatar>
 
-                                <Text
-                                  fw={300} fz={15} mt={7}
+                                <Flex
+                                  mih={50}
+                                  justify="flex-start"
+                                  align="flex-start"
+                                  direction="column"
+                                  wrap="wrap"
                                 >
-                                  La moneda seleccionada es: <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
-                                </Text>
+                                  <Text
+                                    fw={300} fz={15} mt={-7}
+                                  >
+                                    La moneda seleccionada es:
+                                  </Text>
+                                  <Text
+                                    fw={300} fz={15} mt={2} mb={-5}
+                                  >
+                                    <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
+                                  </Text>
+                                </Flex>
                               </Card>
                             )
                           }

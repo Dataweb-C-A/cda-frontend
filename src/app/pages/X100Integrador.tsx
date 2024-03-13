@@ -329,15 +329,15 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer'
   },
   ticketsWinners100: {
-    width: '90%',
-    height: '3rem',
+    width: '70px',
+    height: '5rem',
     background: '#5a189a',
     userSelect: 'none',
     textDecoration: 'none',
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
-      width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      width: '60px',
+      height: '5rem',
     },
   },
   tickets100: {
@@ -1690,7 +1690,7 @@ function X100Integrador() {
                                   })}
 
                                   {/* Resto del código permanece igual */}
-                                  <Card radius='md' style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                                  <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                                     <Card style={{ background: '#4D4F66' }}>
                                       <Text>
 
@@ -1722,6 +1722,14 @@ function X100Integrador() {
                                     </Card>
                                     <Text ml={-7} mt={7}>
                                       Vendido
+                                    </Text>
+                                    <Card style={{ background: '#5a189a' }}>
+                                      <Text>
+
+                                      </Text>
+                                    </Card>
+                                    <Text ml={-7} mt={7}>
+                                      Ganador
                                     </Text>
                                   </Card>
                                   {
@@ -1934,7 +1942,7 @@ function X100Integrador() {
                                       </div>
                                     );
                                   })}
-                                  <Card radius='md' style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                                  <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                                     <Card style={{ background: '#4D4F66' }}>
                                       <Text>
 
@@ -1967,10 +1975,18 @@ function X100Integrador() {
                                     <Text ml={-7} mt={7}>
                                       Vendido
                                     </Text>
+                                    <Card style={{ background: '#5a189a' }}>
+                                      <Text>
+
+                                      </Text>
+                                    </Card>
+                                    <Text ml={-7} mt={7}>
+                                      Ganador
+                                    </Text>
                                   </Card>
                                   {
                                     money && (
-                                      <Card radius='md'  ml={-17} style={{ display: 'flex', gap: '15px', background: money === 'USD' ? theme.colors.teal[8] : money === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                                      <Card radius='md' ml={-17} style={{ display: 'flex', gap: '15px', background: money === 'USD' ? theme.colors.teal[8] : money === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                         <Avatar
                                           p={-20}
                                           radius='xl'
@@ -2165,233 +2181,233 @@ function X100Integrador() {
 
                               </Modal>
                               { /* Raffle info   style={{ background: "#1D1E30"}} */}
-                             
-                      <Card
-                        mt={-50}
-                        withBorder
-                        radius={"lg"}
-                        p={0}
-                        pt={20}
-                        w={450}
-                        bg={theme.colors.dark[7]}
-                        px={4}
-                        mb={10}
-                        className={classes.raffleInfo}
-                      >
 
-                        <Group>
-                          <Card h={210} ml={-5} mt={-30} style={{ background: '#56CCF2' }} mb={-20}>
-                            <Text>
-
-                            </Text>
-                          </Card>
-
-                          <div>
-                            <Group>
-
-                              <div>
-
-                                <Title fz="xs" mt={-5} c='#56CCF2' >
-                                  Rifa
-                                </Title>
-                                <Title mb={7} fw={700} fz="sm">
-                                  {raffleActive(selectedRaffle)?.title}
-                                </Title>
-                              </div>
-
-
-                              <IconEye style={{
-                                marginRight: '-12px'
-                              }} color="green" stroke={2} />
-
-
-
-                              <HoverCard width={480} shadow="md">
-                                <HoverCard.Target>
-                                  <Text fz={12} ta="end">
-                                    Ver imagen
-                                  </Text>
-                                </HoverCard.Target>
-                                <HoverCard.Dropdown mt={-60} w={150} h={210} ml={-100}>
-
-                                  {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
-                                  <Group>
-
-                                    <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
-                                      <Image
-                                        mt={-11}
-                                        ml={15}
-                                        height={205}
-                                        mb={-13}
-                                        src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`}
-                                        alt="Premio"
-                                      />
-                                    </div>
-                                    <div>
-                                      <IconDeviceDesktopShare style={{
-                                        marginLeft: '30px'
-                                      }} color="green" stroke={2} />
-                                      <Title
-                                        ml={0}
-                                        c='#9CB6C7' fz="sm">
-                                        Ver completa
-                                      </Title>
-
-                                      <RingProgress
-                                        sections={[{ value: 5, color: '#76BE34' }]}
-                                        thickness={8}
-                                        size={80}
-                                        label={
-                                          <Text fz="sm" align="center" size="xl">
-                                            {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
-                                          </Text>
-                                        }
-                                      />
-                                      <Title
-                                        ml={13}
-                                        c='#9CB6C7' fz="sm">
-                                        Progreso
-                                      </Title>
-                                    </div>
-                                  </Group>
-
-
-                                </HoverCard.Dropdown>
-                              </HoverCard>
-
-                            </Group>
-
-                            <Title c='#56CCF2' fz="xs">
-                              Tipo
-                            </Title>
-                            <Title mb={7} fw={700} fz="sm">
-                              {raffleActive(selectedRaffle)?.tickets_count} Números
-                            </Title>
-
-                            <Title c='#56CCF2' fz="xs">
-                              Fecha
-                            </Title>
-                            <Title mb={15} fw={700} fz="sm">
-                              {moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}
-                            </Title>
-                            <Group mt={-15} >
-                              <div>
-
-                                <Title c='#56CCF2' order={6}>
-                                  Loteria
-                                </Title>
-                                <Title fw={700} fz="sm">
-                                  Zulia 7A
-                                </Title>
-
-                              </div>
-
-
-                              <div
+                              <Card
+                                mt={-50}
+                                withBorder
+                                radius={"lg"}
+                                p={0}
+                                pt={20}
+                                w={450}
+                                bg={theme.colors.dark[7]}
+                                px={4}
+                                mb={10}
+                                className={classes.raffleInfo}
                               >
 
-                                <RingProgress
-                                  ml={150}
-                                  mt={-30}
-                                  sections={[{ value: 5, color: '#76BE34' }]}
-                                  thickness={8}
-                                  size={80}
-                                  label={
-                                    <Text fz="sm" align="center" size="xl">
-                                      {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                <Group>
+                                  <Card h={210} ml={-5} mt={-30} style={{ background: '#56CCF2' }} mb={-20}>
+                                    <Text>
+
                                     </Text>
-                                  }
-                                />
-                                <Title
-                                  ml={160} mt={-5} c='#9CB6C7' fz="sm">
-                                  Progreso
-                                </Title>
-                              </div>
+                                  </Card>
+
+                                  <div>
+                                    <Group>
+
+                                      <div>
+
+                                        <Title fz="xs" mt={-5} c='#56CCF2' >
+                                          Rifa
+                                        </Title>
+                                        <Title mb={7} fw={700} fz="sm">
+                                          {raffleActive(selectedRaffle)?.title}
+                                        </Title>
+                                      </div>
 
 
-                            </Group>
+                                      <IconEye style={{
+                                        marginRight: '-12px'
+                                      }} color="green" stroke={2} />
 
 
-                          </div>
-                        </Group>
-                        {
-                          ticketsSelected.length > 0 && (
-                            <Card bg="white" w="105%" ml={-5} radius="md" mt={10} h="100%" style={{ borderRadius: '0px 0px 10px 10px' }}>
-                              <small>
-                                <Text ta="center" mt={-5} fw={700} color='black'>Informacion de compra</Text>
-                                <Divider variant="dashed" />
-                                <Group position="apart">
-                                  <Title order={6} fw={600} c='black'>
-                                    Prod.
-                                  </Title>
 
-                                  <Title order={6} mr={25} fw={600} c='black'>
-                                    Precio.
-                                  </Title>
-                                </Group>
-                                <Group pb={10} mx={0} position="apart">
-                                  <ScrollArea h={185} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
-                                    {
-                                      ticketsSelected.map((ticket) => {
-                                        const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
-                                        if (isTicketSold) {
-                                          return null;
-                                        }
-                                        return (
-                                          <>
-                                            <Group position="apart">
+                                      <HoverCard width={480} shadow="md">
+                                        <HoverCard.Target>
+                                          <Text fz={12} ta="end">
+                                            Ver imagen
+                                          </Text>
+                                        </HoverCard.Target>
+                                        <HoverCard.Dropdown mt={-60} w={150} h={210} ml={-100}>
 
-                                              <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
-                                                {parseTickets(ticket)}
+                                          {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
+                                          <Group>
+
+                                            <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
+                                              <Image
+                                                mt={-11}
+                                                ml={15}
+                                                height={205}
+                                                mb={-13}
+                                                src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`}
+                                                alt="Premio"
+                                              />
+                                            </div>
+                                            <div>
+                                              <IconDeviceDesktopShare style={{
+                                                marginLeft: '30px'
+                                              }} color="green" stroke={2} />
+                                              <Title
+                                                ml={0}
+                                                c='#9CB6C7' fz="sm">
+                                                Ver completa
                                               </Title>
 
-                                              <Title order={6} fw={300} c='black'>
-                                                {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
-                                                  ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
-                                                  : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
-                                                    ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
-                                                    : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " USD"
+                                              <RingProgress
+                                                sections={[{ value: 5, color: '#76BE34' }]}
+                                                thickness={8}
+                                                size={80}
+                                                label={
+                                                  <Text fz="sm" align="center" size="xl">
+                                                    {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                                  </Text>
                                                 }
-
+                                              />
+                                              <Title
+                                                ml={13}
+                                                c='#9CB6C7' fz="sm">
+                                                Progreso
                                               </Title>
-                                            </Group>
+                                            </div>
+                                          </Group>
 
-                                          </>
-                                        );
-                                      })
-                                    }
-                                  </ScrollArea>
-                                  <Group mb={-5} w="100%" position="apart">
-                                    <Title order={4} fw={650} c='black'>
-                                      Total:
+
+                                        </HoverCard.Dropdown>
+                                      </HoverCard>
+
+                                    </Group>
+
+                                    <Title c='#56CCF2' fz="xs">
+                                      Tipo
                                     </Title>
-                                    <Title order={4} fw={300} ta="end" c='black'>
-
-                                      {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                    <Title mb={7} fw={700} fz="sm">
+                                      {raffleActive(selectedRaffle)?.tickets_count} Números
                                     </Title>
-                                  </Group>
 
+                                    <Title c='#56CCF2' fz="xs">
+                                      Fecha
+                                    </Title>
+                                    <Title mb={15} fw={700} fz="sm">
+                                      {moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}
+                                    </Title>
+                                    <Group mt={-15} >
+                                      <div>
+
+                                        <Title c='#56CCF2' order={6}>
+                                          Loteria
+                                        </Title>
+                                        <Title fw={700} fz="sm">
+                                          Zulia 7A
+                                        </Title>
+
+                                      </div>
+
+
+                                      <div
+                                      >
+
+                                        <RingProgress
+                                          ml={150}
+                                          mt={-30}
+                                          sections={[{ value: 5, color: '#76BE34' }]}
+                                          thickness={8}
+                                          size={80}
+                                          label={
+                                            <Text fz="sm" align="center" size="xl">
+                                              {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                            </Text>
+                                          }
+                                        />
+                                        <Title
+                                          ml={160} mt={-5} c='#9CB6C7' fz="sm">
+                                          Progreso
+                                        </Title>
+                                      </div>
+
+
+                                    </Group>
+
+
+                                  </div>
                                 </Group>
-                              </small>
-                              <Group w="100%" position="center" >
-                                <Button
-                                  leftIcon={<IconTrash />}
-                                  color="red"
-                                  onClick={() => cleanSelection()}
-                                >
-                                  Limpiar
-                                </Button>
-                                <Button
-                                  leftIcon={<IconWallet />}
-                                  onClick={() => setBuyIsOpen(true)}
-                                >
-                                  Comprar
-                                </Button>
-                              </Group>
-                            </Card>
-                          )
-                        }
-                      </Card>
+                                {
+                                  ticketsSelected.length > 0 && (
+                                    <Card bg="white" w="105%" ml={-5} radius="md" mt={10} h="100%" style={{ borderRadius: '0px 0px 10px 10px' }}>
+                                      <small>
+                                        <Text ta="center" mt={-5} fw={700} color='black'>Informacion de compra</Text>
+                                        <Divider variant="dashed" />
+                                        <Group position="apart">
+                                          <Title order={6} fw={600} c='black'>
+                                            Prod.
+                                          </Title>
+
+                                          <Title order={6} mr={25} fw={600} c='black'>
+                                            Precio.
+                                          </Title>
+                                        </Group>
+                                        <Group pb={10} mx={0} position="apart">
+                                          <ScrollArea h={185} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                            {
+                                              ticketsSelected.map((ticket) => {
+                                                const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
+                                                if (isTicketSold) {
+                                                  return null;
+                                                }
+                                                return (
+                                                  <>
+                                                    <Group position="apart">
+
+                                                      <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
+                                                        {parseTickets(ticket)}
+                                                      </Title>
+
+                                                      <Title order={6} fw={300} c='black'>
+                                                        {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                          ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
+                                                          : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                            ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
+                                                            : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " USD"
+                                                        }
+
+                                                      </Title>
+                                                    </Group>
+
+                                                  </>
+                                                );
+                                              })
+                                            }
+                                          </ScrollArea>
+                                          <Group mb={-5} w="100%" position="apart">
+                                            <Title order={4} fw={650} c='black'>
+                                              Total:
+                                            </Title>
+                                            <Title order={4} fw={300} ta="end" c='black'>
+
+                                              {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                            </Title>
+                                          </Group>
+
+                                        </Group>
+                                      </small>
+                                      <Group w="100%" position="center" >
+                                        <Button
+                                          leftIcon={<IconTrash />}
+                                          color="red"
+                                          onClick={() => cleanSelection()}
+                                        >
+                                          Limpiar
+                                        </Button>
+                                        <Button
+                                          leftIcon={<IconWallet />}
+                                          onClick={() => setBuyIsOpen(true)}
+                                        >
+                                          Comprar
+                                        </Button>
+                                      </Group>
+                                    </Card>
+                                  )
+                                }
+                              </Card>
                             </div>
                           </div>
                         </>
