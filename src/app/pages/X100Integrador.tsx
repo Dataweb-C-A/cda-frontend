@@ -1401,7 +1401,7 @@ function X100Integrador() {
                         </div>
                       ) : (
                         <>
-                          <div style={{ display: 'flex', marginBottom: '15px', width: '100%' }}>
+                          <div style={{ display: 'flex', marginBottom: '2px', width: '100%' }}>
                             {/* <Modal
                               opened={opened}
                               closeOnClickOutside={false}
@@ -1510,6 +1510,7 @@ function X100Integrador() {
                                   variant="default"
                                   mr={5}
                                   py={0}
+                                  mb={-5}
                                   size={30}
                                   onClick={() => setSelectedPage(selectedPage - 1)}
                                   disabled={selectedPage === 1}

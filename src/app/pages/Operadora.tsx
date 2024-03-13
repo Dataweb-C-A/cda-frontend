@@ -169,7 +169,7 @@ const useStyles = createStyles((theme) => ({
     gap: '8px',
 
     [`@media (max-width: 1280px)`]: {
-      gap: '12px 24px',
+      gap: '5px 24px',
     },
     flexWrap: 'wrap'
   },
@@ -206,7 +206,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
     [`@media (max-width: 1280px)`]: {
       width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      height: '2.2rem',
     },
   },
   ticketsReserved: {
@@ -218,7 +218,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
       width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      height: '2.2rem',
     },
   },
   ticketsWinners: {
@@ -230,7 +230,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
       width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      height: '2.2rem',
     },
   },
   ticketsSelected: {
@@ -243,7 +243,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
     [`@media (max-width: 1280px)`]: {
       width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      height: '2.2rem',
 
     },
   },
@@ -264,7 +264,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
       width: 'calc(70% + 1.7rem)',
-      height: '2.6rem',
+      height: '2.2rem',
     },
   },
   hiddenWhenSmall: {
@@ -312,7 +312,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
     [`@media (max-width: 1280px)`]: {
       width: '60px',
-      height: '5rem',
+      height: '4rem',
     },
   },
   ticketsWinners100: {
@@ -324,7 +324,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
       width: '60px',
-      height: '5rem',
+      height: '4rem',
     },
   },
   ticketsReserved100: {
@@ -337,7 +337,7 @@ const useStyles = createStyles((theme) => ({
     [`@media (max-width: 1280px)`]: {
 
       width: '60px',
-      height: '5rem',
+      height: '4rem',
     },
   },
   ticketsSelected100: {
@@ -350,7 +350,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
     [`@media (max-width: 1280px)`]: {
       width: '60px',
-      height: '5rem',
+      height: '4rem',
     },
   },
   ticketsSold100: {
@@ -362,7 +362,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'not-allowed',
     [`@media (max-width: 1280px)`]: {
       width: '60px',
-      height: '5rem',
+      height: '4rem',
     },
   },
   ticketsList100: {
@@ -374,7 +374,7 @@ const useStyles = createStyles((theme) => ({
     gap: '10px 25px',
 
     [`@media (max-width: 1280px)`]: {
-      gap: '25px 25px',
+      gap: '9px 25px',
     },
     flexWrap: 'wrap'
   }
@@ -1403,7 +1403,7 @@ function Operadora() {
                 </div>
               ) : (
                 <>
-                  <div style={{ display: 'flex', marginBottom: '15px', width: '100%' }}>
+                  <div style={{ display: 'flex', marginBottom: '2px', width: '100%' }}>
                     <Modal
                       opened={opened}
                       closeOnClickOutside={false}
@@ -1721,7 +1721,7 @@ function Operadora() {
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text ml={-7} mt={7} fz={12}>
                               Disponible
                             </Text>
                             <Card style={{ background: 'green' }}>
@@ -1729,7 +1729,7 @@ function Operadora() {
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text ml={-7} mt={7} fz={12}>
                               Mi compra
                             </Text>
                             <Card style={{ background: '#ff8000' }}>
@@ -1737,7 +1737,7 @@ function Operadora() {
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text ml={-7} mt={7} fz={12}>
                               Reservado
                             </Text>
                             <Card style={{ background: 'red' }}>
@@ -1745,7 +1745,7 @@ function Operadora() {
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text fz={12} ml={-7} mt={7}>
                               Vendido
                             </Text>
                             <Card style={{ background: '#5a189a' }}>
@@ -1753,13 +1753,13 @@ function Operadora() {
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text fz={12} ml={-7} mt={7}>
                               Ganador
                             </Text>
                           </Card>
                           {
                             hasPaymentSelected && (
-                              <Card h={65} radius='md' style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
+                              <Card h={65} radius='md' w={250} style={{ display: 'flex', gap: '15px', background: hasPaymentSelected === 'USD' ? theme.colors.teal[8] : hasPaymentSelected === 'VES' ? theme.colors.blue[7] : theme.colors.orange[6] }} shadow="md">
                                 <Avatar
                                   p={-20}
                                   radius={"md"}
@@ -1795,12 +1795,12 @@ function Operadora() {
                                   wrap="wrap"
                                 >
                                   <Text
-                                    fw={300} fz={15} mt={-7}
+                                    fw={300} fz={12} mt={-7}
                                   >
                                     La moneda seleccionada es:
                                   </Text>
                                   <Text
-                                    fw={300} fz={15} mt={2}
+                                    fw={300} fz={12} mt={2}
                                   >
                                     <strong>{hasPaymentSelected === 'USD' ? 'Dolares américanos' : hasPaymentSelected === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                   </Text>
@@ -1813,23 +1813,25 @@ function Operadora() {
 
 
                             <Button
-                              style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }}
+                              style={{ height: '50px', borderRadius: '5px 0px 0px 5px' }}
                               color='teal'
                               className={classes.hiddenWhenSmall}
                               px={7}
                               disabled={ticketsSelected.length === 0}
                               onClick={() => setBuyIsOpen(true)}
                               leftIcon={<IconReceipt />}
+                              fz={12}
                             >
                               Comprar rifa
                             </Button>
                             <Button
-                              style={{ height: '70px', borderRadius: 0 }}
+                              style={{ height: '50px', borderRadius: 0 }}
                               className={classes.hiddenWhenSmall}
                               px={7}
                               disabled={ticketsSelected.length === 0}
                               onClick={() => setModalOpen(true)}
                               leftIcon={<IconEye />}
+                              fz={12}
 
                             >
                               Ver compra
@@ -1837,11 +1839,11 @@ function Operadora() {
                             <Button
                               px={9}
                               className={classes.hiddenWhenSmall}
-                              style={{ height: '70px', borderRadius: '0px 5px 5px 0px' }}
+                              style={{ height: '50px', borderRadius: '0px 5px 5px 0px' }}
                               color="red"
                               disabled={ticketsSelected.length === 0}
                               onClick={() => cleanSelection()}
-
+                              fz={12}
                               leftIcon={<IconTrash />}
                             >
                               Limpiar compra
@@ -1978,13 +1980,13 @@ function Operadora() {
                             );
                           })}
 
-                          <Card className={classes.legend} style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
+                          <Card className={classes.legend} radius={"md"} style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                             <Card style={{ background: '#4D4F66' }}>
                               <Text>
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text ml={-7} mt={7} fz={12}>
                               Disponible
                             </Text>
                             <Card style={{ background: 'green' }}>
@@ -1992,7 +1994,7 @@ function Operadora() {
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text ml={-7} mt={7} fz={12}>
                               Mi compra
                             </Text>
                             <Card style={{ background: '#ff8000' }}>
@@ -2000,7 +2002,7 @@ function Operadora() {
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text ml={-7} mt={7} fz={12}>
                               Reservado
                             </Text>
                             <Card style={{ background: 'red' }}>
@@ -2008,7 +2010,7 @@ function Operadora() {
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text fz={12} ml={-7} mt={7}>
                               Vendido
                             </Text>
                             <Card style={{ background: '#5a189a' }}>
@@ -2016,7 +2018,7 @@ function Operadora() {
 
                               </Text>
                             </Card>
-                            <Text ml={-7} mt={7}>
+                            <Text fz={12} ml={-7} mt={7}>
                               Ganador
                             </Text>
                           </Card>
@@ -2059,7 +2061,7 @@ function Operadora() {
                                   wrap="wrap"
                                 >
                                   <Text
-                                    fw={300} fz={15} mt={-7}
+                                    fw={300} fz={12} mt={-7}
                                   >
                                     La moneda seleccionada es:
                                   </Text>
@@ -2072,38 +2074,41 @@ function Operadora() {
                               </Card>
                             )
                           }
-                          <Group spacing={0}>
+                          <Group position="apart" spacing={0}>
 
 
                             <Button
-                              style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }}
+                              style={{ height: '50px', borderRadius: '5px 0px 0px 5px' }}
                               color='teal'
                               className={classes.hiddenWhenSmall}
                               px={7}
                               disabled={ticketsSelected.length === 0}
-                              leftIcon={<IconReceipt />}
                               onClick={() => setBuyIsOpen(true)}
+                              leftIcon={<IconReceipt />}
+                              fz={12}
                             >
                               Comprar rifa
                             </Button>
                             <Button
-                              style={{ height: '70px', borderRadius: 0 }}
+                              style={{ height: '50px', borderRadius: 0 }}
                               className={classes.hiddenWhenSmall}
                               px={7}
                               disabled={ticketsSelected.length === 0}
                               onClick={() => setModalOpen(true)}
                               leftIcon={<IconEye />}
+                              fz={12}
+
                             >
                               Ver compra
                             </Button>
                             <Button
                               px={9}
                               className={classes.hiddenWhenSmall}
-                              style={{ height: '70px', borderRadius: '0px 5px 5px 0px' }}
+                              style={{ height: '50px', borderRadius: '0px 5px 5px 0px' }}
                               color="red"
                               disabled={ticketsSelected.length === 0}
                               onClick={() => cleanSelection()}
-
+                              fz={12}
                               leftIcon={<IconTrash />}
                             >
                               Limpiar compra
