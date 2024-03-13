@@ -178,7 +178,7 @@ const useStyles = createStyles((theme) => ({
   },
   ticketsListContainer: {
     display: 'flex',
-    width: '95%'
+    width: '100%'
   },
   ticketsList: {
     width: '100%',
@@ -2180,6 +2180,7 @@ function X100Integrador() {
 
                               <Card
                                 mt={-50}
+                                ml={15}
                                 withBorder
                                 radius={"lg"}
                                 p={0}
