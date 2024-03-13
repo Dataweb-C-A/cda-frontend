@@ -120,17 +120,13 @@ const useStyles = createStyles((theme) => ({
   pageContainer: {
     display: 'flex',
     height: '100%',
-    margin: '0 5px 0 0',
     overflow: 'hidden',
   },
   rafflesContainer: {
     width: "100%",
     height: "100%",
     marginLeft: '5px',
-    [theme.fn.smallerThan('sm')]: {
-      position: 'absolute',
-      zIndex: 2,
-    },
+    
   },
   ticketsContainer: {
     width: "calc(100%)",
@@ -182,7 +178,7 @@ const useStyles = createStyles((theme) => ({
   },
   ticketsListContainer: {
     display: 'flex',
-    width: '100%'
+    width: '95%'
   },
   ticketsList: {
     width: '100%',
@@ -2188,9 +2184,8 @@ function X100Integrador() {
                                 radius={"lg"}
                                 p={0}
                                 pt={20}
-                                w={450}
+                                w={430}
                                 bg={theme.colors.dark[7]}
-                                px={4}
                                 mb={10}
                                 className={classes.raffleInfo}
                               >
