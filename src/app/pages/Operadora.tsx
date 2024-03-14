@@ -85,7 +85,6 @@ const useStyles = createStyles((theme) => ({
     },
   },
   pageContainer: {
-    display: 'flex',
     height: '100%',
     margin: '0 5px 0 0',
     overflow: 'hidden',
@@ -150,10 +149,16 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
   },
   ticketsPage: {
-    height: 'calc(100vh - 15rem - 37px)',
+    height: '53em',
     marginTop: '5px',
     marginLeft: '-5px',
-    background: theme.colors.dark[6]
+    background: theme.colors.dark[6],
+    [`@media (max-width: 1600px)`]: {
+      height: '74vh',
+    },
+    [`@media (max-width: 1280px)`]: {
+      height: '77vh',
+    }
   },
   ticketsListContainer: {
     display: 'flex',
@@ -712,20 +717,44 @@ function Operadora() {
     return parsedPosition;
   }
 
-  const handleComboClick = async (quantity: number, price: number) => {
-    const newTicketsSelected = [...ticketsSelected];
+  const handleComboClick = (id: number, quantity: number) => {
+    const token = localStorage.getItem("token");
+    const comboData = {
+      combo: 
+        {
+          x100_raffle_id: id,
+          quantity: quantity
+        }
+      
+    };
 
-    for (let i = 0; i < quantity; i++) {
-      let randomTicketNumber;
-      do {
-        randomTicketNumber = Math.floor(Math.random() * tickets.tickets.length) + 1;
-      } while (newTicketsSelected.includes(randomTicketNumber) || isTicketReservedOrSold(randomTicketNumber));
-
-      await chooseTicket(randomTicketNumber);
-    }
-
-    setTicketKey((prevKey) => prevKey + 1);
+    axios.post('https://api.rifa-max.com/x100/tickets/combo', comboData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        console.log("Combo enviado exitosamente:", response.data);
+      })
+      .catch(error => {
+        console.error("Error al enviar el combo:", error);
+      });
   };
+
+  // const handleComboClick = async (quantity: number, price: number) => {
+  //   const newTicketsSelected = [...ticketsSelected];
+
+  //   for (let i = 0; i < quantity; i++) {
+  //     let randomTicketNumber;
+  //     do {
+  //       randomTicketNumber = Math.floor(Math.random() * tickets.tickets.length) + 1;
+  //     } while (newTicketsSelected.includes(randomTicketNumber) || isTicketReservedOrSold(randomTicketNumber));
+
+  //     await chooseTicket(randomTicketNumber);
+  //   }
+
+  //   setTicketKey((prevKey) => prevKey + 1);
+  // };
 
   const isTicketReservedOrSold = (ticketNumber: number): boolean => {
     const soldData = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle);
@@ -1658,13 +1687,20 @@ function Operadora() {
                                     ml={10}
                                     mt={-2}
                                     fz={16}
-
                                     fw={700}
                                     color="teal"
-                                    onClick={() => handleComboClick(combo.quantity, combo.price)}
+                                    onClick={() => {
+                                      const raffleId = raffleActive(selectedRaffle)?.id;
+                                      if (raffleId !== undefined) {
+                                        handleComboClick(raffleId, combo.quantity);
+                                      } else {
+                                        console.error("No se pudo obtener el ID de la rifa activa.");
+                                      }
+                                    }}
                                   >
                                     {combo.quantity} x {combo.price}$
                                   </Button>
+
                                 </>
                               );
                             })
@@ -1704,7 +1740,10 @@ function Operadora() {
                                   <Card
                                     key={ticket.position + ticketKey}
                                     className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
-                                    onClick={() => chooseTicket(ticket.position)}
+                                    onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                                      e.preventDefault()
+                                      chooseTicket(ticket.position)
+                                    }}
                                   >
                                     <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
                                   </Card>
@@ -1971,7 +2010,10 @@ function Operadora() {
                                   <Card
                                     key={ticket.position + ticketKey}
                                     className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
-                                    onClick={() => chooseTicket(ticket.position)}
+                                    onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                                      e.preventDefault()
+                                      chooseTicket(ticket.position)
+                                    }}
                                   >
                                     <Text mt={10} ml="20%" fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
                                   </Card>
@@ -2297,7 +2339,7 @@ function Operadora() {
                                       </Title>
 
                                       <RingProgress
-                                        sections={[{ value: 5, color: '#76BE34' }]}
+                                        sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
                                         thickness={8}
                                         size={80}
                                         label={
@@ -2352,7 +2394,7 @@ function Operadora() {
                                 <RingProgress
                                   ml={150}
                                   mt={-30}
-                                  sections={[{ value: 5, color: '#76BE34' }]}
+                                  sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
                                   thickness={8}
                                   size={80}
                                   label={

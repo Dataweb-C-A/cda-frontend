@@ -126,7 +126,7 @@ const useStyles = createStyles((theme) => ({
     width: "100%",
     height: "100%",
     marginLeft: '5px',
-    
+
   },
   ticketsContainer: {
     width: "calc(100%)",
@@ -171,7 +171,7 @@ const useStyles = createStyles((theme) => ({
     cursor: 'pointer',
   },
   ticketsPage: {
-    height: 'calc(100vh - 15rem - 37px)',
+    height: '80vh',
     marginTop: '5px',
     marginLeft: '-5px',
     background: theme.colors.dark[6]
@@ -462,8 +462,10 @@ function X100Integrador() {
 
   const currency = searchParams.get('currency') || null
   const urlParams = new URLSearchParams(window.location.search);
+
   const currencyParam = urlParams.get('currency');
 
+  const user_type = urlParams.get('user_type');
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
@@ -1801,11 +1803,24 @@ function X100Integrador() {
                                         >
                                           La moneda seleccionada es: <strong>{money === 'USD' ? 'Dolares américanos' : money === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                           <br />
-                                          <Text
-                                            fw={750} fz={15} mt={0}
-                                          >
-                                            Saldo actual: {balance.balance + " " + balance.currency}
-                                          </Text>
+                                          {user_type === 'auto' ? (
+                                            <Text
+                                              fw={750}
+                                              fz={15}
+                                              mt={0}
+                                              style={{ display: 'none' }}
+                                            >
+                                              Saldo actual: {balance.balance + " " + balance.currency}
+                                            </Text>
+                                          ) : (
+                                            <Text
+                                              fw={750}
+                                              fz={15}
+                                              mt={0}
+                                            >
+                                              Saldo actual: {balance.balance + " " + balance.currency}
+                                            </Text>
+                                          )}
                                         </Text>
                                       </Card>
                                     )
@@ -2287,7 +2302,7 @@ function X100Integrador() {
                                               </Title>
 
                                               <RingProgress
-                                                sections={[{ value: 5, color: '#76BE34' }]}
+                                                sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
                                                 thickness={8}
                                                 size={80}
                                                 label={
@@ -2342,7 +2357,7 @@ function X100Integrador() {
                                         <RingProgress
                                           ml={150}
                                           mt={-30}
-                                          sections={[{ value: 5, color: '#76BE34' }]}
+                                          sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
                                           thickness={8}
                                           size={80}
                                           label={
