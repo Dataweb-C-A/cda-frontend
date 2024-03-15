@@ -1659,29 +1659,48 @@ function X100Integrador() {
                               )
                             ) : (
                               <>
-                                {
-                                  (raffleActive(selectedRaffle)?.combos || [])
-                                    .sort((a, b) => a.quantity - b.quantity)
-                                    .map((combo) => {
+                        {
+                          (raffleActive(selectedRaffle)?.combos || [])
+                            .sort((a, b) => a.quantity - b.quantity)
+                            .map((combo) => {
 
-                                      return (
-                                        <>
-                                          <Button
-                                            h="35px"
-                                            ml={10}
-                                            mt={-2}
-                                            fz={16}
-                                            fw={700}
-                                            color="teal"
-                                            onClick={() => handleComboClick(combo.quantity, combo.price)}
-                                          >
-                                            {combo.quantity} x {combo.price}$
-                                          </Button>
-                                        </>
-                                      );
-                                    })
-                                }
-                              </>
+
+                              const soldt = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold.length ?? 0;
+                              const resert = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved.length ?? 0;
+                              const totalt = tickets.tickets.length;
+
+                              const suma = soldt + resert;
+
+                              const restaTotal = totalt - suma;
+
+                              const disabled = restaTotal < combo.quantity;
+                              return (
+                                <>
+                                  <Button
+                                    h="35px"
+                                    ml={10}
+                                    mt={-2}
+                                    fz={16}
+                                    fw={700}
+                                    color="teal"
+                                    disabled={disabled}
+                                    onClick={() => {
+                                      const raffleId = raffleActive(selectedRaffle)?.id;
+                                      if (raffleId !== undefined) {
+                                        handleComboClick(raffleId, combo.quantity);
+                                      } else {
+                                        console.error("No se pudo obtener el ID de la rifa activa.");
+                                      }
+                                    }}
+                                  >
+                                    {combo.quantity} x {combo.price}$
+                                  </Button>
+
+                                </>
+                              );
+                            })
+                        }
+                      </>
                             )}
                           </div>
                           <div style={{ display: 'flex', width: '100%' }}>
@@ -1820,10 +1839,6 @@ function X100Integrador() {
                                             >
                                               Saldo actual: {balance.balance.toFixed(2)} {balance.currency}
                                             </Text>
-
-
-
-
                                           )}
                                         </Text>
                                       </Card>
@@ -2466,12 +2481,27 @@ function X100Integrador() {
                                         >
                                           Limpiar
                                         </Button>
-                                        <Button
+
+
+                                        {user_type === 'auto_servicio' ? (
+                                            <Button
                                           leftIcon={<IconWallet />}
                                           onClick={() => setBuyIsOpen(true)}
                                         >
                                           Comprar
                                         </Button>
+                                          ) : (
+                                            <Button
+                                            leftIcon={<IconWallet />}
+                                            onClick={() => setBuyIsOpen(true)}
+                                            disabled={balance.balance.toFixed(2) < calculateTotalPrice().toFixed(2)}
+                                          >
+                                            Comprar
+                                          </Button>
+                                          )}
+
+                                        
+
                                       </Group>
                                     </Card>
                                   )
