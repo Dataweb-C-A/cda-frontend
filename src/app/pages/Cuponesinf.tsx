@@ -152,44 +152,47 @@ function Cuponesinf({ }: Props) {
         `}
       </style>
 
-      <Card w="48%" ml='25%' radius='lg' withBorder h='60vh' mt={105}>
+      <Card w="48%" ml='25%' radius='lg' withBorder h='62vh' mt={105}>
 
-        <Group>
+        <Group >
+          
           <div style={{ left: '0', padding: '0 10px 0 10px' }}>
-            <Group>
+          <Text ta="center" mt={5} fw={750}>Ingrese sus datos</Text>
+           
+            <Group position="center" mt={5}>
 
-              <Card style={{ background: '#4D4F66', width: '50px' }}>
-                <Text ml={5}>
+              <Card h={50} radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+                <Text mt={-3} fw={800} fz="lg" ml={4}>
                   1
                 </Text>
               </Card>
 
-              <Card style={{ background: '#4D4F66', width: '50px' }}>
-                <Text ml={5}>
-                  3
+              <Card  h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+              <Text mt={-3} fw={800} fz="lg" ml={4}>
+                                  3
                 </Text>
               </Card>
 
-              <Card style={{ background: '#4D4F66', width: '50px' }}>
-                <Text ml={5}>
+              <Card  h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+              <Text mt={-3} fw={800} fz="lg" ml={4}>
                   5
                 </Text>
               </Card>
 
-              <Card style={{ background: '#4D4F66', width: '50px' }}>
-                <Text ml={5}>
+              <Card  h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+              <Text mt={-3} fw={800} fz="lg" ml={4}>
                   7
                 </Text>
               </Card>
 
-              <Card style={{ background: '#4D4F66', width: '50px' }}>
-                <Text ml={1}>
+              <Card  h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+              <Text mt={-3} fw={800} fz="lg" ml={-1}>
                   10
                 </Text>
               </Card>
 
-              <Card style={{ background: '#4D4F66', width: '50px' }}>
-                <Text ml={5}>
+              <Card h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+              <Text mt={-3} fw={800} fz="lg" ml={2}>
                   +
                 </Text>
               </Card>
@@ -198,25 +201,29 @@ function Cuponesinf({ }: Props) {
 
             </Group>
 
-            <Divider my="sm" variant="dashed" />
-            <Text ta="center" fw={750}>Ingrese sus datos</Text>
+            <Text ta="center" mt={5} fw={750}>Ingrese sus datos</Text>
             <Group spacing={5}>
               <TextInput
+                radius="md"
                 style={{ width: '49.2%' }}
                 label='Nombre'
                 placeholder="Nombre"
               />
               <TextInput
+                radius="md"
                 style={{ width: '49.2%' }}
                 label='Apellido'
                 placeholder="Apellido"
               />
             </Group>
-
-            <Group position="center">
+            <Text mt={5} fz={14}>
+              Cédula o DNI
+            </Text>
+            <Group >
               <Select
-                w={90}
+                w={60}
                 mt={10}
+                radius="md"
                 defaultValue="V-"
                 data={[
                   { value: 'V-', label: 'V' },
@@ -230,12 +237,13 @@ function Cuponesinf({ }: Props) {
                 mt={10}
                 w={232}
                 maxLength={8}
+                radius="md"
               />
             </Group>
 
             <TextInput
               label='Correo electronico '
-
+              radius="md"
               style={{ width: '98%' }}
               placeholder="Correo electronico"
               mt={10}
@@ -244,10 +252,12 @@ function Cuponesinf({ }: Props) {
             <Select
               label="Pais de residencia"
               placeholder="Escoga un pais"
+              radius="md"
               mt={10}
               itemComponent={SelectItem}
               data={data}
               maxDropdownHeight={400}
+              w={190}
               nothingFound="Nobody here"
 
             />
@@ -255,7 +265,8 @@ function Cuponesinf({ }: Props) {
 
               <TextInput
                 label={<Text>Prefijo</Text>}
-                placeholder="XXX"
+                radius="md"
+                placeholder="000"
                 style={{ width: '40%' }}
                 size="md"
                 maxLength={5}
@@ -263,10 +274,12 @@ function Cuponesinf({ }: Props) {
                 value={selectValue}
               />
               <TextInput
+              color="red"
                 label={<Text>Número telefónico</Text>}
-                placeholder="XXX-XXXX"
+                placeholder="136-6487"
                 style={{ width: '55%' }}
                 size="md"
+                radius="md"
                 maxLength={8}
                 onChange={(event) => {
                   handleTextInputChange(event.currentTarget.value);
@@ -275,13 +288,13 @@ function Cuponesinf({ }: Props) {
               />
             </Group>
             <TextInput
-
+              radius="md"
               label='Direccion de envio'
               mt={10}
               placeholder="Direccion"
             />
             <Checkbox
-              mt={5}
+              mt={20}
               label="Acepto los términos y condiciones"
             />
           </div>
@@ -302,13 +315,14 @@ function Cuponesinf({ }: Props) {
             </div> */}
 
             <Group>
-              <Card h={210} ml={-15} mt={-30} style={{ background: '#56CCF2' }} mb={-20}>
+              
+              <Card  h={210} ml={-15} mt={-30} style={{ background: '#56CCF2' }} mb={-20}>
                 <Text>
 
                 </Text>
               </Card>
 
-              <div>
+              <div >
                 <Group>
 
                   <div>
@@ -436,7 +450,7 @@ function Cuponesinf({ }: Props) {
 
               </div>
             </Group>
-            <Card bg="white" w="110%" ml={-15} radius="md" mt={10} h="100%" style={{ borderRadius: '0px 0px 10px 10px' }}>
+            <Card bg="white" w="115%" ml={-15} radius="md" mt={10} h="115%" style={{ borderRadius: '0px 0px 10px 10px' }}>
               <small>
                 <Text ta="center" mt={15} fw={700} color='black'>Informacion de compra</Text>
                 <Divider variant="dashed" />

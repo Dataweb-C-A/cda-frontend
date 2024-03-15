@@ -871,21 +871,42 @@ function X100Integrador() {
 
     return parsedPosition;
   }
+  const handleComboClick = (id: number, quantity: number) => {
+    const token = localStorage.getItem("token");
+    const comboData = {
+      combo:
+      {
+        x100_raffle_id: id,
+        quantity: quantity
+      }
 
-  const handleComboClick = async (quantity: number, price: number) => {
-    const newTicketsSelected = [...ticketsSelected];
+    };
 
-    for (let i = 0; i < quantity; i++) {
-      let randomTicketNumber;
-      do {
-        randomTicketNumber = Math.floor(Math.random() * tickets.tickets.length) + 1;
-      } while (newTicketsSelected.includes(randomTicketNumber) || isTicketReservedOrSold(randomTicketNumber));
-
-      await chooseTicket(randomTicketNumber);
-    }
-
-    setTicketKey((prevKey) => prevKey + 1);
+    axios.post('https://api.rifa-max.com/x100/tickets/combo', comboData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+      })
+      .catch(error => {
+        console.error("Error al enviar el combo:", error);
+      });
   };
+  // const handleComboClick = async (quantity: number, price: number) => {
+  //   const newTicketsSelected = [...ticketsSelected];
+
+  //   for (let i = 0; i < quantity; i++) {
+  //     let randomTicketNumber;
+  //     do {
+  //       randomTicketNumber = Math.floor(Math.random() * tickets.tickets.length) + 1;
+  //     } while (newTicketsSelected.includes(randomTicketNumber) || isTicketReservedOrSold(randomTicketNumber));
+
+  //     await chooseTicket(randomTicketNumber);
+  //   }
+
+  //   setTicketKey((prevKey) => prevKey + 1);
+  // };
 
   const isTicketReservedOrSold = (ticketNumber: number): boolean => {
     const soldData = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle);
@@ -1676,7 +1697,7 @@ function X100Integrador() {
                               const disabled = restaTotal < combo.quantity;
                               return (
                                 <>
-                                  <Button
+                                   <Button
                                     h="35px"
                                     ml={10}
                                     mt={-2}
