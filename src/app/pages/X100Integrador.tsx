@@ -1803,7 +1803,7 @@ function X100Integrador() {
                                         >
                                           La moneda seleccionada es: <strong>{money === 'USD' ? 'Dolares américanos' : money === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                           <br />
-                                          {user_type === 'auto' ? (
+                                          {user_type === 'auto_servicio' ? (
                                             <Text
                                               fw={750}
                                               fz={15}
@@ -1818,8 +1818,12 @@ function X100Integrador() {
                                               fz={15}
                                               mt={0}
                                             >
-                                              Saldo actual: {balance.balance + " " + balance.currency}
+                                              Saldo actual: {balance.balance.toFixed(2)} {balance.currency}
                                             </Text>
+
+
+
+
                                           )}
                                         </Text>
                                       </Card>
@@ -2068,11 +2072,28 @@ function X100Integrador() {
                                         >
                                           La moneda seleccionada es: <strong>{money === 'USD' ? 'Dolares américanos' : money === 'VES' ? 'Bolivares digitales' : 'Pesos colombianos'}</strong>
                                           <br />
-                                          <Text
-                                            fw={750} fz={15} mt={0}
-                                          >
-                                            Saldo actual: {balance.balance + " " + balance.currency}
-                                          </Text>
+                                          {user_type === 'auto_servicio' ? (
+                                            <Text
+                                              fw={750}
+                                              fz={15}
+                                              mt={0}
+                                              style={{ display: 'none' }}
+                                            >
+                                              Saldo actual: {balance.balance + " " + balance.currency}
+                                            </Text>
+                                          ) : (
+                                            <Text
+                                              fw={750}
+                                              fz={15}
+                                              mt={0}
+                                            >
+                                              Saldo actual: {balance.balance.toFixed(2)} {balance.currency}
+                                            </Text>
+
+
+
+
+                                          )}
                                         </Text>
                                       </Card>
                                     )

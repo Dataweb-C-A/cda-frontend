@@ -556,6 +556,7 @@ function Operadora() {
       },
 
       received(data: ICableTicket[]) {
+        console.log("todos", data);
         setTicketsSold(data)
         setRafflesCableStatus({
           is_connected: true,
@@ -720,12 +721,12 @@ function Operadora() {
   const handleComboClick = (id: number, quantity: number) => {
     const token = localStorage.getItem("token");
     const comboData = {
-      combo: 
-        {
-          x100_raffle_id: id,
-          quantity: quantity
-        }
-      
+      combo:
+      {
+        x100_raffle_id: id,
+        quantity: quantity
+      }
+
     };
 
     axios.post('https://api.rifa-max.com/x100/tickets/combo', comboData, {
@@ -734,7 +735,6 @@ function Operadora() {
       }
     })
       .then(response => {
-        console.log("Combo enviado exitosamente:", response.data);
       })
       .catch(error => {
         console.error("Error al enviar el combo:", error);
@@ -922,7 +922,6 @@ function Operadora() {
       }).catch((e) => {
       });
     };
-
     const handleCompra = (clientId: string) => {
       const token = localStorage.getItem("token");
 
@@ -1680,6 +1679,16 @@ function Operadora() {
                             .sort((a, b) => a.quantity - b.quantity)
                             .map((combo) => {
 
+
+                              const soldt = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold.length ?? 0;
+                              const resert = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved.length ?? 0;
+                              const totalt = tickets.tickets.length;
+
+                              const suma = soldt + resert;
+
+                              const restaTotal = totalt - suma;
+
+                              const disabled = restaTotal < combo.quantity;
                               return (
                                 <>
                                   <Button
@@ -1689,6 +1698,7 @@ function Operadora() {
                                     fz={16}
                                     fw={700}
                                     color="teal"
+                                    disabled={disabled}
                                     onClick={() => {
                                       const raffleId = raffleActive(selectedRaffle)?.id;
                                       if (raffleId !== undefined) {
@@ -1716,6 +1726,7 @@ function Operadora() {
                           {/* aqui */}
                           {tickets.tickets.slice((selectedPage - 1) * 200, selectedPage * 200).map((ticket: ITicket) => {
                             const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket.position);
+
                             const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticket.position);
                             const isTicketWinner = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.winners?.includes(ticket.position);
 
