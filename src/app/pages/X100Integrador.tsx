@@ -1099,7 +1099,6 @@ function X100Integrador() {
           return response.json();
         })
         .then(data => {
-          setActiveStep(activeStep + 1);
         })
         .catch(error => {
         });
@@ -1124,6 +1123,7 @@ function X100Integrador() {
         centered
         title="Comprar tickets"
         size="xl"
+        withCloseButton={false}
       >
         <Stepper active={activeStep}>
 
@@ -1152,20 +1152,17 @@ function X100Integrador() {
                 {
                   countrySelected === 'Venezuela' && (<Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.dni : `${initDNI}${Dni}`}</Title>)
                 }
-                <Title order={4} fw={300} c='black' ta="center">{client !== null ? client?.email : `${email}`}</Title>
+                <Title order={4} fw={300} c='black' ta="center">Datos de la compra</Title>
                 <Divider my={10} variant="dashed" />
                 <Group position="apart">
                   <Title order={6} fw={600} c='black'>
-                    Productos
-                  </Title>
-                  <Title order={6} fw={600} c='black'>
-                    Cantidad
+                    Numero
                   </Title>
                   <Title order={6} fw={600} c='black'>
                     Precio
                   </Title>
                   <Title order={6} fw={600} c='black'>
-                    Descuento
+                    PC Combo
                   </Title>
                 </Group>
                 <ScrollArea h={210} type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
@@ -1176,9 +1173,7 @@ function X100Integrador() {
                           <Title order={6} ml={20} fw={300} c='black'>
                             {parseTickets(ticket)}
                           </Title>
-                          <Title order={6} ml={10} fw={300} c='black'>
-                            1.00
-                          </Title>
+
                           <Title order={6} fw={300} c='black'>
                             {raffleActive(selectedRaffle || 0) && money === 'VES' && exchangeRates?.value_bs
                               ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs) + " VES"
@@ -1196,6 +1191,23 @@ function X100Integrador() {
                   }
                 </ScrollArea>
                 <Divider my={10} variant="dashed" />
+                <Title order={4} fw={650} c='black'>
+                  Datos de la rifa:
+                </Title>
+                <Title order={4} fw={300} c='black'>
+                  {selectedRaffle !== null ? raffleActive(selectedRaffle)?.title : ""}
+                </Title>
+
+                <Title order={4} fw={300} c='black'>
+                  {selectedRaffle !== null ? raffleActive(selectedRaffle)?.tickets_count : ""} Números
+                </Title>
+                <Title order={4} fw={300} c='black'>
+                  {selectedRaffle !== null ? moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY') : ""}
+                </Title>
+                <Title order={4} fw={300} c='black'>
+                  {selectedRaffle !== null ? raffleActive(selectedRaffle)?.raffle_type : ""}
+                </Title>
+                <Divider my={10} variant="dashed" />
                 <Group position="apart">
                   <Title order={4} fw={650} c='black'>
                     Total:
@@ -1210,6 +1222,9 @@ function X100Integrador() {
             <Group position="center" mt={30}>
               <Button
                 onClick={() => setActiveStep(activeStep - 1)}
+                style={{
+                  display: "none"
+                }}
               >
                 Atrás
               </Button>
@@ -1225,21 +1240,21 @@ function X100Integrador() {
 
                 ) : (
                   <Button
-                    onClick={() => handleCompra()}
+                    onClick={() => {
+                      handleClose();
+                      handleCompra();
+                    }}
                   >
                     Comprar
                   </Button>
+
 
 
                 )
               }
             </Group>
           </Stepper.Step>
-          <Stepper.Completed>
-            <Title order={4} c="green" ta="center" my={10}>COMPRA REALIZADA</Title>
-            <Image src={EmojiSuccess} mx='auto' my={20} width={125} height={125} alt="Emoji de fiesta" style={{ userSelect: 'none' }} />
-            <Button fullWidth onClick={handleClose} mt={40}>Cerrar</Button>
-          </Stepper.Completed>
+
         </Stepper>
       </Modal>
     )
@@ -1680,48 +1695,48 @@ function X100Integrador() {
                               )
                             ) : (
                               <>
-                        {
-                          (raffleActive(selectedRaffle)?.combos || [])
-                            .sort((a, b) => a.quantity - b.quantity)
-                            .map((combo) => {
+                                {
+                                  (raffleActive(selectedRaffle)?.combos || [])
+                                    .sort((a, b) => a.quantity - b.quantity)
+                                    .map((combo) => {
 
 
-                              const soldt = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold.length ?? 0;
-                              const resert = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved.length ?? 0;
-                              const totalt = tickets.tickets.length;
+                                      const soldt = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold.length ?? 0;
+                                      const resert = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved.length ?? 0;
+                                      const totalt = tickets.tickets.length;
 
-                              const suma = soldt + resert;
+                                      const suma = soldt + resert;
 
-                              const restaTotal = totalt - suma;
+                                      const restaTotal = totalt - suma;
 
-                              const disabled = restaTotal < combo.quantity;
-                              return (
-                                <>
-                                   <Button
-                                    h="35px"
-                                    ml={10}
-                                    mt={-2}
-                                    fz={16}
-                                    fw={700}
-                                    color="teal"
-                                    disabled={disabled}
-                                    onClick={() => {
-                                      const raffleId = raffleActive(selectedRaffle)?.id;
-                                      if (raffleId !== undefined) {
-                                        handleComboClick(raffleId, combo.quantity);
-                                      } else {
-                                        console.error("No se pudo obtener el ID de la rifa activa.");
-                                      }
-                                    }}
-                                  >
-                                    {combo.quantity} x {combo.price}$
-                                  </Button>
+                                      const disabled = restaTotal < combo.quantity;
+                                      return (
+                                        <>
+                                          <Button
+                                            h="35px"
+                                            ml={10}
+                                            mt={-2}
+                                            fz={16}
+                                            fw={700}
+                                            color="teal"
+                                            disabled={disabled}
+                                            onClick={() => {
+                                              const raffleId = raffleActive(selectedRaffle)?.id;
+                                              if (raffleId !== undefined) {
+                                                handleComboClick(raffleId, combo.quantity);
+                                              } else {
+                                                console.error("No se pudo obtener el ID de la rifa activa.");
+                                              }
+                                            }}
+                                          >
+                                            {combo.quantity} x {combo.price}$
+                                          </Button>
 
-                                </>
-                              );
-                            })
-                        }
-                      </>
+                                        </>
+                                      );
+                                    })
+                                }
+                              </>
                             )}
                           </div>
                           <div style={{ display: 'flex', width: '100%' }}>
@@ -2505,23 +2520,23 @@ function X100Integrador() {
 
 
                                         {user_type === 'auto_servicio' ? (
-                                            <Button
-                                          leftIcon={<IconWallet />}
-                                          onClick={() => setBuyIsOpen(true)}
-                                        >
-                                          Comprar
-                                        </Button>
-                                          ) : (
-                                            <Button
+                                          <Button
+                                            leftIcon={<IconWallet />}
+                                            onClick={() => setBuyIsOpen(true)}
+                                          >
+                                            Comprar
+                                          </Button>
+                                        ) : (
+                                          <Button
                                             leftIcon={<IconWallet />}
                                             onClick={() => setBuyIsOpen(true)}
                                             disabled={balance.balance.toFixed(2) < calculateTotalPrice().toFixed(2)}
                                           >
                                             Comprar
                                           </Button>
-                                          )}
+                                        )}
 
-                                        
+
 
                                       </Group>
                                     </Card>
