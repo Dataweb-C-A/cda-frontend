@@ -152,7 +152,7 @@ function Cuponesinf({ }: Props) {
         `}
       </style>
 
-      <Card w="43%" ml='25%' radius='lg' withBorder h='62vh' mt={105}>
+      <Card w="47%" ml='25%' radius='lg' withBorder h='70vh' mt={105}>
 
         <Group >
 
