@@ -152,47 +152,47 @@ function Cuponesinf({ }: Props) {
         `}
       </style>
 
-      <Card w="48%" ml='25%' radius='lg' withBorder h='62vh' mt={105}>
+      <Card w="43%" ml='25%' radius='lg' withBorder h='62vh' mt={105}>
 
         <Group >
-          
+
           <div style={{ left: '0', padding: '0 10px 0 10px' }}>
-          <Text ta="center" mt={5} fw={750}>Ingrese sus datos</Text>
-           
+            <Text ta="center" mt={5} fw={750}>Ingrese sus datos</Text>
+
             <Group position="center" mt={5}>
 
-              <Card h={50} radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+              <Card withBorder h={50} radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
                 <Text mt={-3} fw={800} fz="lg" ml={4}>
                   1
                 </Text>
               </Card>
 
-              <Card  h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
-              <Text mt={-3} fw={800} fz="lg" ml={4}>
-                                  3
+              <Card withBorder h={50} radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+                <Text mt={-3} fw={800} fz="lg" ml={4}>
+                  3
                 </Text>
               </Card>
 
-              <Card  h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
-              <Text mt={-3} fw={800} fz="lg" ml={4}>
+              <Card withBorder h={50} radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+                <Text mt={-3} fw={800} fz="lg" ml={4}>
                   5
                 </Text>
               </Card>
 
-              <Card  h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
-              <Text mt={-3} fw={800} fz="lg" ml={4}>
+              <Card withBorder h={50} radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+                <Text mt={-3} fw={800} fz="lg" ml={4}>
                   7
                 </Text>
               </Card>
 
-              <Card  h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
-              <Text mt={-3} fw={800} fz="lg" ml={-1}>
+              <Card withBorder h={50} radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+                <Text mt={-3} fw={800} fz="lg" ml={-1}>
                   10
                 </Text>
               </Card>
 
-              <Card h={50}  radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
-              <Text mt={-3} fw={800} fz="lg" ml={2}>
+              <Card h={50} radius='lg' style={{ background: '#4D4F66', width: '50px' }}>
+                <Text mt={-3} fw={800} fz="lg" ml={2}>
                   +
                 </Text>
               </Card>
@@ -274,7 +274,7 @@ function Cuponesinf({ }: Props) {
                 value={selectValue}
               />
               <TextInput
-              color="red"
+                color="red"
                 label={<Text>Número telefónico</Text>}
                 placeholder="136-6487"
                 style={{ width: '55%' }}
@@ -299,7 +299,6 @@ function Cuponesinf({ }: Props) {
             />
           </div>
 
-          <Divider orientation="vertical" />
           <div >
             {/* <div style={{ width: 350, marginLeft: 'auto', marginRight: 'auto' }}>
               <Image
@@ -315,14 +314,10 @@ function Cuponesinf({ }: Props) {
             </div> */}
 
             <Group>
-              
-              <Card  h={210} ml={-15} mt={-30} style={{ background: '#56CCF2' }} mb={-20}>
-                <Text>
 
-                </Text>
-              </Card>
 
-              <div >
+
+              <Card bg="#1D1E30" radius="lg">
                 <Group>
 
                   <div>
@@ -448,57 +443,106 @@ function Cuponesinf({ }: Props) {
                 </Group>
 
 
-              </div>
+              </Card>
             </Group>
-            <Card bg="white" w="115%" ml={-15} radius="md" mt={10} h="115%" style={{ borderRadius: '0px 0px 10px 10px' }}>
-              <small>
-                <Text ta="center" mt={15} fw={700} color='black'>Informacion de compra</Text>
-                <Divider variant="dashed" />
-                <Group position="apart">
-                  <Title order={6} fw={600} c='black'>
-                    Prod.
-                  </Title>
 
-                  <Title order={6} mr={25} fw={600} c='black'>
-                    Precio.
-                  </Title>
-                </Group>
+            <Card bg="#1D1E30" mt={10} radius="lg">
+              <small>
+                <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
+
+
                 <Group pb={10} mx={0} position="apart">
-                  <ScrollArea h={185} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                  <ScrollArea h={205} w="100%" type="never" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
 
                     <Group position="apart">
+                      <Card h={50} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                        <Text mt={-3} fw={800} fz="lg" ml={4}>
+                          5
+                        </Text>
+                      </Card>
+                      <Text mt={-3} fz="lg" ml={4}>
+                        descripcion
+                      </Text>
 
-                      <Title order={6} fw={300} >
-                        05
-                      </Title>
-
-                      <Title order={6} fw={300} c='black'>
-                        30 $
-                      </Title>
+                      <Text mt={-3} fz="lg" ml={4}>
+                        30$
+                      </Text>
                     </Group>
 
+                    <Divider my="sm" />
+                    <Group position="apart">
+                      <Card h={50} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                        <Text mt={-3} fw={800} fz="lg" ml={4}>
+                          5
+                        </Text>
+                      </Card>
+                      <Text mt={-3} fz="lg" ml={4}>
+                        descripcion
+                      </Text>
 
+                      <Text mt={-3} fz="lg" ml={4}>
+                        30$
+                      </Text>
+                    </Group>
+
+                    <Divider my="sm" />
+                    <Group position="apart">
+                      <Card h={50} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                        <Text mt={-3} fw={800} fz="lg" ml={4}>
+                          5
+                        </Text>
+                      </Card>
+                      <Text mt={-3} fz="lg" ml={4}>
+                        descripcion
+                      </Text>
+
+                      <Text mt={-3} fz="lg" ml={4}>
+                        30$
+                      </Text>
+                    </Group>
+
+                    <Divider my="sm" />
+                    <Group position="apart">
+                      <Card h={50} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                        <Text mt={-3} fw={800} fz="lg" ml={4}>
+                          5
+                        </Text>
+                      </Card>
+                      <Text mt={-3} fz="lg" ml={4}>
+                        descripcion
+                      </Text>
+
+                      <Text mt={-3} fz="lg" ml={4}>
+                        30$
+                      </Text>
+                    </Group>
+
+                    <Divider my="sm" />
                   </ScrollArea>
-                  <Group mb={-5} w="100%" position="apart">
-                    <Title order={4} fw={650} c='black'>
-                      Total:
-                    </Title>
-                    <Title order={4} fw={300} ta="end" c='black'>
-                      30$
-                    </Title>
-                  </Group>
 
                 </Group>
               </small>
-              <Group w="100%" position="center" >
+              <Group position="apart">
+
+                <Text mt={-3} fz="lg" ml={4}>
+                  Total
+                </Text>
+
+                <Text mt={-3} fz="lg" ml={4}>
+                  300$
+                </Text>
+              </Group>
+
+              <Divider my="sm" />
+              <Group w="100%" >
                 <Button
-                  leftIcon={<IconTrash />}
-                  color="red"
+                  variant="outline" color="gray" radius="lg" size="md"
+                  c='cyan'
                 >
                   Limpiar
                 </Button>
                 <Button
-                  leftIcon={<IconWallet />}
+                  radius="lg" size="md" c="black"
                 >
                   Comprar
                 </Button>
