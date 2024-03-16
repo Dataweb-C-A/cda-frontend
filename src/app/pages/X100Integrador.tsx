@@ -9,7 +9,7 @@ import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image
 import { ChevronLeft, QuestionMark } from "tabler-icons-react"
 import { links } from "../assets/data/links"
 import { IconArrowsShuffle, IconDice, IconEgg, IconDeviceDesktopShare } from '@tabler/icons-react';
-import { IconSearch, IconTrash, IconGift, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
+import { IconSearch, IconTrash, IconReceipt, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
 import VenezuelaFlag from "../assets/images/venezuela_flag.png"
 import USAFlag from "../assets/images/usa_flag.jpg"
@@ -1881,34 +1881,43 @@ function X100Integrador() {
                                     )
                                   }
                                   <Group position="apart" spacing={0}>
+
+
                                     <Button
-                                      style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }}
+                                      style={{ height: '50px', borderRadius: '5px 0px 0px 5px' }}
                                       color='teal'
                                       className={classes.hiddenWhenSmall}
                                       px={7}
                                       disabled={ticketsSelected.length === 0}
                                       onClick={() => setBuyIsOpen(true)}
+                                      leftIcon={<IconReceipt />}
+                                      fz={12}
                                     >
                                       Comprar rifa
                                     </Button>
                                     <Button
-                                      style={{ height: '70px', borderRadius: 0 }}
+                                      style={{ height: '50px', borderRadius: 0 }}
                                       className={classes.hiddenWhenSmall}
                                       px={7}
                                       disabled={ticketsSelected.length === 0}
                                       onClick={() => setModalOpen(true)}
+                                      leftIcon={<IconEye />}
+                                      fz={12}
+
                                     >
                                       Ver compra
                                     </Button>
                                     <Button
                                       px={9}
                                       className={classes.hiddenWhenSmall}
-                                      style={{ height: '70px', borderRadius: '0px 5px 5px 0px' }}
+                                      style={{ height: '50px', borderRadius: '0px 5px 5px 0px' }}
                                       color="red"
                                       disabled={ticketsSelected.length === 0}
                                       onClick={() => cleanSelection()}
+                                      fz={12}
+                                      leftIcon={<IconTrash />}
                                     >
-                                      <IconTrash />
+                                      Limpiar compra
                                     </Button>
                                   </Group>
                                   <Modal
@@ -1918,76 +1927,209 @@ function X100Integrador() {
 
                                     withCloseButton={false}
                                   >
-                                    <Card bg="white" className="mini-cutoff">
-                                      <small>
-                                        <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
-                                        <Divider my={10} variant="dashed" />
-                                        <Group position="apart">
-                                          <Title order={6} fw={600} c='black'>
-                                            Prod.
-                                          </Title>
-                                          <Title order={6} fw={600} c='black'>
-                                            Cant.
-                                          </Title>
-                                          <Title order={6} mr={25} fw={600} c='black'>
-                                            Precio.
-                                          </Title>
-                                        </Group>
-                                        <Group pb={10} mx={0} position="apart">
-                                          <ScrollArea h={73} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
-                                            {
-                                              ticketsSelected.map((ticket) => {
-                                                const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
-                                                if (isTicketSold) {
-                                                  return null;
-                                                }
-                                                return (
-                                                  <>
-                                                    <Group position="apart">
+                                    <Card ml={35} radius="lg" w={335}>
+                                      <Group >
 
-                                                      <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
-                                                        {parseTickets(ticket)}
+
+                                        <div>
+                                          <Group position="apart">
+
+                                            <div>
+
+                                              <Title fz="xs" mt={-5} c='#56CCF2' >
+                                                Rifa
+                                              </Title>
+                                              <Title mb={7} fw={700} fz="sm">
+                                                {raffleActive(selectedRaffle)?.title}
+                                              </Title>
+                                            </div>
+
+                                            <Group >
+
+                                              <IconEye style={{
+                                                marginRight: '-12px'
+                                              }} color="green" stroke={2} />
+
+
+
+                                              <HoverCard width={480} shadow="md">
+                                                <HoverCard.Target>
+                                                  <Text fz={12} ta="end">
+                                                    Ver imagen
+                                                  </Text>
+                                                </HoverCard.Target>
+                                                <HoverCard.Dropdown mt={-55} w={150} h={210} ml={-140}>
+
+                                                  {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
+                                                  <Group>
+
+                                                    <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
+                                                      <Image
+                                                        mt={-11}
+                                                        ml={15}
+                                                        height={205}
+                                                        mb={-13}
+                                                        src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`}
+                                                        alt="Premio"
+                                                      />
+                                                    </div>
+                                                    <div>
+                                                      <IconDeviceDesktopShare style={{
+                                                        marginLeft: '30px'
+                                                      }} color="green" stroke={2} />
+                                                      <Title
+                                                        ml={0}
+                                                        c='#9CB6C7' fz="sm">
+                                                        Ver completa
                                                       </Title>
-                                                      <Title order={6} fw={300} c='black'>
-                                                        1.00
-                                                      </Title>
-                                                      <Title order={6} fw={300} c='black'>
-                                                        {raffleActive(selectedRaffle || 0) && money === 'VES' && exchangeRates?.value_bs
-                                                          ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
-                                                          : money === 'COP' && exchangeRates?.value_cop
-                                                            ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
-                                                            : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
+
+                                                      <RingProgress
+                                                        sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
+                                                        thickness={8}
+                                                        size={80}
+                                                        label={
+                                                          <Text fz="sm" align="center" size="xl">
+                                                            {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                                          </Text>
                                                         }
-
+                                                      />
+                                                      <Title
+                                                        ml={13}
+                                                        c='#9CB6C7' fz="sm">
+                                                        Progreso
                                                       </Title>
-                                                    </Group>
+                                                    </div>
+                                                  </Group>
 
-                                                  </>
-                                                );
-                                              })
-                                            }
-                                          </ScrollArea>
-                                          <Group w="100%" position="apart">
-                                            <Title order={4} fw={650} c='black'>
-                                              Total:
-                                            </Title>
-                                            <Title order={4} fw={300} ta="end" c='black'>
 
-                                              {calculateTotalPrice().toFixed(2)} {" " + money === "USD" ? "$" : money}
-                                            </Title>
+                                                </HoverCard.Dropdown>
+                                              </HoverCard>
+                                            </Group>
+
                                           </Group>
-                                          {/* <Group w="100%" position="apart">
-                                      <Title order={4} fw={650} c='black'>
-                                        Total:
-                                      </Title>
-                                      <Title order={4} fw={300} ta="end" c='black'>
-                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
-                                      </Title>
-                                    </Group> */}
-                                        </Group>
-                                      </small>
 
+                                          <Title c='#56CCF2' fz="xs">
+                                            Tipo
+                                          </Title>
+                                          <Title mb={7} fw={700} fz="sm">
+                                            {raffleActive(selectedRaffle)?.tickets_count} Números
+                                          </Title>
+
+                                          <Title c='#56CCF2' fz="xs">
+                                            Fecha
+                                          </Title>
+                                          <Title mb={15} fw={700} fz="sm">
+                                            {moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}
+                                          </Title>
+                                          <Group mt={-15} >
+                                            <div>
+
+                                              <Title c='#56CCF2' order={6}>
+                                                Loteria
+                                              </Title>
+                                              <Title fw={700} fz="sm">
+                                                Zulia 7A
+                                              </Title>
+
+                                            </div>
+
+
+                                            <div
+                                            >
+
+                                              <RingProgress
+                                                ml={150}
+                                                mt={-30}
+                                                sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
+                                                thickness={8}
+                                                size={80}
+                                                label={
+                                                  <Text fz="sm" align="center" size="xl">
+                                                    {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                                  </Text>
+                                                }
+                                              />
+                                              <Title
+                                                ml={160} mt={-5} c='#9CB6C7' fz="sm">
+                                                Progreso
+                                              </Title>
+                                            </div>
+
+
+                                          </Group>
+
+
+                                        </div>
+                                      </Group>
                                     </Card>
+
+                                    {
+                                      ticketsSelected.length > 0 && (
+                                        <Card ml={-5} radius="lg" mt={10} >
+                                          <small>
+                                            <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
+                                            {/* <Group position="apart">
+                                  <Title order={6} fw={600} c='black'>
+                                    Prod.
+                                  </Title>
+
+                                  <Title order={6} mr={25} fw={600} c='black'>
+                                    Precio.
+                                  </Title>
+                                </Group> */}
+                                            <Group pb={10} mx={0} position="apart">
+                                              <ScrollArea type="never" h={170} w="100%" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                                {
+                                                  ticketsSelected.map((ticket) => {
+                                                    const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
+                                                    if (isTicketSold) {
+                                                      return null;
+                                                    }
+                                                    return (
+                                                      <>
+                                                        <Group position="apart">
+                                                          <Card h={40} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                                                            <Title mt={-3} fw={800} fz="xs" ml={-3}>
+                                                              {parseTickets(ticket)}
+                                                            </Title>
+                                                          </Card>
+
+
+                                                          <Title order={6} fw={300} mt={-3} fz="lg" ml={4}>
+                                                            {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                              ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
+                                                              : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                                ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
+                                                                : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " USD"
+                                                            }
+
+                                                          </Title>
+                                                        </Group>
+
+                                                        <Divider my="sm" />
+                                                      </>
+                                                    );
+                                                  })
+                                                }
+                                              </ScrollArea>
+                                              <Group mb={-5} w="100%" position="apart">
+                                                <Title order={4} fw={650} >
+                                                  Total:
+                                                </Title>
+                                                <Title order={4} fw={300} ta="end">
+
+                                                  {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                                </Title>
+                                              </Group>
+
+                                            </Group>
+                                          </small>
+
+                                          <Divider my="sm" />
+
+                                        </Card>
+                                      )
+                                    }
                                     <Group mt={15} position="center" >
 
                                       <Button
@@ -2149,37 +2291,44 @@ function X100Integrador() {
                                       </Card>
                                     )
                                   }
-                                  <Group spacing={0}>
+                                  <Group position="apart" spacing={0}>
 
 
                                     <Button
-                                      style={{ height: '70px', borderRadius: '5px 0px 0px 5px' }}
+                                      style={{ height: '50px', borderRadius: '5px 0px 0px 5px' }}
                                       color='teal'
                                       className={classes.hiddenWhenSmall}
                                       px={7}
                                       disabled={ticketsSelected.length === 0}
                                       onClick={() => setBuyIsOpen(true)}
+                                      leftIcon={<IconReceipt />}
+                                      fz={12}
                                     >
                                       Comprar rifa
                                     </Button>
                                     <Button
-                                      style={{ height: '70px', borderRadius: 0 }}
+                                      style={{ height: '50px', borderRadius: 0 }}
                                       className={classes.hiddenWhenSmall}
                                       px={7}
                                       disabled={ticketsSelected.length === 0}
                                       onClick={() => setModalOpen(true)}
+                                      leftIcon={<IconEye />}
+                                      fz={12}
+
                                     >
                                       Ver compra
                                     </Button>
                                     <Button
                                       px={9}
                                       className={classes.hiddenWhenSmall}
-                                      style={{ height: '70px', borderRadius: '0px 5px 5px 0px' }}
+                                      style={{ height: '50px', borderRadius: '0px 5px 5px 0px' }}
                                       color="red"
                                       disabled={ticketsSelected.length === 0}
                                       onClick={() => cleanSelection()}
+                                      fz={12}
+                                      leftIcon={<IconTrash />}
                                     >
-                                      <IconTrash />
+                                      Limpiar compra
                                     </Button>
                                   </Group>
                                   <Modal
@@ -2189,76 +2338,209 @@ function X100Integrador() {
 
                                     withCloseButton={false}
                                   >
-                                    <Card bg="white" className="mini-cutoff">
-                                      <small>
-                                        <Text ta="center" fw={700} color='black'>Informacion de compra</Text>
-                                        <Divider my={10} variant="dashed" />
-                                        <Group position="apart">
-                                          <Title order={6} fw={600} c='black'>
-                                            Prod.
-                                          </Title>
-                                          <Title order={6} fw={600} c='black'>
-                                            Cant.
-                                          </Title>
-                                          <Title order={6} mr={25} fw={600} c='black'>
-                                            Precio.
-                                          </Title>
-                                        </Group>
-                                        <Group pb={10} mx={0} position="apart">
-                                          <ScrollArea h={73} w="95%" type="always" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
-                                            {
-                                              ticketsSelected.map((ticket) => {
-                                                const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
-                                                if (isTicketSold) {
-                                                  return null;
-                                                }
-                                                return (
-                                                  <>
-                                                    <Group position="apart">
+                                    <Card ml={35} radius="lg" w={335}>
+                                      <Group >
 
-                                                      <Title order={6} fw={300} c={isTicketSold ? 'red' : 'black'}>
-                                                        {parseTickets(ticket)}
+
+                                        <div>
+                                          <Group position="apart">
+
+                                            <div>
+
+                                              <Title fz="xs" mt={-5} c='#56CCF2' >
+                                                Rifa
+                                              </Title>
+                                              <Title mb={7} fw={700} fz="sm">
+                                                {raffleActive(selectedRaffle)?.title}
+                                              </Title>
+                                            </div>
+
+                                            <Group >
+
+                                              <IconEye style={{
+                                                marginRight: '-12px'
+                                              }} color="green" stroke={2} />
+
+
+
+                                              <HoverCard width={480} shadow="md">
+                                                <HoverCard.Target>
+                                                  <Text fz={12} ta="end">
+                                                    Ver imagen
+                                                  </Text>
+                                                </HoverCard.Target>
+                                                <HoverCard.Dropdown mt={-55} w={150} h={210} ml={-140}>
+
+                                                  {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
+                                                  <Group>
+
+                                                    <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
+                                                      <Image
+                                                        mt={-11}
+                                                        ml={15}
+                                                        height={205}
+                                                        mb={-13}
+                                                        src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`}
+                                                        alt="Premio"
+                                                      />
+                                                    </div>
+                                                    <div>
+                                                      <IconDeviceDesktopShare style={{
+                                                        marginLeft: '30px'
+                                                      }} color="green" stroke={2} />
+                                                      <Title
+                                                        ml={0}
+                                                        c='#9CB6C7' fz="sm">
+                                                        Ver completa
                                                       </Title>
-                                                      <Title order={6} fw={300} c='black'>
-                                                        1.00
-                                                      </Title>
-                                                      <Title order={6} fw={300} c='black'>
-                                                        {raffleActive(selectedRaffle || 0) && money === 'VES' && exchangeRates?.value_bs
-                                                          ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
-                                                          : money === 'COP' && exchangeRates?.value_cop
-                                                            ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
-                                                            : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " $"
+
+                                                      <RingProgress
+                                                        sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
+                                                        thickness={8}
+                                                        size={80}
+                                                        label={
+                                                          <Text fz="sm" align="center" size="xl">
+                                                            {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                                          </Text>
                                                         }
-
+                                                      />
+                                                      <Title
+                                                        ml={13}
+                                                        c='#9CB6C7' fz="sm">
+                                                        Progreso
                                                       </Title>
-                                                    </Group>
+                                                    </div>
+                                                  </Group>
 
-                                                  </>
-                                                );
-                                              })
-                                            }
-                                          </ScrollArea>
-                                          <Group w="100%" position="apart">
-                                            <Title order={4} fw={650} c='black'>
-                                              Total:
-                                            </Title>
-                                            <Title order={4} fw={300} ta="end" c='black'>
 
-                                              {calculateTotalPrice().toFixed(2)} {" " + money === "USD" ? "$" : money}
-                                            </Title>
+                                                </HoverCard.Dropdown>
+                                              </HoverCard>
+                                            </Group>
+
                                           </Group>
-                                          {/* <Group w="100%" position="apart">
-                                      <Title order={4} fw={650} c='black'>
-                                        Total:
-                                      </Title>
-                                      <Title order={4} fw={300} ta="end" c='black'>
-                                        {Number(raffleActive(selectedRaffle || 0)?.price_unit) * totalPrice}.00 {hasPaymentSelected}
-                                      </Title>
-                                    </Group> */}
-                                        </Group>
-                                      </small>
 
+                                          <Title c='#56CCF2' fz="xs">
+                                            Tipo
+                                          </Title>
+                                          <Title mb={7} fw={700} fz="sm">
+                                            {raffleActive(selectedRaffle)?.tickets_count} Números
+                                          </Title>
+
+                                          <Title c='#56CCF2' fz="xs">
+                                            Fecha
+                                          </Title>
+                                          <Title mb={15} fw={700} fz="sm">
+                                            {moment(raffleActive(selectedRaffle)?.init_date).format('DD/MM/YYYY')}
+                                          </Title>
+                                          <Group mt={-15} >
+                                            <div>
+
+                                              <Title c='#56CCF2' order={6}>
+                                                Loteria
+                                              </Title>
+                                              <Title fw={700} fz="sm">
+                                                Zulia 7A
+                                              </Title>
+
+                                            </div>
+
+
+                                            <div
+                                            >
+
+                                              <RingProgress
+                                                ml={150}
+                                                mt={-30}
+                                                sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
+                                                thickness={8}
+                                                size={80}
+                                                label={
+                                                  <Text fz="sm" align="center" size="xl">
+                                                    {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                                  </Text>
+                                                }
+                                              />
+                                              <Title
+                                                ml={160} mt={-5} c='#9CB6C7' fz="sm">
+                                                Progreso
+                                              </Title>
+                                            </div>
+
+
+                                          </Group>
+
+
+                                        </div>
+                                      </Group>
                                     </Card>
+
+                                    {
+                                      ticketsSelected.length > 0 && (
+                                        <Card ml={-5} radius="lg" mt={10} >
+                                          <small>
+                                            <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
+                                            {/* <Group position="apart">
+                                  <Title order={6} fw={600} c='black'>
+                                    Prod.
+                                  </Title>
+
+                                  <Title order={6} mr={25} fw={600} c='black'>
+                                    Precio.
+                                  </Title>
+                                </Group> */}
+                                            <Group pb={10} mx={0} position="apart">
+                                              <ScrollArea type="never" h={170} w="100%" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+                                                {
+                                                  ticketsSelected.map((ticket) => {
+                                                    const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
+                                                    if (isTicketSold) {
+                                                      return null;
+                                                    }
+                                                    return (
+                                                      <>
+                                                        <Group position="apart">
+                                                          <Card h={40} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                                                            <Title mt={-3} fw={800} fz="xs" ml={-3}>
+                                                              {parseTickets(ticket)}
+                                                            </Title>
+                                                          </Card>
+
+
+                                                          <Title order={6} fw={300} mt={-3} fz="lg" ml={4}>
+                                                            {raffleActive(selectedRaffle || 0) && hasPaymentSelected === 'VES' && exchangeRates?.value_bs
+                                                              ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_bs).toFixed(2) + " VES"
+                                                              : hasPaymentSelected === 'COP' && exchangeRates?.value_cop
+                                                                ? (raffleActive(selectedRaffle || 0)!.price_unit * exchangeRates.value_cop).toFixed(2) + " COP"
+                                                                : raffleActive(selectedRaffle || 0)?.price_unit.toFixed(2) + " USD"
+                                                            }
+
+                                                          </Title>
+                                                        </Group>
+
+                                                        <Divider my="sm" />
+                                                      </>
+                                                    );
+                                                  })
+                                                }
+                                              </ScrollArea>
+                                              <Group mb={-5} w="100%" position="apart">
+                                                <Title order={4} fw={650} >
+                                                  Total:
+                                                </Title>
+                                                <Title order={4} fw={300} ta="end">
+
+                                                  {calculateTotalPrice().toFixed(2)} {" " + hasPaymentSelected === "VES" ? "VES" : hasPaymentSelected}
+                                                </Title>
+                                              </Group>
+
+                                            </Group>
+                                          </small>
+
+                                          <Divider my="sm" />
+
+                                        </Card>
+                                      )
+                                    }
                                     <Group mt={15} position="center" >
 
                                       <Button
