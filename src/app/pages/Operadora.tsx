@@ -433,6 +433,7 @@ function Operadora() {
   const [reload, setReload] = useState<number>(0)
   const [client, setClient] = useState<IClient | null>(null)
   const [ticketsSold, setTicketsSold] = useState<ICableTicket[]>([])
+  const [modalTicket, setModalTicket] = useState<boolean>(false)
 
   const endpoint = 'https://api.rifa-max.com/shared/exchanges';
 
@@ -635,6 +636,7 @@ function Operadora() {
 
   function chooseTicket(ticketNumber: number) {
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
+    setModalTicket(true)
 
     if (isTicketSelected) {
       axios.post("https://api.rifa-max.com/x100/tickets/available", {
@@ -648,7 +650,9 @@ function Operadora() {
         }
       }).then((res) => {
         setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
+        setModalTicket(false)
       }).catch((err) => {
+        setModalTicket(false)
       })
     } else {
       axios.post("https://api.rifa-max.com/x100/tickets/apart", {
@@ -958,7 +962,7 @@ function Operadora() {
         })
         .catch(error => {
         });
-    }; ``
+    };
 
     const priceUnitWithCombos = Number(raffleActive(selectedRaffle || 0)?.price_unit)
 
@@ -1293,6 +1297,35 @@ function Operadora() {
     )
   }
 
+  const BuyingTicketModal = () => {
+    useEffect(() => {
+      if (modalTicket) {
+        const timer = setTimeout(() => {
+          setModalTicket(false);
+        }, 1000);
+  
+        return () => clearTimeout(timer);
+      }
+    }, [modalTicket]);
+  
+    return (
+      <Modal
+        opened={modalTicket}
+        onClose={() => setModalTicket(false)}
+        centered
+        withCloseButton={false}
+        closeOnEscape={false}
+        closeOnClickOutside={false}
+        size="md"
+      >
+        <Group w="100%" py={100} position="center">
+          <Loader />
+          <Text>Seleccionando ticket</Text>
+        </Group>
+      </Modal>
+    );
+  };
+
   const [opened, setOpened] = useState(true);
   const [openedprize, setOpenedprize] = useState(true);
   const abrirModalPremio = () => {
@@ -1362,6 +1395,7 @@ function Operadora() {
     <>
       <InvalidModal />
       <BuyModal />
+      <BuyingTicketModal />
       <Navbar
         profiles={users}
         links={links}
@@ -2005,6 +2039,7 @@ function Operadora() {
 
                                   <Title c='#56CCF2' fz="xs">
                                     Tipo
+        // Limpiar el timer si el modal se cierra antes de que se cumplan los 2 segundos
                                   </Title>
                                   <Title mb={7} fw={700} fz="sm">
                                     {raffleActive(selectedRaffle)?.tickets_count} Números
@@ -2176,7 +2211,7 @@ function Operadora() {
                                     className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
                                     onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                                       e.preventDefault()
-                                      chooseTicket(ticket.position)
+                                      modalTicket === false ? chooseTicket(ticket.position) : null
                                     }}
                                   >
                                     <Text mt={10} ml="20%" fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
