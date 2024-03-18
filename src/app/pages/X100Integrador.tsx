@@ -1,26 +1,16 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import EmojiSuccess from '/src/app/assets/images/emoji-fiesta-success.png'
 import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, RingProgress, useMantineTheme, HoverCard, Modal, Select, Stepper, Avatar, TextInput, Title, Divider, Badge } from "@mantine/core"
-import { ChevronLeft, QuestionMark } from "tabler-icons-react"
-import { links } from "../assets/data/links"
-import { IconArrowsShuffle, IconDice, IconEgg, IconDeviceDesktopShare } from '@tabler/icons-react';
-import { IconSearch, IconTrash, IconReceipt, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
+import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, RingProgress, useMantineTheme, HoverCard, Modal, Stepper, Avatar, Title, Divider, Badge } from "@mantine/core"
+import { IconEgg, IconDeviceDesktopShare } from '@tabler/icons-react';
+import { IconTrash, IconReceipt, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
-import VenezuelaFlag from "../assets/images/venezuela_flag.png"
-import USAFlag from "../assets/images/usa_flag.jpg"
 import { IconEye } from '@tabler/icons-react';
-import ColombiaFlag from "../assets/images/colombia_flag.jpg"
-import USANumbers from "../assets/data/usaNumbers.json"
-import ColombiaNumbers from "../assets/data/colombiaNumbers.json"
 import { useForm } from "@mantine/form"
 import RifamaxLogo from '../assets/images/rifamax-logo.png'
-import { IconDice1 } from "@tabler/icons-react"
-import { useParams } from "react-router-dom"
 
 interface IStatus {
   is_connected: boolean;
@@ -450,21 +440,14 @@ function ticketsConstructor(tickets_count: number) {
 }
 
 function X100Integrador() {
+
   const paginationNumbers = [1, 2, 3, 4, 5];
-
   const searchParams = new URLSearchParams(window.location.search)
-
   const token = searchParams.get('token') || null
-
-  const [userId, setUserId] = useState(null);
-
   const [error, setError] = useState(false);
-
   const currency = searchParams.get('currency') || null
   const urlParams = new URLSearchParams(window.location.search);
-
   const currencyParam = urlParams.get('currency');
-
   const user_type = urlParams.get('user_type');
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const [loading, setLoading] = useState<boolean>(true)
@@ -535,24 +518,6 @@ function X100Integrador() {
     setActiveStep(0)
     setClient(null)
   }
-
-  const form = useForm({
-    initialValues: {
-      phone: '',
-      prefix: '',
-      countryPrefix: '',
-      email: '',
-      dni: '',
-      name: ''
-    },
-
-    validate: {
-      email: (value) => (/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.test(value) ? null : 'Email invalido'),
-      dni: (value) => (countrySelected === 'Venezuela' ? (/\A[VEJG]-\d{1,8}\z/.test(value)) ? null : 'Cédula invalida' : null),
-      name: (value) => (value.length < 8 ? 'Nombre invalido' : null),
-      prefix: (value) => (value.length < 8 ? 'Nombre invalido' : null),
-    }
-  })
 
   useEffect(() => {
     axios.get("https://api.rifa-max.com/x100/raffles", {
@@ -657,18 +622,6 @@ function X100Integrador() {
     const newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
     history.pushState(null, '', newRelativePathQuery);
     setForceToUpdate(forceToUpdate + 1)
-  }
-
-  const registerClient = (player: IPlayer) => { // To Do 
-    axios.post("https://api.rifa-max.com/x100/clients", {
-      x100_client: {
-        name: player.name,
-        email: player.email,
-        integrator_id: player.integrator_id,
-        integrator_type: 'CDA'
-      }
-    }, {
-    })
   }
 
   useEffect(() => {
@@ -849,7 +802,6 @@ function X100Integrador() {
     })
   }
 
-  const phoneRegex = new RegExp(/^\+\d{1,4}\s\(\d{3}\)\s\d{3}-\d{4}$/)
 
   function parseTickets(position: number) {
     let parsedPosition: string;
@@ -908,47 +860,6 @@ function X100Integrador() {
   //   setTicketKey((prevKey) => prevKey + 1);
   // };
 
-  const isTicketReservedOrSold = (ticketNumber: number): boolean => {
-    const soldData = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle);
-    const isTicketSold = soldData?.sold?.includes(ticketNumber) || false;
-    const isTicketReserved = soldData?.reserved?.includes(ticketNumber) || false;
-    return isTicketSold || isTicketReserved;
-  };
-
-  const handleSearch = () => {
-    const ticketNumber = searchValue || 0;
-
-    const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticketNumber);
-    const isTicketReserved = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.reserved?.includes(ticketNumber);
-
-    const isTicketSelected = ticketsSelected.includes(ticketNumber);
-
-    if (isTicketSold) {
-      handleInvalidModal(true, 'sold');
-    } else if (isTicketReserved) {
-      handleInvalidModal(true, 'reserved');
-    } else if (isTicketSelected) {
-      handleInvalidModal(true, 'selected');
-    } else {
-      axios.post("https://api.rifa-max.com/x100/tickets/apart", {
-        x100_ticket: {
-          x100_raffle_id: selectedRaffle,
-          position: ticketNumber
-        }
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then((res) => {
-          setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
-        })
-        .catch((err) => {
-        });
-    }
-    setSearchValue(null);
-  };
-
   function InvalidModal() {
     const { isOpen, mode } = isOpenInvalidTicketModal;
     const isSold = mode === 'sold';
@@ -995,77 +906,6 @@ function X100Integrador() {
     const [terms, setTerms] = useState<boolean>(false)
     const [initDNI, setInitDNI] = useState<string | null>('V-');
     const [email, setEmail] = useState<string>('');
-
-
-    function handleTextInputChange(value: string) {
-      const numericValue = value.replace(/\D/g, '');
-
-      let formattedValue = numericValue;
-      if (numericValue.length > 3) {
-        formattedValue = numericValue.slice(0, 3) + '-' + numericValue.slice(3);
-      }
-      setTextInputValue(formattedValue);
-    }
-
-    const secondNextStep = (phone: string) => {
-      setPhone(phone)
-      axios.get("https://api.rifa-max.com/x100/clients", {
-        params: {
-          phone: `${countryPrefix} ${selectValue} ${textInputValue}`
-        }
-      }).then((res) => {
-        setClient(res.data)
-        setActiveStep(activeStep + 1)
-      }).catch((e) => {
-        setClient(null)
-        setActiveStep(activeStep + 1)
-      })
-    }
-
-    function handleSelectChange(value: string | null) {
-      setSelectValue(value);
-    }
-
-    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const newName = event.currentTarget.value.replace(/[^a-zA-Z]/g, '');
-      setName(newName);
-    };
-
-    const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const newLastName = event.currentTarget.value.replace(/[^a-zA-Z]/g, '');
-      setlastName(newLastName);
-    };
-    const handleDniChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const newDni = event.currentTarget.value.replace(/\D/g, '');
-      setDni(newDni);
-    };
-
-    const isValidEmail = (email: string) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
-    };
-
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const newEmail = event.currentTarget.value;
-
-      setEmail(newEmail);
-    };
-
-    // const createClient = () => {
-    //   axios.post("https://api.rifa-max.com/x100/clients", {
-    //     x100_client: {
-    //       name: name + ' ' + lastName,
-    //       dni: (countrySelected === 'Venezuela' ? `${initDNI}${Dni}` : null),
-    //       phone: phone,
-    //       email: email
-    //     }
-    //   }).then((res) => {
-    //     setClient(res.data);
-    //     setActiveStep(activeStep + 1);
-    //     handleCompra(res.data.id);
-    //   }).catch((e) => {
-    //   });
-    // };
 
     const handleCompra = () => {
       if (!token) {
@@ -1589,31 +1429,6 @@ function X100Integrador() {
                                 </ActionIcon>
                               </>
                             )}
-                            {/* <NumberInput
-                      size="xs"
-                      hideControls
-                      w={125}
-                      placeholder="Buscar número"
-                      value={searchValue || undefined}
-                      onChange={(value: number) => setSearchValue(value)}
-                      icon={
-                        <Card px={2} py={0} m={0} ml={2} className={classes.searchButton}>
-                          <IconSearch style={{ marginTop: '5px' }} size={16} />
-                        </Card>
-                      }
-                      style={{ borderRadius: '5px 0 0 5px' }}
-                      ml={10}
-                    /> */}
-
-                            {/* <Button
-                      size='xs'
-                      ml={0}
-                      color="blue"
-                      onClick={handleSearch}
-                      style={{ borderRadius: '0 5px 5px 0' }}
-                    >
-                      <IconSearch size={22} />
-                    </Button> */}
 
                             <Badge
                               mt={1}
@@ -1779,7 +1594,6 @@ function X100Integrador() {
                                     );
                                   })}
 
-                                  {/* Resto del código permanece igual */}
                                   <Card style={{ display: 'flex', gap: '15px', background: theme.colors.dark[5] }} shadow="md" withBorder>
                                     <Card style={{ background: '#4D4F66' }}>
                                       <Text>
@@ -1872,6 +1686,7 @@ function X100Integrador() {
                                               fw={750}
                                               fz={15}
                                               mt={0}
+                                              style={{ display: 'none' }}
                                             >
                                               Saldo actual: {balance.balance.toFixed(2)} {balance.currency}
                                             </Text>
@@ -1960,7 +1775,6 @@ function X100Integrador() {
                                                 </HoverCard.Target>
                                                 <HoverCard.Dropdown mt={-55} w={150} h={210} ml={-140}>
 
-                                                  {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
                                                   <Group>
 
                                                     <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
@@ -2068,15 +1882,7 @@ function X100Integrador() {
                                         <Card ml={-5} radius="lg" mt={10} >
                                           <small>
                                             <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
-                                            {/* <Group position="apart">
-                                  <Title order={6} fw={600} c='black'>
-                                    Prod.
-                                  </Title>
 
-                                  <Title order={6} mr={25} fw={600} c='black'>
-                                    Precio.
-                                  </Title>
-                                </Group> */}
                                             <Group pb={10} mx={0} position="apart">
                                               <ScrollArea type="never" h={170} w="100%" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                                 {
@@ -2283,16 +2089,12 @@ function X100Integrador() {
                                               Saldo actual: {balance.balance.toFixed(2)} {balance.currency}
                                             </Text>
 
-
-
-
                                           )}
                                         </Text>
                                       </Card>
                                     )
                                   }
                                   <Group position="apart" spacing={0}>
-
 
                                     <Button
                                       style={{ height: '50px', borderRadius: '5px 0px 0px 5px' }}
@@ -2371,7 +2173,6 @@ function X100Integrador() {
                                                 </HoverCard.Target>
                                                 <HoverCard.Dropdown mt={-55} w={150} h={210} ml={-140}>
 
-                                                  {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
                                                   <Group>
 
                                                     <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
@@ -2411,7 +2212,6 @@ function X100Integrador() {
                                                       </Title>
                                                     </div>
                                                   </Group>
-
 
                                                 </HoverCard.Dropdown>
                                               </HoverCard>
@@ -2479,15 +2279,7 @@ function X100Integrador() {
                                         <Card ml={-5} radius="lg" mt={10} >
                                           <small>
                                             <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
-                                            {/* <Group position="apart">
-                                  <Title order={6} fw={600} c='black'>
-                                    Prod.
-                                  </Title>
 
-                                  <Title order={6} mr={25} fw={600} c='black'>
-                                    Precio.
-                                  </Title>
-                                </Group> */}
                                             <Group pb={10} mx={0} position="apart">
                                               <ScrollArea type="never" h={170} w="100%" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                                 {
@@ -2582,7 +2374,6 @@ function X100Integrador() {
                                 <Image w='100%' src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} />
 
                               </Modal>
-                              { /* Raffle info   style={{ background: "#1D1E30"}} */}
 
                               <Card
                                 mt={-60}
@@ -2627,7 +2418,6 @@ function X100Integrador() {
                                           </HoverCard.Target>
                                           <HoverCard.Dropdown mt={-60} w={150} h={210} ml={-100}>
 
-                                            {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
                                             <Group>
 
                                               <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
@@ -2734,15 +2524,7 @@ function X100Integrador() {
                                     <Card bg="#1D1E30" ml={-5} radius="lg" mt={10} >
                                       <small>
                                         <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
-                                        {/* <Group position="apart">
-                                  <Title order={6} fw={600} c='black'>
-                                    Prod.
-                                  </Title>
 
-                                  <Title order={6} mr={25} fw={600} c='black'>
-                                    Precio.
-                                  </Title>
-                                </Group> */}
                                         <Group pb={10} mx={0} position="apart">
                                           <ScrollArea type="never" h={170} w="100%" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                             {
