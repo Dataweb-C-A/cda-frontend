@@ -796,7 +796,7 @@ function X100Integrador() {
         }
       }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${token}`
         }
       }).then((res) => {
         setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
@@ -812,7 +812,7 @@ function X100Integrador() {
         }
       }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${token}`
         }
       }).then((res) => {
         setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
@@ -871,7 +871,7 @@ function X100Integrador() {
     setTicketsSelected((prevSelected) => [...prevSelected, ...ticketNumber]);
   }
   const handleComboClick = (id: number, quantity: number) => {
-    const token = localStorage.getItem("token");
+    const token = token;
     const comboData = {
       combo: {
         x100_raffle_id: id,
@@ -2432,21 +2432,21 @@ function X100Integrador() {
 
                               <Card
                                 mt={-60}
-                                ml={15}
                                 radius={"lg"}
                                 p={0}
                                 pt={20}
-                                w={430}
+                                w={450}
+                                px={4}
                                 mb={10}
                                 className={classes.raffleInfo}
                               >
-
                                 <Card bg="#1D1E30" radius="lg">
-                                  <Group>
+
+                                  <Group  >
 
 
                                     <div>
-                                      <Group>
+                                      <Group position="apart">
 
                                         <div>
 
@@ -2458,66 +2458,70 @@ function X100Integrador() {
                                           </Title>
                                         </div>
 
+                                        <Group >
 
-                                        <IconEye style={{
-                                          marginRight: '-12px'
-                                        }} color="green" stroke={2} />
-
-
-
-                                        <HoverCard width={480} shadow="md">
-                                          <HoverCard.Target>
-                                            <Text fz={12} ta="end">
-                                              Ver imagen
-                                            </Text>
-                                          </HoverCard.Target>
-                                          <HoverCard.Dropdown mt={-60} w={150} h={210} ml={-100}>
-
-                                            <Group>
-
-                                              <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
-                                                <Image
-                                                  mt={-11}
-                                                  ml={15}
-                                                  height={205}
-                                                  mb={-13}
-                                                  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`}
-                                                  alt="Premio"
-                                                />
-                                              </div>
-                                              <div>
-                                                <IconDeviceDesktopShare style={{
-                                                  marginLeft: '30px'
-                                                }} color="green" stroke={2} />
-                                                <Title
-                                                  ml={0}
-                                                  c='#9CB6C7' fz="sm">
-                                                  Ver completa
-                                                </Title>
-
-                                                <RingProgress
-                                                  sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
-                                                  thickness={8}
-                                                  size={80}
-                                                  label={
-                                                    <Text fz="sm" align="center" size="xl">
-                                                      {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
-                                                    </Text>
-                                                  }
-                                                />
-                                                <Title
-                                                  ml={13}
-                                                  c='#9CB6C7' fz="sm">
-                                                  Progreso
-                                                </Title>
-                                              </div>
-                                            </Group>
+                                          <IconEye style={{
+                                            marginRight: '-12px'
+                                          }} color="green" stroke={2} />
 
 
-                                          </HoverCard.Dropdown>
-                                        </HoverCard>
+
+                                          <HoverCard width={480} shadow="md">
+                                            <HoverCard.Target>
+                                              <Text fz={12} ta="end">
+                                                Ver imagen
+                                              </Text>
+                                            </HoverCard.Target>
+                                            <HoverCard.Dropdown mt={-55} w={150} h={210} ml={-110}>
+
+                                              {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
+                                              <Group>
+
+                                                <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
+                                                  <Image
+                                                    mt={-11}
+                                                    ml={15}
+                                                    height={205}
+                                                    mb={-13}
+                                                    src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`}
+                                                    alt="Premio"
+                                                  />
+                                                </div>
+                                                <div>
+                                                  <IconDeviceDesktopShare style={{
+                                                    marginLeft: '30px'
+                                                  }} color="green" stroke={2} />
+                                                  <Title
+                                                    ml={0}
+                                                    c='#9CB6C7' fz="sm">
+                                                    Ver completa
+                                                  </Title>
+
+                                                  <RingProgress
+                                                    sections={[{ value: progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress || 0, color: '#76BE34' }]}
+                                                    thickness={8}
+                                                    size={80}
+                                                    label={
+                                                      <Text fz="sm" align="center" size="xl">
+                                                        {progresses.find((item) => item.raffle_id === raffleActive(selectedRaffle)?.id)?.progress}%
+                                                      </Text>
+                                                    }
+                                                  />
+                                                  <Title
+                                                    ml={13}
+                                                    c='#9CB6C7' fz="sm">
+                                                    Progreso
+                                                  </Title>
+                                                </div>
+                                              </Group>
+
+
+                                            </HoverCard.Dropdown>
+                                          </HoverCard>
+                                        </Group>
 
                                       </Group>
+
 
                                       <Title c='#56CCF2' fz="xs">
                                         Tipo
@@ -2573,13 +2577,20 @@ function X100Integrador() {
                                     </div>
                                   </Group>
                                 </Card>
-
                                 {
                                   ticketsSelected.length > 0 && (
                                     <Card bg="#1D1E30" ml={-5} radius="lg" mt={10} >
                                       <small>
                                         <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
+                                        {/* <Group position="apart">
+                                  <Title order={6} fw={600} c='black'>
+                                    Prod.
+                                  </Title>
 
+                                  <Title order={6} mr={25} fw={600} c='black'>
+                                    Precio.
+                                  </Title>
+                                </Group> */}
                                         <Group pb={10} mx={0} position="apart">
                                           <ScrollArea type="never" h={170} w="100%" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
                                             {
@@ -2592,7 +2603,7 @@ function X100Integrador() {
                                                   <>
                                                     <Group position="apart">
                                                       <Card h={40} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
-                                                        <Title mt={-6} fw={800} fz="lg" ml={-8}>
+                                                        <Title c='black' mt={-6} fw={800} fz="lg" ml={-8}>
                                                           {parseTickets(ticket)}
                                                         </Title>
                                                       </Card>

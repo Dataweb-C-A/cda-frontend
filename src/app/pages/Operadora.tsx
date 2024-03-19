@@ -452,7 +452,46 @@ function Operadora() {
   const [client, setClient] = useState<IClient | null>(null)
   const [ticketsSold, setTicketsSold] = useState<ICableTicket[]>([])
   const [modalTicket, setModalTicket] = useState<boolean>(false)
+  const [isModalOpened, setIsModalOpened] = useState(false);
+  const [modalCounter, setModalCounter] = useState(0);
+  const [opened, setOpened] = useState(true);
 
+  useEffect(() => {
+    if (!opened && !buyIsOpen) {
+      const timer = setTimeout(() => {
+        setIsModalOpened(true);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [isModalOpened, buyIsOpen, opened]);
+
+  useEffect(() => {
+    if (isModalOpened && !opened) {
+      const secondTimer = setTimeout(() => {
+        cleanSelection();
+        window.location.reload();
+      }, 5000);
+
+      return () => {
+        clearTimeout(secondTimer);
+      };
+    } else {
+      setModalCounter(0);
+    }
+  }, [isModalOpened, opened]);
+
+  useEffect(() => {
+    if (isModalOpened) {
+      setModalCounter(prevCounter => prevCounter + 1);
+    }
+  }, [isModalOpened]);
+
+  const handleContinueClick = () => {
+    setIsModalOpened(false);
+  };
   const endpoint = 'https://api.rifa-max.com/shared/exchanges';
 
   const { classes } = useStyles()
@@ -1307,7 +1346,6 @@ function Operadora() {
           <Stepper.Completed>
             <Title order={4} c="green" ta="center" my={10}>COMPRA REALIZADA</Title>
             <Image src={EmojiSuccess} mx='auto' my={20} width={125} height={125} alt="Emoji de fiesta" style={{ userSelect: 'none' }} />
-
             <Button fullWidth onClick={handleClose} mt={40}>Cerrar</Button>
 
 
@@ -1342,7 +1380,6 @@ function Operadora() {
     );
   };
 
-  const [opened, setOpened] = useState(true);
   const [openedprize, setOpenedprize] = useState(true);
   const abrirModalPremio = () => {
     setOpenedprize(true);
@@ -1464,6 +1501,7 @@ function Operadora() {
                                   setSelectedPage(1);
                                   setOpened(true);
                                   cerrarModalPremio();
+                                  cleanSelection();
                                 }}
                               />
                               <Divider orientation="vertical" ml={10} my={5} variant="dotted" />
@@ -1599,6 +1637,45 @@ function Operadora() {
                         </Group>
                       </Card>
 
+                    </Modal>
+                    <Modal
+                      opened={isModalOpened}
+                      closeOnClickOutside={false}
+                      onClose={() => setIsModalOpened(false)}
+                      withCloseButton={false}
+                      size={520}
+                      centered
+                    >
+                      <Title ta='center' order={3}>Tiempo excedido</Title>
+                      <Group mt={15}>
+                        <Button
+                          color="red"
+                          radius="md"
+                          onClick={() => {
+                            cleanSelection();
+                            window.location.reload();
+                          }}
+                        >
+                          Cerrar compra
+                        </Button>
+                        <Button
+                          color="green"
+                          radius="md"
+                          onClick={handleContinueClick}
+                          style={{ display: modalCounter >= 2 ? "none" : "block" }} // Estilo condicional
+                        >
+                          Continuar compra
+                        </Button>
+                        <Button
+                          radius="md"
+                          onClick={() => {
+                            setIsModalOpened(false);
+                            setBuyIsOpen(true);
+                          }}
+                        >
+                          Finalizar compra
+                        </Button>
+                      </Group>
                     </Modal>
                     {tickets.tickets.length > 101 && (
                       <>
@@ -2792,7 +2869,7 @@ function Operadora() {
                                           <>
                                             <Group position="apart">
                                               <Card h={40} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
-                                                <Title mt={-6} fw={800} fz="lg" ml={-8}>
+                                                <Title c='black' mt={-6} fw={800} fz="lg" ml={-8}>
                                                   {parseTickets(ticket)}
                                                 </Title>
                                               </Card>
