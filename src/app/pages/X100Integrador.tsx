@@ -4,11 +4,11 @@ import cable from "../components/cable"
 import moment from "moment"
 import RaffleCard from "../refactor/RaffleCard"
 import { IRaffle } from "../refactor/interfaces"
-import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, RingProgress, useMantineTheme, HoverCard, Modal, Stepper, Avatar, Title, Divider, Badge } from "@mantine/core"
+import { Loader, Button, Text, createStyles, ScrollArea, ActionIcon, Card, Image, Group, Notification, RingProgress, useMantineTheme, HoverCard, Modal, Stepper, Avatar, Title, Divider, Badge } from "@mantine/core"
 import { IconEgg, IconDeviceDesktopShare } from '@tabler/icons-react';
 import { IconTrash, IconReceipt, IconWallet, IconChevronLeft, IconChevronRight, IconMoodSadDizzy, IconReload } from "@tabler/icons-react"
 import { bounce } from "../components/animations"
-import { IconEye } from '@tabler/icons-react';
+import { IconEye, IconX } from '@tabler/icons-react';
 import { useForm } from "@mantine/form"
 import RifamaxLogo from '../assets/images/rifamax-logo.png'
 
@@ -460,10 +460,13 @@ function X100Integrador() {
 
   const paginationNumbers = [1, 2, 3, 4, 5];
   const searchParams = new URLSearchParams(window.location.search)
+
   const token = searchParams.get('token') || null
   const [error, setError] = useState(false);
   const currency = searchParams.get('currency') || null
   const urlParams = new URLSearchParams(window.location.search);
+  const [notificationVisible, setNotificationVisible] = useState(false);
+  
   const currencyParam = urlParams.get('currency');
   const user_type = urlParams.get('user_type');
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
@@ -1222,6 +1225,21 @@ function X100Integrador() {
               }
               <InvalidModal />
               <BuyModal />
+              <Notification
+  color="red"
+  disallowClose
+  bg="#1D1E30" 
+  title="Saldo insuficiente"
+  w={500}
+  style={{
+    borderRadius: '8px',
+    position: 'fixed',
+    top: '65px',
+    right: '20px',
+    display: balance.balance > calculateTotalPrice() ? 'none' : 'block'
+  }}
+>
+</Notification>
 
               <BuyingTicketModal />
               {
@@ -1309,6 +1327,8 @@ function X100Integrador() {
                 </div>
               </section>
               <section className={classes.pageContainer}>
+          
+
                 { /* Tickets Container*/}
                 <div className={rafflesSidebarStatus ? classes.ticketsContainer : classes.ticketsContainerExpanded}>
                   <Card className={classes.ticketsPage}>
@@ -1602,6 +1622,7 @@ function X100Integrador() {
                               </>
                             )}
                           </div>
+
                           <div style={{ display: 'flex', width: '100%' }}>
                             <div className={classes.ticketsListContainer}>
                               { /* Raffle tickets */}
@@ -2138,6 +2159,7 @@ function X100Integrador() {
                                             <Text
                                               fw={750}
                                               fz={15}
+                                              style={{ display: 'none' }}
                                               mt={0}
                                             >
                                               Saldo actual: {balance.balance.toFixed(2)} {balance.currency}
@@ -2649,9 +2671,10 @@ function X100Integrador() {
                                           Limpiar
                                         </Button>
                                         <Button
-
-                                          radius="lg" size="xs"
+                                          radius="lg"
+                                          size="xs"
                                           onClick={() => setBuyIsOpen(true)}
+                                          disabled={balance.balance < calculateTotalPrice()}
                                         >
                                           Comprar
                                         </Button>
