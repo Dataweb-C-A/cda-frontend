@@ -871,7 +871,6 @@ function X100Integrador() {
     setTicketsSelected((prevSelected) => [...prevSelected, ...ticketNumber]);
   }
   const handleComboClick = (id: number, quantity: number) => {
-    const token = token;
     const comboData = {
       combo: {
         x100_raffle_id: id,
