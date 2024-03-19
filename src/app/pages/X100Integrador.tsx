@@ -16,6 +16,23 @@ interface IStatus {
   is_connected: boolean;
   receiving_data: boolean;
 }
+interface ICombo {
+  id: number;
+  position: number;
+  serial: string;
+  price: number | null;
+  money: number | null;
+  status: string;
+  x100_raffle_id: number;
+  x100_client_id: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+interface TicketsResponse {
+  message: string;
+  ticket: ICombo[];
+}
 
 interface IClient {
   id: number,
@@ -454,6 +471,8 @@ function X100Integrador() {
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null) // change to null to use dancers through backend
   const [rafflesSidebarStatus, setRafflesSidebarStatus] = useState<boolean>(true)
   const [ticketsSelected, setTicketsSelected] = useState<number[]>([])
+
+  const [modalTicket, setModalTicket] = useState<boolean>(false)
   const [hasPaymentSelected, setHasPaymentSelected] = useState<string | 'USD' | 'COP' | 'VES'>(currencyParam ?? 'null')
   const money = hasPaymentSelected === 'COP' || hasPaymentSelected === 'USD' || hasPaymentSelected === 'VES' ? hasPaymentSelected : 'nou';
 
@@ -665,7 +684,30 @@ function X100Integrador() {
         })
     }
   }, [])
+  const BuyingTicketModal = () => {
+    useEffect(() => {
+      if (modalTicket) {
+        const timer = setTimeout(() => {
+          setModalTicket(false);
+        }, 200);
 
+        return () => clearTimeout(timer);
+      }
+    }, [modalTicket]);
+
+    return (
+      <div
+        style={{
+          display: modalTicket ? "block" : "none",
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          zIndex: 9999999
+        }}
+      >
+      </div>
+    );
+  };
   function RaffleListEmpty() {
     return (
       <div
@@ -744,6 +786,7 @@ function X100Integrador() {
 
   function chooseTicket(ticketNumber: number) {
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
+    setModalTicket(true)
 
     if (isTicketSelected) {
       axios.post("https://api.rifa-max.com/x100/tickets/available", {
@@ -753,11 +796,13 @@ function X100Integrador() {
         }
       }, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       }).then((res) => {
         setTicketsSelected((prevSelected) => prevSelected.filter((ticket) => ticket !== ticketNumber));
+        setModalTicket(false)
       }).catch((err) => {
+        setModalTicket(false)
       })
     } else {
       axios.post("https://api.rifa-max.com/x100/tickets/apart", {
@@ -767,7 +812,7 @@ function X100Integrador() {
         }
       }, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       }).then((res) => {
         setTicketsSelected((prevSelected) => [...prevSelected, ticketNumber]);
@@ -777,7 +822,6 @@ function X100Integrador() {
 
     setTicketKey((prevKey) => prevKey + 1);
   }
-
   function cleanSelection() {
     ticketsSelected.forEach(ticketNumber => {
       axios.post("https://api.rifa-max.com/x100/tickets/available", {
@@ -823,15 +867,16 @@ function X100Integrador() {
 
     return parsedPosition;
   }
+  function chooseTicketWithCombos(ticketNumber: number[]) {
+    setTicketsSelected((prevSelected) => [...prevSelected, ...ticketNumber]);
+  }
   const handleComboClick = (id: number, quantity: number) => {
     const token = localStorage.getItem("token");
     const comboData = {
-      combo:
-      {
+      combo: {
         x100_raffle_id: id,
         quantity: quantity
       }
-
     };
 
     axios.post('https://api.rifa-max.com/x100/tickets/combo', comboData, {
@@ -839,7 +884,9 @@ function X100Integrador() {
         Authorization: `Bearer ${token}`
       }
     })
-      .then(response => {
+      .then((response) => {
+        const positions = response.data.ticket.map((ticket: ICombo) => ticket.position);
+        chooseTicketWithCombos(positions);
       })
       .catch(error => {
         console.error("Error al enviar el combo:", error);
@@ -1176,6 +1223,8 @@ function X100Integrador() {
               }
               <InvalidModal />
               <BuyModal />
+
+              <BuyingTicketModal />
               {
                 exchangeCounter % 100 === 0 && (
                   <div
@@ -1585,7 +1634,10 @@ function X100Integrador() {
                                           <Card
                                             key={ticket.position + ticketKey}
                                             className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected : ''}`}
-                                            onClick={() => chooseTicket(ticket.position)}
+                                            onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                                              e.preventDefault()
+                                              modalTicket === false ? chooseTicket(ticket.position) : null
+                                            }}
                                           >
                                             <Text mt={-5} fz="xs" ta='left'>{parseTickets(ticket.position)}</Text>
                                           </Card>
@@ -1985,7 +2037,10 @@ function X100Integrador() {
                                           <Card
                                             key={ticket.position + ticketKey}
                                             className={`${ticketClassName} ${ticketsSelected.includes(ticket.position) ? classes.ticketsSelected100 : ''}`}
-                                            onClick={() => chooseTicket(ticket.position)}
+                                            onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                                              e.preventDefault()
+                                              modalTicket === false ? chooseTicket(ticket.position) : null
+                                            }}
                                           >
                                             <Text mt={10} ml="20%" fz="xs" ta='center'>{parseTickets(ticket.position)}</Text>
                                           </Card>

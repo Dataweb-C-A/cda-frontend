@@ -26,6 +26,24 @@ interface IStatus {
   receiving_data: boolean;
 }
 
+interface ICombo {
+  id: number;
+  position: number;
+  serial: string;
+  price: number | null;
+  money: number | null;
+  status: string;
+  x100_raffle_id: number;
+  x100_client_id: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+interface TicketsResponse {
+  message: string;
+  ticket: ICombo[];
+}
+
 interface IClient {
   id: number,
   name: string,
@@ -633,6 +651,9 @@ function Operadora() {
     return isTicketIsSoldDeselect()
   }, [ticketsSold])
 
+  function chooseTicketWithCombos(ticketNumber: number[]) {
+    setTicketsSelected((prevSelected) => [...prevSelected, ...ticketNumber]);
+  }
 
   function chooseTicket(ticketNumber: number) {
     const isTicketSelected = ticketsSelected.includes(ticketNumber);
@@ -725,12 +746,10 @@ function Operadora() {
   const handleComboClick = (id: number, quantity: number) => {
     const token = localStorage.getItem("token");
     const comboData = {
-      combo:
-      {
+      combo: {
         x100_raffle_id: id,
         quantity: quantity
       }
-
     };
 
     axios.post('https://api.rifa-max.com/x100/tickets/combo', comboData, {
@@ -738,13 +757,14 @@ function Operadora() {
         Authorization: `Bearer ${token}`
       }
     })
-      .then(response => {
+      .then((response) => {
+        const positions = response.data.ticket.map((ticket: ICombo) => ticket.position);
+        chooseTicketWithCombos(positions);
       })
       .catch(error => {
         console.error("Error al enviar el combo:", error);
       });
   };
-
   // const handleComboClick = async (quantity: number, price: number) => {
   //   const newTicketsSelected = [...ticketsSelected];
 
@@ -1302,27 +1322,23 @@ function Operadora() {
       if (modalTicket) {
         const timer = setTimeout(() => {
           setModalTicket(false);
-        }, 1000);
-  
+        }, 200);
+
         return () => clearTimeout(timer);
       }
     }, [modalTicket]);
-  
+
     return (
-      <Modal
-        opened={modalTicket}
-        onClose={() => setModalTicket(false)}
-        centered
-        withCloseButton={false}
-        closeOnEscape={false}
-        closeOnClickOutside={false}
-        size="md"
+      <div
+        style={{
+          display: modalTicket ? "block" : "none",
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          zIndex: 9999999
+        }}
       >
-        <Group w="100%" py={100} position="center">
-          <Loader />
-          <Text>Seleccionando ticket</Text>
-        </Group>
-      </Modal>
+      </div>
     );
   };
 
@@ -2039,7 +2055,7 @@ function Operadora() {
 
                                   <Title c='#56CCF2' fz="xs">
                                     Tipo
-        // Limpiar el timer si el modal se cierra antes de que se cumplan los 2 segundos
+                                  // Limpiar el timer si el modal se cierra antes de que se cumplan los 2 segundos
                                   </Title>
                                   <Title mb={7} fw={700} fz="sm">
                                     {raffleActive(selectedRaffle)?.tickets_count} Números
