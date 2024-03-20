@@ -457,7 +457,17 @@ function Operadora() {
   const [opened, setOpened] = useState(true);
 
   useEffect(() => {
-    if (!opened && !buyIsOpen) {
+    let prevSelectedTicketsLength = 0;
+
+    const selectedTicketsLength = ticketsSelected.map((ticket) => {
+      const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
+      if (isTicketSold) {
+        return null;
+      }
+      return parseTickets(ticket);
+    }).filter(Boolean).length;
+
+    if (selectedTicketsLength > 0 && !opened && !buyIsOpen) {
       const timer = setTimeout(() => {
         setIsModalOpened(true);
       }, 5000);
@@ -466,7 +476,12 @@ function Operadora() {
         clearTimeout(timer);
       };
     }
-  }, [isModalOpened, buyIsOpen, opened]);
+
+    if (selectedTicketsLength !== prevSelectedTicketsLength) {
+      setModalCounter(0);
+      prevSelectedTicketsLength = selectedTicketsLength;
+    }
+  }, [ticketsSelected, ticketsSold, selectedRaffle, opened, buyIsOpen, modalCounter]);
 
   useEffect(() => {
     if (isModalOpened && !opened) {
@@ -478,10 +493,12 @@ function Operadora() {
       return () => {
         clearTimeout(secondTimer);
       };
-    } else {
-      setModalCounter(0);
     }
   }, [isModalOpened, opened]);
+
+  const handleContinueClick = () => {
+    setIsModalOpened(false);
+  };
 
   useEffect(() => {
     if (isModalOpened) {
@@ -489,9 +506,7 @@ function Operadora() {
     }
   }, [isModalOpened]);
 
-  const handleContinueClick = () => {
-    setIsModalOpened(false);
-  };
+
   const endpoint = 'https://api.rifa-max.com/shared/exchanges';
 
   const { classes } = useStyles()
@@ -1535,7 +1550,7 @@ function Operadora() {
                 </div>
               ) : (
                 <>
-                  <div style={{ display: 'flex', marginBottom: '2px', width: '100%' }}>
+                  <div style={{marginTop:"-10px", display: 'flex', marginBottom: '2px', width: '100%' }}>
                     <Modal
                       opened={opened}
                       closeOnClickOutside={false}
@@ -1643,14 +1658,15 @@ function Operadora() {
                       closeOnClickOutside={false}
                       onClose={() => setIsModalOpened(false)}
                       withCloseButton={false}
-                      size={520}
+                      size='35%'
                       centered
                     >
                       <Title ta='center' order={3}>Tiempo excedido</Title>
-                      <Group mt={15}>
+                      <Group w='100%' mt={15} position="center">
                         <Button
                           color="red"
                           radius="md"
+                          w='20vh'
                           onClick={() => {
                             cleanSelection();
                             window.location.reload();
@@ -1659,14 +1675,18 @@ function Operadora() {
                           Cerrar compra
                         </Button>
                         <Button
+                          w='20vh'
                           color="green"
                           radius="md"
                           onClick={handleContinueClick}
-                          style={{ display: modalCounter >= 2 ? "none" : "block" }} // Estilo condicional
+                          style={{ display: modalCounter > 2 ? "none" : "block" }}
+
                         >
                           Continuar compra
                         </Button>
+
                         <Button
+                          w='20vh'
                           radius="md"
                           onClick={() => {
                             setIsModalOpened(false);

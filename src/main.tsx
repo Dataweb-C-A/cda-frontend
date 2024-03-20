@@ -29,6 +29,8 @@ import award from './app/pages/Award'
 import Cupones from './app/pages/Cuponesinf'
 import X100Integrador from './app/pages/X100Integrador'
 import Premiacion from './app/pages/Premiacion'
+import MPrifa from './app/pages/MPrifa'
+
 // import Logint from './app/pages/Logint'
 
 
@@ -250,6 +252,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/Pot" component={Pot} />
           <Route path="/it5050/:plays?/:id?" component={it5050} />
           <Route path="/Cupones" component={Cupones} />
+          <Route path="/MPrifa" component={MPrifa} />
           <Route path="/x100_integrador" component={X100Integrador} />
           <AuthRouter path="/riferos" component={Riferos} isPrivate />
           <AuthRouter path="/x100" component={Operadora} isPrivate />

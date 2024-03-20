@@ -527,6 +527,60 @@ function X100Integrador() {
     balance: 0,
     currency: hasPaymentSelected
   })
+  const [isModalOpened, setIsModalOpened] = useState(false);
+  const [modalCounter, setModalCounter] = useState(0);
+  const [opened, setOpened] = useState(true);
+
+  useEffect(() => {
+    let prevSelectedTicketsLength = 0;
+
+    const selectedTicketsLength = ticketsSelected.map((ticket) => {
+      const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
+      if (isTicketSold) {
+        return null;
+      }
+      return parseTickets(ticket);
+    }).filter(Boolean).length;
+
+    if (selectedTicketsLength > 0 && !opened && !buyIsOpen) {
+      const timer = setTimeout(() => {
+        setIsModalOpened(true);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+
+    if (selectedTicketsLength !== prevSelectedTicketsLength) {
+      setModalCounter(0);
+      prevSelectedTicketsLength = selectedTicketsLength;
+    }
+  }, [ticketsSelected, ticketsSold, selectedRaffle, opened, buyIsOpen, modalCounter]);
+
+  useEffect(() => {
+    if (isModalOpened && !opened) {
+      const secondTimer = setTimeout(() => {
+        cleanSelection();
+        window.location.reload();
+      }, 5000);
+
+      return () => {
+        clearTimeout(secondTimer);
+      };
+    }
+  }, [isModalOpened, opened]);
+
+  const handleContinueClick = () => {
+    setIsModalOpened(false);
+  };
+
+  useEffect(() => {
+    if (isModalOpened) {
+      setModalCounter(prevCounter => prevCounter + 1);
+    }
+  }, [isModalOpened]);
+
 
   const endpoint = 'https://api.rifa-max.com/shared/exchanges';
 
@@ -1148,8 +1202,6 @@ function X100Integrador() {
       </Modal>
     )
   }
-
-  const [opened, setOpened] = useState(true);
   const [openedprize, setOpenedprize] = useState(true);
   const abrirModalPremio = () => {
     setOpenedprize(true);
@@ -1347,7 +1399,7 @@ function X100Integrador() {
                         </div>
                       ) : (
                         <>
-                          <div style={{ display: 'flex', marginBottom: '2px', width: '100%' }}>
+                        <div style={{marginTop:"-10px", display: 'flex', marginBottom: '2px', width: '100%' }}>
                             {/* <Modal
                               opened={opened}
                               closeOnClickOutside={false}
@@ -1450,6 +1502,50 @@ function X100Integrador() {
                               </Card>
 
                             </Modal> */}
+                             <Modal
+                      opened={isModalOpened}
+                      closeOnClickOutside={false}
+                      onClose={() => setIsModalOpened(false)}
+                      withCloseButton={false}
+                      size='35%'
+                      centered
+                    >
+                      <Title ta='center' order={3}>Tiempo excedido</Title>
+                      <Group w='100%' mt={15} position="center">
+                        <Button
+                          color="red"
+                          radius="md"
+                          w='20vh'
+                          onClick={() => {
+                            cleanSelection();
+                            window.location.reload();
+                          }}
+                        >
+                          Cerrar compra
+                        </Button>
+                        <Button
+                          w='20vh'
+                          color="green"
+                          radius="md"
+                          onClick={handleContinueClick}
+                          style={{ display: modalCounter > 2 ? "none" : "block" }}
+
+                        >
+                          Continuar compra
+                        </Button>
+
+                        <Button
+                          w='20vh'
+                          radius="md"
+                          onClick={() => {
+                            setIsModalOpened(false);
+                            setBuyIsOpen(true);
+                          }}
+                        >
+                          Finalizar compra
+                        </Button>
+                      </Group>
+                    </Modal>
                             {tickets.tickets.length > 101 && (
                               <>
                                 <ActionIcon
@@ -2458,6 +2554,8 @@ function X100Integrador() {
                                 pt={20}
                                 w={450}
                                 px={4}
+                                ml={-35}
+                                mr={-10}
                                 mb={10}
                                 className={classes.raffleInfo}
                               >
