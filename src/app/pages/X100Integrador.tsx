@@ -466,7 +466,7 @@ function X100Integrador() {
   const currency = searchParams.get('currency') || null
   const urlParams = new URLSearchParams(window.location.search);
   const [notificationVisible, setNotificationVisible] = useState(false);
-  
+
   const currencyParam = urlParams.get('currency');
   const user_type = urlParams.get('user_type');
   const [raffles, setRaffles] = useState<IRaffle[]>([]);
@@ -531,45 +531,7 @@ function X100Integrador() {
   const [modalCounter, setModalCounter] = useState(0);
   const [opened, setOpened] = useState(true);
 
-  useEffect(() => {
-    let prevSelectedTicketsLength = 0;
 
-    const selectedTicketsLength = ticketsSelected.map((ticket) => {
-      const isTicketSold = ticketsSold.find((raffle) => raffle.raffle_id === selectedRaffle)?.sold?.includes(ticket);
-      if (isTicketSold) {
-        return null;
-      }
-      return parseTickets(ticket);
-    }).filter(Boolean).length;
-
-    if (selectedTicketsLength > 0 && !opened && !buyIsOpen) {
-      const timer = setTimeout(() => {
-        setIsModalOpened(true);
-      }, 5000);
-
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-
-    if (selectedTicketsLength !== prevSelectedTicketsLength) {
-      setModalCounter(0);
-      prevSelectedTicketsLength = selectedTicketsLength;
-    }
-  }, [ticketsSelected, ticketsSold, selectedRaffle, opened, buyIsOpen, modalCounter]);
-
-  useEffect(() => {
-    if (isModalOpened && !opened) {
-      const secondTimer = setTimeout(() => {
-        cleanSelection();
-        window.location.reload();
-      }, 5000);
-
-      return () => {
-        clearTimeout(secondTimer);
-      };
-    }
-  }, [isModalOpened, opened]);
 
   const handleContinueClick = () => {
     setIsModalOpened(false);
@@ -691,6 +653,28 @@ function X100Integrador() {
       },
     })
   }, [reload])
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+  
+    const handleOpenModal = () => {
+      setIsModalOpened(true);
+  
+      setTimeout(() => {
+        cleanSelection();
+        window.location.reload();
+      }, 5000);
+    };
+  
+    if (ticketsSelected.length > 0) {
+      interval = setInterval(handleOpenModal, 5000);
+    }
+  
+    return () => {
+      clearInterval(interval);
+      setModalCounter(0);
+    };
+  }, [ticketsSelected]);
 
   function changeCurrency(currency: string) {
     const searchParams = new URLSearchParams(window.location.search);
@@ -1277,21 +1261,7 @@ function X100Integrador() {
               }
               <InvalidModal />
               <BuyModal />
-              <Notification
-  color="red"
-  disallowClose
-  bg="#1D1E30" 
-  title="Saldo insuficiente"
-  w={500}
-  style={{
-    borderRadius: '8px',
-    position: 'fixed',
-    top: '65px',
-    right: '20px',
-    display: balance.balance > calculateTotalPrice() ? 'none' : 'block'
-  }}
->
-</Notification>
+
 
               <BuyingTicketModal />
               {
@@ -1379,7 +1349,7 @@ function X100Integrador() {
                 </div>
               </section>
               <section className={classes.pageContainer}>
-          
+
 
                 { /* Tickets Container*/}
                 <div className={rafflesSidebarStatus ? classes.ticketsContainer : classes.ticketsContainerExpanded}>
@@ -1399,7 +1369,7 @@ function X100Integrador() {
                         </div>
                       ) : (
                         <>
-                        <div style={{marginTop:"-10px", display: 'flex', marginBottom: '2px', width: '100%' }}>
+                          <div style={{ marginTop: "-10px", display: 'flex', marginBottom: '2px', width: '100%' }}>
                             {/* <Modal
                               opened={opened}
                               closeOnClickOutside={false}
@@ -1502,50 +1472,67 @@ function X100Integrador() {
                               </Card>
 
                             </Modal> */}
-                             <Modal
-                      opened={isModalOpened}
-                      closeOnClickOutside={false}
-                      onClose={() => setIsModalOpened(false)}
-                      withCloseButton={false}
-                      size='35%'
-                      centered
-                    >
-                      <Title ta='center' order={3}>Tiempo excedido</Title>
-                      <Group w='100%' mt={15} position="center">
-                        <Button
-                          color="red"
-                          radius="md"
-                          w='20vh'
-                          onClick={() => {
-                            cleanSelection();
-                            window.location.reload();
-                          }}
-                        >
-                          Cerrar compra
-                        </Button>
-                        <Button
-                          w='20vh'
-                          color="green"
-                          radius="md"
-                          onClick={handleContinueClick}
-                          style={{ display: modalCounter > 2 ? "none" : "block" }}
+                            <Modal
+                              opened={isModalOpened}
+                              closeOnClickOutside={false}
+                              onClose={() => setIsModalOpened(false)}
+                              withCloseButton={false}
+                              size='35%'
+                              centered
+                            >
+                              <Title ta='center' order={3}>Tiempo excedido</Title>
+                              <Group w='100%' mt={15} position="center">
+                                <Button
+                                  color="red"
+                                  radius="md"
+                                  w='20vh'
+                                  onClick={() => {
+                                    cleanSelection();
+                                    window.location.reload();
+                                  }}
+                                >
+                                  Cerrar compra
+                                </Button>
+                                <Button
+                                  w='20vh'
+                                  color="green"
+                                  radius="md"
+                                  onClick={handleContinueClick}
+                                  style={{ display: modalCounter > 2 ? "none" : "block" }}
 
-                        >
-                          Continuar compra
-                        </Button>
+                                >
+                                  Continuar compra
+                                </Button>
 
-                        <Button
-                          w='20vh'
-                          radius="md"
-                          onClick={() => {
-                            setIsModalOpened(false);
-                            setBuyIsOpen(true);
-                          }}
-                        >
-                          Finalizar compra
-                        </Button>
-                      </Group>
-                    </Modal>
+                                <Button
+                                  w='20vh'
+                                  radius="md"
+                                  onClick={() => {
+                                    setIsModalOpened(false);
+                                    setBuyIsOpen(true);
+                                  }}
+
+                                  disabled={ticketsSelected.length === 0 || balance.balance < calculateTotalPrice()}
+                                >
+                                  Finalizar compra
+                                </Button>
+                              </Group>
+                            </Modal>
+                            <Notification
+                              color="red"
+                              disallowClose
+                              bg="#1D1E30"
+                              title="Saldo insuficiente"
+                              w={500}
+                              style={{
+                                borderRadius: '8px',
+                                position: 'fixed',
+                                top: '755px',
+                                right: '20px',
+                                display: balance.balance > calculateTotalPrice() ? 'none' : 'block'
+                              }}
+                            >
+                            </Notification>
                             {tickets.tickets.length > 101 && (
                               <>
                                 <ActionIcon
@@ -1871,7 +1858,7 @@ function X100Integrador() {
                                       color='teal'
                                       className={classes.hiddenWhenSmall}
                                       px={7}
-                                      disabled={ticketsSelected.length === 0}
+                                      disabled={ticketsSelected.length === 0 || balance.balance < calculateTotalPrice()}
                                       onClick={() => setBuyIsOpen(true)}
                                       leftIcon={<IconReceipt />}
                                       fz={12}
@@ -2119,6 +2106,8 @@ function X100Integrador() {
                                           setBuyIsOpen(true)
                                           setModalOpen(false)
                                         }}
+
+                                        disabled={balance.balance < calculateTotalPrice()}
                                       >
                                         Terminar compra
                                       </Button>
@@ -2273,7 +2262,7 @@ function X100Integrador() {
                                       color='teal'
                                       className={classes.hiddenWhenSmall}
                                       px={7}
-                                      disabled={ticketsSelected.length === 0}
+                                      disabled={ticketsSelected.length === 0 || balance.balance < calculateTotalPrice()}
                                       onClick={() => setBuyIsOpen(true)}
                                       leftIcon={<IconReceipt />}
                                       fz={12}
@@ -2520,6 +2509,8 @@ function X100Integrador() {
                                           setBuyIsOpen(true)
                                           setModalOpen(false)
                                         }}
+
+                                        disabled={balance.balance < calculateTotalPrice()}
                                       >
                                         Terminar compra
                                       </Button>
@@ -2554,7 +2545,7 @@ function X100Integrador() {
                                 pt={20}
                                 w={450}
                                 px={4}
-                                ml={-35}
+                                ml={tickets.tickets.length > 101 ? -35 : 0}
                                 mr={-10}
                                 mb={10}
                                 className={classes.raffleInfo}
