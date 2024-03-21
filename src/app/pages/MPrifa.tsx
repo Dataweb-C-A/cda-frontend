@@ -194,6 +194,10 @@ function MPrifa({ }: Props) {
         });
     }, []);
 
+const [currentPage, setCurrentPage] = useState(1);
+    const handlePageChange = (pageNumber:number) => {
+        setCurrentPage(pageNumber);
+    };
     return (
         <>
             <Modal
@@ -517,9 +521,15 @@ function MPrifa({ }: Props) {
                         const horasFormateadas: string = agregarCeroSiNecesario(horasRestantes);
                         const minutosFormateados: string = agregarCeroSiNecesario(minutosRestantes);
                         const segundosFormateados: string = agregarCeroSiNecesario(segundosRestantes);
-                        
                         const ticketCount = raffle.tickets_count;
-                        const cardArray = Array.from({ length: ticketCount }, (_, index) => index + 1);
+const cardsPerPage = 25;
+const totalPages = Math.ceil(ticketCount / cardsPerPage);
+
+
+
+const startIndex = (currentPage - 1) * cardsPerPage;
+const endIndex = Math.min(startIndex + cardsPerPage, ticketCount);
+const visibleNumbers = cardArray.slice(startIndex, endIndex);
                         return (
                             <Card mb={15} bg="#2C2C3D" mr={15} ml={15} mt={15} radius='lg'>
 
@@ -742,7 +752,9 @@ function MPrifa({ }: Props) {
                                 <Title c='#56CCF2' ta='center' mt={15} fw={700} fz="sm">
                                     TRIPLETA DEL 001 AL 000
                                 </Title>
-                                <Pagination total={10} size='sm' radius="lg" />
+
+                           
+
                                 <Group mt={15} mb={15}>
 
                                     <NumberInput
@@ -763,14 +775,12 @@ function MPrifa({ }: Props) {
                                     </Button>
                                 </Group>
                                 <div className={classes.ticketsList100}>
-
-                                    {cardArray.map((number, index) => (
-                                        <Card key={index} className={classes.tickets100}>
-                                            <Text mt="auto" fz='md' ta='center'>{number}</Text>
-                                        </Card>
-                                    ))}
-
-                                </div>
+            {visibleNumbers.map((number, index) => (
+                <Card key={index} className={classes.tickets100}>
+                    <Text mt="auto" fz='md' ta='center'>{number}</Text>
+                </Card>
+            ))}
+        </div>
                                 <Group mt={15} position="center">
                                     <Button fullWidth onClick={() => setOpened(true)} color="green" radius="md" size="md">
                                         Comprar
