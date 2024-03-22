@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { links } from '../assets/data/links';
 import { Carousel } from '@mantine/carousel';
 import { IconSearch, IconTrash, IconWallet, IconEye, IconChevronRight, IconMoodSadDizzy, IconDeviceDesktopShare, IconReload } from "@tabler/icons-react"
-import { Card, HoverCard, Avatar, RingProgress, Input, Modal, Select, Text, Stepper,Pagination, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
+import { Card, HoverCard, Avatar, RingProgress, Input, Modal, Select, Text, Stepper, Pagination, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import { forwardRef } from 'react';
 import { IconEdit, IconCreditCardPay } from '@tabler/icons-react';
 
@@ -48,6 +48,7 @@ interface Country {
     alpha3Code: string;
 }
 type Props = {}
+type PageState = number;
 
 function MPrifa({ }: Props) {
 
@@ -179,7 +180,6 @@ function MPrifa({ }: Props) {
         }
         setTextInputValue(formattedValue);
     }
-    const cardArray = Array.from({ length: 100 }, (_, index) => index + 1);
 
     useEffect(() => {
         axios.get("https://api.rifa-max.com/x100/raffles", {
@@ -194,9 +194,11 @@ function MPrifa({ }: Props) {
         });
     }, []);
 
-const [currentPage, setCurrentPage] = useState(1);
-    const handlePageChange = (pageNumber:number) => {
-        setCurrentPage(pageNumber);
+
+    const [currentPageByRaffle, setCurrentPageByRaffle] = useState<{ [key: string]: number }>({});
+
+    const handlePageChange = (pageNumber: number, raffleId: string) => {
+        setCurrentPageByRaffle({ ...currentPageByRaffle, [raffleId]: pageNumber });
     };
     return (
         <>
@@ -358,144 +360,6 @@ const [currentPage, setCurrentPage] = useState(1);
 
                 <ScrollArea type="never" style={{ height: '100vh' }}>
 
-                    {/* {raffles.map((raffle: IRaffle) => {
-                        const fecha = new Date(raffle.init_date);
-                        const dia = fecha.getDate().toString().padStart(2, '0');
-                        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
-                        const año = fecha.getFullYear();
-                        const fechaFormateada = `${dia} / ${mes} / ${año} `;
-                        if (fecha < currentTime) {
-                            return null;
-                        }
-                        const diferencia = fecha.getTime() - new Date().getTime();
-                        const diasRestantes = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-                        const horasRestantes = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        const minutosRestantes = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-                        const segundosRestantes = Math.floor((diferencia % (1000 * 60)) / 1000);
-
-                        return (
-                            <Card withBorder className={classes.cartainfo} mt={12} mr={15} ml={15} radius='lg' key={raffle.id}>
-                                <div style={{ width: 190, marginLeft: 'auto', marginRight: 'auto' }}>
-                                    <Image
-                                        radius="md"
-                                        width='20vh'
-                                        height='20vh'
-                                        src={raffle.ad ? raffle.ad.url_parser : ""}
-                                        alt="Rifa imagen"
-                                    />
-                                </div>
-
-                                <Divider my="sm" variant="dashed" />
-
-                                <div>
-                                    <Group position="apart">
-                                        <div>
-                                            <Title fz="xs" mt={-5} c='#56CCF2'>
-                                                Rifa
-                                            </Title>
-                                            <Title mb={7} fw={700} fz="sm">
-                                                {raffle.title}
-                                            </Title>
-                                        </div>
-                                        <div>
-                                            <Title c='#56CCF2' fz="xs">
-                                                Tipo
-                                            </Title>
-                                            <Title mb={7} fw={700} fz="sm">
-                                                {raffle.tickets_count} Numeros
-                                            </Title>
-                                        </div>
-                                    </Group>
-
-                                    <Group position="apart">
-                                        <div>
-                                            <Title c='#56CCF2' order={6}>
-                                                Loteria
-                                            </Title>
-                                            <Title fw={700} fz="sm">
-                                                {raffle.lotery}
-                                            </Title>
-                                        </div>
-
-                                        <div>
-                                            <Title c='#56CCF2' fz="xs">
-                                                Fecha
-                                            </Title>
-                                            <Title fw={700} fz="sm">
-                                                {fechaFormateada}
-                                            </Title>
-                                        </div>
-                                    </Group>
-                                </div>
-                                <Title mt={15} ta='center' c='#56CCF2' fz="xs">
-                                    Tiempo restante
-                                </Title>
-
-                                <Group position="apart" >
-
-                                    <div>
-
-                                        <Card withBorder>
-
-                                            <Title ta='center' fw={700} fz="sm">
-
-                                                {diasRestantes}
-                                            </Title>
-                                        </Card>
-                                        <Title fw={700} fz="sm">
-                                            Días
-                                        </Title>
-                                    </div>
-
-
-                                    <div>
-                                        <Card withBorder>
-
-                                            <Title ta='center' fw={700} fz="sm">
-
-                                                {horasRestantes}
-                                            </Title>
-                                        </Card>
-                                        <Title fw={700} fz="sm">
-                                            Horas
-                                        </Title>
-                                    </div>
-
-                                    <div>
-                                        <Card withBorder>
-
-                                            <Title ta='center' fw={700} fz="sm">
-
-                                                {minutosRestantes}
-                                            </Title>
-                                        </Card>
-                                        <Title fw={700} fz="sm">
-                                            Minutos
-                                        </Title>
-                                    </div>
-                                    <div>
-                                        <Card withBorder>
-
-                                            <Title ta='center' fw={700} fz="sm">
-
-                                                {segundosRestantes}
-                                            </Title>
-                                        </Card>
-                                        <Title fw={700} fz="sm">
-                                            Segundos
-                                        </Title>
-                                    </div>
-                                </Group>
-
-                                <Title ta='center' mt={5} mb={5} order={2}>$ {raffle.price_unit}</Title>
-                                <Group position="center">
-                                    <Button onClick={() => setOpened(true)} color="green" radius="md" size="md">
-                                        Comprar
-                                    </Button>
-                                </Group>
-                            </Card>
-                        );
-                    })} */}
 
 
                     {raffles.map((raffle: IRaffle) => {
@@ -510,26 +374,52 @@ const [currentPage, setCurrentPage] = useState(1);
                         function agregarCeroSiNecesario(numero: number): string {
                             return numero < 10 ? "0" + numero : numero.toString();
                         }
-                        
+
                         const diferencia: number = fecha.getTime() - new Date().getTime();
                         const diasRestantes: number = Math.floor(diferencia / (1000 * 60 * 60 * 24));
                         const horasRestantes: number = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                         const minutosRestantes: number = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
                         const segundosRestantes: number = Math.floor((diferencia % (1000 * 60)) / 1000);
-                        
+
                         const diasFormateados: string = agregarCeroSiNecesario(diasRestantes);
                         const horasFormateadas: string = agregarCeroSiNecesario(horasRestantes);
                         const minutosFormateados: string = agregarCeroSiNecesario(minutosRestantes);
                         const segundosFormateados: string = agregarCeroSiNecesario(segundosRestantes);
+                        const raffleId = raffle.id.toString(); 
+
                         const ticketCount = raffle.tickets_count;
-const cardsPerPage = 25;
-const totalPages = Math.ceil(ticketCount / cardsPerPage);
+                        let cardsPerPage = 25; 
 
+                        if (ticketCount === 1000) {
+                            cardsPerPage = 50; 
+                        }
+                        const totalPages = Math.ceil(ticketCount / cardsPerPage);
+                        const cardArray = Array.from({ length: ticketCount }, (_, index) => {
+                            if (ticketCount === 1000 && index + 1 < 10) {
+                                return `00${index + 1}`;
+                            }
+                            else if (ticketCount === 1000 && index + 1 < 100) {
+                                return `0${index + 1}`;
+                            } else if (ticketCount === 100 && index + 1 < 10) {
+                                return `0${index + 1}`;
+                            }
+                            else if (ticketCount === 100 && index + 1 === 100) {
+                                return "00";
+                            }
+                            else if (ticketCount === 1000 && index + 1 === 1000) {
+                                return "000";
+                            }
+                            else {
+                                return (index + 1).toString();
+                            }
+                        });
+                        
 
+                        const currentPage = currentPageByRaffle[raffleId] || 1; 
 
-const startIndex = (currentPage - 1) * cardsPerPage;
-const endIndex = Math.min(startIndex + cardsPerPage, ticketCount);
-const visibleNumbers = cardArray.slice(startIndex, endIndex);
+                        const startIndex = (currentPage - 1) * cardsPerPage;
+                        const endIndex = Math.min(startIndex + cardsPerPage, ticketCount);
+                        const visibleNumbers = cardArray.slice(startIndex, endIndex);
                         return (
                             <Card mb={15} bg="#2C2C3D" mr={15} ml={15} mt={15} radius='lg'>
 
@@ -725,7 +615,7 @@ const visibleNumbers = cardArray.slice(startIndex, endIndex);
 
                                             </div>
                                         </Group>
-                                        <Group  position="apart">
+                                        <Group position="apart">
 
                                             <Title mr={15} fw={700} fz="sm">
                                                 Dias
@@ -734,12 +624,12 @@ const visibleNumbers = cardArray.slice(startIndex, endIndex);
                                             <Title ta='center' fw={700} fz="sm">
                                                 Horas
                                             </Title>
-                                          
+
 
                                             <Title fw={700} ml={14} fz={10}>
                                                 Minutos
                                             </Title>
-                                          
+
 
                                             <Title fw={700} fz={10}>
                                                 Segundos
@@ -750,10 +640,17 @@ const visibleNumbers = cardArray.slice(startIndex, endIndex);
                                 </Card>
 
                                 <Title c='#56CCF2' ta='center' mt={15} fw={700} fz="sm">
-                                    TRIPLETA DEL 001 AL 000
+                                Terminal DEL 01 AL 00
                                 </Title>
+                                <Group position="center" mt={15} >
 
-                           
+                                <Pagination
+                                size='sm'
+                                    page={currentPage}
+                                    onChange={(pageNumber) => handlePageChange(pageNumber, raffleId)}
+                                    total={totalPages}
+                                />
+                                </Group>
 
                                 <Group mt={15} mb={15}>
 
@@ -775,12 +672,12 @@ const visibleNumbers = cardArray.slice(startIndex, endIndex);
                                     </Button>
                                 </Group>
                                 <div className={classes.ticketsList100}>
-            {visibleNumbers.map((number, index) => (
-                <Card key={index} className={classes.tickets100}>
-                    <Text mt="auto" fz='md' ta='center'>{number}</Text>
-                </Card>
-            ))}
-        </div>
+                                    {visibleNumbers.map((number, index) => (
+                                        <Card key={index} className={classes.tickets100}>
+                                            <Text mt="auto" fz='md' ta='center'>{number}</Text>
+                                        </Card>
+                                    ))}
+                                </div>
                                 <Group mt={15} position="center">
                                     <Button fullWidth onClick={() => setOpened(true)} color="green" radius="md" size="md">
                                         Comprar

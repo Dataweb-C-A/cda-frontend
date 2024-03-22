@@ -656,14 +656,19 @@ function X100Integrador() {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
+    let modalTimeout: NodeJS.Timeout;
   
     const handleOpenModal = () => {
       setIsModalOpened(true);
-  
-      setTimeout(() => {
+      modalTimeout = setTimeout(() => {
         cleanSelection();
         window.location.reload();
       }, 5000);
+    };
+  
+    const handleCloseModal = () => {
+      setIsModalOpened(false);
+      clearTimeout(modalTimeout);
     };
   
     if (ticketsSelected.length > 0) {
@@ -673,8 +678,11 @@ function X100Integrador() {
     return () => {
       clearInterval(interval);
       setModalCounter(0);
+      clearTimeout(modalTimeout);
     };
   }, [ticketsSelected]);
+  
+  
 
   function changeCurrency(currency: string) {
     const searchParams = new URLSearchParams(window.location.search);
@@ -846,10 +854,12 @@ function X100Integrador() {
         setModalTicket(false)
       })
     } else {
-      axios.post("https://api.rifa-max.com/x100/tickets/apart", {
-        x100_ticket: {
+      axios.post("https://api.rifa-max.com/x100/tickets/apart_integrator", {
+        ticket: {
           x100_raffle_id: selectedRaffle,
-          position: ticketNumber
+          position: ticketNumber,
+          integrator_id: Number(playerIdParam),
+          integrator_type: "CDA"
         }
       }, {
         headers: {
