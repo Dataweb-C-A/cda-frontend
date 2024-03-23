@@ -656,41 +656,42 @@ function X100Integrador() {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-
+  
     const handleOpenModal = () => {
-      setIsModalOpened(true);
+      if (!buyIsOpen) { 
+        setIsModalOpened(true);
+      }
     };
-
+  
     const handleCloseModal = () => {
       setIsModalOpened(false);
     };
-
-    if (ticketsSelected.length > 0) {
-      interval = setInterval(handleOpenModal, 60000);
+  
+    if (ticketsSelected.length > 0 && !buyIsOpen) { 
+      interval = setInterval(handleOpenModal, 30000); 
     }
-
+  
     return () => {
       clearInterval(interval);
     };
-  }, [ticketsSelected]);
+  }, [ticketsSelected, buyIsOpen]);
 
   useEffect(() => {
     let modalTimeout: NodeJS.Timeout;
-
+  
     const handleModalTimeout = () => {
       cleanSelection();
       window.location.reload();
     };
-
+  
     if (isModalOpened) {
-      modalTimeout = setTimeout(handleModalTimeout, 60000);
+      modalTimeout = setTimeout(handleModalTimeout, 30000); 
     }
-
+  
     return () => {
       clearTimeout(modalTimeout);
     };
   }, [isModalOpened]);
-
 
 
   function changeCurrency(currency: string) {
