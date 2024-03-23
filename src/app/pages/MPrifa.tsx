@@ -209,36 +209,7 @@ function MPrifa({ }: Props) {
             >
 
                 <Stepper color="green" iconSize={32} active={active} size="xs" onStepClick={setActive}>
-                    {/* <Stepper.Step fz={8} icon={<IconCreditCardPay size={18} />} label="Metodos de pago">
-                        <Group mb={15}>
 
-                            <NumberInput
-                                size="xs"
-                                hideControls
-                                style={{ width: '75%', borderRadius: '5px 0 0 5px' }}
-                                placeholder="Buscar número"
-                                ml={10}
-                            />
-
-                            <Button
-                                size='xs'
-                                ml={-25}
-                                color="blue"
-                                style={{ borderRadius: '0 5px 5px 0' }}
-                            >
-                                <IconSearch size={22} />
-                            </Button>
-                        </Group>
-                        <div className={classes.ticketsList100}>
-
-                            {cardArray.map((number, index) => (
-                                <Card key={index} className={classes.tickets100}>
-                                    <Text mt="auto" fz="xs" ta='center'>{number}</Text>
-                                </Card>
-                            ))}
-
-                        </div>
-                    </Stepper.Step> */}
 
                     <Stepper.Step icon={<IconEdit size={18} />} label="Datos del cliente" >
                         <Text ta="center" mt={5} fw={750}>Ingrese sus datos</Text>
@@ -385,13 +356,13 @@ function MPrifa({ }: Props) {
                         const horasFormateadas: string = agregarCeroSiNecesario(horasRestantes);
                         const minutosFormateados: string = agregarCeroSiNecesario(minutosRestantes);
                         const segundosFormateados: string = agregarCeroSiNecesario(segundosRestantes);
-                        const raffleId = raffle.id.toString(); 
+                        const raffleId = raffle.id.toString();
 
                         const ticketCount = raffle.tickets_count;
-                        let cardsPerPage = 25; 
+                        let cardsPerPage = 25;
 
                         if (ticketCount === 1000) {
-                            cardsPerPage = 50; 
+                            cardsPerPage = 50;
                         }
                         const totalPages = Math.ceil(ticketCount / cardsPerPage);
                         const cardArray = Array.from({ length: ticketCount }, (_, index) => {
@@ -413,9 +384,9 @@ function MPrifa({ }: Props) {
                                 return (index + 1).toString();
                             }
                         });
-                        
 
-                        const currentPage = currentPageByRaffle[raffleId] || 1; 
+
+                        const currentPage = currentPageByRaffle[raffleId] || 1;
 
                         const startIndex = (currentPage - 1) * cardsPerPage;
                         const endIndex = Math.min(startIndex + cardsPerPage, ticketCount);
@@ -463,7 +434,6 @@ function MPrifa({ }: Props) {
                                                     </HoverCard.Target>
                                                     <HoverCard.Dropdown mt={-55} w={150} h={210} ml={-110}>
 
-                                                        {/* <Image ml={-15} h={"180"}  src={`https://api.rifa-max.com/${raffleActive(selectedRaffle)?.ad?.url}`} /> */}
                                                         <Group>
 
                                                             <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
@@ -511,7 +481,6 @@ function MPrifa({ }: Props) {
 
                                         </Group>
 
-
                                         <Group position="apart">
                                             <div>
 
@@ -523,6 +492,7 @@ function MPrifa({ }: Props) {
                                                     {raffle.tickets_count} Numeros
                                                 </Title>
                                             </div>
+
                                             <div>
 
                                                 <Title c='#56CCF2' order={6}>
@@ -533,7 +503,6 @@ function MPrifa({ }: Props) {
                                                 </Title>
 
                                             </div>
-
 
                                             <div
                                             >
@@ -640,16 +609,16 @@ function MPrifa({ }: Props) {
                                 </Card>
 
                                 <Title c='#56CCF2' ta='center' mt={15} fw={700} fz="sm">
-                                Terminal DEL 01 AL 00
+                                    Terminal DEL 01 AL 00
                                 </Title>
                                 <Group position="center" mt={15} >
 
-                                <Pagination
-                                size='sm'
-                                    page={currentPage}
-                                    onChange={(pageNumber) => handlePageChange(pageNumber, raffleId)}
-                                    total={totalPages}
-                                />
+                                    <Pagination
+                                        size='sm'
+                                        page={currentPage}
+                                        onChange={(pageNumber) => handlePageChange(pageNumber, raffleId)}
+                                        total={totalPages}
+                                    />
                                 </Group>
 
                                 <Group mt={15} mb={15}>
