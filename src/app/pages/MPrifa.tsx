@@ -7,6 +7,8 @@ import { Card, HoverCard, Avatar, RingProgress, Input, Modal, Select, Text, Step
 import { forwardRef } from 'react';
 import { IconEdit, IconCreditCardPay } from '@tabler/icons-react';
 import usadata from '../assets/data/Usastates.json'
+import vendata from '../assets/data/Venstate.json'
+import coldata from '../assets/data/Colstate.json'
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
     image: string;
@@ -156,7 +158,33 @@ function MPrifa({ }: Props) {
         setSelectedCountry(selectedOption);
         console.log("País seleccionado:", selectedOption);
     };
+    
+    let selectData;
 
+    if (selectedCountry === 'United States') {
+        selectData = usadata.map(item => ({
+            value: item.value,
+            label: item.label
+        }));
+    } else if (selectedCountry === 'Venezuela') {
+        selectData = vendata.map(item => ({
+            value: item.value,
+            label: item.label
+        }));
+    } else if (selectedCountry === 'Colombia') {
+        selectData = coldata.map(item => ({
+            value: item.value,
+            label: item.label
+        }));
+    } else {
+        selectData = [
+            { value: 'react', label: 'React' },
+            { value: 'ng', label: 'Angular' },
+            { value: 'svelte', label: 'Svelte' },
+            { value: 'vue', label: 'Vue' },
+        ];
+    }
+    
 
     const selectOptions = countries.map(country => ({
         value: country.name,
@@ -354,13 +382,7 @@ function MPrifa({ }: Props) {
                             radius="md"
                             mt={10}
                             maxDropdownHeight={400}
-                            data={[
-                                { value: 'react', label: 'React' },
-                                { value: 'ng', label: 'Angular' },
-                                { value: 'svelte', label: 'Svelte' },
-                                { value: 'vue', label: 'Vue' },
-                            ]}
-                            onChange={handleCountryChange}
+                            data={selectData}
                             style={{
                                 display: selectedCountry !== 'Venezuela' && selectedCountry !== 'Colombia' && selectedCountry !== 'United States' ? 'none' : 'block'
                             }}
