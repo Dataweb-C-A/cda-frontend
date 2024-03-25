@@ -6,6 +6,7 @@ import { IconSearch, IconTrash, IconWallet, IconEye, IconChevronRight, IconMoodS
 import { Card, HoverCard, Avatar, RingProgress, Input, Modal, Select, Text, Stepper, Pagination, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import { forwardRef } from 'react';
 import { IconEdit, IconCreditCardPay } from '@tabler/icons-react';
+import usadata from '../assets/data/Usastates.json'
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
     image: string;
@@ -39,13 +40,14 @@ interface IAdnoucement {
     url: string;
     url_parser: string;
 }
+
 interface IPrize {
     name: string;
     prize_position: number;
 }
 interface Country {
     name: string;
-    alpha3Code: string;
+    code: string;
 }
 type Props = {}
 type PageState = number;
@@ -110,9 +112,12 @@ function MPrifa({ }: Props) {
 
         setSelectValue(formattedText);
     };
+
     const [countries, setCountries] = useState<Country[]>([]);
+    const [selectedCountry, setSelectedCountry] = useState<string>('');
     const [currentTime, setCurrentTime] = useState(new Date());
 
+    const [hideDisplay, setHideDisplay] = useState(false);
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentTime(new Date());
@@ -120,57 +125,43 @@ function MPrifa({ }: Props) {
 
         return () => clearInterval(intervalId);
     }, []);
+
     useEffect(() => {
-        const fetchCountries = async () => {
-            try {
-                const response = await axios.get('https://restcountries.com/v3.1/all');
-                setCountries(response.data);
-            } catch (error) {
+        axios.get('https://restcountries.com/v3.1/all')
+            .then(response => {
+                const data: any[] = response.data;
+                const countriesData: Country[] = data.map(country => ({
+                    name: country.name.common,
+                    code: country.cca3
+                }));
+
+                const usaIndex = countriesData.findIndex(country => country.name === "United States");
+                const colombiaIndex = countriesData.findIndex(country => country.name === "Colombia");
+                const venezuelaIndex = countriesData.findIndex(country => country.name === "Venezuela");
+                const usa = countriesData.splice(usaIndex, 1)[0];
+                const colombia = countriesData.splice(colombiaIndex, 1)[0];
+                const venezuela = countriesData.splice(venezuelaIndex, 1)[0];
+
+                countriesData.sort((a, b) => a.name.localeCompare(b.name));
+                countriesData.unshift(usa, colombia, venezuela);
+
+                setCountries(countriesData);
+            })
+            .catch(error => {
                 console.error('Error fetching countries:', error);
-            }
-        };
-
-        fetchCountries();
+            });
     }, []);
-    const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-        ({ image, label, description, ...others }: ItemProps, ref) => (
-            <div ref={ref} {...others}>
-                <Group noWrap>
-                    <Avatar src={image} />
 
-                    <div>
-                        <Text size="sm">{label}</Text>
-                        <Text size="xs" opacity={0.65}>
-                            {description}
-                        </Text>
-                    </div>
-                </Group>
-            </div>
-        )
-    );
+    const handleCountryChange = (selectedOption: string) => {
+        setSelectedCountry(selectedOption);
+        console.log("País seleccionado:", selectedOption);
+    };
 
-    const data = [
-        {
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Venezuela.svg/1280px-Flag_of_Venezuela.svg.png',
-            label: 'Venezuela',
-            value: 'Venezuela',
-            description: 'venezuela',
-        },
 
-        {
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/200px-Flag_of_Colombia.svg.png',
-            label: 'Colombia',
-            value: 'Colombia',
-            description: 'Colombia',
-        },
-        {
-            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/2560px-Flag_of_the_United_States.svg.png',
-            label: 'Estados Unidos',
-            value: 'Estados Unidos',
-            description: 'Estados Unidos',
-        },
-    ];
-
+    const selectOptions = countries.map(country => ({
+        value: country.name,
+        label: country.name
+    }));
     function handleTextInputChange(value: string) {
         const numericValue = value.replace(/\D/g, '');
 
@@ -208,7 +199,91 @@ function MPrifa({ }: Props) {
                 radius='lg'
             >
 
-                <Stepper color="green" iconSize={32} active={active} size="xs" onStepClick={setActive}>
+                <Stepper color="green" iconSize={30} active={active} size="xs" onStepClick={setActive}>
+
+
+                    <Stepper.Step icon={<IconCreditCardPay />} label="Mi carro">
+                        <Card bg="#1D1E30" mt={10} radius="lg">
+                            <small>
+                                <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
+
+
+                                <Group pb={10} mx={0} position="apart">
+                                    <ScrollArea h={366} w="100%" type="never" scrollbarSize={10} offsetScrollbars style={{ overflowX: 'hidden' }} >
+
+                                        <Group position="apart">
+                                            <Card h={50} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                                                <Text mt={-3} fw={800} fz="lg" ml={4}>
+                                                    5
+                                                </Text>
+                                            </Card>
+
+
+                                            <Text mt={-3} fz="lg" ml={4}>
+                                                30$
+                                            </Text>
+                                        </Group>
+
+                                        <Divider my="sm" />
+                                        <Group position="apart">
+                                            <Card h={50} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                                                <Text mt={-3} fw={800} fz="lg" ml={4}>
+                                                    5
+                                                </Text>
+                                            </Card>
+
+                                            <Text mt={-3} fz="lg" ml={4}>
+                                                30$
+                                            </Text>
+                                        </Group>
+
+                                        <Divider my="sm" />
+                                        <Group position="apart">
+                                            <Card h={50} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                                                <Text mt={-3} fw={800} fz="lg" ml={4}>
+                                                    5
+                                                </Text>
+                                            </Card>
+
+                                            <Text mt={-3} fz="lg" ml={4}>
+                                                30$
+                                            </Text>
+                                        </Group>
+
+                                        <Divider my="sm" />
+                                        <Group position="apart">
+                                            <Card h={50} radius='lg' style={{ background: '#43bbd9', width: '50px' }}>
+                                                <Text mt={-3} fw={800} fz="lg" ml={4}>
+                                                    5
+                                                </Text>
+                                            </Card>
+
+                                            <Text mt={-3} fz="lg" ml={4}>
+                                                30$
+                                            </Text>
+                                        </Group>
+
+                                        <Divider my="sm" />
+                                    </ScrollArea>
+
+                                </Group>
+                            </small>
+                            <Group position="apart">
+
+                                <Text mt={-3} fz="lg" ml={4}>
+                                    Total
+                                </Text>
+
+                                <Text mt={-3} fz="lg" ml={4}>
+                                    300$
+                                </Text>
+                            </Group>
+
+                            <Divider my="sm" />
+
+                        </Card>
+                    </Stepper.Step>
+
 
 
                     <Stepper.Step icon={<IconEdit size={18} />} label="Datos del cliente" >
@@ -260,17 +335,50 @@ function MPrifa({ }: Props) {
                             mt={10}
                         />
 
+
                         <Select
                             label="Pais de residencia"
                             placeholder="Escoga un pais"
                             radius="md"
                             mt={10}
-                            itemComponent={SelectItem}
-                            data={data}
                             maxDropdownHeight={400}
                             style={{ width: '100%' }}
-                            nothingFound="Nobody here"
+                            data={selectOptions}
+                            onChange={handleCountryChange}
+                        />
 
+
+                        <Select
+                            label="Estado de residencia"
+                            placeholder="Escoga un Estado"
+                            radius="md"
+                            mt={10}
+                            maxDropdownHeight={400}
+                            data={[
+                                { value: 'react', label: 'React' },
+                                { value: 'ng', label: 'Angular' },
+                                { value: 'svelte', label: 'Svelte' },
+                                { value: 'vue', label: 'Vue' },
+                            ]}
+                            onChange={handleCountryChange}
+                            style={{
+                                display: selectedCountry !== 'Venezuela' && selectedCountry !== 'Colombia' && selectedCountry !== 'United States' ? 'none' : 'block'
+                            }}
+                        />
+
+                        <TextInput
+                            radius="md"
+                            label='Direccion de envio'
+                            mt={10}
+                            placeholder="Direccion"
+                        />
+
+                        <TextInput
+                            label='Codigo postal '
+                            radius="md"
+                            style={{ width: '98%' }}
+                            placeholder="Codigo postal"
+                            mt={10}
                         />
                         <Group mt={10}>
 
@@ -298,12 +406,6 @@ function MPrifa({ }: Props) {
                                 value={textInputValue}
                             />
                         </Group>
-                        <TextInput
-                            radius="md"
-                            label='Direccion de envio'
-                            mt={10}
-                            placeholder="Direccion"
-                        />
                         <Checkbox
                             mt={20}
                             label="Acepto los términos y condiciones"
