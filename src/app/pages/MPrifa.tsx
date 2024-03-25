@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { links } from '../assets/data/links';
 import { Carousel } from '@mantine/carousel';
 import { IconSearch, IconTrash, IconWallet, IconEye, IconChevronRight, IconMoodSadDizzy, IconDeviceDesktopShare, IconReload } from "@tabler/icons-react"
-import { Card, HoverCard, Avatar, RingProgress, Input, Modal, Select, Text, Stepper, Pagination, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
+import { Card, HoverCard, Avatar, RingProgress, Input, Modal, Select, Text, Stepper, Accordion, Pagination, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import { forwardRef } from 'react';
 import { IconEdit, IconCreditCardPay } from '@tabler/icons-react';
 import usadata from '../assets/data/Usastates.json'
@@ -158,7 +158,7 @@ function MPrifa({ }: Props) {
         setSelectedCountry(selectedOption);
         console.log("País seleccionado:", selectedOption);
     };
-    
+
     let selectData;
 
     if (selectedCountry === 'United States') {
@@ -184,7 +184,7 @@ function MPrifa({ }: Props) {
             { value: 'vue', label: 'Vue' },
         ];
     }
-    
+
 
     const selectOptions = countries.map(country => ({
         value: country.name,
@@ -227,10 +227,10 @@ function MPrifa({ }: Props) {
                 radius='lg'
             >
 
-                <Stepper color="green" iconSize={30} active={active} size="xs" onStepClick={setActive}>
+                <Stepper  color="green" iconSize={30} active={active} size='sm' onStepClick={setActive}>
 
 
-                    <Stepper.Step icon={<IconCreditCardPay />} label="Mi carro">
+                    <Stepper.Step icon={<IconCreditCardPay size={12}/>} w={135} label="Mi compra">
                         <Card bg="#1D1E30" mt={10} radius="lg">
                             <small>
                                 <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
@@ -310,11 +310,17 @@ function MPrifa({ }: Props) {
                             <Divider my="sm" />
 
                         </Card>
+                        <Group position="center" mt="xl">
+                            <Button
+                                radius='lg' color="green" variant="default" onClick={prevStep}>Volver</Button>
+                            <Button
+                                radius='lg' color="green" onClick={nextStep}>Continuar</Button>
+                        </Group>
                     </Stepper.Step>
 
 
 
-                    <Stepper.Step icon={<IconEdit size={18} />} label="Datos del cliente" >
+                    <Stepper.Step icon={<IconEdit size={12} />} label="Datos cliente" >
                         <Text ta="center" mt={5} fw={750}>Ingrese sus datos</Text>
                         <Group spacing={5}>
                             <TextInput
@@ -432,10 +438,135 @@ function MPrifa({ }: Props) {
                             mt={20}
                             label="Acepto los términos y condiciones"
                         />
+
+                        <Group position="center" mt="xl">
+                            <Button
+                                radius='lg' color="green" variant="default" onClick={prevStep}>Volver</Button>
+                            <Button
+                                radius='lg' color="green" onClick={nextStep}>Continuar</Button>
+                        </Group>
                     </Stepper.Step>
 
-                    <Stepper.Step icon={<IconCreditCardPay size={18} />} label="Metodos de pago">
-                        Step 2 content: Verify email
+                    <Stepper.Step icon={<IconCreditCardPay size={12} />} label="Metodos de pago">
+                        <Group position="center">
+
+                            <Text fw={700} mt={-3} fz="lg" ml={4}>
+                                Total
+                            </Text>
+
+                            <Text mt={-3} fw={700} fz="lg" ml={4}>
+                                300$
+                            </Text>
+                        </Group>
+
+                        <Accordion variant="contained" radius="xl" >
+
+                            <Accordion.Item value="Stripe">
+                                <Accordion.Control> Tarjeta de crédito (Stripe)</Accordion.Control>
+
+                                <Accordion.Panel>
+
+                                    <TextInput
+                                        label='Numero de la tarjeta'
+                                        radius="md"
+                                        style={{ width: '98%' }}
+                                        placeholder="Numero de la tarjeta"
+                                        mt={10}
+                                    />
+                                    <Group >
+                                        <TextInput
+                                            mt={15}
+                                            radius="md"
+                                            style={{ width: '45%' }}
+                                            label='Fecha de caducidad'
+                                            placeholder="Fecha de caducidad"
+                                        />
+                                        <TextInput
+                                            radius="md"
+                                            fz={5}
+                                            style={{ width: '45%' }}
+                                            label='Codigo de verificacion'
+                                            placeholder="Codigo de verificacion"
+                                        />
+                                    </Group>
+                                    <Group position="center" mt="xl">
+                                        <Button
+                                            radius='lg' color="green" variant="default" onClick={prevStep}>Volver</Button>
+                                        <Button
+                                            radius='lg' color="green" onClick={nextStep}>Continuar</Button>
+                                    </Group>
+                                </Accordion.Panel>
+                            </Accordion.Item>
+
+                            <Accordion.Item value="Zelle">
+                                <Accordion.Control> Transferencia ZELLE</Accordion.Control>
+                                <Accordion.Panel>
+                                    <Title order={4} c='#56CCF2' >
+                                        Zelle: AZSPORTLLC@gmail.com
+                                    </Title>
+
+                                    <Text mt={5} fw={700} fz="lg" ml={4}>
+                                        A nombre de Javier Diaz
+                                    </Text>
+
+
+
+                                    <Text size="xl" mt={10} fw={700} fz="lg" ml={4}>
+                                        Por favor, usa el número del pedido como referencia de pago y envía el comprobante al teléfono +17862808699 (o a través del chat WhatsApp)
+
+                                    </Text>
+
+                                    <Group position="center" mt="xl">
+                                        <Button
+                                            radius='lg' color="green" variant="default" onClick={prevStep}>Volver</Button>
+                                        <Button
+                                            radius='lg' color="green" onClick={nextStep}>Continuar</Button>
+                                    </Group>
+                                </Accordion.Panel>
+                            </Accordion.Item>
+
+                            <Accordion.Item value="movilv">
+                                <Accordion.Control>Pago Movil (Venezuela)</Accordion.Control>
+
+
+                                <Accordion.Panel>
+                                    <Title order={4} c='#56CCF2' >
+                                        0412-6312085
+                                    </Title>
+                                    <Title order={4} c='#56CCF2' >
+                                        Banesco Banco Universal
+                                    </Title>
+                                    <Title order={4} c='#56CCF2' >
+                                        RIF J-xxxxxxxx
+                                    </Title>
+                                    <Title order={4} c='#56CCF2' >
+                                        Inversiones XX, C.A
+
+                                    </Title>
+
+                                    <Text ta='center' mt={15} fw={700} fz="lg" ml={4}>
+                                    Colocar el nombre del participante en el concepto escrito
+                                    </Text>
+
+
+
+                                    <Text size="xl" mt={10} fw={700} fz="lg" ml={4}>
+                                        Por favor, usa el número del pedido como referencia de pago y envía el comprobante al teléfono +xxxxxxxx (o a través del chat WhatsApp)
+
+                                    </Text>
+
+                                    <Group position="center" mt="xl">
+                                        <Button
+                                            radius='lg' color="green" variant="default" onClick={prevStep}>Volver</Button>
+                                        <Button
+                                            radius='lg' color="green" onClick={nextStep}>Continuar</Button>
+                                    </Group>
+                                </Accordion.Panel>
+                            </Accordion.Item>
+
+
+                        </Accordion>
+
                     </Stepper.Step>
 
                     <Stepper.Completed>
@@ -443,12 +574,7 @@ function MPrifa({ }: Props) {
                     </Stepper.Completed>
                 </Stepper>
 
-                <Group position="center" mt="xl">
-                    <Button
-                        radius='lg' color="green" variant="default" onClick={prevStep}>Volver</Button>
-                    <Button
-                        radius='lg' color="green" onClick={nextStep}>Continuar</Button>
-                </Group>
+
             </Modal>
 
             <Group position="center">
