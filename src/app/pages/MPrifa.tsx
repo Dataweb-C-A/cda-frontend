@@ -170,10 +170,7 @@ function MPrifa({ }: Props) {
         }));
     } else {
         selectData = [
-            { value: 'react', label: 'React' },
-            { value: 'ng', label: 'Angular' },
-            { value: 'svelte', label: 'Svelte' },
-            { value: 'vue', label: 'Vue' },
+            { value: 'sin estados', label: 'sin estados' },
         ];
     }
 
@@ -204,14 +201,28 @@ function MPrifa({ }: Props) {
             console.error("Error al obtener las rifas:", err);
         });
     }, []);
+    const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
+    const [allSelectedNumbers, setAllSelectedNumbers] = useState<number[]>([]);
 
-    const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]); // Estado para almacenar los números seleccionados
+    const handleClick = (number: number) => {
+        if (number === 0) {
+            console.log("No puedes seleccionar un número vacío.");
+            return;
+        }
 
-    const handleClick = (number: number) => { // Asegura que 'number' sea de tipo 'number'
-        setSelectedNumbers([...selectedNumbers, number]); // Agrega el número seleccionado al array de números seleccionados
-        console.log("Número seleccionado:", number);
-        console.log("Números seleccionados:", selectedNumbers); // Muestra los números seleccionados en la consola
+        if (selectedNumbers.includes(number)) {
+            console.log("El número ya ha sido seleccionado.");
+            return;
+        }
+
+        setSelectedNumbers([...selectedNumbers, number]);
+        setAllSelectedNumbers([...allSelectedNumbers, number]);
     };
+
+    useEffect(() => {
+        console.log("Números seleccionados:", selectedNumbers);
+        console.log("Todos los números seleccionados:", allSelectedNumbers);
+    }, [selectedNumbers]);
     const [currentPageByRaffle, setCurrentPageByRaffle] = useState<{ [key: string]: number }>({});
 
     const handlePageChange = (pageNumber: number, raffleId: string) => {
@@ -876,14 +887,14 @@ function MPrifa({ }: Props) {
                                     <NumberInput
                                         size="xs"
                                         hideControls
-                                        style={{ width: '80%', borderRadius: '15px 0 0 15px' }}
+                                        style={{ width: '94%', borderRadius: '55px 0 0 55px' }}
                                         placeholder="Buscar número"
                                         ml={10}
                                     />
 
                                     <Button
                                         size='xs'
-                                        ml={-25}
+                                        ml={-63}
                                         color="blue"
                                         style={{ borderRadius: '0 15px 15px 0' }}
                                     >
@@ -891,16 +902,16 @@ function MPrifa({ }: Props) {
                                     </Button>
                                 </Group>
                                 <div className={classes.ticketsList100}>
-            {visibleNumbers.map((numberAsString, index) => ( // Itera sobre 'visibleNumbers' y convierte cada número de cadena a número
-                <Card
-                    key={index}
-                    className={classes.tickets100}
-                    onClick={() => handleClick(Number(numberAsString))} // Convierte el número de cadena a número antes de pasarlo a handleClick
-                >
-                    <Text mt="auto" fz='md' ta='center'>{numberAsString}</Text>
-                </Card>
-            ))}
-        </div>
+                                    {visibleNumbers.map((numberAsString, index) => (
+                                        <Card
+                                            key={index}
+                                            className={classes.tickets100}
+                                            onClick={() => handleClick(Number(numberAsString))}
+                                        >
+                                            <Text mt="auto" fz='md' ta='center'>{numberAsString}</Text>
+                                        </Card>
+                                    ))}
+                                </div>
                                 <Group mt={15} position="center">
                                     <Button fullWidth onClick={() => setOpened(true)} color="green" radius="md" size="md">
                                         Comprar
