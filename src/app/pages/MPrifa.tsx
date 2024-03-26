@@ -228,6 +228,16 @@ function MPrifa({ }: Props) {
     const handlePageChange = (pageNumber: number, raffleId: string) => {
         setCurrentPageByRaffle({ ...currentPageByRaffle, [raffleId]: pageNumber });
     };
+    const raffleWithClosestDate = raffles.reduce((closestRaffle, currentRaffle) => {
+        const closestRaffleDate = new Date(closestRaffle.init_date);
+        const currentRaffleDate = new Date(currentRaffle.init_date);
+        const currentTime = new Date();
+
+        const closestDifference = Math.abs(closestRaffleDate.getTime() - currentTime.getTime());
+        const currentDifference = Math.abs(currentRaffleDate.getTime() - currentTime.getTime());
+
+        return currentDifference < closestDifference ? currentRaffle : closestRaffle;
+    }, raffles[0]);
     return (
         <>
             <Modal
@@ -588,7 +598,7 @@ function MPrifa({ }: Props) {
 
             <Group position="center">
 
-                <ScrollArea type="never" style={{ height: '100vh' }}>
+                <ScrollArea type="never" w="500vh" style={{ height: '100vh' }}>
 
 
 
@@ -598,9 +608,11 @@ function MPrifa({ }: Props) {
                         const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
                         const año = fecha.getFullYear();
                         const fechaFormateada = `${dia} / ${mes} / ${año} `;
-                        if (fecha < currentTime) {
+
+                        if (raffle !== raffleWithClosestDate) {
                             return null;
                         }
+
                         function agregarCeroSiNecesario(numero: number): string {
                             return numero < 10 ? "0" + numero : numero.toString();
                         }
@@ -644,14 +656,14 @@ function MPrifa({ }: Props) {
                             }
                         });
 
-
                         const currentPage = currentPageByRaffle[raffleId] || 1;
 
                         const startIndex = (currentPage - 1) * cardsPerPage;
                         const endIndex = Math.min(startIndex + cardsPerPage, ticketCount);
                         const visibleNumbers = cardArray.slice(startIndex, endIndex);
+
                         return (
-                            <Card mb={15} bg="#2C2C3D" mr={15} ml={15} mt={15} radius='lg'>
+                            <Card style={{ height: '95vh' }} mb={15} bg="#2C2C3D" mr={15} ml={15} mt={15} radius='lg'>
                                 <Group position="center">
 
                                     <Card mt={5} w='100%' bg="#1D1E30" className={classes.cartainfo} mr={5} ml={5} radius='lg'>
