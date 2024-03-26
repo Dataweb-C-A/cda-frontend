@@ -61,7 +61,6 @@ function MPrifa({ }: Props) {
     const [selectValue, setSelectValue] = useState<string>('');
     const useStyles = createStyles((theme) =>
     ({
-
         cartainfo: {
             width: '37vh',
             [`@media (min-width: 1281px)`]: {
@@ -70,30 +69,23 @@ function MPrifa({ }: Props) {
         },
         ticketsList100: {
             width: '100%',
-
             display: 'flex',
-            gap: '10px 15px',
             flexWrap: 'wrap',
+            gap: '10px',
+            justifyContent: 'center',
             [`@media (min-width: 1281px)`]: {
-
-                gap: '9px 12px',
-                width: '100%',
-                marginLeft: '35px'
+                gap: '9px',
             }
         },
         tickets100: {
-            width: '55px',
-            height: '3rem',
+            width: 'calc(20% - 10px)',
             background: '#4d4f66',
             userSelect: 'none',
             textDecoration: 'none',
             cursor: 'pointer',
             [`@media (min-width: 1281px)`]: {
-
-                width: '60px',
-                height: '4rem',
+                width: 'calc(10% - 9px)',
             }
-
         }
     }));
 
@@ -213,7 +205,13 @@ function MPrifa({ }: Props) {
         });
     }, []);
 
+    const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]); // Estado para almacenar los números seleccionados
 
+    const handleClick = (number: number) => { // Asegura que 'number' sea de tipo 'number'
+        setSelectedNumbers([...selectedNumbers, number]); // Agrega el número seleccionado al array de números seleccionados
+        console.log("Número seleccionado:", number);
+        console.log("Números seleccionados:", selectedNumbers); // Muestra los números seleccionados en la consola
+    };
     const [currentPageByRaffle, setCurrentPageByRaffle] = useState<{ [key: string]: number }>({});
 
     const handlePageChange = (pageNumber: number, raffleId: string) => {
@@ -227,10 +225,10 @@ function MPrifa({ }: Props) {
                 radius='lg'
             >
 
-                <Stepper  color="green" iconSize={30} active={active} size='sm' onStepClick={setActive}>
+                <Stepper color="green" iconSize={30} active={active} size='sm' onStepClick={setActive}>
 
 
-                    <Stepper.Step icon={<IconCreditCardPay size={12}/>} w={135} label="Mi compra">
+                    <Stepper.Step icon={<IconCreditCardPay size={12} />} w={135} label="Mi compra">
                         <Card bg="#1D1E30" mt={10} radius="lg">
                             <small>
                                 <Title c='white' order={5} ta="center" fw={700} color='black'>Informacion de compra</Title>
@@ -545,7 +543,7 @@ function MPrifa({ }: Props) {
                                     </Title>
 
                                     <Text ta='center' mt={15} fw={700} fz="lg" ml={4}>
-                                    Colocar el nombre del participante en el concepto escrito
+                                        Colocar el nombre del participante en el concepto escrito
                                     </Text>
 
 
@@ -643,220 +641,222 @@ function MPrifa({ }: Props) {
                         const visibleNumbers = cardArray.slice(startIndex, endIndex);
                         return (
                             <Card mb={15} bg="#2C2C3D" mr={15} ml={15} mt={15} radius='lg'>
+                                <Group position="center">
 
-                                <Card mt={5} bg="#1D1E30" className={classes.cartainfo} mr={5} ml={5} radius='lg'>
-
-
-
-                                    <div>
-                                        <Group position="apart">
-
-                                            <div>
-
-                                                <Title fz="xs" c='#56CCF2' >
-                                                    Rifa
-                                                </Title>
-                                                <Title mb={7} fw={700} fz="sm">
-                                                    {raffle.title}
-                                                </Title>
-                                            </div>
-                                            <div>
-                                                <Title c='#56CCF2' fz="xs">
-                                                    Fecha
-                                                </Title>
-                                                <Title fw={700} fz="sm">
-                                                    {fechaFormateada}
-                                                </Title>
-                                            </div>
-                                            <Group >
-
-                                                <IconEye style={{
-                                                    marginRight: '-12px'
-                                                }} color="green" stroke={2} />
+                                    <Card mt={5} w='100%' bg="#1D1E30" className={classes.cartainfo} mr={5} ml={5} radius='lg'>
 
 
 
-                                                <HoverCard width={480} shadow="md">
-                                                    <HoverCard.Target>
-                                                        <Text fz={12} ta="end">
-                                                            Ver imagen
-                                                        </Text>
-                                                    </HoverCard.Target>
-                                                    <HoverCard.Dropdown mt={-55} w={150} h={210} ml={-110}>
+                                        <div>
+                                            <Group position="apart">
 
-                                                        <Group>
+                                                <div>
 
-                                                            <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
-                                                                <Image
-                                                                    mt={-11}
-                                                                    ml={15}
-                                                                    height={205}
-                                                                    mb={-13}
-                                                                    src={raffle.ad ? raffle.ad.url_parser : ""}
-                                                                    alt="Premio"
-                                                                />
-                                                            </div>
-                                                            <div>
-                                                                <IconDeviceDesktopShare style={{
-                                                                    marginLeft: '30px'
-                                                                }} color="green" stroke={2} />
-                                                                <Title
-                                                                    ml={0}
-                                                                    c='#9CB6C7' fz="sm">
-                                                                    Ver completa
-                                                                </Title>
+                                                    <Title fz="xs" c='#56CCF2' >
+                                                        Rifa
+                                                    </Title>
+                                                    <Title mb={7} fw={700} fz="sm">
+                                                        {raffle.title}
+                                                    </Title>
+                                                </div>
+                                                <div>
+                                                    <Title c='#56CCF2' fz="xs">
+                                                        Fecha
+                                                    </Title>
+                                                    <Title fw={700} fz="sm">
+                                                        {fechaFormateada}
+                                                    </Title>
+                                                </div>
+                                                <Group >
 
-                                                                <RingProgress
-                                                                    sections={[{ value: 5 || 0, color: '#76BE34' }]}
-                                                                    thickness={8}
-                                                                    size={80}
-                                                                    label={
-                                                                        <Text fz="sm" align="center" size="xl">
-                                                                            5%
-                                                                        </Text>
-                                                                    }
-                                                                />
-                                                                <Title
-                                                                    ml={13}
-                                                                    c='#9CB6C7' fz="sm">
-                                                                    Progreso
-                                                                </Title>
-                                                            </div>
-                                                        </Group>
+                                                    <IconEye style={{
+                                                        marginRight: '-12px'
+                                                    }} color="green" stroke={2} />
 
 
-                                                    </HoverCard.Dropdown>
-                                                </HoverCard>
+
+                                                    <HoverCard width={480} shadow="md">
+                                                        <HoverCard.Target>
+                                                            <Text fz={12} ta="end">
+                                                                Ver imagen
+                                                            </Text>
+                                                        </HoverCard.Target>
+                                                        <HoverCard.Dropdown mt={-55} w={150} h={210} ml={-110}>
+
+                                                            <Group>
+
+                                                                <div style={{ width: 300, marginLeft: 'auto', marginRight: 'auto' }}>
+                                                                    <Image
+                                                                        mt={-11}
+                                                                        ml={15}
+                                                                        height={205}
+                                                                        mb={-13}
+                                                                        src={raffle.ad ? raffle.ad.url_parser : ""}
+                                                                        alt="Premio"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <IconDeviceDesktopShare style={{
+                                                                        marginLeft: '30px'
+                                                                    }} color="green" stroke={2} />
+                                                                    <Title
+                                                                        ml={0}
+                                                                        c='#9CB6C7' fz="sm">
+                                                                        Ver completa
+                                                                    </Title>
+
+                                                                    <RingProgress
+                                                                        sections={[{ value: 5 || 0, color: '#76BE34' }]}
+                                                                        thickness={8}
+                                                                        size={80}
+                                                                        label={
+                                                                            <Text fz="sm" align="center" size="xl">
+                                                                                5%
+                                                                            </Text>
+                                                                        }
+                                                                    />
+                                                                    <Title
+                                                                        ml={13}
+                                                                        c='#9CB6C7' fz="sm">
+                                                                        Progreso
+                                                                    </Title>
+                                                                </div>
+                                                            </Group>
+
+
+                                                        </HoverCard.Dropdown>
+                                                    </HoverCard>
+                                                </Group>
+
                                             </Group>
 
-                                        </Group>
-
-                                        <Group position="apart">
-                                            <div>
+                                            <Group position="apart">
+                                                <div>
 
 
-                                                <Title c='#56CCF2' fz="xs">
-                                                    Tipo
-                                                </Title>
-                                                <Title fw={700} fz="sm">
-                                                    {raffle.tickets_count} Numeros
-                                                </Title>
-                                            </div>
-
-                                            <div>
-
-                                                <Title c='#56CCF2' order={6}>
-                                                    Loteria
-                                                </Title>
-                                                <Title fw={700} fz="sm">
-                                                    Zulia 7A
-                                                </Title>
-
-                                            </div>
-
-                                            <div
-                                            >
-
-                                                <RingProgress
-                                                    sections={[{ value: 5 || 0, color: '#76BE34' }]}
-                                                    thickness={8}
-                                                    size={70}
-                                                    label={
-                                                        <Text fz="sm" align="center" size="xl">
-                                                            5%
-                                                        </Text>
-                                                    }
-                                                />
-                                                <Title
-                                                    c='#9CB6C7' fz="sm">
-                                                    Progreso
-                                                </Title>
-                                            </div>
-
-
-                                        </Group>
-                                        <Title mt={15} ta='center' c='#56CCF2' fz="xs">
-                                            Tiempo restante
-                                        </Title>
-
-                                        <Group position="apart">
-
-                                            <div>
-
-                                                <Card p={10} withBorder>
-
-                                                    <Title c='#56CCF2' ta='center' fw={700} fz="sm">
-
-                                                        {diasFormateados}
+                                                    <Title c='#56CCF2' fz="xs">
+                                                        Tipo
                                                     </Title>
-                                                </Card>
-
-
-                                            </div>
-                                            <Title c='#56CCF2' ta='center' fw={700} fz="sm">
-                                                :
-                                            </Title>
-
-                                            <div>
-                                                <Card p={10} withBorder>
-
-                                                    <Title c='#56CCF2' ta='center' fw={700} fz="sm">
-
-                                                        {horasFormateadas}
+                                                    <Title fw={700} fz="sm">
+                                                        {raffle.tickets_count} Numeros
                                                     </Title>
-                                                </Card>
-                                            </div>
-                                            <Title c='#56CCF2' ta='center' fw={700} fz="sm">
-                                                :
-                                            </Title>
-                                            <div>
-                                                <Card p={10} withBorder>
+                                                </div>
 
-                                                    <Title c='#56CCF2' ta='center' fw={700} fz="xs">
+                                                <div>
 
-                                                        {minutosFormateados}
+                                                    <Title c='#56CCF2' order={6}>
+                                                        Loteria
                                                     </Title>
-                                                </Card>
-
-
-                                            </div>
-                                            <Title c='#56CCF2' ta='center' fw={700} fz="sm">
-                                                :
-                                            </Title>
-                                            <div>
-                                                <Card p={10} c='#56CCF2' withBorder>
-
-                                                    <Title c='#56CCF2' ta='center' fw={700} fz="xs">
-
-                                                        {segundosFormateados}
+                                                    <Title fw={700} fz="sm">
+                                                        Zulia 7A
                                                     </Title>
-                                                </Card>
 
-                                            </div>
-                                        </Group>
-                                        <Group position="apart">
+                                                </div>
 
-                                            <Title mr={15} fw={700} fz="sm">
-                                                Dias
+                                                <div
+                                                >
+
+                                                    <RingProgress
+                                                        sections={[{ value: 5 || 0, color: '#76BE34' }]}
+                                                        thickness={8}
+                                                        size={70}
+                                                        label={
+                                                            <Text fz="sm" align="center" size="xl">
+                                                                5%
+                                                            </Text>
+                                                        }
+                                                    />
+                                                    <Title
+                                                        c='#9CB6C7' fz="sm">
+                                                        Progreso
+                                                    </Title>
+                                                </div>
+
+
+                                            </Group>
+                                            <Title mt={15} ta='center' c='#56CCF2' fz="xs">
+                                                Tiempo restante
                                             </Title>
 
-                                            <Title ta='center' fw={700} fz="sm">
-                                                Horas
-                                            </Title>
+                                            <Group position="apart">
+
+                                                <div>
+
+                                                    <Card p={10} withBorder>
+
+                                                        <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+
+                                                            {diasFormateados}
+                                                        </Title>
+                                                    </Card>
 
 
-                                            <Title fw={700} ml={14} fz={10}>
-                                                Minutos
-                                            </Title>
+                                                </div>
+                                                <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+                                                    :
+                                                </Title>
+
+                                                <div>
+                                                    <Card p={10} withBorder>
+
+                                                        <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+
+                                                            {horasFormateadas}
+                                                        </Title>
+                                                    </Card>
+                                                </div>
+                                                <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+                                                    :
+                                                </Title>
+                                                <div>
+                                                    <Card p={10} withBorder>
+
+                                                        <Title c='#56CCF2' ta='center' fw={700} fz="xs">
+
+                                                            {minutosFormateados}
+                                                        </Title>
+                                                    </Card>
 
 
-                                            <Title fw={700} fz={10}>
-                                                Segundos
-                                            </Title>
-                                        </Group>
-                                    </div>
+                                                </div>
+                                                <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+                                                    :
+                                                </Title>
+                                                <div>
+                                                    <Card p={10} c='#56CCF2' withBorder>
 
-                                </Card>
+                                                        <Title c='#56CCF2' ta='center' fw={700} fz="xs">
+
+                                                            {segundosFormateados}
+                                                        </Title>
+                                                    </Card>
+
+                                                </div>
+                                            </Group>
+                                            <Group position="apart">
+
+                                                <Title mr={15} fw={700} fz="sm">
+                                                    Dias
+                                                </Title>
+
+                                                <Title ta='center' fw={700} fz="sm">
+                                                    Horas
+                                                </Title>
+
+
+                                                <Title fw={700} ml={14} fz={10}>
+                                                    Minutos
+                                                </Title>
+
+
+                                                <Title fw={700} fz={10}>
+                                                    Segundos
+                                                </Title>
+                                            </Group>
+                                        </div>
+
+                                    </Card>
+                                </Group>
 
                                 <Title c='#56CCF2' ta='center' mt={15} fw={700} fz="sm">
                                     Terminal DEL 01 AL 00
@@ -891,12 +891,16 @@ function MPrifa({ }: Props) {
                                     </Button>
                                 </Group>
                                 <div className={classes.ticketsList100}>
-                                    {visibleNumbers.map((number, index) => (
-                                        <Card key={index} className={classes.tickets100}>
-                                            <Text mt="auto" fz='md' ta='center'>{number}</Text>
-                                        </Card>
-                                    ))}
-                                </div>
+            {visibleNumbers.map((numberAsString, index) => ( // Itera sobre 'visibleNumbers' y convierte cada número de cadena a número
+                <Card
+                    key={index}
+                    className={classes.tickets100}
+                    onClick={() => handleClick(Number(numberAsString))} // Convierte el número de cadena a número antes de pasarlo a handleClick
+                >
+                    <Text mt="auto" fz='md' ta='center'>{numberAsString}</Text>
+                </Card>
+            ))}
+        </div>
                                 <Group mt={15} position="center">
                                     <Button fullWidth onClick={() => setOpened(true)} color="green" radius="md" size="md">
                                         Comprar
