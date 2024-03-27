@@ -662,7 +662,7 @@ function MPrifa({ }: Props) {
                         const visibleNumbers = cardArray.slice(startIndex, endIndex);
 
                         return (
-                            <Card style={{ height: '100vh' }} mb={15} bg="#2C2C3D" mr={15} ml={15} mt={15} radius='lg'>
+                            <Card style={{ height: '140vh' }} mb={15} bg="#2C2C3D" mr={15} ml={15} mt={15} radius='lg'>
                                 <Group position="center">
 
                                     <Card mt={5} w='100%' bg="#1D1E30" className={classes.cartainfo} mr={5} ml={5} radius='lg'>
