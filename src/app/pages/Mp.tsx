@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { links } from '../assets/data/links';
 import { Carousel } from '@mantine/carousel';
 import { IconSearch, IconTrash, IconWallet, IconEye, IconChevronRight, IconMoodSadDizzy, IconDeviceDesktopShare, IconReload } from "@tabler/icons-react"
-import { Card, HoverCard, Avatar, RingProgress, Input, Modal, Select, Text, Stepper, Accordion, Pagination, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
+import { Card, HoverCard, Avatar, RingProgress, Input, Flex, Modal, Select, Text, Stepper, Accordion, Pagination, TextInput, Image, Group, Progress, NumberInput, createStyles, Divider, keyframes, useMantineTheme, Button, Paper, Grid, Title, Checkbox, CloseButton, ScrollArea } from '@mantine/core'
 import { forwardRef } from 'react';
 import { IconEdit, IconCreditCardPay } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
@@ -179,57 +179,158 @@ function MPrifa({ }: Props) {
 
 
                 {raffles.map((raffle: IRaffle) => {
-                    const fecha = new Date(raffle.init_date);
-                    const dia = fecha.getDate().toString().padStart(2, '0');
-                    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
-                    const año = fecha.getFullYear();
-                    const fechaFormateada = `${dia} / ${mes} / ${año} `;
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const mpIdParam = urlParams.get('mp_id');
+                    const mpId = mpIdParam ? parseInt(mpIdParam) : null;
 
-                    if (raffle !== raffleWithClosestDate) {
+                    if (mpId && raffle.id !== mpId) {
                         return null;
                     }
 
-                    function agregarCeroSiNecesario(numero: number): string {
-                        return numero < 10 ? "0" + numero : numero.toString();
-                    }
-
+                    const fecha = new Date(raffle.init_date);
                     const diferencia: number = fecha.getTime() - new Date().getTime();
+
+
+
                     const diasRestantes: number = Math.floor(diferencia / (1000 * 60 * 60 * 24));
                     const horasRestantes: number = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutosRestantes: number = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
                     const segundosRestantes: number = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+                    function agregarCeroSiNecesario(numero: number): string {
+                        return numero < 10 ? "0" + numero : numero.toString();
+                    }
 
                     const diasFormateados: string = agregarCeroSiNecesario(diasRestantes);
                     const horasFormateadas: string = agregarCeroSiNecesario(horasRestantes);
                     const minutosFormateados: string = agregarCeroSiNecesario(minutosRestantes);
                     const segundosFormateados: string = agregarCeroSiNecesario(segundosRestantes);
                     const raffleId = raffle.id.toString();
-
-
+                    if (diferencia <= 0) {
+                        return (
+                            <Card mb={15} bg="#2C2C3D" mr={15} ml={15} mt="2vh" radius='lg' key={raffle.id.toString()}>
+                                <Group mt={15} position="center">
+                                    <div>
+                                        <Image
+                                            radius="md"
+                                            height={550}
+                                            src={raffle.ad ? raffle.ad.url_parser : ""}
+                                            alt="Random unsplash image"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Title mt={15} ta='center' c='#56CCF2' order={2}>
+                                            La rifa ha terminado
+                                        </Title>
+                                        <Link to={`/mprifa?mp_id=${raffleId}`} style={{ textDecoration: 'none' }}>
+                                            <Button fullWidth onClick={() => setOpened(true)} color="green" radius="md" size="md">
+                                                Ver resultados
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </Group>
+                            </Card>
+                        );
+                    }
                     return (
-                        <Card mb={15} bg="#2C2C3D" mr={15} ml={15} mt="2vh" radius='lg'>
-
-                            <div >
-                                <Image
-                                    radius="md"
-                                    height={550}
-                                    src={raffle.ad ? raffle.ad.url_parser : ""}
-                                    alt="Random unsplash image"
-                                />
-                            </div>
-
+                        <Card mb={15} bg="#2C2C3D" mr={15} ml={15} mt="2vh" radius='lg' key={raffleId}>
                             <Group mt={15} position="center">
+                                <div style={{ width: 600, marginLeft: 'auto', marginRight: 'auto' }}>
+                                    <Image
 
-                                <Link to="/mprifa">
+                                        height={605}
+                                        src={raffle.ad ? raffle.ad.url_parser : ""}
+                                        alt="Premio"
+                                    />
+                                </div>
 
-                                    <Button fullWidth onClick={() => setOpened(true)} color="green" radius="md" size="md">
-                                        Comprar
-                                    </Button>
-                                </Link>
+                                <div>
+
+                                    <Flex
+                                        mih={50}
+                                        gap="xl"
+                                        justify="center"
+                                        align="center"
+                                        direction="column"
+                                        wrap="wrap"
+                                    >
+                                        <Title mt={15} ta='center' c='#56CCF2' order={2} fw={700}>
+                                            {raffle.title}
+                                        </Title>
+                                        <Title mt={15} ta='center' c='#56CCF2' order={4}>
+                                            Tiempo restante
+                                        </Title>
+                                        <div>
+
+                                            <Group position="apart">
+                                                <div>
+                                                    <Card p={10} withBorder>
+                                                        <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+                                                            {diasFormateados}
+                                                        </Title>
+                                                    </Card>
+                                                </div>
+                                                <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+                                                    :
+                                                </Title>
+                                                <div>
+                                                    <Card p={10} withBorder>
+                                                        <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+                                                            {horasFormateadas}
+                                                        </Title>
+                                                    </Card>
+                                                </div>
+                                                <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+                                                    :
+                                                </Title>
+                                                <div>
+                                                    <Card p={10} withBorder>
+                                                        <Title c='#56CCF2' ta='center' fw={700} fz="xs">
+                                                            {minutosFormateados}
+                                                        </Title>
+                                                    </Card>
+                                                </div>
+                                                <Title c='#56CCF2' ta='center' fw={700} fz="sm">
+                                                    :
+                                                </Title>
+                                                <div>
+                                                    <Card p={10} c='#56CCF2' withBorder>
+                                                        <Title c='#56CCF2' ta='center' fw={700} fz="xs">
+                                                            {segundosFormateados}
+                                                        </Title>
+                                                    </Card>
+                                                </div>
+                                            </Group>
+                                            <Group position="apart">
+                                                <Title mr={15} fw={700} fz="sm">
+                                                    Dias
+                                                </Title>
+                                                <Title ta='center' fw={700} fz="sm">
+                                                    Horas
+                                                </Title>
+                                                <Title fw={700} ml={14} fz={10}>
+                                                    Minutos
+                                                </Title>
+                                                <Title fw={700} fz={10}>
+                                                    Segundos
+                                                </Title>
+                                            </Group>
+                                        </div>
+                                        <Link to={`/mprifa?mp_id=${raffleId}`} style={{ textDecoration: 'none' }}>
+                                            <Button fullWidth onClick={() => setOpened(true)} color="green" radius="md" size="md">
+                                                Comprar
+                                            </Button>
+                                        </Link>
+                                    </Flex>
+
+                                </div>
                             </Group>
                         </Card>
                     );
                 })}
+
+
+
             </Group>
 
 

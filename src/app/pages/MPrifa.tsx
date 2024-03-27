@@ -238,6 +238,13 @@ function MPrifa({ }: Props) {
 
         return currentDifference < closestDifference ? currentRaffle : closestRaffle;
     }, raffles[0]);
+    const urlParams = new URLSearchParams(window.location.search);
+    const mpIdParam = urlParams.get('mp_id');
+
+    const mpId = mpIdParam ? parseInt(mpIdParam) : null;
+
+    const filteredRaffles = mpId ? raffles.filter(raffle => raffle.id === mpId) : raffles;
+
     return (
         <>
             <Modal
@@ -602,16 +609,12 @@ function MPrifa({ }: Props) {
 
 
 
-                    {raffles.map((raffle: IRaffle) => {
+                    {filteredRaffles.map((raffle: IRaffle) => {
                         const fecha = new Date(raffle.init_date);
                         const dia = fecha.getDate().toString().padStart(2, '0');
                         const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
                         const año = fecha.getFullYear();
                         const fechaFormateada = `${dia} / ${mes} / ${año} `;
-
-                        if (raffle !== raffleWithClosestDate) {
-                            return null;
-                        }
 
                         function agregarCeroSiNecesario(numero: number): string {
                             return numero < 10 ? "0" + numero : numero.toString();
@@ -639,19 +642,15 @@ function MPrifa({ }: Props) {
                         const cardArray = Array.from({ length: ticketCount }, (_, index) => {
                             if (ticketCount === 1000 && index + 1 < 10) {
                                 return `00${index + 1}`;
-                            }
-                            else if (ticketCount === 1000 && index + 1 < 100) {
+                            } else if (ticketCount === 1000 && index + 1 < 100) {
                                 return `0${index + 1}`;
                             } else if (ticketCount === 100 && index + 1 < 10) {
                                 return `0${index + 1}`;
-                            }
-                            else if (ticketCount === 100 && index + 1 === 100) {
+                            } else if (ticketCount === 100 && index + 1 === 100) {
                                 return "00";
-                            }
-                            else if (ticketCount === 1000 && index + 1 === 1000) {
+                            } else if (ticketCount === 1000 && index + 1 === 1000) {
                                 return "000";
-                            }
-                            else {
+                            } else {
                                 return (index + 1).toString();
                             }
                         });
